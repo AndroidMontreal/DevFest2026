@@ -1,25 +1,103 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-background: #f8fafc;
-  --color-foreground: #0f172a;
-  --color-primary: #2563eb;
-  --color-primary-foreground: #eff6ff;
+  --color-background: #050505;
+  --color-foreground: #e5e1e4;
+  --color-primary: #ffffff;
+  --color-primary-foreground: #0f0f11;
+  --color-google-blue: #4285f4;
+  --color-google-red: #ea4335;
+  --color-google-yellow: #fbbc04;
+  --color-google-green: #34a853;
 }
 
 @layer base {
+  html,
+  body {
+    min-height: 100%;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family:
-      Inter,
-      ui-sans-serif,
-      system-ui,
-      -apple-system,
-      Segoe UI,
-      Roboto,
-      Helvetica,
-      Arial,
+    font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
       sans-serif;
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
+@utility font-mono-tech {
+  font-family: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer components {
+  .retro-hero {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at 20% 20%, rgba(30, 30, 30, 0.2), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(30, 30, 30, 0.15), transparent 45%), var(--color-background);
+  }
+
+  .blueprint-grid {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 72px 72px;
+    opacity: 0.32;
+  }
+
+  .blueprint-subgrid {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.2;
+  }
+
+  .scanning-line {
+    position: absolute;
+    inset-inline: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: scan 8s linear infinite;
+  }
+
+  .blueprint-silhouette {
+    filter: drop-shadow(0 0 26px rgba(255, 255, 255, 0.1));
+  }
+
+  .quad-border-tr {
+    clip-path: polygon(100% 0, 100% 100%, 0 0);
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
+    border-right: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  .quad-border-bl {
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    border-left: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  .animate-ticker {
+    animation: ticker 40s linear infinite;
+  }
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scan {
+  0% {
+    top: -2px;
+  }
+  100% {
+    top: 100%;
   }
 }

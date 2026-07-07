@@ -1,4 +1,51 @@
 {
   "title": "DevFest 2026",
-  "subtitle": "The base platform is ready with localization and static export support for GitHub Pages."
+  "subtitle": "The base platform is ready with localization and static export support for GitHub Pages.",
+  "header": {
+    "logoAlt": "DevFest 2026 logo",
+    "city": "Montreal",
+    "registerLabel": "Register_Node",
+    "registerAria": "Register for DevFest 2026"
+  },
+  "nav": {
+    "home": "Home",
+    "team": "Team",
+    "schedule": "Schedule",
+    "speakers": "Speakers"
+  },
+  "hero": {
+    "phase": "GDG Montreal",
+    "title": "DEVFEST MTL 26",
+    "subtitle": "By Google Developer Group Montreal"
+  },
+  "stats": {
+    "workshops": {
+      "label": "Workshops",
+      "value": "20+"
+    },
+    "attendees": {
+      "label": "Attendees",
+      "value": "400+"
+    },
+    "speakers": {
+      "label": "Speakers",
+      "value": "15+"
+    }
+  },
+  "hud": {
+    "date": "November 6, 2026",
+    "location": "Ax.c Hub, 800 Square-Victoria, Montréal"
+  },
+  "countdown": {
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Mins",
+    "seconds": "Secs"
+  },
+  "ticker": {
+    "item1": "DEVFEST MONTREAL 2026 // NOVEMBER 6",
+    "item2": "CONNECTING 400+ DEVELOPERS & EXPERTS",
+    "item3": "20+ WORKSHOPS // TECH IMMERSION",
+    "item4": "MONTREAL TECH ECOSYSTEM // GDG"
+  }
 }

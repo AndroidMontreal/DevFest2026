@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { HomeLanding, type HomeLandingCopy } from '@/components/home/home-landing';
 
 export default async function Home({
   params,
@@ -9,10 +10,64 @@ export default async function Home({
   setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: 'Common' });
-  return (
-    <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center justify-center gap-4 px-6 py-16 text-center">
-      <h1 className="text-4xl font-bold tracking-tight md:text-5xl">{t('title')}</h1>
-      <p className="max-w-2xl text-base text-slate-600 md:text-lg">{t('subtitle')}</p>
-    </main>
-  );
+
+  const copy: HomeLandingCopy = {
+    header: {
+      logoAlt: t('header.logoAlt'),
+      city: t('header.city'),
+      registerLabel: t('header.registerLabel'),
+      registerAria: t('header.registerAria'),
+    },
+    nav: {
+      home: t('nav.home'),
+      team: t('nav.team'),
+      schedule: t('nav.schedule'),
+      speakers: t('nav.speakers'),
+    },
+    hero: {
+      phase: t('hero.phase'),
+      title: t('hero.title'),
+      subtitle: t('hero.subtitle'),
+    },
+    stats: {
+      workshops: {
+        label: t('stats.workshops.label'),
+        value: t('stats.workshops.value'),
+      },
+      attendees: {
+        label: t('stats.attendees.label'),
+        value: t('stats.attendees.value'),
+      },
+      speakers: {
+        label: t('stats.speakers.label'),
+        value: t('stats.speakers.value'),
+      },
+    },
+    hud: {
+      date: t('hud.date'),
+      location: t('hud.location'),
+      countdown: {
+        days: {
+          label: t('countdown.days'),
+        },
+        hours: {
+          label: t('countdown.hours'),
+        },
+        minutes: {
+          label: t('countdown.minutes'),
+        },
+        seconds: {
+          label: t('countdown.seconds'),
+        },
+      },
+    },
+    ticker: {
+      item1: t('ticker.item1'),
+      item2: t('ticker.item2'),
+      item3: t('ticker.item3'),
+      item4: t('ticker.item4'),
+    },
+  };
+
+  return <HomeLanding copy={copy} />;
 }
