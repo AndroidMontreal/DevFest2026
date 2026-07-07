@@ -1,0 +1,10 @@
+.next
+.idea
+out
+build
+node_modules
+package-lock.json
+public
+*.ico
+*.svg
+*.png
