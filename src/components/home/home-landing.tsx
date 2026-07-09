@@ -1,8 +1,12 @@
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react';
 import { HeroBottomHud } from './hero-bottom-hud';
 import { HeroContent } from './hero-content';
 import { HeroTicker } from './hero-ticker';
 import { SiteHeader } from './site-header';
+import { MobileMenu } from './mobile-menu';
 import type { HomeLandingCopy } from './types';
 
 export type { HomeLandingCopy } from './types';
@@ -12,6 +16,12 @@ type HomeLandingProps = {
 };
 
 export function HomeLanding({ copy }: HomeLandingProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <main className="retro-hero relative flex min-h-screen w-full flex-col">
       <div className="absolute inset-0 z-0">
@@ -30,7 +40,17 @@ export function HomeLanding({ copy }: HomeLandingProps) {
         <div className="scanning-line" />
       </div>
 
-      <SiteHeader header={copy.header} nav={copy.nav} />
+      <SiteHeader
+        header={copy.header}
+        nav={copy.nav}
+        isMenuOpen={isMenuOpen}
+        toggleMenu={toggleMenu}
+      />
+      <MobileMenu
+        nav={copy.nav}
+        isOpen={isMenuOpen}
+        toggleMenu={toggleMenu}
+      />
       <HeroContent hero={copy.hero} stats={copy.stats} />
       <HeroBottomHud hud={copy.hud} />
       <HeroTicker ticker={copy.ticker} />

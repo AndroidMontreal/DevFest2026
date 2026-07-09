@@ -1,0 +1,14 @@
+{
+  "header": {
+    "logoAlt": "DevFest 2026 logo",
+    "city": "Montreal",
+    "registerLabel": "Register_Node",
+    "registerAria": "Register for DevFest 2026"
+  },
+  "navigation": [
+    { "label": "Home", "href": "/" },
+    { "label": "Team", "href": "/team" },
+    { "label": "Schedule", "href": "/schedule" },
+    { "label": "Speakers", "href": "/speakers" }
+  ]
+}

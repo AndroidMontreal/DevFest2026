@@ -12,63 +12,59 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations({ locale, namespace: 'Common' });
+  const t_header = await getTranslations({ locale, namespace: 'Header' });
+  const t_home = await getTranslations({ locale, namespace: 'Home' });
 
   const copy: HomeLandingCopy = {
     header: {
-      logoAlt: t('header.logoAlt'),
-      city: t('header.city'),
-      registerLabel: t('header.registerLabel'),
-      registerAria: t('header.registerAria'),
+      logoAlt: t_header('header.logoAlt'),
+      city: t_header('header.city'),
+      registerLabel: t_header('header.registerLabel'),
+      registerAria: t_header('header.registerAria'),
     },
-    nav: {
-      home: t('nav.home'),
-      team: t('nav.team'),
-      schedule: t('nav.schedule'),
-      speakers: t('nav.speakers'),
-    },
+    nav: t_header.raw('navigation'),
     hero: {
-      phase: t('hero.phase'),
-      title: t('hero.title'),
-      subtitle: t('hero.subtitle'),
+      phase: t_home('hero.phase'),
+      title: t_home('hero.title'),
+      subtitle: t_home('hero.subtitle'),
     },
     stats: {
       workshops: {
-        label: t('stats.workshops.label'),
-        value: t('stats.workshops.value'),
+        label: t_home('stats.workshops.label'),
+        value: t_home('stats.workshops.value'),
       },
       attendees: {
-        label: t('stats.attendees.label'),
-        value: t('stats.attendees.value'),
+        label: t_home('stats.attendees.label'),
+        value: t_home('stats.attendees.value'),
       },
       speakers: {
-        label: t('stats.speakers.label'),
-        value: t('stats.speakers.value'),
+        label: t_home('stats.speakers.label'),
+        value: t_home('stats.speakers.value'),
       },
     },
     hud: {
-      date: t('hud.date'),
-      location: t('hud.location'),
+      date: t_home('hud.date'),
+      location: t_home('hud.location'),
       countdown: {
         days: {
-          label: t('countdown.days'),
+          label: t_home('countdown.days'),
         },
         hours: {
-          label: t('countdown.hours'),
+          label: t_home('countdown.hours'),
         },
         minutes: {
-          label: t('countdown.minutes'),
+          label: t_home('countdown.minutes'),
         },
         seconds: {
-          label: t('countdown.seconds'),
+          label: t_home('countdown.seconds'),
         },
       },
     },
     ticker: {
-      item1: t('ticker.item1'),
-      item2: t('ticker.item2'),
-      item3: t('ticker.item3'),
-      item4: t('ticker.item4'),
+      item1: t_home('ticker.item1'),
+      item2: t_home('ticker.item2'),
+      item3: t_home('ticker.item3'),
+      item4: t_home('ticker.item4'),
     },
   };
 

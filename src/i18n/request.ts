@@ -14,12 +14,16 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const common = (await import(`../messages/${locale}/common.json`)).default;
   const metadata = (await import(`../messages/${locale}/metadata.json`))
     .default;
+  const header = (await import(`../messages/${locale}/header.json`)).default;
+  const home = (await import(`../messages/${locale}/home.json`)).default;
 
   return {
     locale,
     messages: {
       Common: common,
       Metadata: metadata,
+      Header: header,
+      Home: home,
     },
   };
 });

@@ -6,11 +6,9 @@ export type HomeLandingCopy = {
     registerAria: string;
   };
   nav: {
-    home: string;
-    team: string;
-    schedule: string;
-    speakers: string;
-  };
+    label: string;
+    href: string;
+  }[];
   hero: {
     phase: string;
     title: string;
