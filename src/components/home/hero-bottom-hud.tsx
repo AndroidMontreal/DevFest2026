@@ -62,22 +62,22 @@ export function HeroBottomHud({ hud }: HeroBottomHudProps) {
           </div>
         </div>
 
-        <div className="flex items-end gap-8 md:gap-12">
+        <div className="flex flex-wrap items-end justify-center gap-x-8 gap-y-10 md:gap-12">
           <div className="flex flex-col items-center">
             <span className="font-display text-4xl font-extralight text-google-blue tabular-nums md:text-5xl">{countdown.days}</span>
             <span className="font-mono-tech mt-2 text-[8px] tracking-[0.24em] text-white/35 uppercase">{hud.countdown.days.label}</span>
           </div>
-          <div className="h-12 w-px bg-white/15" />
+          <div className="hidden md:block h-12 w-px bg-white/15" />
           <div className="flex flex-col items-center">
             <span className="font-display text-4xl font-extralight text-google-red tabular-nums md:text-5xl">{countdown.hours}</span>
             <span className="font-mono-tech mt-2 text-[8px] tracking-[0.24em] text-white/35 uppercase">{hud.countdown.hours.label}</span>
           </div>
-          <div className="h-12 w-px bg-white/15" />
+          <div className="hidden md:block h-12 w-px bg-white/15" />
           <div className="flex flex-col items-center">
             <span className="font-display text-4xl font-extralight text-google-yellow tabular-nums md:text-5xl">{countdown.minutes}</span>
             <span className="font-mono-tech mt-2 text-[8px] tracking-[0.24em] text-white/35 uppercase">{hud.countdown.minutes.label}</span>
           </div>
-          <div className="h-12 w-px bg-white/15" />
+          <div className="hidden md:block h-12 w-px bg-white/15" />
           <div className="flex flex-col items-center">
             <span className="font-display text-4xl font-extralight text-google-green tabular-nums md:text-5xl">{countdown.seconds}</span>
             <span className="font-mono-tech mt-2 text-[8px] tracking-[0.24em] text-white/35 uppercase">{hud.countdown.seconds.label}</span>

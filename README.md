@@ -54,3 +54,21 @@ src/
 - Static export is enabled via `output: 'export'`.
 - `next.config.ts` automatically sets `basePath`/`assetPrefix` during GitHub Actions builds.
 - Workflow file: `.github/workflows/nextjs.yml`.
+
+## CI parity check (local Docker)
+
+To run the same install/build flow used in GitHub Actions:
+
+```bash
+docker build -f Dockerfile.ci -t devfest2026-ci .
+```
+
+## Makefile shortcuts
+
+```bash
+make ci
+make lint
+make build
+make check
+make docker-ci
+```

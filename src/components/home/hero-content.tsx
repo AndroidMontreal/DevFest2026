@@ -13,7 +13,7 @@ export function HeroContent({ hero, stats }: HeroContentProps) {
       <div className="flex w-full max-w-5xl flex-col items-center">
         <div className="mb-10 flex items-center gap-6">
           <div className="h-px w-14 bg-white/10 md:w-24" />
-          <span className="font-mono-tech text-[13px] tracking-[0.65em] text-white/45 uppercase">{hero.phase}</span>
+          <span className="font-mono-tech text-[9px] tracking-[0.4em] text-white/45 uppercase">{hero.phase}</span>
           <div className="h-px w-14 bg-white/10 md:w-24" />
         </div>
 
