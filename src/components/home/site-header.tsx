@@ -3,16 +3,18 @@
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
 import { LocaleSwitcher } from './locale-switcher';
-import { MobileMenu } from './mobile-menu';
 import type { HomeLandingCopy } from './types';
 
 type SiteHeaderProps = {
   header: HomeLandingCopy['header'];
   nav: HomeLandingCopy['nav'];
+  isMenuOpen: boolean;
+  toggleMenu: () => void;
 };
 
-export function SiteHeader({ header, nav }: SiteHeaderProps) {
+export function SiteHeader({ header, nav, isMenuOpen, toggleMenu }: SiteHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -32,23 +34,30 @@ export function SiteHeader({ header, nav }: SiteHeaderProps) {
       </div>
 
       <nav className="hidden items-center gap-10 md:flex">
-        <Link className="font-mono-tech text-[12px] tracking-[0.32em] text-white hover:text-google-blue uppercase transition-colors" href="/">
-          {nav.home}
-        </Link>
-        <Link className="font-mono-tech text-[12px] tracking-[0.32em] text-white/50 hover:text-google-red uppercase transition-colors" href="/team">
-          {nav.team}
-        </Link>
-        <Link className="font-mono-tech text-[12px] tracking-[0.32em] text-white/50 hover:text-google-yellow uppercase transition-colors" href="/schedule">
-          {nav.schedule}
-        </Link>
-        <Link className="font-mono-tech text-[12px] tracking-[0.32em] text-white/50 hover:text-google-green uppercase transition-colors" href="/speakers">
-          {nav.speakers}
-        </Link>
+        {nav.map((item, index) => {
+          const colors = ['blue', 'red', 'yellow', 'green'];
+          const colorClass = `hover:text-google-${colors[index % colors.length]}`;
+          const opacityClass = index === 0 ? 'text-white' : 'text-white/50';
+
+          return (
+            <Link
+              key={item.href}
+              className={`font-mono-tech text-[12px] tracking-[0.32em] ${opacityClass} ${colorClass} uppercase transition-colors`}
+              href={item.href}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="flex items-center gap-6">
         <LocaleSwitcher />
-        <MobileMenu nav={nav} />
+        <div className="md:hidden">
+          <button onClick={toggleMenu} className="text-white">
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </div>
     </header>
   );
