@@ -1,5 +1,8 @@
+import {
+  HomeLanding,
+  type HomeLandingCopy,
+} from '@/components/home/home-landing';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { HomeLanding, type HomeLandingCopy } from '@/components/home/home-landing';
 
 export default async function Home({
   params,

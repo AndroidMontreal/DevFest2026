@@ -1,9 +1,13 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { Inter, JetBrains_Mono, Space_Grotesk } from 'next/font/google';
 import { routing } from '@/i18n/routing';
+import type { Metadata } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from 'next-intl/server';
+import { Inter, JetBrains_Mono, Space_Grotesk } from 'next/font/google';
+import { notFound } from 'next/navigation';
 import '../globals.css';
 
 const inter = Inter({
@@ -60,8 +64,12 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${inter.variable} ${jetBrainsMono.variable} ${spaceGrotesk.variable}`}>
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+      <body
+        className={`${inter.variable} ${jetBrainsMono.variable} ${spaceGrotesk.variable}`}
+      >
+        <NextIntlClientProvider messages={messages}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );
