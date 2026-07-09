@@ -16,6 +16,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
     .default;
   const header = (await import(`../messages/${locale}/header.json`)).default;
   const home = (await import(`../messages/${locale}/home.json`)).default;
+  const gallery = (await import(`../messages/${locale}/gallery.json`)).default;
 
   return {
     locale,
@@ -24,6 +25,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       Metadata: metadata,
       Header: header,
       Home: home,
+      Gallery: gallery,
     },
   };
 });

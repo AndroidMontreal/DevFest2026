@@ -52,4 +52,19 @@ export type HomeLandingCopy = {
     item3: string;
     item4: string;
   };
+  gallery: {
+    header: {
+      subheading: string;
+      heading: {
+        line1: string;
+        line2: string;
+      };
+    };
+    items: {
+      imageSrc: string;
+      label: string;
+      width: number;
+      height: number;
+    }[];
+  };
 };

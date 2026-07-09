@@ -1,0 +1,22 @@
+{
+  "header": {
+    "subheading": "Un Voyage Visuel Dans Le Temps",
+    "heading": {
+      "line1": "DevFest Montréal",
+      "line2": "La Rétrospective 2025"
+    }
+  },
+  "items": [
+    { "imageSrc": "/assets/images/gallery/gallery1.webp", "label": "DevFest 2025", "width": 800, "height": 450 },
+    { "imageSrc": "/assets/images/gallery/gallery7.webp", "label": "DevFest 2025", "width": 800, "height": 1000 },
+    { "imageSrc": "/assets/images/gallery/gallery3.webp", "label": "DevFest 2025", "width": 800, "height": 600 },
+    { "imageSrc": "/assets/images/gallery/gallery2.webp", "label": "DevFest 2025", "width": 800, "height": 1200 },
+    { "imageSrc": "/assets/images/gallery/gallery4.webp", "label": "DevFest 2025", "width": 800, "height": 450 },
+    { "imageSrc": "/assets/images/gallery/gallery9.webp", "label": "DevFest 2025", "width": 800, "height": 800 },
+    { "imageSrc": "/assets/images/gallery/gallery6.webp", "label": "DevFest 2025", "width": 800, "height": 450 },
+    { "imageSrc": "/assets/images/gallery/gallery8.webp", "label": "DevFest 2025", "width": 800, "height": 600 },
+    { "imageSrc": "/assets/images/gallery/gallery5.webp", "label": "DevFest 2025", "width": 800, "height": 800 },
+    { "imageSrc": "/assets/images/gallery/gallery10.webp", "label": "DevFest 2025", "width": 800, "height": 450 },
+    { "imageSrc": "/assets/images/gallery/gallery11.webp", "label": "DevFest 2025", "width": 800, "height": 500 }
+  ]
+}
