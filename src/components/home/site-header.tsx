@@ -26,10 +26,14 @@ export function SiteHeader({ header, nav, isMenuOpen, toggleMenu }: SiteHeaderPr
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 z-50 flex w-full items-center justify-between px-5 py-6 md:px-10 md:py-8 transition-all duration-300 ${scrolled ? 'bg-[#050505]/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'}`}>
+    <header
+      className={`fixed top-0 left-0 z-50 flex w-full items-center justify-between px-5 py-6 md:px-10 md:py-8 transition-all duration-300 ${scrolled ? 'bg-[#050505]/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'}`}>
       <div className="flex items-center gap-3">
         <Link href="/">
-          <Image src="/assets/images/logos/devfest-2026.svg" alt={header.logoAlt} width={200} height={28} />
+          <div className="relative h-auto w-auto">
+            <Image src="/assets/images/logos/devfest-2026.svg" width={220} height={28} alt={header.logoAlt}
+                   className="object-contain" />
+          </div>
         </Link>
       </div>
 

@@ -14,6 +14,7 @@ export default async function Home({
 
   const t_header = await getTranslations({ locale, namespace: 'Header' });
   const t_home = await getTranslations({ locale, namespace: 'Home' });
+  const t_gallery = await getTranslations({ locale, namespace: 'Gallery' });
 
   const copy: HomeLandingCopy = {
     header: {
@@ -66,6 +67,16 @@ export default async function Home({
       item3: t_home('ticker.item3'),
       item4: t_home('ticker.item4'),
     },
+    gallery: {
+      header: {
+        subheading: t_gallery('header.subheading'),
+        heading: {
+          line1: t_gallery('header.heading.line1'),
+          line2: t_gallery('header.heading.line2'),
+        },
+        },
+        items: t_gallery.raw('items'),
+        },
   };
 
   return <HomeLanding copy={copy} />;
