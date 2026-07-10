@@ -52,6 +52,15 @@ jobs:
           npm install @parcel/watcher-linux-x64-glibc --no-save || true
           npm rebuild @parcel/watcher --build-from-source || true
 
+      - name: Ensure @swc/core native binding is present
+        run: |
+          # Try to rebuild @swc/core native binaries
+          npm rebuild @swc/core || true
+          # Fallback: install platform-specific prebuilt package
+          npm install @swc/core-linux-x64-gnu --no-save || true
+          # Final safety: rebuild all native modules
+          npm rebuild || true
+
       - name: Build with Next.js
         run: npm run build
 
