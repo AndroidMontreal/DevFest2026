@@ -65,11 +65,11 @@ export function HomeLanding({ copy }: HomeLandingProps) {
             subheading={copy.sponsors.header.subheading}
             headingLine1={copy.sponsors.header.heading.line1}
             headingLine2={copy.sponsors.header.heading.line2}
+            headingLine2ClassName="text-google-yellow"
           />
           <SponsorsTiers
             tiers={copy.sponsors.tiers}
             ctaLabel={copy.sponsors.cta.label}
-            ctaLink={copy.sponsors.cta.link}
           />
         </section>
       </main>

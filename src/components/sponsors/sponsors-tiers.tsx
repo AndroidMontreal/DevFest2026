@@ -1,8 +1,6 @@
 'use client';
 
-// Note: Reverted to <img> tag to respect original SVG sizing as requested.
-// Using a white background for maximum contrast with dark/transparent logos.
-// Added grayscale-to-color hover effect.
+import Image from 'next/image';
 
 type SponsorTier = {
   title: string;
@@ -18,10 +16,9 @@ type SponsorTier = {
 type SponsorsTiersProps = {
   tiers: SponsorTier[];
   ctaLabel: string;
-  ctaLink: string;
 };
 
-export function SponsorsTiers({ tiers, ctaLabel, ctaLink }: SponsorsTiersProps) {
+export function SponsorsTiers({ tiers, ctaLabel }: SponsorsTiersProps) {
   return (
     <div className="space-y-14">
       {tiers.map((tier) => (
@@ -40,20 +37,22 @@ export function SponsorsTiers({ tiers, ctaLabel, ctaLink }: SponsorsTiersProps) 
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+          <div className="flex flex-col items-center gap-12 md:flex-row md:flex-wrap md:justify-start md:gap-x-16 md:gap-y-12">
             {tier.items.map((sponsor) => (
               <a
                 key={sponsor.name}
                 href={sponsor.link || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex items-center justify-center rounded-lg bg-white p-6 transition-all duration-300 hover:scale-105"
+                className="group inline-flex w-full max-w-[420px] flex-col items-center justify-center rounded-lg bg-white p-6 transition-all duration-300 hover:scale-105 md:w-auto"
               >
                 {sponsor.logo && (
-                  <img
+                  <Image
                     src={sponsor.logo}
                     alt={sponsor.name}
-                    className="grayscale transition-all duration-300 group-hover:grayscale-0"
+                    width={400}
+                    height={250}
+                    className="block h-auto w-auto max-w-full grayscale transition-all duration-300 group-hover:grayscale-0"
                   />
                 )}
               </a>
@@ -63,14 +62,9 @@ export function SponsorsTiers({ tiers, ctaLabel, ctaLink }: SponsorsTiersProps) 
       ))}
 
       <div className="pt-2">
-        <a
-          href={ctaLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center border border-white/25 px-5 py-3 font-mono-tech text-xs uppercase tracking-[0.2em] text-white transition-colors hover:border-google-blue hover:text-google-blue"
-        >
+        <div className="inline-flex items-center border border-white/25 px-5 py-3 font-mono-tech text-xs uppercase tracking-[0.2em] text-white transition-colors hover:border-google-blue hover:text-google-blue">
           {ctaLabel}
-        </a>
+        </div>
       </div>
     </div>
   );
