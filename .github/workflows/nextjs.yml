@@ -43,6 +43,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Ensure parcel watcher native prebuilds are present
+        run: |
+          # Some runners skip optional native prebuilds; force-install platform build for @parcel/watcher
+          npm ls @parcel/watcher || npm install @parcel/watcher --no-save || true
+          npm rebuild @parcel/watcher || true
+
       - name: Build with Next.js
         run: npm run build
 
