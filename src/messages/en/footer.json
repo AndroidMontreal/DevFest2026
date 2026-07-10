@@ -1,0 +1,25 @@
+{
+  "brand": {
+    "description": "DevFest Montreal is a local tech conference by Google Developer Group Montreal for developers, featuring hands-on learning, technical talks in local languages, and networking focused on Google’s developer tools.",
+    "copyright": "© 2026 GDG Montreal. All rights reserved."
+  },
+  "pastEvents": {
+    "title": "Past Events",
+    "links": [
+      { "label": "DevFest 2025", "href": "https://devfest2025.gdgmontreal.com/" },
+      { "label": "DevFest 2024", "href": "https://devfest2024.gdgmontreal.com/" },
+      { "label": "DevFest 2023", "href": "https://devfest2023.gdgmontreal.com/" }
+    ]
+  },
+  "quickLinks": {
+    "title": "Quick Links",
+    "links": [
+      { "label": "Call for Speakers", "href": "#" },
+      { "label": "Sponsorship Deck", "href": "#", "isExternal": true },
+      { "label": "Code of Conduct", "href": "/code-of-conduct" }
+    ]
+  },
+  "joinUs": {
+    "title": "Join Us"
+  }
+}

@@ -8,6 +8,7 @@ import {
 } from 'next-intl/server';
 import { Inter, JetBrains_Mono, Space_Grotesk } from 'next/font/google';
 import { notFound } from 'next/navigation';
+import { SiteFooter } from '@/components/common/site-footer';
 import '../globals.css';
 
 const inter = Inter({
@@ -68,7 +69,10 @@ export default async function LocaleLayout({
         className={`${inter.variable} ${jetBrainsMono.variable} ${spaceGrotesk.variable}`}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <div className="flex flex-col min-h-screen">
+            <main className="flex-grow">{children}</main>
+            <SiteFooter />
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>
