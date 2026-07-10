@@ -18,6 +18,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const home = (await import(`../messages/${locale}/home.json`)).default;
   const gallery = (await import(`../messages/${locale}/gallery.json`)).default;
   const footer = (await import(`../messages/${locale}/footer.json`)).default;
+  const sponsors = (await import(`../messages/${locale}/sponsors.json`)).default;
 
   return {
     locale,
@@ -28,6 +29,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       Home: home,
       Gallery: gallery,
       Footer: footer,
+      Sponsors: sponsors,
     },
   };
 });

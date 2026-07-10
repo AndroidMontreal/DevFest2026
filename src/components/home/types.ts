@@ -57,4 +57,27 @@ export type HomeLandingCopy = {
       height: number;
     }[];
   };
+  sponsors: {
+    header: {
+      subheading: string;
+      heading: {
+        line1: string;
+        line2: string;
+      };
+    };
+    cta: {
+      label: string;
+      link: string;
+    };
+    tiers: {
+      title: string;
+      subtitle: string;
+      badge: string;
+      items: {
+        name: string;
+        logo?: string;
+        link?: string;
+      }[];
+    }[];
+  };
 };
