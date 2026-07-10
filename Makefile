@@ -29,7 +29,7 @@ build:
 check: ci build
 
 clean:
-	@powershell -NoProfile -Command "Write-Host 'Cleaning $(OUT_DIR) and $(LOG_DIR)'; Remove-Item -Recurse -Force '$(OUT_DIR)','$(LOG_DIR)' -ErrorAction SilentlyContinue; if ('$(DEEP)' -eq '1') { Write-Host 'Deep clean: removing node_modules'; Remove-Item -Recurse -Force 'node_modules' -ErrorAction SilentlyContinue }"
+	@powershell.exe -NoProfile -Command "Remove-Item -Recurse -Force 'out','logs' -ErrorAction SilentlyContinue; if ('$(DEEP)' -eq '1') { Write-Host 'Deep clean: removing node_modules'; Remove-Item -Recurse -Force 'node_modules' -ErrorAction SilentlyContinue }"
 
 rebuild: clean ci build
 
