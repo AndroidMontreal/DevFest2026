@@ -48,6 +48,9 @@ jobs:
           # Some runners skip optional native prebuilds; force-install platform build for @parcel/watcher
           npm ls @parcel/watcher || npm install @parcel/watcher --no-save || true
           npm rebuild @parcel/watcher || true
+          # Force install platform-specific prebuilt binary as a fallback
+          npm install @parcel/watcher-linux-x64-glibc --no-save || true
+          npm rebuild @parcel/watcher --build-from-source || true
 
       - name: Build with Next.js
         run: npm run build
