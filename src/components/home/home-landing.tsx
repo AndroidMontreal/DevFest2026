@@ -6,6 +6,7 @@ import { HeroContent } from './hero-content';
 import { HeroTicker } from './hero-ticker';
 import GalleryGrid from '../gallery/gallery-grid';
 import { SectionHeader } from '../common/section-header';
+import { SponsorsTiers } from '../sponsors/sponsors-tiers';
 import type { HomeLandingCopy } from './types';
 
 export type { HomeLandingCopy } from './types';
@@ -56,6 +57,20 @@ export function HomeLanding({ copy }: HomeLandingProps) {
             headingLine2={copy.gallery.header.heading.line2}
           />
           <GalleryGrid items={copy.gallery.items} />
+        </section>
+
+        {/* Sponsors Section */}
+        <section className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12">
+          <SectionHeader
+            subheading={copy.sponsors.header.subheading}
+            headingLine1={copy.sponsors.header.heading.line1}
+            headingLine2={copy.sponsors.header.heading.line2}
+            headingLine2ClassName="text-google-yellow"
+          />
+          <SponsorsTiers
+            tiers={copy.sponsors.tiers}
+            ctaLabel={copy.sponsors.cta.label}
+          />
         </section>
       </main>
     </>

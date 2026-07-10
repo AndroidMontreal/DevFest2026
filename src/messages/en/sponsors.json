@@ -1,0 +1,49 @@
+{
+  "header": {
+    "subheading": "Sponsorship",
+    "heading": {
+      "line1": "Our Sponsors",
+      "line2": "Build DevFest With Us"
+    },
+    "cta": "Become a Sponsor",
+    "cta_link": "https://forms.gle/xDCZe4ZuP98YoCAJ9"
+  },
+  "tiers": [
+    {
+      "title": "Marquee Sponsor",
+      "subtitle": "Headline partner powering DevFest Montreal 2026.",
+      "badge": "Marquee",
+      "items": [
+        {
+          "name": "TELUS Digital",
+          "logo": "/assets/images/sponsors/marquee_telus_digital.svg",
+          "link": "https://www.telusdigital.com/"
+        }
+      ]
+    },
+    {
+      "title": "Gold Sponsor",
+      "subtitle": "Strategic sponsor supporting local developer growth.",
+      "badge": "Gold",
+      "items": [
+        {
+          "name": "Davidson Canada",
+          "logo": "/assets/images/sponsors/gold_davidson_canada.svg",
+          "link": "https://www.davidson.group/nos-filiales/davidson-canada"
+        }
+      ]
+    },
+    {
+      "title": "Silver Sponsor",
+      "subtitle": "Community sponsor helping us connect builders across the city.",
+      "badge": "Silver",
+      "items": [
+        {
+          "name": "Transit",
+          "logo": "/assets/images/sponsors/silver_transit.svg",
+          "link": "https://manifesto.transitapp.com/fr/jobs"
+        }
+      ]
+    }
+  ]
+}
