@@ -9,6 +9,10 @@ import {
 import { Inter, JetBrains_Mono, Space_Grotesk } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { SiteFooter } from '@/components/common/site-footer';
+import {
+  SiteHeaderShell,
+  type HeaderNavItem,
+} from '@/components/common/site-header-shell';
 import '../globals.css';
 
 const inter = Inter({
@@ -62,6 +66,16 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const tHeader = await getTranslations({ locale, namespace: 'Header' });
+
+  const header = {
+    logoAlt: tHeader('header.logoAlt'),
+    city: tHeader('header.city'),
+    registerLabel: tHeader('header.registerLabel'),
+    registerAria: tHeader('header.registerAria'),
+  };
+
+  const nav = tHeader.raw('navigation') as HeaderNavItem[];
 
   return (
     <html lang={locale}>
@@ -70,7 +84,8 @@ export default async function LocaleLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <div className="flex flex-col min-h-screen">
-            <main className="flex-grow">{children}</main>
+            <SiteHeaderShell header={header} nav={nav} />
+            <main className="relative z-0 flex-grow">{children}</main>
             <SiteFooter />
           </div>
         </NextIntlClientProvider>

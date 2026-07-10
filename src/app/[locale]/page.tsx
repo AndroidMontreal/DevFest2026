@@ -12,18 +12,10 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t_header = await getTranslations({ locale, namespace: 'Header' });
   const t_home = await getTranslations({ locale, namespace: 'Home' });
   const t_gallery = await getTranslations({ locale, namespace: 'Gallery' });
 
   const copy: HomeLandingCopy = {
-    header: {
-      logoAlt: t_header('header.logoAlt'),
-      city: t_header('header.city'),
-      registerLabel: t_header('header.registerLabel'),
-      registerAria: t_header('header.registerAria'),
-    },
-    nav: t_header.raw('navigation'),
     hero: {
       phase: t_home('hero.phase'),
       title: t_home('hero.title'),

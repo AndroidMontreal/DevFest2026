@@ -2,11 +2,15 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from '@/i18n/navigation';
-import type { HomeLandingCopy } from './types';
 import { useEffect } from 'react';
 
+type HeaderNavItem = {
+  label: string;
+  href: string;
+};
+
 type MobileMenuProps = {
-  nav: HomeLandingCopy['nav'];
+  nav: HeaderNavItem[];
   isOpen: boolean;
   toggleMenu: () => void;
 };
@@ -37,7 +41,7 @@ export function MobileMenu({ nav, isOpen, toggleMenu }: MobileMenuProps) {
           animate="visible"
           exit="hidden"
           variants={menuVariants}
-          className="fixed top-[80px] right-0 bottom-0 z-[99] w-full bg-[#050505] py-6 px-4 flex flex-col overflow-y-auto md:hidden"
+          className="fixed top-[80px] right-0 bottom-0 z-[110] flex w-full flex-col overflow-y-auto bg-[#050505] px-4 py-6 md:hidden"
         >
           <div className="flex-grow flex flex-col items-center gap-8 mt-0"> {/* Adjusted margin-top */}
             <motion.nav className="flex flex-col items-center gap-8">

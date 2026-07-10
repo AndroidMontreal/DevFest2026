@@ -1,12 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
 import { HeroBottomHud } from './hero-bottom-hud';
 import { HeroContent } from './hero-content';
 import { HeroTicker } from './hero-ticker';
-import { SiteHeader } from './site-header';
-import { MobileMenu } from './mobile-menu';
 import GalleryGrid from '../gallery/gallery-grid';
 import { SectionHeader } from '../common/section-header';
 import type { HomeLandingCopy } from './types';
@@ -17,25 +14,8 @@ type HomeLandingProps = {
 };
 
 export function HomeLanding({ copy }: HomeLandingProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <>
-      <SiteHeader
-        header={copy.header}
-        nav={copy.nav}
-        isMenuOpen={isMenuOpen}
-        toggleMenu={toggleMenu}
-      />
-      <MobileMenu
-        nav={copy.nav}
-        isOpen={isMenuOpen}
-        toggleMenu={toggleMenu}
-      />
-
       {/* Global Grid Background */}
       <div className="fixed inset-0 -z-10 bg-background">
         <div className="blueprint-subgrid absolute inset-0" />

@@ -13,7 +13,7 @@ export function LocaleSwitcher() {
       href={pathname}
       locale={nextLocale}
       aria-label={`Switch language to ${nextLocale.toUpperCase()}`}
-      className="group relative inline-flex items-center gap-2 overflow-hidden px-4 py-2.5 transition-all hover:bg-white/5"
+      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-sm border border-white/25 bg-black/20 px-4 py-2.5 backdrop-blur-sm transition-all hover:border-white/45 hover:bg-white/5"
     >
       <div className="quad-border-tr absolute inset-0 opacity-35" />
       <div className="quad-border-bl absolute inset-0 opacity-35" />

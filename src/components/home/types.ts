@@ -1,14 +1,4 @@
 export type HomeLandingCopy = {
-  header: {
-    logoAlt: string;
-    city: string;
-    registerLabel: string;
-    registerAria: string;
-  };
-  nav: {
-    label: string;
-    href: string;
-  }[];
   hero: {
     phase: string;
     title: string;
