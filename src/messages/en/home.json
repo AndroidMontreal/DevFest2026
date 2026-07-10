@@ -11,7 +11,7 @@
     },
     "attendees": {
       "label": "Attendees",
-      "value": "400+"
+      "value": "300+"
     },
     "speakers": {
       "label": "Speakers",
@@ -30,7 +30,7 @@
   },
   "ticker": {
     "item1": "DEVFEST MONTREAL 2026 // NOVEMBER 6",
-    "item2": "CONNECTING 400+ DEVELOPERS & EXPERTS",
+    "item2": "CONNECTING 300+ DEVELOPERS & EXPERTS",
     "item3": "20+ WORKSHOPS // TECH IMMERSION",
     "item4": "MONTREAL TECH ECOSYSTEM // GDG"
   }

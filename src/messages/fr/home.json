@@ -1,8 +1,8 @@
 {
   "hero": {
-    "phase": "GDG Montreal",
+    "phase": "GDG Montréal",
     "title": "DEVFEST MTL 26",
-    "subtitle": "Par le Google Developer Group Montreal"
+    "subtitle": "Par le Google Developer Group Montréal"
   },
   "stats": {
     "workshops": {
@@ -11,7 +11,7 @@
     },
     "attendees": {
       "label": "Participants",
-      "value": "400+"
+      "value": "300+"
     },
     "speakers": {
       "label": "Intervenants",
@@ -20,7 +20,7 @@
   },
   "hud": {
     "date": "6 novembre 2026",
-    "location": "Ax.c Hub, 800 Square-Victoria, Montréal"
+    "location": "ESPACE A.C, 800 Square-Victoria, Montréal"
   },
   "countdown": {
     "days": "Jours",
@@ -30,7 +30,7 @@
   },
   "ticker": {
     "item1": "DEVFEST MONTRÉAL 2026 // 6 NOVEMBRE",
-    "item2": "CONNECTER 400+ DÉVELOPPEURS & EXPERTS",
+    "item2": "CONNECTER 300+ DÉVELOPPEURS & EXPERTS",
     "item3": "20+ ATELIERS // IMMERSION TECH",
     "item4": "ÉCOSYSTÈME TECH MONTRÉALAIS // GDG"
   }
