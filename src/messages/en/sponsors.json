@@ -3,7 +3,7 @@
     "subheading": "Sponsorship",
     "heading": {
       "line1": "Our Sponsors",
-      "line2": "Build DevFest With Us"
+      "line2": "Building Together"
     },
     "cta": "Become a Sponsor",
     "cta_link": "https://forms.gle/xDCZe4ZuP98YoCAJ9"
@@ -11,7 +11,7 @@
   "tiers": [
     {
       "title": "Marquee Sponsor",
-      "subtitle": "Headline partner powering DevFest Montreal 2026.",
+      "subtitle": "A leading presence in the DevFest 2026 story.",
       "badge": "Marquee",
       "items": [
         {
@@ -23,7 +23,7 @@
     },
     {
       "title": "Gold Sponsor",
-      "subtitle": "Strategic sponsor supporting local developer growth.",
+      "subtitle": "A valued part of the DevFest 2026 sponsor family.",
       "badge": "Gold",
       "items": [
         {
@@ -35,7 +35,7 @@
     },
     {
       "title": "Silver Sponsor",
-      "subtitle": "Community sponsor helping us connect builders across the city.",
+      "subtitle": "A community-minded sponsor helping shape the event vibe.",
       "badge": "Silver",
       "items": [
         {

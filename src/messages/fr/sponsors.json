@@ -2,16 +2,16 @@
   "header": {
     "subheading": "Commandites",
     "heading": {
-      "line1": "Nos Sponsors",
-      "line2": "Construisons DevFest Ensemble"
+      "line1": "Nos sponsors",
+      "line2": "Construisons ensemble"
     },
     "cta": "Devenir Sponsor",
     "cta_link": "https://forms.gle/xDCZe4ZuP98YoCAJ9"
   },
   "tiers": [
     {
-      "title": "Sponsor Marquee",
-      "subtitle": "Partenaire principal qui propulse DevFest Montréal 2026.",
+      "title": "Sponsor principal",
+      "subtitle": "Une présence forte dans l'histoire de DevFest 2026.",
       "badge": "Marquee",
       "items": [
         {
@@ -23,7 +23,7 @@
     },
     {
       "title": "Sponsor Or",
-      "subtitle": "Sponsor stratégique qui soutient la croissance des développeurs locaux.",
+      "subtitle": "Une présence appréciée dans la famille des sponsors DevFest 2026.",
       "badge": "Or",
       "items": [
         {
@@ -35,7 +35,7 @@
     },
     {
       "title": "Sponsor Argent",
-      "subtitle": "Sponsor communautaire qui nous aide à connecter les talents de la ville.",
+      "subtitle": "Un sponsor proche de la communauté et de l'ambiance de l'événement.",
       "badge": "Argent",
       "items": [
         {

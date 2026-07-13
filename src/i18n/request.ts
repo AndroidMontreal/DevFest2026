@@ -19,6 +19,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const gallery = (await import(`../messages/${locale}/gallery.json`)).default;
   const footer = (await import(`../messages/${locale}/footer.json`)).default;
   const sponsors = (await import(`../messages/${locale}/sponsors.json`)).default;
+  const team = (await import(`../messages/${locale}/team.json`)).default;
+  const schedule = (await import(`../messages/${locale}/schedule.json`)).default;
+  const speakers = (await import(`../messages/${locale}/speakers.json`)).default;
 
   return {
     locale,
@@ -30,6 +33,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
       Gallery: gallery,
       Footer: footer,
       Sponsors: sponsors,
+      TeamPage: team,
+      SchedulePage: schedule,
+      SpeakersPage: speakers,
     },
   };
 });

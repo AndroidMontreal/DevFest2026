@@ -11,11 +11,25 @@ type HeaderNavItem = {
 
 type MobileMenuProps = {
   nav: HeaderNavItem[];
+  currentPathname: string;
   isOpen: boolean;
   toggleMenu: () => void;
 };
 
-export function MobileMenu({ nav, isOpen, toggleMenu }: MobileMenuProps) {
+function normalizePath(path: string) {
+  const localeFreePath = path.replace(/^\/(en|fr)(?=\/|$)/, '') || '/';
+  if (localeFreePath === '/') return '/';
+  return localeFreePath.replace(/\/+$/, '');
+}
+
+function isActiveNavItem(currentPathname: string, href: string) {
+  const current = normalizePath(currentPathname);
+  const target = normalizePath(href);
+  if (target === '/') return current === '/';
+  return current === target || current.startsWith(`${target}/`);
+}
+
+export function MobileMenu({ nav, currentPathname, isOpen, toggleMenu }: MobileMenuProps) {
   const menuVariants = {
     hidden: { x: '100%' },
     visible: { x: 0, transition: { duration: 0.3 } },
@@ -49,7 +63,11 @@ export function MobileMenu({ nav, isOpen, toggleMenu }: MobileMenuProps) {
                 <Link
                   key={item.href}
                   onClick={toggleMenu}
-                  className="font-mono-tech text-xl uppercase"
+                  className={`font-mono-tech text-xl uppercase transition-colors ${
+                    isActiveNavItem(currentPathname, item.href)
+                      ? 'text-google-yellow'
+                      : 'text-white/75 hover:text-white'
+                  }`}
                   href={item.href}
                 >
                   {item.label}
