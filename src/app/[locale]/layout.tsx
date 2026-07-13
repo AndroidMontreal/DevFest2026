@@ -83,7 +83,11 @@ export default async function LocaleLayout({
         className={`${inter.variable} ${jetBrainsMono.variable} ${spaceGrotesk.variable}`}
       >
         <NextIntlClientProvider messages={messages}>
-          <div className="flex flex-col min-h-screen">
+          <div className="relative isolate flex min-h-screen flex-col">
+            <div className="pointer-events-none fixed inset-0 -z-10 bg-background">
+              <div className="blueprint-subgrid absolute inset-0" />
+              <div className="blueprint-grid absolute inset-0" />
+            </div>
             <SiteHeaderShell header={header} nav={nav} />
             <main className="relative z-0 flex-grow">{children}</main>
             <SiteFooter />

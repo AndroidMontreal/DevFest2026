@@ -21,11 +21,31 @@ type HeaderNavItem = {
 type SiteHeaderProps = {
   header: HeaderCopy;
   nav: HeaderNavItem[];
+  currentPathname: string;
   isMenuOpen: boolean;
   toggleMenu: () => void;
 };
 
-export function SiteHeader({ header, nav, isMenuOpen, toggleMenu }: SiteHeaderProps) {
+function normalizePath(path: string) {
+  const localeFreePath = path.replace(/^\/(en|fr)(?=\/|$)/, '') || '/';
+  if (localeFreePath === '/') return '/';
+  return localeFreePath.replace(/\/+$/, '');
+}
+
+function isActiveNavItem(currentPathname: string, href: string) {
+  const current = normalizePath(currentPathname);
+  const target = normalizePath(href);
+  if (target === '/') return current === '/';
+  return current === target || current.startsWith(`${target}/`);
+}
+
+export function SiteHeader({
+  header,
+  nav,
+  currentPathname,
+  isMenuOpen,
+  toggleMenu,
+}: SiteHeaderProps) {
   const [scrolled, setScrolled] = useState(true);
 
   useEffect(() => {
@@ -81,12 +101,14 @@ export function SiteHeader({ header, nav, isMenuOpen, toggleMenu }: SiteHeaderPr
           {nav.map((item, index) => {
             const colors = ['blue', 'red', 'yellow', 'green'];
             const colorClass = `hover:text-google-${colors[index % colors.length]}`;
-            const opacityClass = index === 0 ? 'text-white' : 'text-white/50';
+            const activeClass = isActiveNavItem(currentPathname, item.href)
+              ? 'text-white'
+              : 'text-white/50';
 
             return (
               <Link
                 key={item.href}
-                className={`font-mono-tech text-[12px] tracking-[0.32em] ${opacityClass} ${colorClass} uppercase transition-colors`}
+                className={`font-mono-tech text-[12px] tracking-[0.32em] ${activeClass} ${colorClass} uppercase transition-colors`}
                 href={item.href}
               >
                 {item.label}
