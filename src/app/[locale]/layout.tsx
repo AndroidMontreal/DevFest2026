@@ -89,7 +89,7 @@ export default async function LocaleLayout({
               <div className="blueprint-grid absolute inset-0" />
             </div>
             <SiteHeaderShell header={header} nav={nav} />
-            <main className="relative z-0 flex-grow">{children}</main>
+            <div className="relative z-0 flex-grow">{children}</div>
             <SiteFooter />
           </div>
         </NextIntlClientProvider>

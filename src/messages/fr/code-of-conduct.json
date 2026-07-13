@@ -1,0 +1,54 @@
+{
+  "header": {
+    "subheading": "GDG Montréal",
+    "heading": {
+      "line1": "Code de Conduite",
+      "line2": "Respect mutuel"
+    }
+  },
+  "intro_line": "Pourquoi avons-nous une politique officielle contre le harcèlement pour les événements du GDG Montréal ?",
+  "why_points": [
+    "Elle définit les attentes en matière de comportement lors de l'événement. Le simple fait d'avoir une politique anti-harcèlement peut prévenir le harcèlement.",
+    "Elle encourage la participation de personnes ayant eu de mauvaises expériences lors d'autres événements.",
+    "Elle donne au personnel et aux bénévoles de l'événement des instructions sur la manière de gérer le harcèlement rapidement, avec le minimum de perturbations pour l'événement."
+  ],
+  "harassment_free_statement": "Le GDG Montréal s'engage à offrir une expérience événementielle sans harcèlement pour tout le monde, sans distinction de :",
+  "harassment_free_list": [
+    "genre",
+    "orientation sexuelle",
+    "situation de handicap",
+    "identité de genre",
+    "âge",
+    "race",
+    "religion",
+    "nationalité"
+  ],
+  "not_exhaustive": "La liste ci-dessus n'est pas exhaustive — nous ne tolérons aucune forme de harcèlement envers les participants à l'événement.",
+  "sexual_language_warning": "Le langage et les images à caractère sexuel ne sont appropriés dans aucun lieu de l'événement, y compris lors des conférences. Les participants qui enfreignent ces règles peuvent être expulsés de l'événement, et même bannis des futurs événements à la discrétion des organisateurs ou de la direction de l'événement.",
+  "harassment_includes_title": "Le harcèlement inclut (mais ne se limite pas à) :",
+  "harassment_includes_list": [
+    "les commentaires verbaux offensants liés au genre, à l'orientation sexuelle, à la situation de handicap, à l'identité de genre, à l'âge, à la race ou à la religion",
+    "l'utilisation ou l'affichage d'images à caractère sexuel dans les espaces publics",
+    "l'intimidation délibérée",
+    "le harcèlement suivi (stalking)",
+    "la photographie ou l'enregistrement harassant",
+    "la perturbation continue des conférences ou autres activités",
+    "le contact physique inapproprié",
+    "l'attention sexuelle non désirée"
+  ],
+  "comply_immediately": "Les participants à qui l'on demande de cesser tout comportement de harcèlement sont tenus de se conformer immédiatement.",
+  "exhibitors_speakers_policy": "Les partenaires exposants et les conférencier·ière·s invités sont également soumis à la politique anti-harcèlement. En particulier, les exposants et les conférenciers ne doivent pas utiliser d'images, d'activités ou d'autres supports à caractère sexuel, ni créer un environnement sexualisé dans leurs présentations, leur matériel d'exposition, leur personnel de stand, leurs articles promotionnels ou leur matériel de démonstration.",
+  "reporting_harassment_title": "Si vous êtes harcelé(e), si vous remarquez que quelqu'un d'autre est harcelé(e), ou si vous avez d'autres préoccupations, veuillez contacter immédiatement un organisateur ou un bénévole de l'événement. Les organisateurs et les bénévoles peuvent être identifiés par des t-shirts ou des badges/longes spéciaux. Les organisateurs enquêteront sur l'incident et prendront les mesures appropriées. Celles-ci peuvent inclure l'aide aux participants pour contacter la sécurité du lieu ou la police locale, la mise à disposition d'escortes, ou toute autre assistance pour que les personnes victimes de harcèlement se sentent en sécurité pendant toute la durée de l'événement.",
+  "contacts_title": "Contacts :",
+  "contacts_list": [
+    "info@gdgmontreal.com",
+    "laurence@gdgmontreal.com",
+    "samuel@gdgmontreal.com",
+    "boris@gdgmontreal.com",
+    "nav@gdgmontreal.com",
+    "jhin@gdgmontreal.com"
+  ],
+  "policy_belief": "Bien que nous espérions ne jamais avoir à invoquer cette politique, nous croyons que ce document aide chacun à réfléchir un peu plus à la manière dont ses actions et ses paroles affectent l'ensemble de la communauté, ainsi que ses membres.",
+  "license_attribution_title": "Licence et attribution",
+  "license_attribution_text": "Cette politique est sous licence Creative Commons Zéro. Elle est basée sur plusieurs autres politiques, notamment la politique anti-harcèlement de l'Ohio LinuxFest, rédigée par Esther Filderman et Beth Lynn Eicher, et le Con Anti-Harassment Project. Mary Gardiner, Valerie Aurora, Sarah Smith et Donna Benjamin ont généralisé ces politiques et y ont ajouté des documents de support. De nombreux membres de LinuxChix, Geek Feminism et d'autres groupes ont contribué à ce travail."
+}
