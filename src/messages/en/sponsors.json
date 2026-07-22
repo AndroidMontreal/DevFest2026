@@ -6,7 +6,7 @@
       "line2": "Building Together"
     },
     "cta": "Become a Sponsor",
-    "cta_link": "https://forms.gle/xDCZe4ZuP98YoCAJ9"
+    "cta_link": "https://drive.google.com/file/d/1mTHtVZud3uGPgcGaVNlpCoIJe86ngtCS/view?usp=drive_link"
   },
   "tiers": [
     {
@@ -42,6 +42,23 @@
           "name": "Transit",
           "logo": "/assets/images/sponsors/silver_transit.svg",
           "link": "https://manifesto.transitapp.com/fr/jobs"
+        }
+      ]
+    },
+    {
+      "title": "Partner Sponsor",
+      "subtitle": "Community partners helping us make DevFest 2026 a success.",
+      "badge": "Partner",
+      "items": [
+        {
+          "name": "Google",
+          "logo": "/assets/images/sponsors/partner_google.svg",
+          "link": "https://gdg.community.dev/"
+        },
+        {
+          "name": "Mathieu Chevalier",
+          "logo": "/assets/images/sponsors/partner_mathieu_chevalier.svg",
+          "link": "https://www.mathieuchevalier.com/"
         }
       ]
     }
