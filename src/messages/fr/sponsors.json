@@ -44,6 +44,23 @@
           "link": "https://manifesto.transitapp.com/fr/jobs"
         }
       ]
+    },
+    {
+      "title": "Sponsor Partenaire",
+      "subtitle": "Des partenaires communautaires qui nous aident à faire de DevFest 2026 un succès.",
+      "badge": "Partenaire",
+      "items": [
+        {
+          "name": "Google",
+          "logo": "/assets/images/sponsors/partner_google.svg",
+          "link": "https://gdg.community.dev/"
+        },
+        {
+          "name": "Mathieu Chevalier",
+          "logo": "/assets/images/sponsors/partner_mathieu_chevalier.svg",
+          "link": "https://www.mathieuchevalier.com/"
+        }
+      ]
     }
   ]
 }
