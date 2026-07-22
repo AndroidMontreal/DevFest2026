@@ -15,7 +15,7 @@
     "title": "Quick Links",
     "links": [
       { "label": "Call for Speakers", "href": "#" },
-      { "label": "Sponsorship Deck", "href": "#", "isExternal": true },
+      { "label": "Sponsorship Deck", "href": "https://drive.google.com/file/d/1mTHtVZud3uGPgcGaVNlpCoIJe86ngtCS/view?usp=drive_link", "isExternal": true },
       { "label": "Code of Conduct", "href": "/code-of-conduct" }
     ]
   },

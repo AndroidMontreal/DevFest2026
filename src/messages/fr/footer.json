@@ -15,7 +15,7 @@
     "title": "Liens Rapides",
     "links": [
       { "label": "Appel aux conférenciers", "href": "#" },
-      { "label": "Plan de commandite", "href": "#", "isExternal": true },
+      { "label": "Plan de commandite", "href": "https://drive.google.com/file/d/1LQ6gV2mIf6CKYhXm1PJuiH3H-EQ1GbKM/view?usp=drive_link", "isExternal": true },
       { "label": "Code de Conduite", "href": "/code-of-conduct" }
     ]
   },
