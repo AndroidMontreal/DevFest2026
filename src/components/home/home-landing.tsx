@@ -63,6 +63,7 @@ export function HomeLanding({ copy }: HomeLandingProps) {
         <SponsorsTiers
           tiers={copy.sponsors.tiers}
           ctaLabel={copy.sponsors.cta.label}
+          ctaLink={copy.sponsors.cta.link}
         />
       </section>
     </main>
