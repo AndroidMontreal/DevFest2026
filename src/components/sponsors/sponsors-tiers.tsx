@@ -39,7 +39,7 @@ export function SponsorsTiers({ tiers, ctaLabel, ctaLink }: SponsorsTiersProps) 
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-12 md:flex-row md:flex-wrap md:justify-start md:gap-x-16 md:gap-y-12">
+          <div className="flex flex-col items-center gap-8 md:flex-row md:flex-wrap md:justify-start md:gap-y-12">
             {tier.items.map((sponsor) => (
               <a
                 key={sponsor.name}

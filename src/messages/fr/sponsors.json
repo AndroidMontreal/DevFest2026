@@ -59,6 +59,11 @@
           "name": "Mathieu Chevalier",
           "logo": "/assets/images/sponsors/partner_mathieu_chevalier.svg",
           "link": "https://www.mathieuchevalier.com/"
+        },
+        {
+          "name": "Prêt-à-Table",
+          "logo": "/assets/images/sponsors/partners_pret_table.svg",
+          "link": "https://pretatable.ca/"
         }
       ]
     }
