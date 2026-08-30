@@ -23,6 +23,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const schedule = (await import(`../messages/${locale}/schedule.json`)).default;
   const speakers = (await import(`../messages/${locale}/speakers.json`)).default;
   const codeOfConduct = (await import(`../messages/${locale}/code-of-conduct.json`)).default;
+  const faq = (await import(`../messages/${locale}/faq.json`)).default;
 
   return {
     locale,
@@ -38,6 +39,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       SchedulePage: schedule,
       SpeakersPage: speakers,
       CodeOfConduct: codeOfConduct,
+      FaqPage: faq,
     },
   };
 });

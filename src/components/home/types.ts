@@ -3,6 +3,10 @@ export type HomeLandingCopy = {
     phase: string;
     title: string;
     subtitle: string;
+    tagline: string;
+    description: string;
+    cfp_btn: string;
+    sponsors_btn: string;
   };
   stats: {
     workshops: {
@@ -41,6 +45,21 @@ export type HomeLandingCopy = {
     item2: string;
     item3: string;
     item4: string;
+  };
+  about: {
+    header: {
+      subheading: string;
+      heading: {
+        line1: string;
+        line2: string;
+      };
+    };
+    venueAddress: string;
+    blocks: {
+      id: string;
+      title: string;
+      content: string;
+    }[];
   };
   gallery: {
     header: {

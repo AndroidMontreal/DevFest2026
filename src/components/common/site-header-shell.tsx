@@ -10,11 +10,13 @@ export type HeaderCopy = {
   city: string;
   registerLabel: string;
   registerAria: string;
+  cfpButton?: string;
 };
 
 export type HeaderNavItem = {
   label: string;
   href: string;
+  isExternal?: boolean;
 };
 
 type SiteHeaderShellProps = {

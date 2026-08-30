@@ -1,8 +1,12 @@
 {
   "hero": {
-    "phase": "GDG Montréal",
+    "phase": "8e Édition & Thème 80s",
     "title": "DEVFEST MTL 26",
-    "subtitle": "Par le Google Developer Group Montréal"
+    "subtitle": "Par le Google Developer Group Montréal",
+    "tagline": "La plus grande conférence tech communautaire au Québec",
+    "description": "Propulsé par les Google Developer Groups, le DevFest Montréal est votre occasion de vous connecter avec l'écosystème tech local et d'apprendre des leaders de l'industrie.",
+    "cfp_btn": "Appel aux conférenciers",
+    "sponsors_btn": "Devenir partenaire"
   },
   "stats": {
     "workshops": {
@@ -33,5 +37,32 @@
     "item2": "CONNECTER 300+ DÉVELOPPEURS & EXPERTS",
     "item3": "20+ ATELIERS // IMMERSION TECH",
     "item4": "ÉCOSYSTÈME TECH MONTRÉALAIS // GDG"
+  },
+  "about": {
+    "header": {
+      "subheading": "Une brève introduction",
+      "heading": {
+        "line1": "Qu'est-ce que le",
+        "line2": "DevFest Montréal ?"
+      }
+    },
+    "venueAddress": "Espace AX.C, 800 Square-Victoria, Montréal",
+    "blocks": [
+      {
+        "id": "01",
+        "title": "QU'EST-CE QUE LE DEVFEST ?",
+        "content": "Une conférence technologique bâtie par la communauté, pour la communauté. Pas de présentations de vente sur scène : des projets techniques concrets, des ateliers pratiques, et les personnes qui les ont réellement bâtis. Du premier DevFest Montréal en 2017 à plus de 400 développeurs l'année dernière, 2026 est notre 8e édition et la plus ambitieuse à ce jour."
+      },
+      {
+        "id": "02",
+        "title": "QUI EST DERRIÈRE ?",
+        "content": "Les GDG (Google Developer Groups) : des communautés locales de développeurs gérées par des bénévoles qui se réunissent toute l'année pour apprendre, bâtir et grandir ensemble."
+      },
+      {
+        "id": "03",
+        "title": "LE LIEU",
+        "content": "Espace AX.C, un superbe espace événementiel au 800 Square-Victoria, au centre-ville de Montréal, juste au-dessus du métro Square-Victoria-OACI. Plusieurs salles, toutes sous le même toit."
+      }
+    ]
   }
 }

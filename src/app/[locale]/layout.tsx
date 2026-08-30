@@ -73,6 +73,7 @@ export default async function LocaleLayout({
     city: tHeader('header.city'),
     registerLabel: tHeader('header.registerLabel'),
     registerAria: tHeader('header.registerAria'),
+    cfpButton: tHeader('header.cfpButton'),
   };
 
   const nav = tHeader.raw('navigation') as HeaderNavItem[];
@@ -82,6 +83,7 @@ export default async function LocaleLayout({
       <body
         className={`${inter.variable} ${jetBrainsMono.variable} ${spaceGrotesk.variable}`}
       >
+        <div className="crt-global" />
         <NextIntlClientProvider messages={messages}>
           <div className="relative isolate flex min-h-screen flex-col">
             <div className="pointer-events-none fixed inset-0 -z-10 bg-background">
