@@ -3,12 +3,13 @@
     "logoAlt": "DevFest 2026 logo",
     "city": "Montreal",
     "registerLabel": "Register_Node",
-    "registerAria": "Register for DevFest 2026"
+    "registerAria": "Register for DevFest 2026",
+    "cfpButton": "Call for Speakers"
   },
   "navigation": [
     { "label": "Home", "href": "/" },
-    { "label": "Team", "href": "/team" },
-    { "label": "Schedule", "href": "/schedule" },
-    { "label": "Speakers", "href": "/speakers" }
+    { "label": "About", "href": "/#about" },
+    { "label": "Partners", "href": "/#sponsors" },
+    { "label": "FAQ", "href": "/faq" }
   ]
 }

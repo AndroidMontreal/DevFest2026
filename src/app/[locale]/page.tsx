@@ -21,6 +21,10 @@ export default async function Home({
       phase: t_home('hero.phase'),
       title: t_home('hero.title'),
       subtitle: t_home('hero.subtitle'),
+      tagline: t_home('hero.tagline'),
+      description: t_home('hero.description'),
+      cfp_btn: t_home('hero.cfp_btn'),
+      sponsors_btn: t_home('hero.sponsors_btn'),
     },
     stats: {
       workshops: {
@@ -59,6 +63,17 @@ export default async function Home({
       item2: t_home('ticker.item2'),
       item3: t_home('ticker.item3'),
       item4: t_home('ticker.item4'),
+    },
+    about: {
+      header: {
+        subheading: t_home('about.header.subheading'),
+        heading: {
+          line1: t_home('about.header.heading.line1'),
+          line2: t_home('about.header.heading.line2'),
+        },
+      },
+      venueAddress: t_home('about.venueAddress'),
+      blocks: t_home.raw('about.blocks') as HomeLandingCopy['about']['blocks'],
     },
     gallery: {
       header: {

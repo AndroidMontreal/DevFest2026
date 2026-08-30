@@ -14,12 +14,14 @@
   "quickLinks": {
     "title": "Quick Links",
     "links": [
-      { "label": "Call for Speakers", "href": "#" },
+      { "label": "Call for Speakers", "href": "https://cfp.gdgmontreal.com/c/devfest-mtl-2026", "isExternal": true },
       { "label": "Sponsorship Deck", "href": "https://drive.google.com/file/d/1mTHtVZud3uGPgcGaVNlpCoIJe86ngtCS/view?usp=drive_link", "isExternal": true },
-      { "label": "Code of Conduct", "href": "/code-of-conduct" }
+      { "label": "Code of Conduct", "href": "/code-of-conduct" },
+      { "label": "FAQ", "href": "/faq" }
     ]
   },
   "joinUs": {
-    "title": "Join Us"
+    "title": "Join Us",
+    "description": "Join us for exciting events and stay updated on community happenings, connecting with others."
   }
 }

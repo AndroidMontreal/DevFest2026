@@ -11,11 +11,13 @@ type HeaderCopy = {
   city: string;
   registerLabel: string;
   registerAria: string;
+  cfpButton?: string;
 };
 
 type HeaderNavItem = {
   label: string;
   href: string;
+  isExternal?: boolean;
 };
 
 type SiteHeaderProps = {
@@ -59,7 +61,7 @@ export function SiteHeader({
 
   return (
     <header
-      className={`fixed top-0 left-0 z-[100] w-full border-b border-white/5 px-5 py-6 backdrop-blur-md transition-all duration-300 md:px-10 md:py-8 ${scrolled ? 'bg-[#050505]/90' : 'bg-[#050505]/55'}`}
+      className={`fixed top-0 left-0 z-[100] w-full border-b px-5 py-6 backdrop-blur-md transition-all duration-300 md:px-10 md:py-8 neon-header-border ${scrolled ? 'bg-[#050505]/90' : 'bg-[#050505]/55'}`}
     >
       <div className="flex w-full items-center justify-between md:hidden">
         <Link href="/">
@@ -105,6 +107,22 @@ export function SiteHeader({
               ? 'text-white'
               : 'text-white/50';
 
+            const isExternal = item.isExternal || item.href.startsWith('http');
+
+            if (isExternal) {
+              return (
+                <a
+                  key={item.href}
+                  className={`font-mono-tech text-[12px] tracking-[0.32em] ${activeClass} ${colorClass} uppercase transition-colors`}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.label}
+                </a>
+              );
+            }
+
             return (
               <Link
                 key={item.href}
@@ -118,6 +136,16 @@ export function SiteHeader({
         </nav>
 
         <div className="flex items-center gap-6">
+          {header.cfpButton && (
+            <a
+              href="https://cfp.gdgmontreal.com/c/devfest-mtl-2026"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center border border-google-blue bg-google-blue/10 hover:bg-google-blue hover:text-black px-4 py-2 font-mono-tech text-[10px] uppercase tracking-widest text-google-blue transition-all duration-300 quad-border-tr"
+            >
+              {header.cfpButton}
+            </a>
+          )}
           <LocaleSwitcher />
         </div>
       </div>

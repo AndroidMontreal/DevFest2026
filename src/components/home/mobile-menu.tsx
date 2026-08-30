@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 type HeaderNavItem = {
   label: string;
   href: string;
+  isExternal?: boolean;
 };
 
 type MobileMenuProps = {
@@ -59,20 +60,38 @@ export function MobileMenu({ nav, currentPathname, isOpen, toggleMenu }: MobileM
         >
           <div className="flex-grow flex flex-col items-center gap-8 mt-0"> {/* Adjusted margin-top */}
             <motion.nav className="flex flex-col items-center gap-8">
-              {nav.map((item) => (
-                <Link
-                  key={item.href}
-                  onClick={toggleMenu}
-                  className={`font-mono-tech text-xl uppercase transition-colors ${
-                    isActiveNavItem(currentPathname, item.href)
-                      ? 'text-google-yellow'
-                      : 'text-white/75 hover:text-white'
-                  }`}
-                  href={item.href}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {nav.map((item) => {
+                const isExternal = item.isExternal || item.href.startsWith('http');
+                const activeClass = isActiveNavItem(currentPathname, item.href)
+                  ? 'text-google-yellow'
+                  : 'text-white/75 hover:text-white';
+
+                if (isExternal) {
+                  return (
+                    <a
+                      key={item.href}
+                      onClick={toggleMenu}
+                      className={`font-mono-tech text-xl uppercase transition-colors ${activeClass}`}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.label}
+                    </a>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.href}
+                    onClick={toggleMenu}
+                    className={`font-mono-tech text-xl uppercase transition-colors ${activeClass}`}
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </motion.nav>
           </div>
         </motion.div>

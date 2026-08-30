@@ -15,8 +15,6 @@
     { "imageSrc": "/assets/images/gallery/gallery9.webp", "label": "DevFest 2025", "width": 800, "height": 800 },
     { "imageSrc": "/assets/images/gallery/gallery6.webp", "label": "DevFest 2025", "width": 800, "height": 450 },
     { "imageSrc": "/assets/images/gallery/gallery8.webp", "label": "DevFest 2025", "width": 800, "height": 600 },
-    { "imageSrc": "/assets/images/gallery/gallery5.webp", "label": "DevFest 2025", "width": 800, "height": 800 },
-    { "imageSrc": "/assets/images/gallery/gallery10.webp", "label": "DevFest 2025", "width": 800, "height": 450 },
-    { "imageSrc": "/assets/images/gallery/gallery11.webp", "label": "DevFest 2025", "width": 800, "height": 500 }
+    { "imageSrc": "/assets/images/gallery/gallery5.webp", "label": "DevFest 2025", "width": 800, "height": 800 }
   ]
 }

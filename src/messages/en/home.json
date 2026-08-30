@@ -1,8 +1,12 @@
 {
   "hero": {
-    "phase": "GDG Montreal",
+    "phase": "8th Edition & 80s Theme",
     "title": "DEVFEST MTL 26",
-    "subtitle": "By Google Developer Group Montreal"
+    "subtitle": "By Google Developer Group Montreal",
+    "tagline": "Quebec's largest community-driven tech conference",
+    "description": "Brought to you by Google Developer Groups, DevFest Montreal is your opportunity to connect with the vibrant local tech ecosystem and learn from industry leaders.",
+    "cfp_btn": "Call for Speakers",
+    "sponsors_btn": "Become a Sponsor"
   },
   "stats": {
     "workshops": {
@@ -33,5 +37,32 @@
     "item2": "CONNECTING 300+ DEVELOPERS & EXPERTS",
     "item3": "20+ WORKSHOPS // TECH IMMERSION",
     "item4": "MONTREAL TECH ECOSYSTEM // GDG"
+  },
+  "about": {
+    "header": {
+      "subheading": "A Short Introduction",
+      "heading": {
+        "line1": "What is",
+        "line2": "DevFest Montreal?"
+      }
+    },
+    "venueAddress": "Ax.c Hub, 800 Square-Victoria, Montréal",
+    "blocks": [
+      {
+        "id": "01",
+        "title": "WHAT IS DEVFEST?",
+        "content": "A tech conference built by the community, for the community. No sales pitches on stage: concrete technical projects, hands-on workshops, and the people who actually built them. From the first DevFest Montreal in 2017 to 400+ developers last year, 2026 is our 8th and most ambitious edition yet."
+      },
+      {
+        "id": "02",
+        "title": "WHO'S BEHIND IT?",
+        "content": "The GDGs (Google Developer Groups): local, volunteer-run communities of developers who meet all year to learn, build and grow together."
+      },
+      {
+        "id": "03",
+        "title": "THE VENUE",
+        "content": "Ax.C Hub, a great event space at 800 Square-Victoria, downtown Montreal, right on top of the Square-Victoria-OACI metro. Several rooms, all under one roof."
+      }
+    ]
   }
 }

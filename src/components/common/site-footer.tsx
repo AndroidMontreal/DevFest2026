@@ -70,6 +70,9 @@ export const SiteFooter = () => {
           {/* Column 4: Social */}
           <div className="md:col-span-4 space-y-6">
             <h4 className="font-mono text-[10px] text-primary/40 uppercase tracking-[0.4em]">{t('joinUs.title')}</h4>
+            <p className="font-sans text-xs text-on-surface-variant leading-relaxed">
+              {t('joinUs.description')}
+            </p>
             <SocialLinks />
           </div>
         </div>

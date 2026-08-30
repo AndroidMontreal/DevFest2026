@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { HeroBottomHud } from './hero-bottom-hud';
 import { HeroContent } from './hero-content';
 import { HeroTicker } from './hero-ticker';
+import { AboutSection } from './about-section';
 import GalleryGrid from '../gallery/gallery-grid';
 import { SectionHeader } from '../common/section-header';
 import { SponsorsTiers } from '../sponsors/sponsors-tiers';
@@ -32,6 +33,9 @@ export function HomeLanding({ copy }: HomeLandingProps) {
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
           <div className="scanning-line" />
+          {/* Authentic 80s Tech Visuals */}
+          <div className="synthwave-grid" />
+          <div className="crt-overlay" />
         </div>
 
         {/* Hero Content Wrapper */}
@@ -41,6 +45,15 @@ export function HomeLanding({ copy }: HomeLandingProps) {
           <HeroTicker ticker={copy.ticker} />
         </div>
       </section>
+
+      {/* Laser Divider */}
+      <div className="laser-divider" />
+
+      {/* About Section */}
+      <AboutSection about={copy.about} />
+
+      {/* Laser Divider */}
+      <div className="laser-divider" />
 
       {/* Gallery Section */}
       <section className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12">
@@ -52,8 +65,11 @@ export function HomeLanding({ copy }: HomeLandingProps) {
         <GalleryGrid items={copy.gallery.items} />
       </section>
 
+      {/* Laser Divider */}
+      <div className="laser-divider" />
+
       {/* Sponsors Section */}
-      <section className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12">
+      <section id="sponsors" className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12 scroll-mt-24">
         <SectionHeader
           subheading={copy.sponsors.header.subheading}
           headingLine1={copy.sponsors.header.heading.line1}
