@@ -73,7 +73,7 @@ export default async function LocaleLayout({
     city: tHeader('header.city'),
     registerLabel: tHeader('header.registerLabel'),
     registerAria: tHeader('header.registerAria'),
-    cfpButton: tHeader('header.cfpButton'),
+    ticketsButton: tHeader('header.ticketsButton'),
   };
 
   const nav = tHeader.raw('navigation') as HeaderNavItem[];

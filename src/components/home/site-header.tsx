@@ -11,7 +11,7 @@ type HeaderCopy = {
   city: string;
   registerLabel: string;
   registerAria: string;
-  cfpButton?: string;
+  ticketsButton?: string;
 };
 
 type HeaderNavItem = {
@@ -61,7 +61,11 @@ export function SiteHeader({
 
   return (
     <header
-      className={`fixed top-0 left-0 z-[100] w-full border-b px-5 py-6 backdrop-blur-md transition-all duration-300 md:px-10 md:py-8 neon-header-border ${scrolled ? 'bg-[#050505]/90' : 'bg-[#050505]/55'}`}
+      className={`fixed top-0 left-0 z-[100] w-full border-b px-5 backdrop-blur-md transition-all duration-300 md:px-10 neon-header-border ${
+        scrolled 
+          ? 'bg-[#050505]/95 py-4' 
+          : 'bg-[#050505]/65 py-6 md:py-8'
+      }`}
     >
       <div className="flex w-full items-center justify-between md:hidden">
         <Link href="/">
@@ -104,8 +108,8 @@ export function SiteHeader({
             const colors = ['blue', 'red', 'yellow', 'green'];
             const colorClass = `hover:text-google-${colors[index % colors.length]}`;
             const activeClass = isActiveNavItem(currentPathname, item.href)
-              ? 'text-white'
-              : 'text-white/50';
+              ? 'text-white font-bold'
+              : 'text-white/75 font-semibold';
 
             const isExternal = item.isExternal || item.href.startsWith('http');
 
@@ -113,7 +117,7 @@ export function SiteHeader({
               return (
                 <a
                   key={item.href}
-                  className={`font-mono-tech text-[12px] tracking-[0.32em] ${activeClass} ${colorClass} uppercase transition-colors`}
+                  className={`font-mono-tech text-[12px] tracking-[0.18em] ${activeClass} ${colorClass} uppercase transition-colors`}
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -126,7 +130,7 @@ export function SiteHeader({
             return (
               <Link
                 key={item.href}
-                className={`font-mono-tech text-[12px] tracking-[0.32em] ${activeClass} ${colorClass} uppercase transition-colors`}
+                className={`font-mono-tech text-[12px] tracking-[0.18em] ${activeClass} ${colorClass} uppercase transition-colors`}
                 href={item.href}
               >
                 {item.label}
@@ -136,14 +140,14 @@ export function SiteHeader({
         </nav>
 
         <div className="flex items-center gap-6">
-          {header.cfpButton && (
+          {header.ticketsButton && (
             <a
-              href="https://cfp.gdgmontreal.com/c/devfest-mtl-2026"
+              href="https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26/cohost-gdg-montreal/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center border border-google-blue bg-google-blue/10 hover:bg-google-blue hover:text-black px-4 py-2 font-mono-tech text-[10px] uppercase tracking-widest text-google-blue transition-all duration-300 quad-border-tr"
+              className="hidden sm:inline-flex items-center border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-4 py-2 font-mono-tech text-[10px] uppercase tracking-widest text-google-yellow transition-all duration-300 quad-border-tr hover:shadow-[0_0_15px_rgba(251,188,4,0.3)]"
             >
-              {header.cfpButton}
+              {header.ticketsButton}
             </a>
           )}
           <LocaleSwitcher />

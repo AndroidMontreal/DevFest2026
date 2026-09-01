@@ -24,7 +24,7 @@ export default async function Home({
       tagline: t_home('hero.tagline'),
       description: t_home('hero.description'),
       cfp_btn: t_home('hero.cfp_btn'),
-      sponsors_btn: t_home('hero.sponsors_btn'),
+      tickets_btn: t_home('hero.tickets_btn'),
     },
     stats: {
       workshops: {

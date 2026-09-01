@@ -4,7 +4,7 @@
     "city": "Montreal",
     "registerLabel": "Register_Node",
     "registerAria": "Register for DevFest 2026",
-    "cfpButton": "Call for Speakers"
+    "ticketsButton": "Get Tickets"
   },
   "navigation": [
     { "label": "Home", "href": "/" },

@@ -6,7 +6,7 @@ export type HomeLandingCopy = {
     tagline: string;
     description: string;
     cfp_btn: string;
-    sponsors_btn: string;
+    tickets_btn: string;
   };
   stats: {
     workshops: {

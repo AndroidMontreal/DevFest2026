@@ -10,7 +10,7 @@ export type HeaderCopy = {
   city: string;
   registerLabel: string;
   registerAria: string;
-  cfpButton?: string;
+  ticketsButton?: string;
 };
 
 export type HeaderNavItem = {

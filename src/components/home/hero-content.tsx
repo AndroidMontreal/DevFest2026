@@ -65,20 +65,20 @@ export function HeroContent({ hero, stats }: HeroContentProps) {
         {/* CTA Buttons */}
         <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
           <a
+            href="https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26/cohost-gdg-montreal/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center border border-google-yellow bg-google-yellow/5 hover:bg-google-yellow/20 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-yellow font-bold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(251,188,4,0.55)]"
+          >
+            {hero.tickets_btn}
+          </a>
+          <a
             href="https://cfp.gdgmontreal.com/c/devfest-mtl-2026"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center border border-google-blue bg-google-blue/5 hover:bg-google-blue/15 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-blue transition-all duration-300 hover:border-google-blue hover:text-white hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(66,133,244,0.4)]"
           >
             {hero.cfp_btn}
-          </a>
-          <a
-            href="https://forms.gle/HRLnrcGtiHjA5DNu5"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center border border-white/20 bg-white/[0.02] px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-white transition-all duration-300 hover:border-google-red hover:bg-google-red/10 hover:text-google-red hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_0_25px_rgba(234,67,53,0.4)]"
-          >
-            {hero.sponsors_btn}
           </a>
         </div>
       </div>
