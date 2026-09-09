@@ -30,6 +30,16 @@
           "name": "Davidson Canada",
           "logo": "/assets/images/sponsors/gold_davidson_canada.svg",
           "link": "https://www.davidson.group/nos-filiales/davidson-canada"
+        },
+        {
+          "name": "oXya",
+          "logo": "/assets/images/sponsors/gold_oxya.svg",
+          "link": "https://www.oxya.com/"
+        },
+        {
+          "name": "Vooban",
+          "logo": "/assets/images/sponsors/gold_vooban.svg",
+          "link": "https://www.vooban.com/"
         }
       ]
     },
@@ -69,6 +79,16 @@
           "name": "Prêt-à-Table",
           "logo": "/assets/images/sponsors/partners_pret_table.svg",
           "link": "https://pretatable.ca/"
+        },
+        {
+          "name": "JetBrains",
+          "logo": "/assets/images/sponsors/partners_jetbrains.svg",
+          "link": "https://www.jetbrains.com/"
+        },
+        {
+          "name": "Kodeco",
+          "logo": "/assets/images/sponsors/partners_kodeco.svg",
+          "link": "https://www.kodeco.com/"
         }
       ]
     }
