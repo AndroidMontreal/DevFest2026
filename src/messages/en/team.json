@@ -1,9 +1,101 @@
 {
   "subheading": "DevFest 2026",
   "heading": {
-    "line1": "Team",
-    "line2": "Coming Soon"
+    "line1": "Meet the",
+    "line2": "Team"
   },
-  "message": "We are preparing this page. Please check back soon."
+  "description": "Meet the passionate team behind DevFest Montreal! This dedicated crew of tech enthusiasts and organizers brings the city’s biggest community-driven tech festival to life. From planning to design, we're excited to welcome you.",
+  "organizer": {
+    "title": "Organizers",
+    "members": [
+      {
+        "name": "Ali Yazdi",
+        "title": "Senior Software Engineer at EXFO, GDG & Flutter Montreal Organizer",
+        "image": "/assets/images/team/ali.jpg",
+        "link": "https://www.linkedin.com/in/aliyazdi75/"
+      },
+      {
+        "name": "Billy Taing",
+        "title": "Software Engineer @IAIAO",
+        "image": "/assets/images/team/billy.jpg",
+        "link": "https://devfest2023.gdgmontreal.com/speaker/billy-taing/"
+      },
+      {
+        "name": "Etienne Caron",
+        "title": "Tech Founder, Kanastruk Inc.",
+        "image": "/assets/images/team/etienne.jpg",
+        "link": "https://www.linkedin.com/in/etcaron/"
+      },
+      {
+        "name": "Florian Ley",
+        "title": "Application manager at Davidson Canada | GDG Cloud Montreal Organizer",
+        "image": "/assets/images/team/florian.png",
+        "link": "https://www.linkedin.com/in/florian-ley/"
+      },
+      {
+        "name": "Jhin Lee",
+        "title": "Full-Stack Developer @Unity | GDE Flutter | GDG & Flutter Montreal Organizer",
+        "image": "/assets/images/team/jhin.jpg",
+        "link": "https://leehack.com/"
+      },
+      {
+        "name": "Jihoo Park",
+        "title": "Senior Data Analyst @ Warner Bros. Games Montreal | WTM ambassador | Google BI customer Council Member",
+        "image": "/assets/images/team/jihoo.jpeg",
+        "link": "https://developers.google.com/profile/u/109280340170455499902"
+      },
+      {
+        "name": "Laurence de Villers",
+        "title": "Android Developer at Transit | GDG Organizer | Women Techmakers Ambassador",
+        "image": "/assets/images/team/laurence.jpg",
+        "link": "https://www.linkedin.com/in/ldevillers/"
+      },
+      {
+        "name": "Mimoh Solanki",
+        "title": "Full Stack Developer | GDG Organizer",
+        "image": "/assets/images/team/mimoh.jpg",
+        "link": "https://www.linkedin.com/in/mimohsolanki/"
+      },
+      {
+        "name": "Nadia Tahiri",
+        "title": "Assistant Professor, Computer Science, Université de Sherbrooke",
+        "image": "/assets/images/team/nadia.jpg",
+        "link": "https://www.linkedin.com/in/tahiri-nadia/"
+      },
+      {
+        "name": "Nav Singh",
+        "title": "Sr. Android Engineer | GDE Android",
+        "image": "/assets/images/team/nav.png",
+        "link": "https://www.linkedin.com/in/navczydev/"
+      },
+      {
+        "name": "Raphaëlle Giraud",
+        "title": "AI & Data Solution Lead at Vooban | GDG Cloud Montreal Organizer",
+        "image": "/assets/images/team/raphaelle.webp",
+        "link": "https://www.linkedin.com/in/raphaellegiraud"
+      },
+      {
+        "name": "Samuel Dionne",
+        "title": "Android Developer at Transit | GDG Organizer",
+        "image": "/assets/images/team/sam.jpg",
+        "link": "https://www.linkedin.com/in/samueldionne"
+      },
+      {
+        "name": "Stacy Véronneau",
+        "title": "Senior Customer Engineer at Badal (By Telus Business) | GDG Cloud Montreal Organizer",
+        "image": "/assets/images/team/stacy.veronneau.png",
+        "link": "https://g.dev/sveronneau"
+      },
+      {
+        "name": "Stefania Pecore",
+        "title": "CEO Don't Tech Stress and Women Techmakers MTL lead",
+        "image": "/assets/images/team/stefania.jpg",
+        "link": "https://developers.google.com/profile/u/specore"
+      }
+    ]
+  },
+  "volunteer": {
+    "title": "Volunteers",
+    "members": []
+  }
 }
-

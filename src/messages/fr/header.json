@@ -10,6 +10,7 @@
     { "label": "Accueil", "href": "/" },
     { "label": "À propos", "href": "/#about" },
     { "label": "Partenaires", "href": "/#sponsors" },
+    { "label": "Équipe", "href": "/team" },
     { "label": "FAQ", "href": "/faq" }
   ]
 }
