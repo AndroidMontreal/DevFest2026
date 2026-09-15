@@ -11,61 +11,73 @@
       {
         "name": "Ali Yazdi",
         "title": "Senior Software Engineer at EXFO, GDG & Flutter Montreal Organizer",
-        "image": "/assets/images/team/ali.jpg",
+        "image": "/assets/images/team/ali.webp",
         "link": "https://www.linkedin.com/in/aliyazdi75/"
       },
       {
         "name": "Billy Taing",
         "title": "Software Engineer @IAIAO",
-        "image": "/assets/images/team/billy.jpg",
+        "image": "/assets/images/team/billy.webp",
         "link": "https://devfest2023.gdgmontreal.com/speaker/billy-taing/"
+      },
+      {
+        "name": "Daniel Wei",
+        "title": "Software Engineer at ElevenLabs | GDG McGill Organizer",
+        "image": "/assets/images/team/daniel_wei.webp",
+        "link": "https://www.linkedin.com/in/daniel-wei1/"
       },
       {
         "name": "Etienne Caron",
         "title": "Tech Founder, Kanastruk Inc.",
-        "image": "/assets/images/team/etienne.jpg",
+        "image": "/assets/images/team/etienne.webp",
         "link": "https://www.linkedin.com/in/etcaron/"
       },
       {
         "name": "Florian Ley",
         "title": "Application manager at Davidson Canada | GDG Cloud Montreal Organizer",
-        "image": "/assets/images/team/florian.png",
+        "image": "/assets/images/team/florian.webp",
         "link": "https://www.linkedin.com/in/florian-ley/"
       },
       {
         "name": "Jhin Lee",
         "title": "Full-Stack Developer @Unity | GDE Flutter | GDG & Flutter Montreal Organizer",
-        "image": "/assets/images/team/jhin.jpg",
+        "image": "/assets/images/team/jhin.webp",
         "link": "https://leehack.com/"
       },
       {
         "name": "Jihoo Park",
         "title": "Senior Data Analyst @ Warner Bros. Games Montreal | WTM ambassador | Google BI customer Council Member",
-        "image": "/assets/images/team/jihoo.jpeg",
+        "image": "/assets/images/team/jihoo.webp",
         "link": "https://developers.google.com/profile/u/109280340170455499902"
       },
       {
-        "name": "Laurence de Villers",
-        "title": "Android Developer at Transit | GDG Organizer | Women Techmakers Ambassador",
-        "image": "/assets/images/team/laurence.jpg",
-        "link": "https://www.linkedin.com/in/ldevillers/"
+        "name": "Lenz Paul",
+        "title": "Software Engineer at CMiC | GDG & Flutter Montreal Organizer",
+        "image": "/assets/images/team/lenz_paul.webp",
+        "link": "https://www.linkedin.com/in/lenztpaul/"
+      },
+      {
+        "name": "Michael Persico",
+        "title": "Software Engineering Student at Concordia University | Lead Organizer at GDG on Campus Concordia University",
+        "image": "/assets/images/team/michael_persico.webp",
+        "link": "https://www.linkedin.com/in/michael-persico/"
       },
       {
         "name": "Mimoh Solanki",
         "title": "Full Stack Developer | GDG Organizer",
-        "image": "/assets/images/team/mimoh.jpg",
+        "image": "/assets/images/team/mimoh.webp",
         "link": "https://www.linkedin.com/in/mimohsolanki/"
       },
       {
         "name": "Nadia Tahiri",
         "title": "Assistant Professor, Computer Science, Université de Sherbrooke",
-        "image": "/assets/images/team/nadia.jpg",
+        "image": "/assets/images/team/nadia.webp",
         "link": "https://www.linkedin.com/in/tahiri-nadia/"
       },
       {
         "name": "Nav Singh",
         "title": "Sr. Android Engineer | GDE Android",
-        "image": "/assets/images/team/nav.png",
+        "image": "/assets/images/team/nav.webp",
         "link": "https://www.linkedin.com/in/navczydev/"
       },
       {
@@ -75,21 +87,27 @@
         "link": "https://www.linkedin.com/in/raphaellegiraud"
       },
       {
+        "name": "Rebecca Abi Chahine",
+        "title": "Software Engineering Student at Polytechnique Montréal | Lead Organizer at GDG on Campus Polytechnique Montréal",
+        "image": "/assets/images/team/rebecca_abi_chahine.webp",
+        "link": "https://www.linkedin.com/in/rebecca-abi-chahine/"
+      },
+      {
         "name": "Samuel Dionne",
         "title": "Android Developer at Transit | GDG Organizer",
-        "image": "/assets/images/team/sam.jpg",
+        "image": "/assets/images/team/sam.webp",
         "link": "https://www.linkedin.com/in/samueldionne"
       },
       {
         "name": "Stacy Véronneau",
-        "title": "Senior Customer Engineer at Badal (By Telus Business) | GDG Cloud Montreal Organizer",
-        "image": "/assets/images/team/stacy.veronneau.png",
+        "title": "Senior Customer Engineer at TELUs Digital | GDG Cloud Montreal Organizer | Google Developer Expert (Cloud)",
+        "image": "/assets/images/team/stacy.veronneau.webp",
         "link": "https://g.dev/sveronneau"
       },
       {
         "name": "Stefania Pecore",
         "title": "CEO Don't Tech Stress and Women Techmakers MTL lead",
-        "image": "/assets/images/team/stefania.jpg",
+        "image": "/assets/images/team/stefania.webp",
         "link": "https://developers.google.com/profile/u/specore"
       }
     ]
