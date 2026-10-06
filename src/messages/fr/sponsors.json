@@ -94,6 +94,11 @@
           "name": "Kodeco",
           "logo": "/assets/images/sponsors/partners_kodeco.svg",
           "link": "https://www.kodeco.com/"
+        },
+        {
+          "name": "Packet",
+          "logo": "/assets/images/sponsors/partners_packet.svg",
+          "link": "https://www.packtpub.com/en-ca"
         }
       ]
     }
