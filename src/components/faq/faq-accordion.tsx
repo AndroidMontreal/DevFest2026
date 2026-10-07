@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 
 type FaqItem = {
@@ -135,7 +135,7 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
                   className="relative z-10"
                 >
                   <div className="p-6 md:p-8 pt-0 md:pt-0 pb-8 md:pb-8 font-sans text-sm text-white/60 leading-relaxed max-w-3xl ml-10 md:ml-14">
-                    {item.answer}
+                    {renderAnswerText(item.answer)}
                   </div>
                 </motion.div>
               )}
@@ -145,4 +145,27 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
       })}
     </div>
   );
+}
+
+function renderAnswerText(answer: string) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const parts = answer.split(urlRegex);
+
+  return parts.map((part, index) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 font-mono-tech text-xs md:text-sm text-google-blue underline underline-offset-4 transition-colors hover:text-white break-all"
+        >
+          <span>{part}</span>
+          <ExternalLink className="h-3 w-3 shrink-0" />
+        </a>
+      );
+    }
+    return part;
+  });
 }
