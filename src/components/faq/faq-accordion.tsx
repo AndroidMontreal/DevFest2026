@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown, ExternalLink } from 'lucide-react';
+import { ChevronDown, ExternalLink, Play } from 'lucide-react';
 import { useState } from 'react';
 
 type FaqItem = {
@@ -151,21 +151,44 @@ function renderAnswerText(answer: string) {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   const parts = answer.split(urlRegex);
 
-  return parts.map((part, index) => {
-    if (part.match(urlRegex)) {
-      return (
-        <a
-          key={index}
-          href={part}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 font-mono-tech text-xs md:text-sm text-google-blue underline underline-offset-4 transition-colors hover:text-white break-all"
-        >
-          <span>{part}</span>
-          <ExternalLink className="h-3 w-3 shrink-0" />
-        </a>
-      );
-    }
-    return part;
-  });
+  return (
+    <div className="space-y-2">
+      {parts.map((part, index) => {
+        if (!part) return null;
+        if (part.match(urlRegex)) {
+          const isVideo =
+            part.includes('tiny.cc') ||
+            part.includes('youtube.com') ||
+            part.includes('youtu.be');
+
+          return (
+            <div key={index} className="pt-2">
+              <a
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className={`group/link inline-flex items-center gap-3 px-4 py-2.5 rounded border font-mono-tech text-xs md:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                  isVideo
+                    ? 'border-google-red/40 bg-google-red/10 text-white hover:border-google-red hover:bg-google-red/20 hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(234,67,53,0.15)] hover:shadow-[0_0_20px_rgba(234,67,53,0.35)]'
+                    : 'border-google-blue/40 bg-google-blue/10 text-google-blue hover:border-google-blue hover:bg-google-blue/20 hover:text-white hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(66,133,244,0.15)] hover:shadow-[0_0_20px_rgba(66,133,244,0.35)]'
+                }`}
+              >
+                {isVideo && (
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-google-red text-white transition-transform duration-200 group-hover/link:scale-110">
+                    <Play className="h-2.5 w-2.5 fill-white ml-0.5" />
+                  </span>
+                )}
+                <span className="underline underline-offset-4 break-all">
+                  {part}
+                </span>
+                <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-70 group-hover/link:opacity-100" />
+              </a>
+            </div>
+          );
+        }
+        return <span key={index}>{part}</span>;
+      })}
+    </div>
+  );
 }
