@@ -13,6 +13,8 @@ import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { FaLinkedin } from 'react-icons/fa';
 
+export type SpeakerCategory = 'ai' | 'cloud' | 'appdev' | 'community' | 'mobile';
+
 export type SpeakerItem = {
   name: string;
   title?: string;
@@ -21,7 +23,8 @@ export type SpeakerItem = {
   format?: string;
   link: string;
   image: string;
-  category: 'ai' | 'cloud' | 'mobile' | 'community';
+  category: SpeakerCategory;
+  categories?: SpeakerCategory[];
 };
 
 export type SpeakersGridCopy = {
@@ -29,7 +32,7 @@ export type SpeakersGridCopy = {
   filter_all: string;
   filter_ai: string;
   filter_cloud: string;
-  filter_mobile: string;
+  filter_appdev: string;
   filter_community: string;
   no_results: string;
   items: SpeakerItem[];
@@ -222,6 +225,13 @@ function renderTopicSections(topic: string, format?: string) {
   );
 }
 
+function getSpeakerCategories(speaker: SpeakerItem): SpeakerCategory[] {
+  if (speaker.categories && speaker.categories.length > 0) {
+    return speaker.categories;
+  }
+  return speaker.category ? [speaker.category] : [];
+}
+
 export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -230,14 +240,17 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
     { id: 'all', label: copy.filter_all },
     { id: 'ai', label: copy.filter_ai },
     { id: 'cloud', label: copy.filter_cloud },
-    { id: 'mobile', label: copy.filter_mobile },
+    { id: 'appdev', label: copy.filter_appdev },
     { id: 'community', label: copy.filter_community },
   ];
 
   const filteredSpeakers = useMemo(() => {
     return copy.items.filter((speaker) => {
+      const categories = getSpeakerCategories(speaker);
       const matchesCategory =
-        selectedCategory === 'all' || speaker.category === selectedCategory;
+        selectedCategory === 'all' ||
+        categories.includes(selectedCategory as SpeakerCategory) ||
+        (selectedCategory === 'appdev' && categories.includes('mobile'));
 
       const query = searchQuery.trim().toLowerCase();
       const matchesSearch =
@@ -376,9 +389,27 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
 
                 {/* Bottom Bar: Category Badge + LinkedIn Link */}
                 <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-                  <span className="font-mono-tech text-[10px] tracking-widest text-white/40 uppercase">
-                    {speaker.category.toUpperCase()}
-                  </span>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {getSpeakerCategories(speaker).map((cat, idx) => {
+                      const label =
+                        cat === 'mobile' || cat === 'appdev'
+                          ? 'APPDEV'
+                          : cat.toUpperCase();
+                      return (
+                        <span
+                          key={cat}
+                          className="font-mono-tech text-[10px] tracking-widest text-white/50 uppercase"
+                        >
+                          {idx > 0 && (
+                            <span className="text-white/20 mr-1.5 font-normal">
+                              /
+                            </span>
+                          )}
+                          {label}
+                        </span>
+                      );
+                    })}
+                  </div>
 
                   <a
                     href={speaker.link}

@@ -19,7 +19,7 @@ export default async function SpeakersPage({
     filter_all: t('filter_all'),
     filter_ai: t('filter_ai'),
     filter_cloud: t('filter_cloud'),
-    filter_mobile: t('filter_mobile'),
+    filter_appdev: t('filter_appdev'),
     filter_community: t('filter_community'),
     no_results: t('no_results'),
     items: t.raw('items') as SpeakersGridCopy['items'],
