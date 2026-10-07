@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { MobileMenu } from '@/components/home/mobile-menu';
 import { SiteHeader } from '@/components/home/site-header';
 import { usePathname } from '@/i18n/navigation';
+import { useState } from 'react';
 
 export type HeaderCopy = {
   logoAlt: string;

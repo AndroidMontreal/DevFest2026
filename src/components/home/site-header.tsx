@@ -1,9 +1,9 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { LocaleSwitcher } from './locale-switcher';
 
 type HeaderCopy = {
@@ -62,9 +62,7 @@ export function SiteHeader({
   return (
     <header
       className={`fixed top-0 left-0 z-[100] w-full border-b px-5 backdrop-blur-md transition-all duration-300 md:px-10 neon-header-border ${
-        scrolled 
-          ? 'bg-[#050505]/95 py-4' 
-          : 'bg-[#050505]/65 py-6 md:py-8'
+        scrolled ? 'bg-[#050505]/95 py-4' : 'bg-[#050505]/65 py-6 md:py-8'
       }`}
     >
       <div className="flex w-full items-center justify-between md:hidden">

@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from '@/i18n/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 
 type HeaderNavItem = {
@@ -30,7 +30,12 @@ function isActiveNavItem(currentPathname: string, href: string) {
   return current === target || current.startsWith(`${target}/`);
 }
 
-export function MobileMenu({ nav, currentPathname, isOpen, toggleMenu }: MobileMenuProps) {
+export function MobileMenu({
+  nav,
+  currentPathname,
+  isOpen,
+  toggleMenu,
+}: MobileMenuProps) {
   const menuVariants = {
     hidden: { x: '100%' },
     visible: { x: 0, transition: { duration: 0.3 } },
@@ -58,10 +63,13 @@ export function MobileMenu({ nav, currentPathname, isOpen, toggleMenu }: MobileM
           variants={menuVariants}
           className="fixed top-[80px] right-0 bottom-0 z-[110] flex w-full flex-col overflow-y-auto bg-[#050505] px-4 py-6 md:hidden"
         >
-          <div className="flex-grow flex flex-col items-center gap-8 mt-0"> {/* Adjusted margin-top */}
+          <div className="flex-grow flex flex-col items-center gap-8 mt-0">
+            {' '}
+            {/* Adjusted margin-top */}
             <motion.nav className="flex flex-col items-center gap-8">
               {nav.map((item) => {
-                const isExternal = item.isExternal || item.href.startsWith('http');
+                const isExternal =
+                  item.isExternal || item.href.startsWith('http');
                 const activeClass = isActiveNavItem(currentPathname, item.href)
                   ? 'text-google-yellow'
                   : 'text-white/75 hover:text-white';

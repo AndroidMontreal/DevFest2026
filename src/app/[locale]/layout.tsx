@@ -1,3 +1,8 @@
+import { SiteFooter } from '@/components/common/site-footer';
+import {
+  SiteHeaderShell,
+  type HeaderNavItem,
+} from '@/components/common/site-header-shell';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
@@ -8,11 +13,6 @@ import {
 } from 'next-intl/server';
 import { Inter, JetBrains_Mono, Space_Grotesk } from 'next/font/google';
 import { notFound } from 'next/navigation';
-import { SiteFooter } from '@/components/common/site-footer';
-import {
-  SiteHeaderShell,
-  type HeaderNavItem,
-} from '@/components/common/site-header-shell';
 import '../globals.css';
 
 const inter = Inter({

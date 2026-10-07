@@ -1,3 +1,4 @@
+import { Link } from '@/i18n/navigation';
 import type { HomeLandingCopy } from './types';
 
 type HeroContentProps = {
@@ -72,14 +73,32 @@ export function HeroContent({ hero, stats }: HeroContentProps) {
           >
             {hero.tickets_btn}
           </a>
-          <a
-            href="https://cfp.gdgmontreal.com/c/devfest-mtl-2026"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center border border-google-blue bg-google-blue/5 hover:bg-google-blue/15 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-blue transition-all duration-300 hover:border-google-blue hover:text-white hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(66,133,244,0.4)]"
-          >
-            {hero.cfp_btn}
-          </a>
+          {hero.agenda_btn && (
+            <Link
+              href="/schedule"
+              className="inline-flex items-center border border-google-blue bg-google-blue/5 hover:bg-google-blue/15 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-blue transition-all duration-300 hover:border-google-blue hover:text-white hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(66,133,244,0.4)]"
+            >
+              {hero.agenda_btn}
+            </Link>
+          )}
+          {hero.speakers_btn && (
+            <Link
+              href="/speakers"
+              className="inline-flex items-center border border-google-green bg-google-green/5 hover:bg-google-green/15 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-green transition-all duration-300 hover:border-google-green hover:text-white hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(52,168,83,0.4)]"
+            >
+              {hero.speakers_btn}
+            </Link>
+          )}
+          {hero.sponsor_btn && (
+            <a
+              href={hero.sponsor_link || 'https://forms.gle/HRLnrcGtiHjA5DNu5'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center border border-google-red bg-google-red/5 hover:bg-google-red/15 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-red transition-all duration-300 hover:border-google-red hover:text-white hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(234,67,53,0.4)]"
+            >
+              {hero.sponsor_btn}
+            </a>
+          )}
         </div>
       </div>
     </section>

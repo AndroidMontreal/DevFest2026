@@ -26,7 +26,9 @@ const GalleryGrid = ({ items }: GalleryGridProps) => {
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60"></div>
             <div className="absolute bottom-8 left-8 z-20">
               <div className="glass-panel px-5 py-3 border-l-2 border-primary">
-                <span className="font-mono text-xs text-primary uppercase tracking-widest">{item.label}</span>
+                <span className="font-mono text-xs text-primary uppercase tracking-widest">
+                  {item.label}
+                </span>
               </div>
             </div>
           </div>

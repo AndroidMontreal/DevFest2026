@@ -1,9 +1,247 @@
 {
-  "subheading": "DevFest 2026",
+  "subheading": "DevFest Montréal 2026",
   "heading": {
-    "line1": "Intervenants",
-    "line2": "Bientôt"
+    "line1": "Nos",
+    "line2": "Conférenciers"
   },
-  "message": "Nous préparons cette page. Revenez bientôt."
+  "description": "Découvrez nos conférenciers d'exception, Google Developer Experts et leaders de l'industrie qui partageront des retours d'expérience concrets, des ateliers pratiques et des panels interactifs.",
+  "search_placeholder": "Rechercher par nom de conférencier, titre, entreprise ou sujet...",
+  "filter_all": "Toutes les sessions",
+  "filter_ai": "IA & Agents",
+  "filter_cloud": "Cloud & Infra",
+  "filter_mobile": "Mobile & Flutter",
+  "filter_community": "Communauté & Panels",
+  "no_results": "Aucun conférencier ne correspond à votre recherche.",
+  "items": [
+    {
+      "name": "Rebecca Abi Chahine",
+      "employer": "GDG on Campus Polytechnique",
+      "title": "Lead",
+      "topic": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
+      "format": "Lightning panel · 15 min",
+      "link": "https://www.linkedin.com/in/rebecca-abi-chahine/",
+      "image": "/assets/images/speakers/Rebecca_Abi_Chahine.jpg",
+      "category": "community"
+    },
+    {
+      "name": "Lester Botello",
+      "employer": "Wepoint",
+      "title": "Software Development Team Lead",
+      "topic": "The Web Could be Agentic: A first dive into Google’s WebMCP Proposal",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/lesterbotello/",
+      "image": "/assets/images/speakers/Lester_Botello.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Faustin Bouchard",
+      "employer": "Universal Intelligence Architecture Inc.",
+      "title": "System Architect",
+      "topic": "Beyond Red, Blue and Purple: Meet the Gold Team",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/faustin-bouchard-1b9a78372/",
+      "image": "/assets/images/speakers/Faustin_Bouchard.jpg",
+      "category": "cloud"
+    },
+    {
+      "name": "Olivier Bourgeois",
+      "employer": "Google",
+      "title": "Developer Advocate",
+      "topic": "Talk: So... You want to work at Google?\nWorkshop: AI-driven troubleshooting for Google Cloud infrastructure",
+      "format": "Talk · 40 min\nWorkshop · 90 min",
+      "link": "https://www.linkedin.com/in/olivi-eh/",
+      "image": "/assets/images/speakers/Olivier_Bourgeois.jpg",
+      "category": "cloud"
+    },
+    {
+      "name": "David Cardozo",
+      "employer": "Dataiku",
+      "title": "Sr AI Engineer",
+      "topic": "Ouvrir la boîte noire : L’interprétabilité mécaniste des LLMs",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/davidcardozo/",
+      "image": "/assets/images/speakers/David_Cardozo.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Etienne Caron",
+      "employer": "Kanastruk Services Conseils Inc.",
+      "title": "CTO",
+      "topic": "Talk: Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach\nWorkshop: The Doomsday Course",
+      "format": "Talk · 40 min\nWorkshop · drop-in showcase",
+      "link": "https://www.linkedin.com/in/etcaron/",
+      "image": "/assets/images/speakers/Etienne_Caron.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Thomas Chong",
+      "employer": "Beever AI",
+      "title": "AI Research Engineer",
+      "topic": "Make Your AI Agent Think Fast and Slow: System One Decisions in Google ADK",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/chongcht/",
+      "image": "/assets/images/speakers/Thomas_Chong.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Ludovic Dessemon",
+      "employer": "oXya Consulting Inc.",
+      "title": "VP Consulting Canada - Global AI Lead",
+      "topic": "Bâtir une plateforme agentique d’entreprise avec Google ADK et Gemini : Retour d’expérience sur Nova",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/ldessemon/",
+      "image": "/assets/images/speakers/Ludovic_Dessemon.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Guryash Singh Dhall",
+      "employer": "Nova Scotia Health Authority",
+      "title": "Senior Data Engineer",
+      "topic": "The 90% You Don’t See: Shipping AI Inside a Health System",
+      "format": "Lightning · 15 min",
+      "link": "https://www.linkedin.com/in/guryashSingh/",
+      "image": "/assets/images/speakers/Guryash_Singh_Dhall.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Mathieu Fillion",
+      "employer": "Wepoint",
+      "title": "Development Teams Manager",
+      "topic": "Edge AI on Mobile: Practical Approaches and Challenges",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/matfillion/",
+      "image": "/assets/images/speakers/Mathieu_Fillion.jpg",
+      "category": "mobile"
+    },
+    {
+      "name": "Jhin Lee",
+      "employer": "Unity",
+      "title": "Senior Software Developer",
+      "topic": "Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/leehack/",
+      "image": "/assets/images/speakers/Jhin_Lee.jpg",
+      "category": "mobile"
+    },
+    {
+      "name": "Felipe Lujan",
+      "employer": "",
+      "title": "",
+      "topic": "Gemini Live: Architecting, building and pricing conversational experiences",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/felipelujan/",
+      "image": "/assets/images/speakers/Felipe_Lujan.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "JL Maréchaux",
+      "employer": "National Bank of Canada",
+      "title": "Senior Director, AI & Innovation",
+      "topic": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal’s digital future",
+      "format": "Panel · 40 min",
+      "link": "https://www.linkedin.com/in/jlmarechaux/",
+      "image": "/assets/images/speakers/JL_Marechaux.jpg",
+      "category": "community"
+    },
+    {
+      "name": "Boris-Wilfried Nyasse",
+      "employer": "Oloodi",
+      "title": "Founder",
+      "topic": "Off the Edge: Grading Google AI Edge and Gemini Against a Practitioner’s Eye",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/bwnyasse/",
+      "image": "/assets/images/speakers/Boris-Wilfried_Nyasse.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Gleb Otochkin",
+      "employer": "Google",
+      "title": "Cloud Advocate",
+      "topic": "From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/glebotochkin/",
+      "image": "/assets/images/speakers/Gleb_Otochkin.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Stefania Pecore",
+      "employer": "",
+      "title": "",
+      "topic": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal’s digital future",
+      "format": "Panel · 40 min",
+      "link": "https://www.linkedin.com/in/stefaniapecore/",
+      "image": "/assets/images/speakers/Stefania_Pecore.jpg",
+      "category": "community"
+    },
+    {
+      "name": "Michael Persico",
+      "employer": "GDG on Campus Concordia",
+      "title": "Lead",
+      "topic": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
+      "format": "Lightning panel · 15 min",
+      "link": "https://www.linkedin.com/in/michael-persico/",
+      "image": "/assets/images/speakers/Michael_Persico.jpg",
+      "category": "community"
+    },
+    {
+      "name": "Dev J. Shah",
+      "employer": "TribalScale",
+      "title": "SWE",
+      "topic": "Attention Attention Everywhere",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/busycaesar/",
+      "image": "/assets/images/speakers/Dev_J_Shah.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Nav Singh",
+      "employer": "Manulife",
+      "title": "Android Engineer",
+      "topic": "Android AppFunctions: Exposing Your App to AI Agents",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/navczydev/",
+      "image": "/assets/images/speakers/Nav_Singh.jpg",
+      "category": "mobile"
+    },
+    {
+      "name": "Cyprien Tankeu",
+      "employer": "Miradie Conseils Inc",
+      "title": "Co-founder & Head, Google Workspace",
+      "topic": "Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script",
+      "format": "Workshop · 90 min",
+      "link": "https://www.linkedin.com/in/cyprientankeu/",
+      "image": "/assets/images/speakers/Cyprien_Tankeu.jpg",
+      "category": "ai"
+    },
+    {
+      "name": "Stacy Véronneau",
+      "employer": "TELUS Digital",
+      "title": "Senior Customer Engineer",
+      "topic": "AI Isn’t Magic: The Infrastructure That Actually Wins the Race",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/stacyveronneau/",
+      "image": "/assets/images/speakers/Stacy_Veronneau.jpg",
+      "category": "cloud"
+    },
+    {
+      "name": "Daniel Wei",
+      "employer": "GDG on Campus McGill",
+      "title": "Lead",
+      "topic": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
+      "format": "Lightning panel · 15 min",
+      "link": "https://www.linkedin.com/in/daniel-wei1/",
+      "image": "/assets/images/speakers/Daniel_Wei.jpg",
+      "category": "community"
+    },
+    {
+      "name": "Aisha Yaseen",
+      "employer": "AREHSOFT",
+      "title": "",
+      "topic": "Beyond Push-to-Talk: Real-Time Fact-Checking Agents with Gemini Live API and Google Search Grounding",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/aisha-yaseen/",
+      "image": "/assets/images/speakers/Aisha_Yaseen.jpg",
+      "category": "ai"
+    }
+  ]
 }
-

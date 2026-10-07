@@ -1,13 +1,13 @@
 'use client';
 
 import Image from 'next/image';
+import { SectionHeader } from '../common/section-header';
+import GalleryGrid from '../gallery/gallery-grid';
+import { SponsorsTiers } from '../sponsors/sponsors-tiers';
+import { AboutSection } from './about-section';
 import { HeroBottomHud } from './hero-bottom-hud';
 import { HeroContent } from './hero-content';
 import { HeroTicker } from './hero-ticker';
-import { AboutSection } from './about-section';
-import GalleryGrid from '../gallery/gallery-grid';
-import { SectionHeader } from '../common/section-header';
-import { SponsorsTiers } from '../sponsors/sponsors-tiers';
 import type { HomeLandingCopy } from './types';
 
 export type { HomeLandingCopy } from './types';
@@ -17,7 +17,7 @@ type HomeLandingProps = {
 
 export function HomeLanding({ copy }: HomeLandingProps) {
   return (
-<main>
+    <main>
       {/* Hero Section */}
       <section className="relative flex min-h-screen w-full flex-col overflow-hidden">
         {/* Hero-specific background elements */}
@@ -69,7 +69,10 @@ export function HomeLanding({ copy }: HomeLandingProps) {
       <div className="laser-divider" />
 
       {/* Sponsors Section */}
-      <section id="sponsors" className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12 scroll-mt-24">
+      <section
+        id="sponsors"
+        className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12 scroll-mt-24"
+      >
         <SectionHeader
           subheading={copy.sponsors.header.subheading}
           headingLine1={copy.sponsors.header.heading.line1}
