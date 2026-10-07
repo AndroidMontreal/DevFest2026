@@ -9,7 +9,7 @@
   "filter_all": "Toutes les sessions",
   "filter_ai": "IA & Agents",
   "filter_cloud": "Cloud & Infra",
-  "filter_mobile": "Mobile & Flutter",
+  "filter_appdev": "AppDev",
   "filter_community": "Communauté & Panels",
   "no_results": "Aucun conférencier ne correspond à votre recherche.",
   "items": [
@@ -111,7 +111,8 @@
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/matfillion/",
       "image": "/assets/images/speakers/Mathieu_Fillion.jpg",
-      "category": "mobile"
+      "category": "appdev",
+      "categories": ["appdev", "ai"]
     },
     {
       "name": "Jhin Lee",
@@ -121,7 +122,8 @@
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/leehack/",
       "image": "/assets/images/speakers/Jhin_Lee.jpg",
-      "category": "mobile"
+      "category": "appdev",
+      "categories": ["appdev", "ai"]
     },
     {
       "name": "Felipe Lujan",
@@ -201,7 +203,8 @@
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/navczydev/",
       "image": "/assets/images/speakers/Nav_Singh.jpg",
-      "category": "mobile"
+      "category": "appdev",
+      "categories": ["appdev", "ai"]
     },
     {
       "name": "Cyprien Tankeu",
