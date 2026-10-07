@@ -5,8 +5,10 @@
     "subtitle": "By Google Developer Group Montreal",
     "tagline": "Quebec's largest community-driven tech conference",
     "description": "Brought to you by Google Developer Groups, DevFest Montreal is your opportunity to connect with the vibrant local tech ecosystem and learn from industry leaders.",
-    "agenda_btn": "View Agenda",
-    "tickets_btn": "Get Tickets"
+    "tickets_btn": "Buy Tickets",
+    "agenda_btn": "See Agenda",
+    "speakers_btn": "See Our Speakers",
+    "sponsor_btn": "Become a Sponsor"
   },
   "stats": {
     "workshops": {

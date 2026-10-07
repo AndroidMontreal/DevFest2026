@@ -8,6 +8,9 @@ export type HomeLandingCopy = {
     agenda_btn?: string;
     cfp_btn?: string;
     tickets_btn: string;
+    speakers_btn?: string;
+    sponsor_btn?: string;
+    sponsor_link?: string;
   };
   stats: {
     workshops: {

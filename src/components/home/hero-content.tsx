@@ -81,6 +81,24 @@ export function HeroContent({ hero, stats }: HeroContentProps) {
               {hero.agenda_btn}
             </Link>
           )}
+          {hero.speakers_btn && (
+            <Link
+              href="/speakers"
+              className="inline-flex items-center border border-google-green bg-google-green/5 hover:bg-google-green/15 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-green transition-all duration-300 hover:border-google-green hover:text-white hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(52,168,83,0.4)]"
+            >
+              {hero.speakers_btn}
+            </Link>
+          )}
+          {hero.sponsor_btn && (
+            <a
+              href={hero.sponsor_link || 'https://forms.gle/HRLnrcGtiHjA5DNu5'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center border border-google-red bg-google-red/5 hover:bg-google-red/15 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-red transition-all duration-300 hover:border-google-red hover:text-white hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(234,67,53,0.4)]"
+            >
+              {hero.sponsor_btn}
+            </a>
+          )}
         </div>
       </div>
     </section>
