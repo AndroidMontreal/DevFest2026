@@ -115,6 +115,16 @@
       "categories": ["appdev", "ai"]
     },
     {
+      "name": "Angelo Italiano",
+      "employer": "RAVL",
+      "title": "Principal Engineering Manager",
+      "topic": "Terminal to Stadium: Building an AI Sports PA Announcer with Gemini",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/aitalian/",
+      "image": "/assets/images/speakers/Angelo_Italiano.jpg",
+      "category": "ai"
+    },
+    {
       "name": "Jhin Lee",
       "employer": "Unity",
       "title": "Senior Software Developer",
