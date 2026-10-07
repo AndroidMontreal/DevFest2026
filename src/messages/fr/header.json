@@ -1,0 +1,18 @@
+{
+  "header": {
+    "logoAlt": "Logo DevFest 2026",
+    "city": "Montréal",
+    "registerLabel": "Register_Node",
+    "registerAria": "S'inscrire a DevFest 2026",
+    "ticketsButton": "Acheter des billets"
+  },
+  "navigation": [
+    { "label": "Accueil", "href": "/" },
+    { "label": "À propos", "href": "/#about" },
+    { "label": "Horaire", "href": "/schedule" },
+    { "label": "Conférenciers", "href": "/speakers" },
+    { "label": "Partenaires", "href": "/#sponsors" },
+    { "label": "Équipe", "href": "/team" },
+    { "label": "FAQ", "href": "/faq" }
+  ]
+}

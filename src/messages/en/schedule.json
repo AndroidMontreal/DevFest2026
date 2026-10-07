@@ -1,0 +1,84 @@
+{
+  "subheading": "DevFest Montreal 2026",
+  "heading": {
+    "line1": "Event",
+    "line2": "Agenda"
+  },
+  "description": "High-level overview of the day on Friday, November 6, 2026 at Ax.c Hub, downtown Montreal.",
+  "more_info_title": "Detailed Track Schedule Coming Soon",
+  "more_info_note": "The complete breakdown of room tracks, breakout sessions, and speaker announcements will be published as we get closer to the event.",
+  "tldr": {
+    "level_map_badge": "CARTE DES NIVEAUX / LEVEL MAP",
+    "title": "Agenda TL;DR",
+    "subtitle": "L'horaire en bref",
+    "hud_footer": "DEVFEST MONTREAL // 2026-11-06",
+    "timeline": [
+      {
+        "time": "08:30 – 09:30",
+        "title": "Breakfast",
+        "subtitle": "Déjeuner",
+        "badge": "Morning Kickoff"
+      },
+      {
+        "time": "09:25 – 10:00",
+        "title": "Opening Keynote",
+        "subtitle": "Conférence d'ouverture",
+        "badge": "Main Stage"
+      },
+      {
+        "time": "10:15 – 12:00",
+        "title": "Talks, Workshops & 1:1 Coaching",
+        "subtitle": "Conférences, ateliers et mentorat 1:1",
+        "badge": "Multi-Track"
+      },
+      {
+        "time": "12:00 – 13:00",
+        "title": "Lunch & Raffle",
+        "subtitle": "Dîner et tirage",
+        "badge": "Catering Included"
+      },
+      {
+        "time": "13:00 – 16:45",
+        "title": "Talks, Workshops & 1:1 Coaching",
+        "subtitle": "Conférences, ateliers et mentorat 1:1",
+        "badge": "Multi-Track"
+      },
+      {
+        "time": "16:45 – 17:00",
+        "title": "Head Downstairs to the 3rd Floor",
+        "subtitle": "On descend au 3e étage",
+        "badge": "Floor Change"
+      },
+      {
+        "time": "17:00 – 18:30",
+        "title": "Closing Keynote, Raffles & 5 à 7",
+        "subtitle": "Mot de la fin, tirages et 5 à 7",
+        "badge": "Networking & Prizes"
+      }
+    ],
+    "all_day": {
+      "title": "ALL DAY",
+      "subtitle": "TOUTE LA JOURNÉE",
+      "items": [
+        {
+          "title": "1:1 Coaching",
+          "subtitle": "Mentorat 1:1",
+          "meta": "10:30 – 16:40",
+          "color": "green"
+        },
+        {
+          "title": "Showcase",
+          "subtitle": "Vitrine techno",
+          "meta": "3-6 · MR. ROBOTO",
+          "color": "cyan"
+        },
+        {
+          "title": "Chill Zone & Games",
+          "subtitle": "Zone détente et jeux",
+          "meta": "4-1 · THE DANGER ZONE",
+          "color": "blue"
+        }
+      ]
+    }
+  }
+}

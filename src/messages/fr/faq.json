@@ -1,0 +1,33 @@
+{
+  "subheading": "DevFest 2026",
+  "heading": {
+    "line1": "FAQ",
+    "line2": "Questions fréquentes"
+  },
+  "items": [
+    {
+      "question": "Où se déroule l'événement DevFest Montréal 2026 ?",
+      "answer": "Le DevFest Montréal 2026 se tiendra à l'Espace AX.C, situé au 800 Square-Victoria, au centre-ville de Montréal."
+    },
+    {
+      "question": "Quels sont les moyens de transport et de stationnement ?",
+      "answer": "Le lieu est directement connecté à la station de métro Square-Victoria-OACI (Ligne Orange). Des stationnements payants sont disponibles à proximité, mais l'utilisation des transports en commun est fortement recommandée."
+    },
+    {
+      "question": "Quand l'événement DevFest Montréal 2026 a-t-il lieu ?",
+      "answer": "La conférence aura lieu le vendredi 6 novembre 2026, toute la journée. L'horaire exact sera disponible prochainement."
+    },
+    {
+      "question": "Des repas et boissons seront-ils fournis ?",
+      "answer": "Oui, le service de traiteur est inclus avec votre billet d'entrée. Les détails du menu et des options alimentaires seront précisés prochainement."
+    },
+    {
+      "question": "Y a-t-il un âge minimum requis pour participer ?",
+      "answer": "Les conditions d'accès et l'âge minimum d'admission seront communiqués prochainement."
+    },
+    {
+      "question": "Dans quelle langue les sessions seront-elles présentées ?",
+      "answer": "Les conférences seront présentées en anglais ou en français. La langue de présentation sera explicitement indiquée pour chaque session sur l'horaire."
+    }
+  ]
+}

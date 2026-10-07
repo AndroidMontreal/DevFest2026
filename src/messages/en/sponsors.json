@@ -1,0 +1,106 @@
+{
+  "header": {
+    "subheading": "Sponsorship",
+    "heading": {
+      "line1": "Our Sponsors",
+      "line2": "Building Together"
+    },
+    "cta": "Become a Sponsor",
+    "cta_link": "https://forms.gle/HRLnrcGtiHjA5DNu5"
+  },
+  "tiers": [
+    {
+      "title": "Marquee Sponsor",
+      "subtitle": "A leading presence in the DevFest 2026 story.",
+      "badge": "Marquee",
+      "items": [
+        {
+          "name": "TELUS Digital",
+          "logo": "/assets/images/sponsors/marquee_telus_digital.svg",
+          "link": "https://www.telusdigital.com/"
+        }
+      ]
+    },
+    {
+      "title": "Gold Sponsor",
+      "subtitle": "A valued part of the DevFest 2026 sponsor family.",
+      "badge": "Gold",
+      "items": [
+        {
+          "name": "Davidson Canada",
+          "logo": "/assets/images/sponsors/gold_davidson_canada.svg",
+          "link": "https://www.davidson.group/nos-filiales/davidson-canada"
+        },
+        {
+          "name": "oXya",
+          "logo": "/assets/images/sponsors/gold_oxya.svg",
+          "link": "https://www.oxya.com/"
+        },
+        {
+          "name": "Vooban",
+          "logo": "/assets/images/sponsors/gold_vooban.svg",
+          "link": "https://www.vooban.com/"
+        }
+      ]
+    },
+    {
+      "title": "Silver Sponsor",
+      "subtitle": "A community-minded sponsor helping shape the event vibe.",
+      "badge": "Silver",
+      "items": [
+        {
+          "name": "Transit",
+          "logo": "/assets/images/sponsors/silver_transit.svg",
+          "link": "https://manifesto.transitapp.com/fr/jobs"
+        },
+        {
+          "name": "Oloodi",
+          "logo": "/assets/images/sponsors/silver_oloodi.svg",
+          "link": "https://oloodi.com/"
+        },
+        {
+          "name": "Kanastruk",
+          "logo": "/assets/images/sponsors/silver_kanastruk.svg",
+          "link": "https://kanastruk.com/"
+        }
+      ]
+    },
+    {
+      "title": "Partner Sponsor",
+      "subtitle": "Community partners helping us make DevFest 2026 a success.",
+      "badge": "Partner",
+      "items": [
+        {
+          "name": "Google",
+          "logo": "/assets/images/sponsors/partner_google.svg",
+          "link": "https://gdg.community.dev/"
+        },
+        {
+          "name": "Mathieu Chevalier",
+          "logo": "/assets/images/sponsors/partner_mathieu_chevalier.svg",
+          "link": "https://www.mathieuchevalier.com/"
+        },
+        {
+          "name": "Prêt-à-Table",
+          "logo": "/assets/images/sponsors/partners_pret_table.svg",
+          "link": "https://pretatable.ca/"
+        },
+        {
+          "name": "JetBrains",
+          "logo": "/assets/images/sponsors/partners_jetbrains.svg",
+          "link": "https://www.jetbrains.com/"
+        },
+        {
+          "name": "Kodeco",
+          "logo": "/assets/images/sponsors/partners_kodeco.svg",
+          "link": "https://www.kodeco.com/"
+        },
+        {
+          "name": "Packet",
+          "logo": "/assets/images/sponsors/partners_packet.svg",
+          "link": "https://www.packtpub.com/en-ca"
+        }
+      ]
+    }
+  ]
+}
