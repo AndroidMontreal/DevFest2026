@@ -9,6 +9,8 @@
   "navigation": [
     { "label": "Accueil", "href": "/" },
     { "label": "À propos", "href": "/#about" },
+    { "label": "Horaire", "href": "/schedule" },
+    { "label": "Conférenciers", "href": "/speakers" },
     { "label": "Partenaires", "href": "/#sponsors" },
     { "label": "Équipe", "href": "/team" },
     { "label": "FAQ", "href": "/faq" }

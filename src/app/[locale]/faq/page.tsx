@@ -1,7 +1,7 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { SectionHeader } from '@/components/common/section-header';
-import { FaqAccordion } from '@/components/faq/faq-accordion';
 import SocialLinks from '@/components/common/social-links';
+import { FaqAccordion } from '@/components/faq/faq-accordion';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 export default async function FaqPage({
   params,
@@ -34,16 +34,15 @@ export default async function FaqPage({
           headingLine2={t('heading.line2')}
           headingLine2ClassName="text-google-yellow"
         />
-        
+
         {/* Split Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-start mt-12">
-          
           {/* Left Column: Sticky Support Panel */}
           <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-8">
             <div className="group relative overflow-hidden border border-white/5 bg-[#0a0a0a]/80 p-8 md:p-10 quad-border-tr backdrop-blur-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-google-yellow/0 via-transparent to-google-yellow/[0.01] pointer-events-none" />
               <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-google-yellow/20 to-transparent" />
-              
+
               <div className="flex items-center gap-3 mb-6">
                 <span className="h-2 w-2 rounded-full bg-google-yellow animate-pulse" />
                 <span className="font-mono-tech text-[10px] tracking-[0.25em] text-white/40 uppercase">
@@ -55,7 +54,8 @@ export default async function FaqPage({
                 Still have questions?
               </h3>
               <p className="font-sans text-sm leading-relaxed text-white/60 mb-8">
-                Can&apos;t find what you&apos;re looking for? Reach out to us or join our developer community across our social channels.
+                Can&apos;t find what you&apos;re looking for? Reach out to us or
+                join our developer community across our social channels.
               </p>
 
               {/* Seamlessly Integrated Brand Social Grid */}
@@ -69,7 +69,6 @@ export default async function FaqPage({
           <div className="lg:col-span-8">
             <FaqAccordion items={items} />
           </div>
-
         </div>
       </section>
     </main>

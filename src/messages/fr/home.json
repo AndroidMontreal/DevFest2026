@@ -3,10 +3,12 @@
     "phase": "8e Édition & Thème 80s",
     "title": "DEVFEST MTL 26",
     "subtitle": "Par le Google Developer Group Montréal",
-    "tagline": "La plus grande conférence tech communautaire au Québec",
+    "tagline": "La plus cool des conférences tech communautaire au Québec",
     "description": "Propulsé par les Google Developer Groups, le DevFest Montréal est votre occasion de vous connecter avec l'écosystème tech local et d'apprendre des leaders de l'industrie.",
-    "cfp_btn": "Appel aux conférenciers",
-    "tickets_btn": "Acheter des billets"
+    "tickets_btn": "Acheter des billets",
+    "agenda_btn": "Voir l'horaire",
+    "speakers_btn": "Voir nos conférenciers",
+    "sponsor_btn": "Devenir partenaire"
   },
   "stats": {
     "workshops": {

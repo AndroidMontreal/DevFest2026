@@ -18,11 +18,16 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const home = (await import(`../messages/${locale}/home.json`)).default;
   const gallery = (await import(`../messages/${locale}/gallery.json`)).default;
   const footer = (await import(`../messages/${locale}/footer.json`)).default;
-  const sponsors = (await import(`../messages/${locale}/sponsors.json`)).default;
+  const sponsors = (await import(`../messages/${locale}/sponsors.json`))
+    .default;
   const team = (await import(`../messages/${locale}/team.json`)).default;
-  const schedule = (await import(`../messages/${locale}/schedule.json`)).default;
-  const speakers = (await import(`../messages/${locale}/speakers.json`)).default;
-  const codeOfConduct = (await import(`../messages/${locale}/code-of-conduct.json`)).default;
+  const schedule = (await import(`../messages/${locale}/schedule.json`))
+    .default;
+  const speakers = (await import(`../messages/${locale}/speakers.json`))
+    .default;
+  const codeOfConduct = (
+    await import(`../messages/${locale}/code-of-conduct.json`)
+  ).default;
   const faq = (await import(`../messages/${locale}/faq.json`)).default;
 
   return {

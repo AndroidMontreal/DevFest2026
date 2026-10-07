@@ -20,7 +20,10 @@ export function AboutSection({ about }: AboutSectionProps) {
   }
 
   return (
-    <section id="about" className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12 border-b border-white/5 scroll-mt-24">
+    <section
+      id="about"
+      className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12 border-b border-white/5 scroll-mt-24"
+    >
       <SectionHeader
         subheading={about.header.subheading}
         headingLine1={about.header.heading.line1}
@@ -30,14 +33,13 @@ export function AboutSection({ about }: AboutSectionProps) {
 
       {/* Premium Dashboard Grid */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-12">
-        
         {/* Block 01: What is DevFest? */}
         {devfestBlock && (
           <div className="group relative overflow-hidden bg-[#0a0a0a]/60 p-8 md:p-10 quad-border-tr transition-all duration-300 lg:col-span-8 flex flex-col justify-between neon-panel-blue">
             {/* Ambient hover glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-google-blue/0 via-transparent to-google-blue/[0.01] pointer-events-none" />
             <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-google-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            
+
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <span className="font-mono-tech text-xs font-bold text-google-blue bg-google-blue/10 px-2 py-0.5 rounded border border-google-blue/20">
@@ -94,7 +96,7 @@ export function AboutSection({ about }: AboutSectionProps) {
           <div className="group relative overflow-hidden bg-[#0a0a0a]/60 p-8 quad-border-tr transition-all duration-300 lg:col-span-4 flex flex-col justify-between neon-panel-red">
             <div className="absolute inset-0 bg-gradient-to-br from-google-red/0 via-transparent to-google-red/[0.01] pointer-events-none" />
             <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-google-red/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            
+
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <span className="font-mono-tech text-xs font-bold text-google-red bg-google-red/10 px-2 py-0.5 rounded border border-google-red/20">
@@ -121,7 +123,7 @@ export function AboutSection({ about }: AboutSectionProps) {
           <div className="group relative overflow-hidden bg-[#0a0a0a]/60 p-8 quad-border-tr transition-all duration-300 lg:col-span-4 flex flex-col justify-between neon-panel-green">
             <div className="absolute inset-0 bg-gradient-to-br from-google-green/0 via-transparent to-google-green/[0.01] pointer-events-none" />
             <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-google-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            
+
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <span className="font-mono-tech text-xs font-bold text-google-green bg-google-green/10 px-2 py-0.5 rounded border border-google-green/20">
@@ -150,19 +152,35 @@ export function AboutSection({ about }: AboutSectionProps) {
                 className="flex items-center gap-4 bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 hover:border-google-green/30 p-3 rounded text-[11px] font-mono-tech transition-all duration-300 cursor-pointer"
               >
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-google-green/15 text-google-green">
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <svg
+                    className="h-3.5 w-3.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-white/80 font-bold uppercase tracking-wider text-[10px] truncate">{about.venueAddress}</div>
+                  <div className="text-white/80 font-bold uppercase tracking-wider text-[10px] truncate">
+                    {about.venueAddress}
+                  </div>
                 </div>
               </a>
             </div>
           </div>
         )}
-
       </div>
     </section>
   );

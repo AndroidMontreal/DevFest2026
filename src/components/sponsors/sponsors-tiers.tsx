@@ -1,7 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { Link } from '@/i18n/navigation'; // Import Link from next-intl
+import Image from 'next/image';
 
 type SponsorTier = {
   title: string;
@@ -20,7 +20,11 @@ type SponsorsTiersProps = {
   ctaLink: string; // Added ctaLink prop
 };
 
-export function SponsorsTiers({ tiers, ctaLabel, ctaLink }: SponsorsTiersProps) {
+export function SponsorsTiers({
+  tiers,
+  ctaLabel,
+  ctaLink,
+}: SponsorsTiersProps) {
   return (
     <div className="space-y-14">
       {tiers.map((tier) => (

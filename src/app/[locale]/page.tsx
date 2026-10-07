@@ -23,8 +23,10 @@ export default async function Home({
       subtitle: t_home('hero.subtitle'),
       tagline: t_home('hero.tagline'),
       description: t_home('hero.description'),
-      cfp_btn: t_home('hero.cfp_btn'),
+      agenda_btn: t_home('hero.agenda_btn'),
       tickets_btn: t_home('hero.tickets_btn'),
+      speakers_btn: t_home('hero.speakers_btn'),
+      sponsor_btn: t_home('hero.sponsor_btn'),
     },
     stats: {
       workshops: {

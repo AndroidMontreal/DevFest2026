@@ -10,20 +10,36 @@
       "answer": "Le DevFest Montréal 2026 se tiendra à l'Espace AX.C, situé au 800 Square-Victoria, au centre-ville de Montréal."
     },
     {
-      "question": "Quels sont les moyens de transport et de stationnement ?",
-      "answer": "Le lieu est directement connecté à la station de métro Square-Victoria-OACI (Ligne Orange). Des stationnements payants sont disponibles à proximité, mais l'utilisation des transports en commun est fortement recommandée."
+      "question": "Quel étage ?",
+      "answer": "3ième étage"
     },
     {
       "question": "Quand l'événement DevFest Montréal 2026 a-t-il lieu ?",
       "answer": "La conférence aura lieu le vendredi 6 novembre 2026, toute la journée. L'horaire exact sera disponible prochainement."
     },
     {
-      "question": "Des repas et boissons seront-ils fournis ?",
-      "answer": "Oui, le service de traiteur est inclus avec votre billet d'entrée. Les détails du menu et des options alimentaires seront précisés prochainement."
+      "question": "Comment se rendre au DevFest - (Rue)",
+      "answer": "Regardez la vidéo guide : http://tiny.cc/DFMTL_Street"
     },
     {
-      "question": "Y a-t-il un âge minimum requis pour participer ?",
-      "answer": "Les conditions d'accès et l'âge minimum d'admission seront communiqués prochainement."
+      "question": "Comment se rendre au DevFest - (Stationnement)",
+      "answer": "Regardez la vidéo guide : http://tiny.cc/DFMTL_Parking"
+    },
+    {
+      "question": "Station de métro",
+      "answer": "Square-Victoria"
+    },
+    {
+      "question": "Stationnement",
+      "answer": "Stationnement payant sur place et aux alentours du site"
+    },
+    {
+      "question": "Bixi",
+      "answer": "Zone de débarcadère au coin de Viger et Square-Victoria"
+    },
+    {
+      "question": "Nourriture",
+      "answer": "De la nourriture sera offerte (matin, midi, fin de journée), incluant des options véganes."
     },
     {
       "question": "Dans quelle langue les sessions seront-elles présentées ?",

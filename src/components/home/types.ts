@@ -5,8 +5,12 @@ export type HomeLandingCopy = {
     subtitle: string;
     tagline: string;
     description: string;
-    cfp_btn: string;
+    agenda_btn?: string;
+    cfp_btn?: string;
     tickets_btn: string;
+    speakers_btn?: string;
+    sponsor_btn?: string;
+    sponsor_link?: string;
   };
   stats: {
     workshops: {

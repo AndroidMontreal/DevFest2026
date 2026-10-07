@@ -1,5 +1,5 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { SectionHeader } from '@/components/common/section-header';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 
 export default async function CodeOfConductPage({
@@ -34,23 +34,29 @@ export default async function CodeOfConductPage({
           <section className="space-y-4">
             <p>{t('harassment_free_statement')}</p>
             <ul className="list-disc space-y-2 pl-5">
-              {t.raw('harassment_free_list').map((item: string, index: number) => (
-                <li key={index}>{item}</li>
-              ))}
+              {t
+                .raw('harassment_free_list')
+                .map((item: string, index: number) => (
+                  <li key={index}>{item}</li>
+                ))}
             </ul>
           </section>
 
           <p>{t('not_exhaustive')}</p>
-          <p className="font-semibold text-primary">{t('sexual_language_warning')}</p>
+          <p className="font-semibold text-primary">
+            {t('sexual_language_warning')}
+          </p>
 
           <section className="space-y-4">
             <h2 className="font-display text-2xl uppercase tracking-tight text-white">
               {t('harassment_includes_title')}
             </h2>
             <ul className="list-disc space-y-2 pl-5">
-              {t.raw('harassment_includes_list').map((item: string, index: number) => (
-                <li key={index}>{item}</li>
-              ))}
+              {t
+                .raw('harassment_includes_list')
+                .map((item: string, index: number) => (
+                  <li key={index}>{item}</li>
+                ))}
             </ul>
           </section>
 
