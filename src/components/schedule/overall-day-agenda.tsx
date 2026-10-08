@@ -68,24 +68,24 @@ const getTimelineIcon = (index: number) => {
 
 export function OverallDayAgenda({ copy }: OverallDayAgendaProps) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-cyan-500/20 bg-[#070b16]/90 p-6 md:p-10 shadow-[0_0_50px_rgba(0,240,255,0.06)] backdrop-blur-2xl">
+    <div className="relative overflow-hidden rounded-2xl border border-cyan-500/20 bg-[#070b16]/90 p-4 sm:p-6 md:p-10 shadow-[0_0_50px_rgba(0,240,255,0.06)] backdrop-blur-2xl">
       {/* Ambient Top Glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
       <div className="pointer-events-none absolute -top-24 left-1/4 h-56 w-56 rounded-full bg-cyan-500/10 blur-[100px]" />
       <div className="pointer-events-none absolute -top-24 right-1/4 h-56 w-56 rounded-full bg-google-yellow/10 blur-[100px]" />
 
       {/* Header HUD Bar */}
-      <div className="mb-8 border-b border-white/10 pb-6">
+      <div className="mb-6 md:mb-8 border-b border-white/10 pb-6">
         <div className="flex items-center gap-2">
           <span className="inline-block h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
-          <span className="font-mono-tech text-[11px] uppercase tracking-[0.25em] text-cyan-400">
+          <span className="font-mono-tech text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-cyan-400">
             {copy.level_map_badge}
           </span>
         </div>
-        <h3 className="mt-2 font-display text-3xl md:text-5xl font-bold tracking-tight text-white uppercase">
+        <h3 className="mt-2 font-display text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight text-white uppercase break-words">
           {copy.title}
         </h3>
-        <p className="font-mono-tech text-sm tracking-wider text-cyan-200/60 uppercase mt-1">
+        <p className="font-mono-tech text-xs sm:text-sm tracking-wider text-cyan-200/60 uppercase mt-1">
           {copy.subtitle}
         </p>
       </div>
@@ -97,38 +97,41 @@ export function OverallDayAgenda({ copy }: OverallDayAgendaProps) {
           {copy.timeline.map((item, index) => (
             <div
               key={`${item.time}-${index}`}
-              className="group relative flex flex-col md:flex-row md:items-center justify-between gap-3 overflow-hidden rounded-xl border border-white/10 bg-[#0d1326]/75 px-5 py-4 backdrop-blur-md transition-all duration-300 hover:border-cyan-400/40 hover:bg-[#121933]/90 hover:shadow-[0_0_20px_rgba(0,240,255,0.08)]"
+              className="group relative flex flex-col md:flex-row md:items-center justify-between gap-3 overflow-hidden rounded-xl border border-white/10 bg-[#0d1326]/75 p-4 sm:px-5 sm:py-4 backdrop-blur-md transition-all duration-300 hover:border-cyan-400/40 hover:bg-[#121933]/90 hover:shadow-[0_0_20px_rgba(0,240,255,0.08)]"
             >
               {/* Visual Accent bar on hover */}
               <div className="absolute inset-y-0 left-0 w-1 bg-cyan-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-              <div className="flex items-start md:items-center gap-4">
+              <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
                 {/* Icon */}
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] transition-colors group-hover:border-cyan-400/30 group-hover:bg-cyan-400/10">
                   {getTimelineIcon(index)}
                 </div>
 
-                {/* Time Badge */}
-                <div className="min-w-[130px]">
-                  <span className="font-mono-tech text-sm md:text-base font-bold text-google-yellow tracking-wider">
-                    {item.time}
-                  </span>
-                </div>
+                {/* Main Content Area */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 flex-1 min-w-0">
+                  {/* Time Badge */}
+                  <div className="shrink-0 sm:w-28 md:w-32">
+                    <span className="font-mono-tech text-xs sm:text-sm md:text-base font-bold text-google-yellow tracking-wider">
+                      {item.time}
+                    </span>
+                  </div>
 
-                {/* Titles */}
-                <div className="flex flex-col">
-                  <span className="font-display text-base md:text-lg font-bold text-white transition-colors group-hover:text-cyan-200">
-                    {item.title}
-                  </span>
-                  <span className="font-sans text-xs text-white/50 group-hover:text-white/70 transition-colors">
-                    {item.subtitle}
-                  </span>
+                  {/* Titles */}
+                  <div className="flex flex-col min-w-0 flex-1">
+                    <span className="font-display text-sm sm:text-base md:text-lg font-bold text-white transition-colors group-hover:text-cyan-200">
+                      {item.title}
+                    </span>
+                    <span className="font-sans text-xs text-white/50 group-hover:text-white/70 transition-colors">
+                      {item.subtitle}
+                    </span>
+                  </div>
                 </div>
               </div>
 
               {/* Optional category badge */}
               {item.badge && (
-                <div className="self-start md:self-center pl-13 md:pl-0">
+                <div className="self-start md:self-center pl-12 md:pl-0 shrink-0">
                   <span className="inline-flex rounded border border-white/10 bg-white/[0.04] px-2.5 py-1 font-mono-tech text-[10px] uppercase tracking-wider text-white/60">
                     {item.badge}
                   </span>
@@ -140,7 +143,7 @@ export function OverallDayAgenda({ copy }: OverallDayAgendaProps) {
 
         {/* Right Column: "ALL DAY / TOUTE LA JOURNÉE" Card */}
         <div className="lg:col-span-4">
-          <div className="sticky top-28 flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-cyan-400/50 bg-[#090e1c]/90 p-6 md:p-7 shadow-[0_0_30px_rgba(0,240,255,0.12)] backdrop-blur-xl">
+          <div className="sticky top-28 flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-cyan-400/50 bg-[#090e1c]/90 p-5 sm:p-6 md:p-7 shadow-[0_0_30px_rgba(0,240,255,0.12)] backdrop-blur-xl">
             <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-cyan-400/15 blur-[50px]" />
 
             <div>
@@ -158,7 +161,7 @@ export function OverallDayAgenda({ copy }: OverallDayAgendaProps) {
               </div>
 
               {/* Items */}
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {copy.all_day.items.map((item, idx) => {
                   const colorStyles = {
                     green: {
@@ -181,13 +184,13 @@ export function OverallDayAgenda({ copy }: OverallDayAgendaProps) {
                   return (
                     <div
                       key={idx}
-                      className="group flex items-start gap-4 rounded-xl border border-white/5 bg-white/[0.02] p-4 transition-all duration-300 hover:border-cyan-400/30 hover:bg-white/[0.05]"
+                      className="group flex items-start gap-4 rounded-xl border border-white/5 bg-white/[0.02] p-3.5 sm:p-4 transition-all duration-300 hover:border-cyan-400/30 hover:bg-white/[0.05]"
                     >
                       <div
-                        className={`mt-1 h-5 w-5 shrink-0 rounded-full transition-transform duration-300 group-hover:scale-110 ${colorStyles.dot}`}
+                        className={`mt-1 h-4 w-4 sm:h-5 sm:w-5 shrink-0 rounded-full transition-transform duration-300 group-hover:scale-110 ${colorStyles.dot}`}
                       />
-                      <div className="flex-1">
-                        <h5 className="font-display text-base font-bold text-white transition-colors group-hover:text-cyan-200">
+                      <div className="flex-1 min-w-0">
+                        <h5 className="font-display text-sm sm:text-base font-bold text-white transition-colors group-hover:text-cyan-200">
                           {item.title}
                         </h5>
                         <p className="font-sans text-xs text-white/50">
@@ -213,13 +216,13 @@ export function OverallDayAgenda({ copy }: OverallDayAgendaProps) {
       </div>
 
       {/* Synthwave Sunset Horizon at the bottom */}
-      <div className="relative mt-12 pt-10 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span className="font-mono-tech text-xs tracking-[0.25em] text-white/40 uppercase">
+      <div className="relative mt-12 pt-8 sm:pt-10 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span className="font-mono-tech text-[11px] sm:text-xs tracking-[0.2em] text-white/40 uppercase text-center sm:text-left">
           {copy.hud_footer}
         </span>
 
         {/* Retro Sun element */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <div className="h-4 w-8 rounded-t-full bg-gradient-to-t from-google-yellow to-google-red shadow-[0_0_15px_rgba(251,188,4,0.6)]" />
           <span className="font-mono-tech text-[10px] tracking-widest text-white/30 uppercase">
             GDG Montreal
