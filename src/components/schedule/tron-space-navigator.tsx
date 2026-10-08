@@ -8,10 +8,13 @@ import {
   Layers,
   MapPin,
   Navigation,
+  RotateCcw,
   Sparkles,
+  ZoomIn,
+  ZoomOut,
 } from 'lucide-react';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import type { RoomTrack } from './room-agenda-section';
 
 type FloorId = '03' | '04';
@@ -523,6 +526,9 @@ export function TronSpaceNavigator({
   const [routeOrigin, setRouteOrigin] = useState<'elevator' | 'stairs'>(
     'elevator',
   );
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
+  const mapScrollRef = useRef<HTMLDivElement>(null);
+  const mapViewportRef = useRef<HTMLDivElement>(null);
 
   const floorNodes = useMemo(
     () =>
@@ -532,6 +538,11 @@ export function TronSpaceNavigator({
           (selectedCategory === 'all' || n.category === selectedCategory),
       ),
     [activeFloor, selectedCategory],
+  );
+
+  const allCurrentFloorNodes = useMemo(
+    () => MAP_NODES.filter((n) => n.floor === activeFloor),
+    [activeFloor],
   );
 
   const selectedNode = useMemo(() => {
@@ -547,18 +558,69 @@ export function TronSpaceNavigator({
     return rooms.find((r) => r.id === selectedNode.roomScheduleId);
   }, [rooms, selectedNode]);
 
+  const centerMapOnPoint = useCallback(
+    (x: number, y: number, targetZoom: number) => {
+      const container = mapScrollRef.current;
+      if (!container || targetZoom <= 1) return;
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const el = mapScrollRef.current;
+          if (!el) return;
+          const targetLeft = Math.max(
+            0,
+            (x / 1000) * el.scrollWidth - el.clientWidth / 2,
+          );
+          const targetTop = Math.max(
+            0,
+            (y / 700) * el.scrollHeight - el.clientHeight / 2,
+          );
+          el.scrollTo({
+            left: targetLeft,
+            top: targetTop,
+            behavior: 'smooth',
+          });
+        }, 40);
+      });
+    },
+    [],
+  );
+
+  const handleZoomChange = (nextZoom: number, focusNode = selectedNode) => {
+    const clamped = Math.min(Math.max(nextZoom, 1), 2.5);
+    setZoomLevel(clamped);
+    if (clamped > 1) {
+      centerMapOnPoint(focusNode.x, focusNode.y, clamped);
+    } else if (mapScrollRef.current) {
+      mapScrollRef.current.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+    }
+  };
+
   const handleFloorSwitch = (floor: FloorId) => {
     setActiveFloor(floor);
     setHoveredNodeId(null);
-    setSelectedNodeId(floor === '03' ? 'l3-room-1' : 'l4-room-6');
+    const defaultId = floor === '03' ? 'l3-room-1' : 'l4-room-6';
+    setSelectedNodeId(defaultId);
+    const nextNode = MAP_NODES.find((n) => n.id === defaultId);
+    if (nextNode && zoomLevel > 1) {
+      centerMapOnPoint(nextNode.x, nextNode.y, zoomLevel);
+    }
   };
 
-  const handleNodeClick = (node: MapNode) => {
-    if (node.id === 'l3-stairs') {
-      setSelectedNodeId(node.id);
-      return;
-    }
+  const handleNodeClick = (node: MapNode, scrollToMapOnMobile = false) => {
     setSelectedNodeId(node.id);
+    if (zoomLevel > 1) {
+      centerMapOnPoint(node.x, node.y, zoomLevel);
+    }
+    if (
+      scrollToMapOnMobile &&
+      typeof window !== 'undefined' &&
+      window.innerWidth < 1024
+    ) {
+      mapViewportRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
   };
 
   const activeRoutePoints =
@@ -567,25 +629,28 @@ export function TronSpaceNavigator({
       : selectedNode.routeFromStairs;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-cyan-400/35 bg-[#040814]/95 p-4 sm:p-6 md:p-8 shadow-[0_0_70px_rgba(0,240,255,0.12)] backdrop-blur-2xl">
+    <div
+      ref={mapViewportRef}
+      className="relative overflow-hidden rounded-2xl border border-cyan-400/35 bg-[#040814]/95 p-3.5 sm:p-6 md:p-8 shadow-[0_0_70px_rgba(0,240,255,0.12)] backdrop-blur-2xl"
+    >
       {/* Top Laser Border */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_20px_#00f0ff]" />
 
       {/* Top HUD Command Bar */}
-      <div className="mb-6 flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-cyan-500/20 pb-5">
+      <div className="mb-4 sm:mb-6 flex flex-col xl:flex-row xl:items-center justify-between gap-3.5 sm:gap-4 border-b border-cyan-500/20 pb-4 sm:pb-5">
         <div>
           <div className="flex items-center gap-2">
             <Compass
-              className="h-4 w-4 text-cyan-400 animate-spin"
+              className="h-4 w-4 text-cyan-400 animate-spin shrink-0"
               style={{ animationDuration: '12s' }}
             />
-            <span className="font-mono-tech text-[11px] uppercase tracking-[0.28em] text-cyan-400">
+            <span className="font-mono-tech text-[10px] sm:text-[11px] uppercase tracking-[0.22em] sm:tracking-[0.28em] text-cyan-400">
               {isFr
                 ? 'SYSTÈME DE NAVIGATION SPATIALE // AX.C HUB'
                 : 'TRON SPACE NAVIGATOR // AX.C HUB'}
             </span>
           </div>
-          <h3 className="mt-1 font-display text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight text-white">
+          <h3 className="mt-1 font-display text-xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight text-white">
             {isFr
               ? 'Carte Interactive — Niveau '
               : 'Interactive Floor Grid — Level '}
@@ -593,69 +658,69 @@ export function TronSpaceNavigator({
           </h3>
         </div>
 
-        {/* Controls: Floor Switcher + Render Mode */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        {/* Controls: Floor Switcher + Render Mode (Full-width segmented bars on mobile) */}
+        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 sm:gap-2.5 w-full xl:w-auto">
           {/* Floor Toggle */}
-          <div className="inline-flex rounded-xl border border-cyan-400/40 bg-[#071024] p-1 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
+          <div className="grid grid-cols-2 sm:inline-flex rounded-xl border border-cyan-400/40 bg-[#071024] p-1 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
             <button
               type="button"
               onClick={() => handleFloorSwitch('03')}
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+              className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg px-3 sm:px-4 py-2 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 activeFloor === '03'
                   ? 'bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,240,255,0.6)]'
                   : 'text-cyan-200/70 hover:text-white'
               }`}
             >
-              <Layers className="h-3.5 w-3.5" />
+              <Layers className="h-3.5 w-3.5 shrink-0" />
               <span>{isFr ? 'Niveau 03 (3e)' : 'Level 03 (3F)'}</span>
             </button>
             <button
               type="button"
               onClick={() => handleFloorSwitch('04')}
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+              className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg px-3 sm:px-4 py-2 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 activeFloor === '04'
                   ? 'bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,240,255,0.6)]'
                   : 'text-cyan-200/70 hover:text-white'
               }`}
             >
-              <Layers className="h-3.5 w-3.5" />
+              <Layers className="h-3.5 w-3.5 shrink-0" />
               <span>{isFr ? 'Niveau 04 (4e)' : 'Level 04 (4F)'}</span>
             </button>
           </div>
 
           {/* Render Mode Selector */}
-          <div className="inline-flex rounded-xl border border-white/15 bg-[#070d1c] p-1">
+          <div className="grid grid-cols-2 sm:inline-flex rounded-xl border border-white/15 bg-[#070d1c] p-1">
             <button
               type="button"
               onClick={() => setRenderMode('tron')}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
+              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
                 renderMode === 'tron'
                   ? 'bg-fuchsia-500/25 border border-fuchsia-400/60 text-fuchsia-200 shadow-[0_0_12px_rgba(217,70,239,0.3)]'
                   : 'text-white/55 hover:text-white'
               }`}
             >
-              <Cpu className="h-3.5 w-3.5" />
+              <Cpu className="h-3.5 w-3.5 shrink-0" />
               <span>TRON Ray-Trace</span>
             </button>
             <button
               type="button"
               onClick={() => setRenderMode('blueprint')}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
+              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
                 renderMode === 'blueprint'
                   ? 'bg-google-yellow/25 border border-google-yellow/60 text-google-yellow'
                   : 'text-white/55 hover:text-white'
               }`}
             >
-              <MapPin className="h-3.5 w-3.5" />
+              <MapPin className="h-3.5 w-3.5 shrink-0" />
               <span>{isFr ? 'Plan Original' : 'Original Map'}</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Category Filter & Path Origin Bar */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-1.5">
+      {/* Category Filter & Path Origin Bar (Single-row horizontal scroll on mobile) */}
+      <div className="mb-3.5 sm:mb-5 flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-3">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap -mx-1 px-1">
           {[
             { id: 'all', labelEn: 'All Zones', labelFr: 'Toutes les zones' },
             {
@@ -688,7 +753,7 @@ export function TronSpaceNavigator({
               key={cat.id}
               type="button"
               onClick={() => setSelectedCategory(cat.id)}
-              className={`rounded-lg border px-3 py-1.5 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
+              className={`shrink-0 rounded-lg border px-2.5 sm:px-3 py-1.5 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
                 selectedCategory === cat.id
                   ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300'
                   : 'border-white/10 bg-white/[0.02] text-white/55 hover:border-white/25 hover:text-white'
@@ -700,732 +765,865 @@ export function TronSpaceNavigator({
         </div>
 
         {/* Route Pathfinding Origin Toggle */}
-        <div className="flex items-center gap-2 font-mono-tech text-[11px] text-white/60">
-          <Navigation className="h-3.5 w-3.5 text-cyan-400" />
-          <span className="uppercase tracking-wider">
-            {isFr ? 'Tracer depuis :' : 'Laser Route From:'}
-          </span>
-          <button
-            type="button"
-            onClick={() => setRouteOrigin('elevator')}
-            className={`rounded border px-2.5 py-1 uppercase transition-all cursor-pointer ${
-              routeOrigin === 'elevator'
-                ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-300'
-                : 'border-white/10 text-white/50 hover:text-white'
-            }`}
-          >
-            {isFr ? '★ Ascenseurs' : '★ Elevators'}
-          </button>
-          <button
-            type="button"
-            onClick={() => setRouteOrigin('stairs')}
-            className={`rounded border px-2.5 py-1 uppercase transition-all cursor-pointer ${
-              routeOrigin === 'stairs'
-                ? 'border-cyan-400 bg-cyan-500/20 text-cyan-300'
-                : 'border-white/10 text-white/50 hover:text-white'
-            }`}
-          >
-            {isFr ? '⇅ Escaliers' : '⇅ Stairs'}
-          </button>
+        <div className="flex items-center justify-between sm:justify-start gap-2 rounded-xl border border-white/10 bg-[#070e1f]/80 px-3 py-1.5 sm:border-none sm:bg-transparent sm:p-0 font-mono-tech text-[11px] text-white/60">
+          <div className="flex items-center gap-1.5">
+            <Navigation className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
+            <span className="uppercase tracking-wider">
+              {isFr ? 'Tracer depuis :' : 'Route From:'}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setRouteOrigin('elevator')}
+              className={`rounded border px-2.5 py-1 uppercase transition-all cursor-pointer ${
+                routeOrigin === 'elevator'
+                  ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-300'
+                  : 'border-white/10 text-white/50 hover:text-white'
+              }`}
+            >
+              {isFr ? '★ Ascenseurs' : '★ Elevators'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setRouteOrigin('stairs')}
+              className={`rounded border px-2.5 py-1 uppercase transition-all cursor-pointer ${
+                routeOrigin === 'stairs'
+                  ? 'border-cyan-400 bg-cyan-500/20 text-cyan-300'
+                  : 'border-white/10 text-white/50 hover:text-white'
+              }`}
+            >
+              {isFr ? '⇅ Escaliers' : '⇅ Stairs'}
+            </button>
+          </div>
         </div>
       </div>
 
+      {/* Quick-Tap Room & Booth Strip (Especially handy on mobile thumbs to switch targets while viewing the map) */}
+      <div className="mb-3.5 flex items-center gap-1.5 overflow-x-auto pb-1.5 -mx-1 px-1">
+        {allCurrentFloorNodes.map((node) => {
+          const isSelected = selectedNode.id === node.id;
+          return (
+            <button
+              key={`quick-pill-${node.id}`}
+              type="button"
+              onClick={() => handleNodeClick(node)}
+              className={`shrink-0 inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-mono-tech text-[11px] transition-all cursor-pointer ${
+                isSelected
+                  ? 'border-cyan-400 bg-cyan-400/20 text-white shadow-[0_0_12px_rgba(0,240,255,0.25)]'
+                  : 'border-white/10 bg-[#081022]/90 text-white/65 hover:border-cyan-400/40 hover:text-white'
+              }`}
+            >
+              <span
+                className={`inline-flex h-4 min-w-4 items-center justify-center rounded px-1 text-[10px] font-bold ${
+                  node.category === 'room'
+                    ? 'bg-google-red text-white'
+                    : node.category === 'sponsor' ||
+                        node.category === 'coaching'
+                      ? 'bg-emerald-500 text-black'
+                      : 'bg-cyan-400 text-black'
+                }`}
+              >
+                {node.numberBadge}
+              </span>
+              <span className="max-w-[130px] sm:max-w-[160px] truncate">
+                {node.name}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* Main Grid: Left Map Viewport (8 cols) + Right Telemetry Inspector (4 cols) */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-12">
         {/* TRON Ray-Traced Floor Map Canvas */}
         <div className="lg:col-span-8">
           <div className="relative overflow-hidden rounded-2xl border border-cyan-500/30 bg-[#02050d] shadow-[inset_0_0_60px_rgba(0,240,255,0.08)]">
             {/* Animated Radar Sweep Line */}
             <div className="scanning-line pointer-events-none z-20" />
 
+            {/* Floating Mobile/Desktop Map Zoom Controls (Top-Left Overlay) */}
+            <div className="absolute left-2.5 top-2.5 z-30 flex items-center gap-1 rounded-xl border border-cyan-400/35 bg-[#050c1d]/90 p-1 shadow-[0_0_18px_rgba(0,0,0,0.7)] backdrop-blur-md">
+              <button
+                type="button"
+                onClick={() => handleZoomChange(zoomLevel - 0.75)}
+                disabled={zoomLevel <= 1}
+                aria-label="Zoom out"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-cyan-300 transition-colors hover:bg-cyan-400/20 disabled:opacity-35 cursor-pointer"
+              >
+                <ZoomOut className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleZoomChange(zoomLevel === 1 ? 1.75 : 1)}
+                className="rounded-md px-2 py-1 font-mono-tech text-[10px] font-bold uppercase tracking-wider text-cyan-200 hover:bg-cyan-400/15 cursor-pointer"
+              >
+                {zoomLevel === 1 ? '1×' : `${zoomLevel.toFixed(1)}×`}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleZoomChange(zoomLevel + 0.75)}
+                disabled={zoomLevel >= 2.5}
+                aria-label="Zoom in"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-cyan-300 transition-colors hover:bg-cyan-400/20 disabled:opacity-35 cursor-pointer"
+              >
+                <ZoomIn className="h-3.5 w-3.5" />
+              </button>
+              {zoomLevel > 1 && (
+                <button
+                  type="button"
+                  onClick={() => handleZoomChange(1)}
+                  aria-label="Reset zoom"
+                  className="inline-flex h-7 items-center gap-1 rounded-lg border border-cyan-400/30 bg-cyan-400/15 px-2 font-mono-tech text-[10px] uppercase text-cyan-200 hover:bg-cyan-400/25 cursor-pointer"
+                >
+                  <RotateCcw className="h-3 w-3" />
+                  <span className="hidden sm:inline">
+                    {isFr ? 'Ajuster' : 'Fit'}
+                  </span>
+                </button>
+              )}
+            </div>
+
             {/* Top-Right Level Watermark */}
-            <div className="pointer-events-none absolute right-4 top-3 z-20 text-right">
-              <div className="font-mono-tech text-[10px] uppercase tracking-[0.3em] text-cyan-400/70">
+            <div className="pointer-events-none absolute right-3 sm:right-4 top-2.5 sm:top-3 z-20 text-right">
+              <div className="font-mono-tech text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.3em] text-cyan-400/70">
                 NIVEAU / LEVEL
               </div>
-              <div className="font-display text-3xl sm:text-5xl font-black leading-none tracking-tighter text-cyan-400/25">
+              <div className="font-display text-2xl sm:text-5xl font-black leading-none tracking-tighter text-cyan-400/25">
                 {activeFloor}
               </div>
             </div>
 
-            {/* Map Viewport Container */}
-            <div className="relative aspect-[1000/700] w-full">
-              {/* Architectural Map Image (Glowing Cyan CAD Wireframe in TRON Mode, Full Color in Original Mode) */}
-              <div className="pointer-events-none absolute inset-0 z-0">
-                <Image
-                  src={`/assets/images/maps/level-${activeFloor}.jpg`}
-                  alt={`Level ${activeFloor} floor plan`}
-                  fill
-                  className={`object-fill transition-all duration-500 ${
-                    renderMode === 'tron'
-                      ? 'invert hue-rotate-180 contrast-150 brightness-75 saturate-200 opacity-35 mix-blend-screen'
-                      : 'opacity-90'
-                  }`}
-                />
-              </div>
-
-              {/* SVG Ray-Traced Vector Architecture & Interactive Overlay */}
-              <svg
-                viewBox="0 0 1000 700"
-                className="relative z-10 h-full w-full select-none"
+            {/* Scrollable / Pan-Ready Map Viewport Container */}
+            <div
+              ref={mapScrollRef}
+              className={`relative w-full ${
+                zoomLevel > 1
+                  ? 'overflow-auto touch-pan-x touch-pan-y cursor-grab active:cursor-grabbing'
+                  : 'overflow-hidden'
+              }`}
+            >
+              <div
+                style={{ width: `${zoomLevel * 100}%` }}
+                className="relative aspect-[1000/700] transition-[width] duration-200 ease-out"
               >
-                <defs>
-                  {/* Neon Cyan Glow Filter */}
-                  <filter
-                    id="tron-cyan-glow"
-                    x="-30%"
-                    y="-30%"
-                    width="160%"
-                    height="160%"
-                  >
-                    <feGaussianBlur stdDeviation="4" result="blur" />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
+                {/* Architectural Map Image (Glowing Cyan CAD Wireframe in TRON Mode, Full Color in Original Mode) */}
+                <div className="pointer-events-none absolute inset-0 z-0">
+                  <Image
+                    src={`/assets/images/maps/level-${activeFloor}.jpg`}
+                    alt={`Level ${activeFloor} floor plan`}
+                    fill
+                    className={`object-fill transition-all duration-500 ${
+                      renderMode === 'tron'
+                        ? 'invert hue-rotate-180 contrast-150 brightness-75 saturate-200 opacity-35 mix-blend-screen'
+                        : 'opacity-90'
+                    }`}
+                  />
+                </div>
 
-                  {/* Neon Pink/Red Glow Filter */}
-                  <filter
-                    id="tron-red-glow"
-                    x="-40%"
-                    y="-40%"
-                    width="180%"
-                    height="180%"
-                  >
-                    <feGaussianBlur stdDeviation="5" result="blur" />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-
-                  {/* Diagonal Hatch Pattern for Utility/Atrium Cores */}
-                  <pattern
-                    id="tron-hatch"
-                    width="10"
-                    height="10"
-                    patternTransform="rotate(45 0 0)"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <line
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="10"
-                      stroke="rgba(0, 240, 255, 0.18)"
-                      strokeWidth="1.5"
-                    />
-                  </pattern>
-
-                  {/* Fine Subgrid Pattern */}
-                  <pattern
-                    id="tron-subgrid"
-                    width="25"
-                    height="25"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <path
-                      d="M 25 0 L 0 0 0 25"
-                      fill="none"
-                      stroke="rgba(0, 240, 255, 0.06)"
-                      strokeWidth="0.75"
-                    />
-                  </pattern>
-                </defs>
-
-                {/* Base TRON Coordinate Grid */}
-                {renderMode === 'tron' && (
-                  <rect width="1000" height="700" fill="url(#tron-subgrid)" />
-                )}
-
-                {/* Architectural Vector Blueprint Walls & Corridors (Visible in TRON mode) */}
-                {renderMode === 'tron' && (
-                  <g className="transition-opacity duration-500">
-                    {/* Outer Building Hull — West Wing + Bridge + East Wing */}
-                    <polygon
-                      points="28,46 412,42 414,185 506,185 506,170 520,170 520,108 824,112 824,188 886,190 895,355 880,505 824,505 818,578 510,575 510,520 495,520 495,495 415,495 415,636 42,626"
-                      fill="rgba(4, 10, 24, 0.45)"
-                      stroke="#00f0ff"
-                      strokeWidth="2.2"
-                      filter="url(#tron-cyan-glow)"
-                    />
-
-                    {/* East Wing Central Hatched Courtyard Core */}
-                    <rect
-                      x="578"
-                      y="268"
-                      width="148"
-                      height="145"
-                      fill="url(#tron-hatch)"
-                      stroke="rgba(0, 240, 255, 0.45)"
-                      strokeWidth="1.5"
-                    />
-
-                    {/* Level 03 Specific Vector Rooms & Walkable Corridors */}
-                    {activeFloor === '03' && (
-                      <g>
-                        {/* Walkable Corridor Conduits (Level 03) */}
-                        <g
-                          fill="rgba(0, 240, 255, 0.06)"
-                          stroke="rgba(0, 240, 255, 0.35)"
-                          strokeDasharray="5 4"
-                          strokeWidth="1"
-                        >
-                          {/* Central East-West Bridge Corridor */}
-                          <rect x="176" y="328" width="340" height="28" />
-                          {/* West Atrium North-South Corridor */}
-                          <rect x="172" y="166" width="24" height="445" />
-                          {/* East Wing Elevator Lobby & Courtyard Corridor */}
-                          <rect x="504" y="252" width="20" height="184" />
-                        </g>
-
-                        {/* West Wing Inner Hatched Utility Cores */}
-                        <rect
-                          x="244"
-                          y="170"
-                          width="72"
-                          height="142"
-                          fill="url(#tron-hatch)"
-                          stroke="rgba(0, 240, 255, 0.35)"
-                          strokeWidth="1.2"
-                        />
-                        <rect
-                          x="240"
-                          y="376"
-                          width="76"
-                          height="122"
-                          fill="url(#tron-hatch)"
-                          stroke="rgba(0, 240, 255, 0.35)"
-                          strokeWidth="1.2"
-                        />
-
-                        {/* Le Parquet — Main Stage 3-1 Zone */}
-                        <rect
-                          x="110"
-                          y="122"
-                          width="90"
-                          height="465"
-                          rx="4"
-                          fill="rgba(251, 188, 4, 0.07)"
-                          stroke="rgba(251, 188, 4, 0.45)"
-                          strokeWidth="1.5"
-                        />
-                        <text
-                          x="155"
-                          y="338"
-                          textAnchor="middle"
-                          className="fill-yellow-300/75 font-mono-tech text-[10px] uppercase tracking-widest"
-                        >
-                          LE PARQUET
-                        </text>
-
-                        {/* Room #321 (2 - Mr. Roboto) */}
-                        <rect
-                          x="205"
-                          y="196"
-                          width="39"
-                          height="48"
-                          fill="rgba(0, 240, 255, 0.14)"
-                          stroke="#00f0ff"
-                          strokeWidth="1.6"
-                        />
-                        {/* Room #319 (3 - Take On Me) */}
-                        <rect
-                          x="205"
-                          y="284"
-                          width="39"
-                          height="34"
-                          fill="rgba(52, 211, 153, 0.14)"
-                          stroke="#34d399"
-                          strokeWidth="1.6"
-                        />
-
-                        {/* Room #342 (5 - Just Can't Get Enough) */}
-                        <rect
-                          x="416"
-                          y="263"
-                          width="76"
-                          height="56"
-                          fill="rgba(234, 67, 53, 0.16)"
-                          stroke="#ea4335"
-                          strokeWidth="1.8"
-                        />
-                        {/* Room #302 (4 - Call Me) */}
-                        <rect
-                          x="416"
-                          y="366"
-                          width="42"
-                          height="62"
-                          fill="rgba(234, 67, 53, 0.16)"
-                          stroke="#ea4335"
-                          strokeWidth="1.8"
-                        />
-                      </g>
-                    )}
-
-                    {/* Level 04 Specific Vector Rooms & Walkable Corridors */}
-                    {activeFloor === '04' && (
-                      <g>
-                        {/* Walkable Corridor Conduits (Level 04) */}
-                        <g
-                          fill="rgba(0, 240, 255, 0.06)"
-                          stroke="rgba(0, 240, 255, 0.35)"
-                          strokeDasharray="5 4"
-                          strokeWidth="1"
-                        >
-                          {/* Central East-West Bridge Corridor */}
-                          <rect x="200" y="324" width="302" height="22" />
-                          {/* North-West Corridor (Stairs / Le Café to Central Bridge) */}
-                          <rect x="198" y="134" width="22" height="202" />
-                          <rect x="130" y="134" width="88" height="20" />
-                          {/* South-West Corridor (to #415, #410, #403.1) */}
-                          <rect x="266" y="346" width="16" height="184" />
-                          <rect x="218" y="514" width="152" height="16" />
-                          {/* East Wing Ring Corridor to Le Square */}
-                          <rect x="488" y="242" width="18" height="186" />
-                          <rect x="488" y="242" width="252" height="20" />
-                          <rect x="488" y="408" width="252" height="20" />
-                        </g>
-
-                        {/* West Wing Inner Hatched Utility Cores */}
-                        <rect
-                          x="268"
-                          y="185"
-                          width="44"
-                          height="138"
-                          fill="url(#tron-hatch)"
-                          stroke="rgba(0, 240, 255, 0.35)"
-                          strokeWidth="1.2"
-                        />
-                        <rect
-                          x="226"
-                          y="374"
-                          width="40"
-                          height="102"
-                          fill="url(#tron-hatch)"
-                          stroke="rgba(0, 240, 255, 0.35)"
-                          strokeWidth="1.2"
-                        />
-
-                        {/* Le Café (1 - The Danger Zone + Badge Station) */}
-                        <rect
-                          x="98"
-                          y="44"
-                          width="95"
-                          height="84"
-                          fill="rgba(56, 189, 248, 0.15)"
-                          stroke="#38bdf8"
-                          strokeWidth="1.8"
-                        />
-                        <text
-                          x="145"
-                          y="116"
-                          textAnchor="middle"
-                          className="fill-sky-300/80 font-mono-tech text-[9px] uppercase tracking-widest"
-                        >
-                          LE CAFÉ
-                        </text>
-
-                        {/* Le Parquet Upper Mezzanine Void (Hatched) */}
-                        <rect
-                          x="28"
-                          y="128"
-                          width="165"
-                          height="404"
-                          fill="url(#tron-hatch)"
-                          stroke="rgba(0, 240, 255, 0.25)"
-                          strokeWidth="1.2"
-                        />
-                        <text
-                          x="110"
-                          y="340"
-                          textAnchor="middle"
-                          className="fill-cyan-300/60 font-mono-tech text-[10px] uppercase tracking-widest"
-                        >
-                          LE PARQUET (MEZZANINE)
-                        </text>
-
-                        {/* Room #403 (4 - Under Pressure) */}
-                        <rect
-                          x="315"
-                          y="346"
-                          width="68"
-                          height="91"
-                          fill="rgba(234, 67, 53, 0.16)"
-                          stroke="#ea4335"
-                          strokeWidth="1.8"
-                        />
-                        {/* Room #403.1 (5 - Never Gonna Give You Up) */}
-                        <rect
-                          x="315"
-                          y="437"
-                          width="68"
-                          height="93"
-                          fill="rgba(234, 67, 53, 0.16)"
-                          stroke="#ea4335"
-                          strokeWidth="1.8"
-                        />
-
-                        {/* Coaching Pods: #418 (2), #415 (3), #410 (7) */}
-                        <rect
-                          x="226"
-                          y="134"
-                          width="42"
-                          height="34"
-                          fill="rgba(52, 211, 153, 0.15)"
-                          stroke="#34d399"
-                          strokeWidth="1.5"
-                        />
-                        <rect
-                          x="226"
-                          y="476"
-                          width="40"
-                          height="52"
-                          fill="rgba(52, 211, 153, 0.15)"
-                          stroke="#34d399"
-                          strokeWidth="1.5"
-                        />
-                        <rect
-                          x="280"
-                          y="482"
-                          width="35"
-                          height="46"
-                          fill="rgba(52, 211, 153, 0.15)"
-                          stroke="#34d399"
-                          strokeWidth="1.5"
-                        />
-
-                        {/* Le Square — Room 6: Hip To Be Square (91 Workshop Seats) */}
-                        <rect
-                          x="735"
-                          y="264"
-                          width="148"
-                          height="152"
-                          rx="4"
-                          fill="rgba(244, 63, 94, 0.16)"
-                          stroke="#fb7185"
-                          strokeWidth="2.2"
-                          filter="url(#tron-red-glow)"
-                        />
-                        <text
-                          x="810"
-                          y="326"
-                          textAnchor="middle"
-                          className="fill-rose-300 font-mono-tech text-[11px] font-bold uppercase tracking-widest"
-                        >
-                          LE SQUARE
-                        </text>
-                      </g>
-                    )}
-
-                    {/* Stairs Inverted Triangle Symbol */}
-                    <polygon
-                      points={
-                        activeFloor === '03'
-                          ? '119,166 175,166 147,219'
-                          : '109,166 165,166 137,219'
-                      }
-                      fill="rgba(0, 240, 255, 0.14)"
-                      stroke="#00f0ff"
-                      strokeWidth="1.5"
-                    />
-                  </g>
-                )}
-
-                {/* Animated TRON Ray-Traced Light-Cycle Path to Selected Node */}
-                {activeRoutePoints && (
-                  <g>
-                    {/* Outer Neon Path Glow */}
-                    <polyline
-                      points={activeRoutePoints}
-                      fill="none"
-                      stroke={
-                        routeOrigin === 'elevator' ? '#ff007f' : '#00f0ff'
-                      }
-                      strokeWidth="7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      opacity="0.32"
-                      filter="url(#tron-cyan-glow)"
-                    />
-                    {/* Core Animated Energy Beam */}
-                    <polyline
-                      points={activeRoutePoints}
-                      fill="none"
-                      stroke={
-                        routeOrigin === 'elevator' ? '#ff4da6' : '#00f0ff'
-                      }
-                      strokeWidth="3.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeDasharray="10 6"
+                {/* SVG Ray-Traced Vector Architecture & Interactive Overlay */}
+                <svg
+                  viewBox="0 0 1000 700"
+                  className="relative z-10 h-full w-full select-none"
+                >
+                  <defs>
+                    {/* Neon Cyan Glow Filter */}
+                    <filter
+                      id="tron-cyan-glow"
+                      x="-30%"
+                      y="-30%"
+                      width="160%"
+                      height="160%"
                     >
-                      <animate
-                        attributeName="stroke-dashoffset"
-                        from="64"
-                        to="0"
-                        dur="1.4s"
-                        repeatCount="indefinite"
+                      <feGaussianBlur stdDeviation="4" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+
+                    {/* Neon Pink/Red Glow Filter */}
+                    <filter
+                      id="tron-red-glow"
+                      x="-40%"
+                      y="-40%"
+                      width="180%"
+                      height="180%"
+                    >
+                      <feGaussianBlur stdDeviation="5" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+
+                    {/* Diagonal Hatch Pattern for Utility/Atrium Cores */}
+                    <pattern
+                      id="tron-hatch"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        stroke="rgba(0, 240, 255, 0.18)"
+                        strokeWidth="1.5"
                       />
-                    </polyline>
-                  </g>
-                )}
+                    </pattern>
 
-                {/* Interactive Map Nodes */}
-                {floorNodes.map((node) => {
-                  const isSelected = selectedNode.id === node.id;
-                  const isHovered = hoveredNodeId === node.id;
-                  const isRoomDiamond =
-                    node.category === 'room' ||
-                    node.category === 'coaching' ||
-                    node.category === 'showcase' ||
-                    node.id === 'l4-room-1';
-
-                  const palette = {
-                    red: {
-                      fill: '#ea4335',
-                      stroke: '#ff8a80',
-                      ring: 'rgba(234, 67, 53, 0.5)',
-                    },
-                    yellow: {
-                      fill: '#fbbc04',
-                      stroke: '#fde047',
-                      ring: 'rgba(251, 188, 4, 0.55)',
-                    },
-                    cyan: {
-                      fill: '#00bcd4',
-                      stroke: '#67e8f9',
-                      ring: 'rgba(0, 240, 255, 0.55)',
-                    },
-                    green: {
-                      fill: '#10b981',
-                      stroke: '#6ee7b7',
-                      ring: 'rgba(16, 185, 129, 0.5)',
-                    },
-                    magenta: {
-                      fill: '#ec4899',
-                      stroke: '#f9a8d4',
-                      ring: 'rgba(236, 72, 153, 0.55)',
-                    },
-                    orange: {
-                      fill: '#f97316',
-                      stroke: '#fdba74',
-                      ring: 'rgba(249, 115, 22, 0.5)',
-                    },
-                    blue: {
-                      fill: '#3b82f6',
-                      stroke: '#93c5fd',
-                      ring: 'rgba(59, 130, 246, 0.5)',
-                    },
-                  }[node.color];
-
-                  // Special Case: Gold Sponsors (G) renders all 3 Gold Booths (Vooban, oXya, Davidson Canada)
-                  if (node.id === 'l3-sponsor-g1') {
-                    const goldBooths = [
-                      { x: 268, y: 324, name: 'Vooban' },
-                      { x: 300, y: 324, name: 'oXya' },
-                      { x: 301, y: 361, name: 'Davidson Canada' },
-                    ];
-                    return (
-                      <g
-                        key={node.id}
-                        onClick={() => handleNodeClick(node)}
-                        onMouseEnter={() => setHoveredNodeId(node.id)}
-                        onMouseLeave={() => setHoveredNodeId(null)}
-                        className="cursor-pointer group"
-                      >
-                        {goldBooths.map((booth, idx) => (
-                          <g
-                            key={idx}
-                            transform={`translate(${booth.x}, ${booth.y})`}
-                          >
-                            {isSelected && (
-                              <rect
-                                x="-15"
-                                y="-11"
-                                width="30"
-                                height="22"
-                                rx="4"
-                                fill="none"
-                                stroke="#6ee7b7"
-                                strokeWidth="1.5"
-                                strokeDasharray="4 2"
-                              />
-                            )}
-                            <rect
-                              x="-11"
-                              y="-7.5"
-                              width="22"
-                              height="15"
-                              rx="3"
-                              fill="#10b981"
-                              stroke={
-                                isSelected || isHovered ? '#ffffff' : '#6ee7b7'
-                              }
-                              strokeWidth={
-                                isSelected || isHovered ? '2.2' : '1.4'
-                              }
-                              filter="url(#tron-cyan-glow)"
-                            />
-                            <text
-                              y="3.5"
-                              textAnchor="middle"
-                              className="fill-white font-mono-tech text-[9.5px] font-bold pointer-events-none"
-                            >
-                              G
-                            </text>
-                          </g>
-                        ))}
-                      </g>
-                    );
-                  }
-
-                  // Special Case: Marquee Sponsor (M), Registration (R), Badge Station (B) render as rectangular booths
-                  const isRectBooth =
-                    node.id === 'l3-sponsor-m' ||
-                    node.id === 'l3-reg' ||
-                    node.id === 'l4-badge';
-
-                  return (
-                    <g
-                      key={node.id}
-                      transform={`translate(${node.x}, ${node.y})`}
-                      onClick={() => handleNodeClick(node)}
-                      onMouseEnter={() => setHoveredNodeId(node.id)}
-                      onMouseLeave={() => setHoveredNodeId(null)}
-                      className="cursor-pointer group"
+                    {/* Fine Subgrid Pattern */}
+                    <pattern
+                      id="tron-subgrid"
+                      width="25"
+                      height="25"
+                      patternUnits="userSpaceOnUse"
                     >
-                      {/* Pulsing Radar Target Ring when selected */}
-                      {isSelected && (
-                        <>
-                          <circle
-                            r="26"
-                            fill="none"
-                            stroke={palette.stroke}
-                            strokeWidth="1.5"
-                            strokeDasharray="5 3"
+                      <path
+                        d="M 25 0 L 0 0 0 25"
+                        fill="none"
+                        stroke="rgba(0, 240, 255, 0.06)"
+                        strokeWidth="0.75"
+                      />
+                    </pattern>
+                  </defs>
+
+                  {/* Base TRON Coordinate Grid */}
+                  {renderMode === 'tron' && (
+                    <rect width="1000" height="700" fill="url(#tron-subgrid)" />
+                  )}
+
+                  {/* Architectural Vector Blueprint Walls & Corridors (Visible in TRON mode) */}
+                  {renderMode === 'tron' && (
+                    <g className="transition-opacity duration-500">
+                      {/* Outer Building Hull — West Wing + Bridge + East Wing */}
+                      <polygon
+                        points="28,46 412,42 414,185 506,185 506,170 520,170 520,108 824,112 824,188 886,190 895,355 880,505 824,505 818,578 510,575 510,520 495,520 495,495 415,495 415,636 42,626"
+                        fill="rgba(4, 10, 24, 0.45)"
+                        stroke="#00f0ff"
+                        strokeWidth="2.2"
+                        filter="url(#tron-cyan-glow)"
+                      />
+
+                      {/* East Wing Central Hatched Courtyard Core */}
+                      <rect
+                        x="578"
+                        y="268"
+                        width="148"
+                        height="145"
+                        fill="url(#tron-hatch)"
+                        stroke="rgba(0, 240, 255, 0.45)"
+                        strokeWidth="1.5"
+                      />
+
+                      {/* Level 03 Specific Vector Rooms & Walkable Corridors */}
+                      {activeFloor === '03' && (
+                        <g>
+                          {/* Walkable Corridor Conduits (Level 03) */}
+                          <g
+                            fill="rgba(0, 240, 255, 0.06)"
+                            stroke="rgba(0, 240, 255, 0.35)"
+                            strokeDasharray="5 4"
+                            strokeWidth="1"
                           >
-                            <animateTransform
-                              attributeName="transform"
-                              type="rotate"
-                              from="0"
-                              to="360"
-                              dur="6s"
-                              repeatCount="indefinite"
-                            />
-                          </circle>
-                          <circle r="18" fill={palette.ring} opacity="0.35">
-                            <animate
-                              attributeName="r"
-                              values="15;24;15"
-                              dur="2s"
-                              repeatCount="indefinite"
-                            />
-                          </circle>
-                        </>
+                            {/* Central East-West Bridge Corridor */}
+                            <rect x="176" y="328" width="340" height="28" />
+                            {/* West Atrium North-South Corridor */}
+                            <rect x="172" y="166" width="24" height="445" />
+                            {/* East Wing Elevator Lobby & Courtyard Corridor */}
+                            <rect x="504" y="252" width="20" height="184" />
+                          </g>
+
+                          {/* West Wing Inner Hatched Utility Cores */}
+                          <rect
+                            x="244"
+                            y="170"
+                            width="72"
+                            height="142"
+                            fill="url(#tron-hatch)"
+                            stroke="rgba(0, 240, 255, 0.35)"
+                            strokeWidth="1.2"
+                          />
+                          <rect
+                            x="240"
+                            y="376"
+                            width="76"
+                            height="122"
+                            fill="url(#tron-hatch)"
+                            stroke="rgba(0, 240, 255, 0.35)"
+                            strokeWidth="1.2"
+                          />
+
+                          {/* Le Parquet — Main Stage 3-1 Zone */}
+                          <rect
+                            x="110"
+                            y="122"
+                            width="90"
+                            height="465"
+                            rx="4"
+                            fill="rgba(251, 188, 4, 0.07)"
+                            stroke="rgba(251, 188, 4, 0.45)"
+                            strokeWidth="1.5"
+                          />
+                          <text
+                            x="155"
+                            y="338"
+                            textAnchor="middle"
+                            className="fill-yellow-300/75 font-mono-tech text-[10px] uppercase tracking-widest"
+                          >
+                            LE PARQUET
+                          </text>
+
+                          {/* Room #321 (2 - Mr. Roboto) */}
+                          <rect
+                            x="205"
+                            y="196"
+                            width="39"
+                            height="48"
+                            fill="rgba(0, 240, 255, 0.14)"
+                            stroke="#00f0ff"
+                            strokeWidth="1.6"
+                          />
+                          {/* Room #319 (3 - Take On Me) */}
+                          <rect
+                            x="205"
+                            y="284"
+                            width="39"
+                            height="34"
+                            fill="rgba(52, 211, 153, 0.14)"
+                            stroke="#34d399"
+                            strokeWidth="1.6"
+                          />
+
+                          {/* Room #342 (5 - Just Can't Get Enough) */}
+                          <rect
+                            x="416"
+                            y="263"
+                            width="76"
+                            height="56"
+                            fill="rgba(234, 67, 53, 0.16)"
+                            stroke="#ea4335"
+                            strokeWidth="1.8"
+                          />
+                          {/* Room #302 (4 - Call Me) */}
+                          <rect
+                            x="416"
+                            y="366"
+                            width="42"
+                            height="62"
+                            fill="rgba(234, 67, 53, 0.16)"
+                            stroke="#ea4335"
+                            strokeWidth="1.8"
+                          />
+                        </g>
                       )}
 
-                      {/* Marker Shape: Red Diamond for Rooms (1-7), Rect Booth for M/R/B, or Circle for Amenities */}
-                      {isRoomDiamond ? (
-                        <polygon
-                          points="0,-15 15,0 0,15 -15,0"
-                          fill="#ea4335"
-                          stroke={
-                            isSelected || isHovered ? '#ffffff' : '#fca5a5'
-                          }
-                          strokeWidth={isSelected || isHovered ? '2.5' : '1.5'}
-                          filter="url(#tron-red-glow)"
-                        />
-                      ) : isRectBooth ? (
-                        <rect
-                          x={node.id === 'l3-reg' ? -33 : -14}
-                          y="-8"
-                          width={node.id === 'l3-reg' ? 66 : 28}
-                          height="16"
-                          rx="3"
-                          fill={palette.fill}
-                          stroke={
-                            isSelected || isHovered ? '#ffffff' : palette.stroke
-                          }
-                          strokeWidth={isSelected || isHovered ? '2.3' : '1.5'}
-                          filter="url(#tron-cyan-glow)"
-                        />
-                      ) : (
-                        <circle
-                          r="13"
-                          fill={palette.fill}
-                          stroke={
-                            isSelected || isHovered ? '#ffffff' : palette.stroke
-                          }
-                          strokeWidth={isSelected || isHovered ? '2.5' : '1.5'}
-                          filter="url(#tron-cyan-glow)"
-                        />
+                      {/* Level 04 Specific Vector Rooms & Walkable Corridors */}
+                      {activeFloor === '04' && (
+                        <g>
+                          {/* Walkable Corridor Conduits (Level 04) */}
+                          <g
+                            fill="rgba(0, 240, 255, 0.06)"
+                            stroke="rgba(0, 240, 255, 0.35)"
+                            strokeDasharray="5 4"
+                            strokeWidth="1"
+                          >
+                            {/* Central East-West Bridge Corridor */}
+                            <rect x="200" y="324" width="302" height="22" />
+                            {/* North-West Corridor (Stairs / Le Café to Central Bridge) */}
+                            <rect x="198" y="134" width="22" height="202" />
+                            <rect x="130" y="134" width="88" height="20" />
+                            {/* South-West Corridor (to #415, #410, #403.1) */}
+                            <rect x="266" y="346" width="16" height="184" />
+                            <rect x="218" y="514" width="152" height="16" />
+                            {/* East Wing Ring Corridor to Le Square */}
+                            <rect x="488" y="242" width="18" height="186" />
+                            <rect x="488" y="242" width="252" height="20" />
+                            <rect x="488" y="408" width="252" height="20" />
+                          </g>
+
+                          {/* West Wing Inner Hatched Utility Cores */}
+                          <rect
+                            x="268"
+                            y="185"
+                            width="44"
+                            height="138"
+                            fill="url(#tron-hatch)"
+                            stroke="rgba(0, 240, 255, 0.35)"
+                            strokeWidth="1.2"
+                          />
+                          <rect
+                            x="226"
+                            y="374"
+                            width="40"
+                            height="102"
+                            fill="url(#tron-hatch)"
+                            stroke="rgba(0, 240, 255, 0.35)"
+                            strokeWidth="1.2"
+                          />
+
+                          {/* Le Café (1 - The Danger Zone + Badge Station) */}
+                          <rect
+                            x="98"
+                            y="44"
+                            width="95"
+                            height="84"
+                            fill="rgba(56, 189, 248, 0.15)"
+                            stroke="#38bdf8"
+                            strokeWidth="1.8"
+                          />
+                          <text
+                            x="145"
+                            y="116"
+                            textAnchor="middle"
+                            className="fill-sky-300/80 font-mono-tech text-[9px] uppercase tracking-widest"
+                          >
+                            LE CAFÉ
+                          </text>
+
+                          {/* Le Parquet Upper Mezzanine Void (Hatched) */}
+                          <rect
+                            x="28"
+                            y="128"
+                            width="165"
+                            height="404"
+                            fill="url(#tron-hatch)"
+                            stroke="rgba(0, 240, 255, 0.25)"
+                            strokeWidth="1.2"
+                          />
+                          <text
+                            x="110"
+                            y="340"
+                            textAnchor="middle"
+                            className="fill-cyan-300/60 font-mono-tech text-[10px] uppercase tracking-widest"
+                          >
+                            LE PARQUET (MEZZANINE)
+                          </text>
+
+                          {/* Room #403 (4 - Under Pressure) */}
+                          <rect
+                            x="315"
+                            y="346"
+                            width="68"
+                            height="91"
+                            fill="rgba(234, 67, 53, 0.16)"
+                            stroke="#ea4335"
+                            strokeWidth="1.8"
+                          />
+                          {/* Room #403.1 (5 - Never Gonna Give You Up) */}
+                          <rect
+                            x="315"
+                            y="437"
+                            width="68"
+                            height="93"
+                            fill="rgba(234, 67, 53, 0.16)"
+                            stroke="#ea4335"
+                            strokeWidth="1.8"
+                          />
+
+                          {/* Coaching Pods: #418 (2), #415 (3), #410 (7) */}
+                          <rect
+                            x="226"
+                            y="134"
+                            width="42"
+                            height="34"
+                            fill="rgba(52, 211, 153, 0.15)"
+                            stroke="#34d399"
+                            strokeWidth="1.5"
+                          />
+                          <rect
+                            x="226"
+                            y="476"
+                            width="40"
+                            height="52"
+                            fill="rgba(52, 211, 153, 0.15)"
+                            stroke="#34d399"
+                            strokeWidth="1.5"
+                          />
+                          <rect
+                            x="280"
+                            y="482"
+                            width="35"
+                            height="46"
+                            fill="rgba(52, 211, 153, 0.15)"
+                            stroke="#34d399"
+                            strokeWidth="1.5"
+                          />
+
+                          {/* Le Square — Room 6: Hip To Be Square (91 Workshop Seats) */}
+                          <rect
+                            x="735"
+                            y="264"
+                            width="148"
+                            height="152"
+                            rx="4"
+                            fill="rgba(244, 63, 94, 0.16)"
+                            stroke="#fb7185"
+                            strokeWidth="2.2"
+                            filter="url(#tron-red-glow)"
+                          />
+                          <text
+                            x="810"
+                            y="326"
+                            textAnchor="middle"
+                            className="fill-rose-300 font-mono-tech text-[11px] font-bold uppercase tracking-widest"
+                          >
+                            LE SQUARE
+                          </text>
+                        </g>
                       )}
 
-                      {/* Node Badge Number / Symbol */}
-                      <text
-                        y="3.8"
-                        textAnchor="middle"
-                        className="fill-white font-mono-tech text-[10.5px] font-bold pointer-events-none"
-                      >
-                        {node.numberBadge}
-                      </text>
+                      {/* Stairs Inverted Triangle Symbol */}
+                      <polygon
+                        points={
+                          activeFloor === '03'
+                            ? '119,166 175,166 147,219'
+                            : '109,166 165,166 137,219'
+                        }
+                        fill="rgba(0, 240, 255, 0.14)"
+                        stroke="#00f0ff"
+                        strokeWidth="1.5"
+                      />
                     </g>
-                  );
-                })}
+                  )}
 
-                {/* Top-Layer Floating Tooltip Label (Visible only on Hover to keep map uncluttered) */}
-                {floorNodes
-                  .filter((node) => hoveredNodeId === node.id)
-                  .map((node) => {
+                  {/* Animated TRON Ray-Traced Light-Cycle Path to Selected Node */}
+                  {activeRoutePoints && (
+                    <g>
+                      {/* Outer Neon Path Glow */}
+                      <polyline
+                        points={activeRoutePoints}
+                        fill="none"
+                        stroke={
+                          routeOrigin === 'elevator' ? '#ff007f' : '#00f0ff'
+                        }
+                        strokeWidth="7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        opacity="0.32"
+                        filter="url(#tron-cyan-glow)"
+                      />
+                      {/* Core Animated Energy Beam */}
+                      <polyline
+                        points={activeRoutePoints}
+                        fill="none"
+                        stroke={
+                          routeOrigin === 'elevator' ? '#ff4da6' : '#00f0ff'
+                        }
+                        strokeWidth="3.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeDasharray="10 6"
+                      >
+                        <animate
+                          attributeName="stroke-dashoffset"
+                          from="64"
+                          to="0"
+                          dur="1.4s"
+                          repeatCount="indefinite"
+                        />
+                      </polyline>
+                    </g>
+                  )}
+
+                  {/* Interactive Map Nodes */}
+                  {floorNodes.map((node) => {
+                    const isSelected = selectedNode.id === node.id;
+                    const isHovered = hoveredNodeId === node.id;
                     const isRoomDiamond =
                       node.category === 'room' ||
                       node.category === 'coaching' ||
                       node.category === 'showcase' ||
                       node.id === 'l4-room-1';
-                    const labelText =
-                      node.numberBadge &&
-                      (isRoomDiamond ||
-                        node.category === 'sponsor' ||
-                        node.category === 'registration')
-                        ? `${node.numberBadge} · ${node.name}`
-                        : node.name;
-                    const halfWidth = Math.max(labelText.length * 3.5, 44);
+
+                    const palette = {
+                      red: {
+                        fill: '#ea4335',
+                        stroke: '#ff8a80',
+                        ring: 'rgba(234, 67, 53, 0.5)',
+                      },
+                      yellow: {
+                        fill: '#fbbc04',
+                        stroke: '#fde047',
+                        ring: 'rgba(251, 188, 4, 0.55)',
+                      },
+                      cyan: {
+                        fill: '#00bcd4',
+                        stroke: '#67e8f9',
+                        ring: 'rgba(0, 240, 255, 0.55)',
+                      },
+                      green: {
+                        fill: '#10b981',
+                        stroke: '#6ee7b7',
+                        ring: 'rgba(16, 185, 129, 0.5)',
+                      },
+                      magenta: {
+                        fill: '#ec4899',
+                        stroke: '#f9a8d4',
+                        ring: 'rgba(236, 72, 153, 0.55)',
+                      },
+                      orange: {
+                        fill: '#f97316',
+                        stroke: '#fdba74',
+                        ring: 'rgba(249, 115, 22, 0.5)',
+                      },
+                      blue: {
+                        fill: '#3b82f6',
+                        stroke: '#93c5fd',
+                        ring: 'rgba(59, 130, 246, 0.5)',
+                      },
+                    }[node.color];
+
+                    // Special Case: Gold Sponsors (G) renders all 3 Gold Booths (Vooban, oXya, Davidson Canada)
+                    if (node.id === 'l3-sponsor-g1') {
+                      const goldBooths = [
+                        { x: 268, y: 324, name: 'Vooban' },
+                        { x: 300, y: 324, name: 'oXya' },
+                        { x: 301, y: 361, name: 'Davidson Canada' },
+                      ];
+                      return (
+                        <g
+                          key={node.id}
+                          onClick={() => handleNodeClick(node)}
+                          onMouseEnter={() => setHoveredNodeId(node.id)}
+                          onMouseLeave={() => setHoveredNodeId(null)}
+                          className="cursor-pointer group"
+                        >
+                          {goldBooths.map((booth, idx) => (
+                            <g
+                              key={idx}
+                              transform={`translate(${booth.x}, ${booth.y})`}
+                            >
+                              {/* Invisible Mobile Touch Target */}
+                              <rect
+                                x="-20"
+                                y="-18"
+                                width="40"
+                                height="36"
+                                fill="transparent"
+                              />
+                              {isSelected && (
+                                <rect
+                                  x="-15"
+                                  y="-11"
+                                  width="30"
+                                  height="22"
+                                  rx="4"
+                                  fill="none"
+                                  stroke="#6ee7b7"
+                                  strokeWidth="1.5"
+                                  strokeDasharray="4 2"
+                                />
+                              )}
+                              <rect
+                                x="-11"
+                                y="-7.5"
+                                width="22"
+                                height="15"
+                                rx="3"
+                                fill="#10b981"
+                                stroke={
+                                  isSelected || isHovered
+                                    ? '#ffffff'
+                                    : '#6ee7b7'
+                                }
+                                strokeWidth={
+                                  isSelected || isHovered ? '2.2' : '1.4'
+                                }
+                                filter="url(#tron-cyan-glow)"
+                              />
+                              <text
+                                y="3.5"
+                                textAnchor="middle"
+                                className="fill-white font-mono-tech text-[9.5px] font-bold pointer-events-none"
+                              >
+                                G
+                              </text>
+                            </g>
+                          ))}
+                        </g>
+                      );
+                    }
+
+                    // Special Case: Marquee Sponsor (M), Registration (R), Badge Station (B) render as rectangular booths
+                    const isRectBooth =
+                      node.id === 'l3-sponsor-m' ||
+                      node.id === 'l3-reg' ||
+                      node.id === 'l4-badge';
 
                     return (
                       <g
-                        key={`hover-label-${node.id}`}
-                        transform={`translate(${node.x}, ${node.y - 26})`}
-                        className="pointer-events-none"
+                        key={node.id}
+                        transform={`translate(${node.x}, ${node.y})`}
+                        onClick={() => handleNodeClick(node)}
+                        onMouseEnter={() => setHoveredNodeId(node.id)}
+                        onMouseLeave={() => setHoveredNodeId(null)}
+                        className="cursor-pointer group"
                       >
-                        <rect
-                          x={-halfWidth}
-                          y="-16"
-                          width={halfWidth * 2}
-                          height="22"
-                          rx="5"
-                          fill="rgba(0, 240, 255, 0.96)"
-                          stroke="#ffffff"
-                          strokeWidth="1.2"
-                          filter="url(#tron-cyan-glow)"
-                        />
+                        {/* Generous Invisible Touch Hit Target for Mobile Fingers */}
+                        {isRectBooth ? (
+                          <rect
+                            x={node.id === 'l3-reg' ? -40 : -24}
+                            y="-20"
+                            width={node.id === 'l3-reg' ? 80 : 48}
+                            height="40"
+                            fill="transparent"
+                          />
+                        ) : (
+                          <circle r="24" fill="transparent" />
+                        )}
+
+                        {/* Pulsing Radar Target Ring when selected */}
+                        {isSelected && (
+                          <>
+                            <circle
+                              r="26"
+                              fill="none"
+                              stroke={palette.stroke}
+                              strokeWidth="1.5"
+                              strokeDasharray="5 3"
+                            >
+                              <animateTransform
+                                attributeName="transform"
+                                type="rotate"
+                                from="0"
+                                to="360"
+                                dur="6s"
+                                repeatCount="indefinite"
+                              />
+                            </circle>
+                            <circle r="18" fill={palette.ring} opacity="0.35">
+                              <animate
+                                attributeName="r"
+                                values="15;24;15"
+                                dur="2s"
+                                repeatCount="indefinite"
+                              />
+                            </circle>
+                          </>
+                        )}
+
+                        {/* Marker Shape: Red Diamond for Rooms (1-7), Rect Booth for M/R/B, or Circle for Amenities */}
+                        {isRoomDiamond ? (
+                          <polygon
+                            points="0,-15 15,0 0,15 -15,0"
+                            fill="#ea4335"
+                            stroke={
+                              isSelected || isHovered ? '#ffffff' : '#fca5a5'
+                            }
+                            strokeWidth={
+                              isSelected || isHovered ? '2.5' : '1.5'
+                            }
+                            filter="url(#tron-red-glow)"
+                          />
+                        ) : isRectBooth ? (
+                          <rect
+                            x={node.id === 'l3-reg' ? -33 : -14}
+                            y="-8"
+                            width={node.id === 'l3-reg' ? 66 : 28}
+                            height="16"
+                            rx="3"
+                            fill={palette.fill}
+                            stroke={
+                              isSelected || isHovered
+                                ? '#ffffff'
+                                : palette.stroke
+                            }
+                            strokeWidth={
+                              isSelected || isHovered ? '2.3' : '1.5'
+                            }
+                            filter="url(#tron-cyan-glow)"
+                          />
+                        ) : (
+                          <circle
+                            r="13"
+                            fill={palette.fill}
+                            stroke={
+                              isSelected || isHovered
+                                ? '#ffffff'
+                                : palette.stroke
+                            }
+                            strokeWidth={
+                              isSelected || isHovered ? '2.5' : '1.5'
+                            }
+                            filter="url(#tron-cyan-glow)"
+                          />
+                        )}
+
+                        {/* Node Badge Number / Symbol */}
                         <text
-                          y="-2"
+                          y="3.8"
                           textAnchor="middle"
-                          className="fill-black font-mono-tech text-[10px] font-bold tracking-wider"
+                          className="fill-white font-mono-tech text-[10.5px] font-bold pointer-events-none"
                         >
-                          {labelText}
+                          {node.numberBadge}
                         </text>
                       </g>
                     );
                   })}
-              </svg>
+
+                  {/* Top-Layer Floating Tooltip Label (Shows hovered node on desktop, or active selected node on mobile/tap, clamped inside SVG bounds) */}
+                  {floorNodes
+                    .filter(
+                      (node) => (hoveredNodeId ?? selectedNode.id) === node.id,
+                    )
+                    .map((node) => {
+                      const isRoomDiamond =
+                        node.category === 'room' ||
+                        node.category === 'coaching' ||
+                        node.category === 'showcase' ||
+                        node.id === 'l4-room-1';
+                      const labelText =
+                        node.numberBadge &&
+                        (isRoomDiamond ||
+                          node.category === 'sponsor' ||
+                          node.category === 'registration')
+                          ? `${node.numberBadge} · ${node.name}`
+                          : node.name;
+                      const halfWidth = Math.max(labelText.length * 3.5, 44);
+                      const clampedX = Math.min(
+                        Math.max(node.x, halfWidth + 12),
+                        1000 - halfWidth - 12,
+                      );
+                      const tooltipY = node.y < 68 ? node.y + 34 : node.y - 26;
+
+                      return (
+                        <g
+                          key={`hover-label-${node.id}`}
+                          transform={`translate(${clampedX}, ${tooltipY})`}
+                          className="pointer-events-none"
+                        >
+                          <rect
+                            x={-halfWidth}
+                            y="-16"
+                            width={halfWidth * 2}
+                            height="22"
+                            rx="5"
+                            fill="rgba(0, 240, 255, 0.96)"
+                            stroke="#ffffff"
+                            strokeWidth="1.2"
+                            filter="url(#tron-cyan-glow)"
+                          />
+                          <text
+                            y="-2"
+                            textAnchor="middle"
+                            className="fill-black font-mono-tech text-[10px] font-bold tracking-wider"
+                          >
+                            {labelText}
+                          </text>
+                        </g>
+                      );
+                    })}
+                </svg>
+              </div>
             </div>
 
             {/* Bottom Map Legend Bar (Matches Original Map Key) */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-cyan-500/20 bg-[#050b1a]/95 px-4 py-3 font-mono-tech text-[11px] text-white/70">
-              <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 border-t border-cyan-500/20 bg-[#050b1a]/95 px-3 sm:px-4 py-2.5 sm:py-3 font-mono-tech text-[10px] sm:text-[11px] text-white/70">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                 <span className="inline-flex items-center gap-1.5">
                   <span className="inline-block h-3 w-3 rotate-45 bg-google-red border border-rose-300" />
                   <span>{isFr ? 'Salles (1–7)' : 'Event Rooms (1–7)'}</span>
@@ -1445,10 +1643,14 @@ export function TronSpaceNavigator({
                 {activeFloor === '03' && (
                   <button
                     type="button"
-                    onClick={() => setSelectedNodeId('l3-sponsor-g1')}
-                    className="inline-flex items-center gap-1.5 hover:text-emerald-300 transition-colors cursor-pointer"
+                    onClick={() =>
+                      handleNodeClick(
+                        MAP_NODES.find((n) => n.id === 'l3-sponsor-g1')!,
+                      )
+                    }
+                    className="inline-flex items-center gap-1.5 hover:text-emerald-300 transition-colors cursor-pointer text-left"
                   >
-                    <span className="inline-block h-3 w-3 rounded-sm bg-emerald-400" />
+                    <span className="inline-block h-3 w-3 shrink-0 rounded-sm bg-emerald-400" />
                     <span>
                       {isFr
                         ? 'Commanditaires Or (G) : Vooban, oXya, Davidson Canada'
@@ -1466,28 +1668,52 @@ export function TronSpaceNavigator({
                 </span>
               </div>
               <span className="text-cyan-400/80 uppercase tracking-widest">
-                {isFr
-                  ? 'Cliquez sur un point pour tracer la route'
-                  : 'Click any node to ray-trace route'}
+                {zoomLevel > 1
+                  ? isFr
+                    ? 'Glissez pour déplacer la carte'
+                    : 'Drag / swipe to pan zoomed map'
+                  : isFr
+                    ? 'Touchez un point pour tracer la route'
+                    : 'Tap any node to ray-trace route'}
               </span>
             </div>
           </div>
         </div>
 
         {/* Right Column: Target Telemetry & Live Room Schedule Inspector */}
-        <div className="lg:col-span-4 flex flex-col justify-between rounded-2xl border border-cyan-400/40 bg-[#070d1f]/95 p-5 sm:p-6 shadow-[0_0_35px_rgba(0,240,255,0.1)]">
+        <div className="lg:col-span-4 flex flex-col justify-between rounded-2xl border border-cyan-400/40 bg-[#070d1f]/95 p-4 sm:p-6 shadow-[0_0_35px_rgba(0,240,255,0.1)]">
           <div>
             {/* Telemetry Header */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-cyan-400" />
-                <span className="font-mono-tech text-xs font-bold uppercase tracking-[0.2em] text-cyan-400">
+            <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3.5 sm:pb-4">
+              <div className="flex items-center gap-2 min-w-0">
+                <Sparkles className="h-4 w-4 text-cyan-400 shrink-0" />
+                <span className="font-mono-tech text-xs font-bold uppercase tracking-[0.2em] text-cyan-400 truncate">
                   {selectedNode.code || `LEVEL ${activeFloor}`}
                 </span>
               </div>
-              <span className="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-2.5 py-0.5 font-mono-tech text-[10px] uppercase tracking-wider text-cyan-200">
-                {isFr ? `Niveau ${activeFloor}` : `Floor ${activeFloor}`}
-              </span>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleZoomChange(zoomLevel > 1 ? 1 : 1.75, selectedNode)
+                  }
+                  className="inline-flex items-center gap-1 rounded-full border border-cyan-400/40 bg-cyan-400/15 px-2.5 py-0.5 font-mono-tech text-[10px] uppercase tracking-wider text-cyan-200 hover:bg-cyan-400 hover:text-black transition-colors cursor-pointer"
+                >
+                  <ZoomIn className="h-3 w-3" />
+                  <span>
+                    {zoomLevel > 1
+                      ? isFr
+                        ? 'Vue globale'
+                        : 'Reset Zoom'
+                      : isFr
+                        ? 'Zoomer ici'
+                        : 'Zoom Here'}
+                  </span>
+                </button>
+                <span className="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-2.5 py-0.5 font-mono-tech text-[10px] uppercase tracking-wider text-cyan-200">
+                  {isFr ? `Niv. ${activeFloor}` : `Floor ${activeFloor}`}
+                </span>
+              </div>
             </div>
 
             {/* Selected Node Title & Metadata */}
@@ -1498,7 +1724,7 @@ export function TronSpaceNavigator({
                     {selectedNode.numberBadge}
                   </span>
                 )}
-                <h4 className="font-display text-2xl font-bold text-white leading-tight">
+                <h4 className="font-display text-xl sm:text-2xl font-bold text-white leading-tight">
                   {selectedNode.name}
                 </h4>
               </div>
@@ -1662,11 +1888,11 @@ export function TronSpaceNavigator({
                     : `Quick Jump — Level ${activeFloor}`}
                 </span>
                 <div className="space-y-1.5 max-h-[240px] overflow-y-auto pr-1">
-                  {MAP_NODES.filter((n) => n.floor === activeFloor).map((n) => (
+                  {allCurrentFloorNodes.map((n) => (
                     <button
                       key={n.id}
                       type="button"
-                      onClick={() => setSelectedNodeId(n.id)}
+                      onClick={() => handleNodeClick(n, true)}
                       className={`w-full flex items-center justify-between gap-2 rounded-lg border px-3 py-2 text-left font-mono-tech text-xs transition-all cursor-pointer ${
                         selectedNode.id === n.id
                           ? 'border-cyan-400 bg-cyan-400/15 text-white'
@@ -1700,15 +1926,15 @@ export function TronSpaceNavigator({
       </div>
 
       {/* Bottom Interactive Legend Grid: All Numbered Rooms on Current Floor */}
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-4 border-t border-white/10">
-        {MAP_NODES.filter((n) => n.floor === activeFloor).map((node) => {
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 pt-4 border-t border-white/10">
+        {allCurrentFloorNodes.map((node) => {
           const isSelected = selectedNode.id === node.id;
           return (
             <button
               key={node.id}
               type="button"
-              onClick={() => setSelectedNodeId(node.id)}
-              className={`group flex items-start gap-3 rounded-xl border p-3.5 text-left transition-all cursor-pointer ${
+              onClick={() => handleNodeClick(node, true)}
+              className={`group flex items-start gap-3 rounded-xl border p-3 sm:p-3.5 text-left transition-all cursor-pointer ${
                 isSelected
                   ? 'border-cyan-400 bg-cyan-400/15 shadow-[0_0_20px_rgba(0,240,255,0.18)]'
                   : 'border-white/10 bg-[#080f20]/80 hover:border-cyan-400/40 hover:bg-[#0c162e]'
