@@ -104,77 +104,83 @@ export function RoomAgendaSection({
         </div>
 
         {/* Navigation Pills: Main Agenda + TRON Space Navigator + Each Room + All Rooms */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          <button
-            type="button"
-            onClick={() => setSelectedTab('main')}
-            className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              selectedTab === 'main'
-                ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
-                : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
-            }`}
-          >
-            <CalendarRange className="h-3.5 w-3.5" />
-            <span>{copy.main_agenda_tab || 'Main Agenda (TL;DR)'}</span>
-          </button>
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2.5">
+          <div className="grid grid-cols-2 sm:contents gap-2">
+            <button
+              type="button"
+              onClick={() => setSelectedTab('main')}
+              className={`inline-flex items-center justify-center sm:justify-start gap-2 rounded-lg border px-3 sm:px-4 py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                selectedTab === 'main'
+                  ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
+                  : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
+              }`}
+            >
+              <CalendarRange className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">
+                {copy.main_agenda_tab || 'Main Agenda (TL;DR)'}
+              </span>
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setSelectedTab('map')}
-            className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              selectedTab === 'map'
-                ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-200 shadow-[0_0_18px_rgba(217,70,239,0.35)]'
-                : 'border-fuchsia-400/35 bg-fuchsia-500/10 text-fuchsia-200/90 hover:border-fuchsia-400 hover:text-white'
-            }`}
-          >
-            <Compass className="h-3.5 w-3.5" />
-            <span>
-              {copy.map_tab ||
-                (locale === 'fr'
-                  ? 'Carte Interactive (3e & 4e)'
-                  : 'Space Navigator (Map)')}
-            </span>
-          </button>
+            <button
+              type="button"
+              onClick={() => setSelectedTab('map')}
+              className={`inline-flex items-center justify-center sm:justify-start gap-2 rounded-lg border px-3 sm:px-4 py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                selectedTab === 'map'
+                  ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-200 shadow-[0_0_18px_rgba(217,70,239,0.35)]'
+                  : 'border-fuchsia-400/35 bg-fuchsia-500/10 text-fuchsia-200/90 hover:border-fuchsia-400 hover:text-white'
+              }`}
+            >
+              <Compass className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">
+                {copy.map_tab ||
+                  (locale === 'fr'
+                    ? 'Carte Interactive (3e & 4e)'
+                    : 'Space Navigator (Map)')}
+              </span>
+            </button>
+          </div>
 
-          {copy.rooms.map((room) => {
-            const isActive = selectedTab === room.id;
-            const activeClass =
-              room.accent === 'yellow'
-                ? 'border-google-yellow bg-google-yellow/20 text-google-yellow shadow-[0_0_15px_rgba(251,188,4,0.25)]'
-                : room.accent === 'red'
-                  ? 'border-rose-400 bg-rose-500/20 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.25)]'
-                  : 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]';
-            return (
-              <button
-                key={room.id}
-                type="button"
-                onClick={() => setSelectedTab(room.id)}
-                className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                  isActive
-                    ? activeClass
-                    : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
-                }`}
-              >
-                <DoorOpen className="h-3.5 w-3.5" />
-                <span className="font-bold">{room.worldCode}</span>
-                <span className="opacity-40">·</span>
-                <span>{room.name}</span>
-              </button>
-            );
-          })}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 sm:contents -mx-1 px-1">
+            {copy.rooms.map((room) => {
+              const isActive = selectedTab === room.id;
+              const activeClass =
+                room.accent === 'yellow'
+                  ? 'border-google-yellow bg-google-yellow/20 text-google-yellow shadow-[0_0_15px_rgba(251,188,4,0.25)]'
+                  : room.accent === 'red'
+                    ? 'border-rose-400 bg-rose-500/20 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.25)]'
+                    : 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]';
+              return (
+                <button
+                  key={room.id}
+                  type="button"
+                  onClick={() => setSelectedTab(room.id)}
+                  className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 sm:py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                    isActive
+                      ? activeClass
+                      : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
+                  }`}
+                >
+                  <DoorOpen className="h-3.5 w-3.5 shrink-0" />
+                  <span className="font-bold">{room.worldCode}</span>
+                  <span className="opacity-40">·</span>
+                  <span>{room.name}</span>
+                </button>
+              );
+            })}
 
-          <button
-            type="button"
-            onClick={() => setSelectedTab('all')}
-            className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              selectedTab === 'all'
-                ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
-                : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
-            }`}
-          >
-            <Layers className="h-3.5 w-3.5" />
-            <span>{copy.filter_all}</span>
-          </button>
+            <button
+              type="button"
+              onClick={() => setSelectedTab('all')}
+              className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 sm:py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                selectedTab === 'all'
+                  ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
+                  : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
+              }`}
+            >
+              <Layers className="h-3.5 w-3.5 shrink-0" />
+              <span>{copy.filter_all}</span>
+            </button>
+          </div>
         </div>
       </div>
 
