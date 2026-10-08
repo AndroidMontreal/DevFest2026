@@ -468,22 +468,24 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
                     })}
                   </div>
 
-                  <a
-                    href={speaker.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-flex h-9 w-9 items-center justify-center border border-white/15 bg-white/[0.03] text-white/80 transition-all rounded-none ${style.btnHover}`}
-                    aria-label={`${speaker.name} profile`}
-                  >
-                    {isLinkedin ? (
-                      <FaLinkedin className="h-5 w-5" />
-                    ) : (
-                      <ExternalLink
-                        className="h-[18px] w-[18px]"
-                        strokeWidth={2.5}
-                      />
-                    )}
-                  </a>
+                  {speaker.link && (
+                    <a
+                      href={speaker.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex h-9 w-9 items-center justify-center border border-white/15 bg-white/[0.03] text-white/80 transition-all rounded-none ${style.btnHover}`}
+                      aria-label={`${speaker.name} profile`}
+                    >
+                      {isLinkedin ? (
+                        <FaLinkedin className="h-5 w-5" />
+                      ) : (
+                        <ExternalLink
+                          className="h-[18px] w-[18px]"
+                          strokeWidth={2.5}
+                        />
+                      )}
+                    </a>
+                  )}
                 </div>
               </div>
             );
