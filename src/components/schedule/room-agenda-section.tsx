@@ -2,6 +2,7 @@
 
 import {
   CalendarRange,
+  Compass,
   DoorOpen,
   Layers,
   MapPin,
@@ -13,6 +14,7 @@ import {
   OverallDayAgenda,
   type OverallDayAgendaCopy,
 } from './overall-day-agenda';
+import { TronSpaceNavigator } from './tron-space-navigator';
 
 export type LightningSubItem = {
   time: string;
@@ -49,6 +51,7 @@ export type RoomAgendaSectionCopy = {
   section_title: string;
   section_subtitle: string;
   main_agenda_tab?: string;
+  map_tab?: string;
   filter_all: string;
   subject_to_change_note: string;
   rooms: RoomTrack[];
@@ -57,13 +60,18 @@ export type RoomAgendaSectionCopy = {
 type RoomAgendaSectionProps = {
   tldrCopy: OverallDayAgendaCopy;
   copy: RoomAgendaSectionCopy;
+  locale?: string;
 };
 
-export function RoomAgendaSection({ tldrCopy, copy }: RoomAgendaSectionProps) {
+export function RoomAgendaSection({
+  tldrCopy,
+  copy,
+  locale = 'en',
+}: RoomAgendaSectionProps) {
   const [selectedTab, setSelectedTab] = useState<string>('main');
 
   const visibleRooms =
-    selectedTab === 'main'
+    selectedTab === 'main' || selectedTab === 'map'
       ? []
       : selectedTab === 'all'
         ? copy.rooms
@@ -95,7 +103,7 @@ export function RoomAgendaSection({ tldrCopy, copy }: RoomAgendaSectionProps) {
           </div>
         </div>
 
-        {/* Navigation Pills: Main Agenda + Each Room + All Rooms */}
+        {/* Navigation Pills: Main Agenda + TRON Space Navigator + Each Room + All Rooms */}
         <div className="flex flex-wrap items-center gap-2.5">
           <button
             type="button"
@@ -108,6 +116,24 @@ export function RoomAgendaSection({ tldrCopy, copy }: RoomAgendaSectionProps) {
           >
             <CalendarRange className="h-3.5 w-3.5" />
             <span>{copy.main_agenda_tab || 'Main Agenda (TL;DR)'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setSelectedTab('map')}
+            className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+              selectedTab === 'map'
+                ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-200 shadow-[0_0_18px_rgba(217,70,239,0.35)]'
+                : 'border-fuchsia-400/35 bg-fuchsia-500/10 text-fuchsia-200/90 hover:border-fuchsia-400 hover:text-white'
+            }`}
+          >
+            <Compass className="h-3.5 w-3.5" />
+            <span>
+              {copy.map_tab ||
+                (locale === 'fr'
+                  ? 'Carte Interactive (3e & 4e)'
+                  : 'Space Navigator (Map)')}
+            </span>
           </button>
 
           {copy.rooms.map((room) => {
@@ -154,6 +180,15 @@ export function RoomAgendaSection({ tldrCopy, copy }: RoomAgendaSectionProps) {
 
       {/* Main Agenda (TL;DR) when 'main' is selected */}
       {selectedTab === 'main' && <OverallDayAgenda copy={tldrCopy} />}
+
+      {/* TRON Space Navigator on 'map' tab or below Main Agenda on 'main' tab */}
+      {(selectedTab === 'map' || selectedTab === 'main') && (
+        <TronSpaceNavigator
+          rooms={copy.rooms}
+          onSelectRoomSchedule={(roomId) => setSelectedTab(roomId)}
+          locale={locale}
+        />
+      )}
 
       {/* Room Cards */}
       {visibleRooms.length > 0 && (
@@ -341,9 +376,49 @@ export function RoomAgendaSection({ tldrCopy, copy }: RoomAgendaSectionProps) {
                           </h4>
 
                           {session.speakers && (
-                            <p className="font-mono-tech text-xs uppercase tracking-wider text-cyan-400">
-                              {session.speakers}
-                            </p>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="font-mono-tech text-xs uppercase tracking-wider text-cyan-400">
+                                {session.speakers.replace(/\s*·\s*GDE\b/i, '')}
+                              </p>
+                              {/\bGDE\b/i.test(session.speakers) && (
+                                <span
+                                  title="Google Developer Expert (GDE)"
+                                  className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-[#0a0f1d]/90 px-2.5 py-0.5 font-mono-tech text-[10px] font-bold tracking-wider text-white uppercase shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
+                                >
+                                  <svg
+                                    viewBox="0 0 24 18"
+                                    className="h-2.5 w-3 shrink-0"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      d="M8.5 2.5L2.5 8.5"
+                                      stroke="#EA4335"
+                                      strokeWidth="3.2"
+                                      strokeLinecap="round"
+                                    />
+                                    <path
+                                      d="M2.5 9.5L8.5 15.5"
+                                      stroke="#4285F4"
+                                      strokeWidth="3.2"
+                                      strokeLinecap="round"
+                                    />
+                                    <path
+                                      d="M15.5 2.5L21.5 8.5"
+                                      stroke="#34A853"
+                                      strokeWidth="3.2"
+                                      strokeLinecap="round"
+                                    />
+                                    <path
+                                      d="M21.5 9.5L15.5 15.5"
+                                      stroke="#FBBC04"
+                                      strokeWidth="3.2"
+                                      strokeLinecap="round"
+                                    />
+                                  </svg>
+                                  <span>GDE</span>
+                                </span>
+                              )}
+                            </div>
                           )}
 
                           {/* Sub-items for Lightning Round */}
