@@ -180,7 +180,7 @@
       "name": "Angelo Italiano",
       "employer": "RAVL",
       "title": "Principal Engineering Manager",
-      "gde": false,
+      "gde": true,
       "topic": "Terminal to Stadium: Building an AI Sports PA Announcer with Gemini",
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/aitalian/",
