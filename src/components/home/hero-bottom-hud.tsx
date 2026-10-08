@@ -1,7 +1,7 @@
 'use client';
 
 import { CalendarDays, MapPin } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import type { HomeLandingCopy } from './types';
 
 type HeroBottomHudProps = {
@@ -17,10 +17,20 @@ type CountdownValue = {
   seconds: string;
 };
 
-function formatCountdown(targetDate: Date): CountdownValue {
-  const remainingMs = Math.max(0, targetDate.getTime() - Date.now());
+function subscribe(callback: () => void) {
+  const intervalId = window.setInterval(callback, 1000);
+  return () => window.clearInterval(intervalId);
+}
 
-  const totalSeconds = Math.floor(remainingMs / 1000);
+function getSnapshot() {
+  return Math.floor(Math.max(0, EVENT_DATE.getTime() - Date.now()) / 1000);
+}
+
+function getServerSnapshot() {
+  return 0;
+}
+
+function getCountdownParts(totalSeconds: number): CountdownValue {
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -35,18 +45,12 @@ function formatCountdown(targetDate: Date): CountdownValue {
 }
 
 export function HeroBottomHud({ hud }: HeroBottomHudProps) {
-  const targetDate = useMemo(() => EVENT_DATE, []);
-  const [countdown, setCountdown] = useState<CountdownValue>(() =>
-    formatCountdown(targetDate),
+  const remainingSeconds = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
   );
-
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setCountdown(formatCountdown(targetDate));
-    }, 1000);
-
-    return () => window.clearInterval(intervalId);
-  }, [targetDate]);
+  const countdown = getCountdownParts(remainingSeconds);
 
   return (
     <div className="relative z-30 w-full px-6 pb-16 md:px-12">
@@ -68,7 +72,10 @@ export function HeroBottomHud({ hud }: HeroBottomHudProps) {
 
         <div className="flex flex-wrap items-end justify-center gap-x-8 gap-y-10 md:gap-12">
           <div className="flex flex-col items-center">
-            <span className="font-display text-4xl font-extralight text-google-blue tabular-nums md:text-5xl">
+            <span
+              suppressHydrationWarning
+              className="font-display text-4xl font-extralight text-google-blue tabular-nums md:text-5xl"
+            >
               {countdown.days}
             </span>
             <span className="font-mono-tech mt-2 text-[8px] tracking-[0.24em] text-white/35 uppercase">
@@ -77,7 +84,10 @@ export function HeroBottomHud({ hud }: HeroBottomHudProps) {
           </div>
           <div className="hidden md:block h-12 w-px bg-white/15" />
           <div className="flex flex-col items-center">
-            <span className="font-display text-4xl font-extralight text-google-red tabular-nums md:text-5xl">
+            <span
+              suppressHydrationWarning
+              className="font-display text-4xl font-extralight text-google-red tabular-nums md:text-5xl"
+            >
               {countdown.hours}
             </span>
             <span className="font-mono-tech mt-2 text-[8px] tracking-[0.24em] text-white/35 uppercase">
@@ -86,7 +96,10 @@ export function HeroBottomHud({ hud }: HeroBottomHudProps) {
           </div>
           <div className="hidden md:block h-12 w-px bg-white/15" />
           <div className="flex flex-col items-center">
-            <span className="font-display text-4xl font-extralight text-google-yellow tabular-nums md:text-5xl">
+            <span
+              suppressHydrationWarning
+              className="font-display text-4xl font-extralight text-google-yellow tabular-nums md:text-5xl"
+            >
               {countdown.minutes}
             </span>
             <span className="font-mono-tech mt-2 text-[8px] tracking-[0.24em] text-white/35 uppercase">
@@ -95,7 +108,10 @@ export function HeroBottomHud({ hud }: HeroBottomHudProps) {
           </div>
           <div className="hidden md:block h-12 w-px bg-white/15" />
           <div className="flex flex-col items-center">
-            <span className="font-display text-4xl font-extralight text-google-green tabular-nums md:text-5xl">
+            <span
+              suppressHydrationWarning
+              className="font-display text-4xl font-extralight text-google-green tabular-nums md:text-5xl"
+            >
               {countdown.seconds}
             </span>
             <span className="font-mono-tech mt-2 text-[8px] tracking-[0.24em] text-white/35 uppercase">

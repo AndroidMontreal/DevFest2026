@@ -12,6 +12,22 @@
   "filter_appdev": "AppDev",
   "filter_community": "Community & Panels",
   "no_results": "No speakers found matching your search.",
+  "card_session_single": "1 Session",
+  "card_session_multiple": "{count} Sessions",
+  "card_view_talk_single": "View Talk",
+  "card_view_talk_multiple": "View Talks",
+  "card_click_to_flip": "Click to Flip ↷",
+  "card_back": "Back",
+  "card_session_count": "Talk {current} of {total}",
+  "card_session_topic": "Talk Title",
+  "card_next_talk": "Click for next talk",
+  "card_flip_back": "Click to flip back",
+  "card_go_to_talk": "Go to talk {index}",
+  "badge_talk": "Talk",
+  "badge_workshop": "Workshop",
+  "badge_panel": "Panel",
+  "badge_lightning_panel": "Lightning Panel",
+  "badge_lightning": "Lightning",
   "items": [
     {
       "name": "Rebecca Abi Chahine",
@@ -51,7 +67,19 @@
       "format": "Talk · 40 min\nWorkshop · 90 min",
       "link": "https://www.linkedin.com/in/olivi-eh/",
       "image": "/assets/images/speakers/Olivier_Bourgeois.jpg",
-      "category": "cloud"
+      "category": "cloud",
+      "categories": ["cloud", "ai"]
+    },
+    {
+      "name": "Cesar Bustamante",
+      "employer": "PwC Canada",
+      "title": "Senior Manager, Infrastructure",
+      "topic": "Career coaching 1:1",
+      "format": "1:1 coaching · 25 min",
+      "link": "https://www.linkedin.com/in/c%C3%A9sarbustamante/",
+      "image": "/assets/images/speakers/Cesar_Bustamante.jpg",
+      "category": "cloud",
+      "categories": ["cloud", "community"]
     },
     {
       "name": "David Cardozo",
@@ -67,11 +95,23 @@
       "name": "Etienne Caron",
       "employer": "Kanastruk Services Conseils Inc.",
       "title": "CTO",
-      "topic": "Talk: Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach\nWorkshop: The Doomsday Course",
-      "format": "Talk · 40 min\nWorkshop · drop-in showcase",
+      "topic": "Talk: Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach\nWorkshop: The Doomsday Course\nCoaching: Career coaching 1:1",
+      "format": "Talk · 40 min\nWorkshop · drop-in showcase\n1:1 coaching · 25 min",
       "link": "https://www.linkedin.com/in/etcaron/",
       "image": "/assets/images/speakers/Etienne_Caron.jpg",
-      "category": "ai"
+      "category": "ai",
+      "categories": ["ai", "community"]
+    },
+    {
+      "name": "Romain Chezeaud",
+      "employer": "Groupe BMR",
+      "title": "Director, Data Strategy and AI Innovation",
+      "topic": "Career coaching 1:1",
+      "format": "1:1 coaching · 25 min",
+      "link": "https://www.linkedin.com/in/romain-chezeaud-b0b0b63b/",
+      "image": "/assets/images/speakers/Romain_Chezeaud.jpg",
+      "category": "ai",
+      "categories": ["ai", "community"]
     },
     {
       "name": "Thomas Chong",
@@ -115,6 +155,28 @@
       "categories": ["appdev", "ai"]
     },
     {
+      "name": "Raphaelle Giraud",
+      "employer": "Vooban",
+      "title": "Team Lead Développeuse Agents IA",
+      "topic": "Career coaching 1:1",
+      "format": "1:1 coaching · 25 min",
+      "link": "https://www.linkedin.com/in/raphaelle-giraud/",
+      "image": "/assets/images/speakers/Raphaelle_Giraud.jpg",
+      "category": "ai",
+      "categories": ["ai", "community"]
+    },
+    {
+      "name": "Sebastian Senen Gonzalez",
+      "employer": "Google",
+      "title": "Outcome Customer Engineering (Google Cloud)",
+      "topic": "Career coaching 1:1",
+      "format": "1:1 coaching · 25 min",
+      "link": "https://www.linkedin.com/in/sebastiansg/",
+      "image": "/assets/images/speakers/Sebastian_Senen_Gonzalez.jpg",
+      "category": "cloud",
+      "categories": ["cloud", "community"]
+    },
+    {
       "name": "Angelo Italiano",
       "employer": "RAVL",
       "title": "Principal Engineering Manager",
@@ -137,8 +199,8 @@
     },
     {
       "name": "Felipe Lujan",
-      "employer": "",
-      "title": "",
+      "employer": "Google Developer Experts",
+      "title": "GDE",
       "topic": "Gemini Live: Architecting, building and pricing conversational experiences",
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/felipelujan/",
@@ -149,11 +211,12 @@
       "name": "JL Maréchaux",
       "employer": "National Bank of Canada",
       "title": "Senior Director, AI & Innovation",
-      "topic": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal’s digital future",
-      "format": "Panel · 40 min",
+      "topic": "Panel: Montreal Tech Community: How local tech groups are shaping Montreal’s digital future\nCoaching: Career coaching 1:1",
+      "format": "Panel · 40 min\n1:1 coaching · 25 min",
       "link": "https://www.linkedin.com/in/jlmarechaux/",
       "image": "/assets/images/speakers/JL_Marechaux.jpg",
-      "category": "community"
+      "category": "community",
+      "categories": ["community", "ai"]
     },
     {
       "name": "Boris-Wilfried Nyasse",
@@ -173,14 +236,26 @@
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/glebotochkin/",
       "image": "/assets/images/speakers/Gleb_Otochkin.jpg",
-      "category": "ai"
+      "category": "ai",
+      "categories": ["ai", "cloud"]
+    },
+    {
+      "name": "Jihoo Park",
+      "employer": "WB Games",
+      "title": "CIA (Core Insights Agency)",
+      "topic": "Career coaching 1:1",
+      "format": "1:1 coaching · 25 min",
+      "link": "https://www.linkedin.com/in/jihoo-p-927569168/",
+      "image": "/assets/images/speakers/Jihoo_Park.jpg",
+      "category": "community",
+      "categories": ["community", "ai"]
     },
     {
       "name": "Stefania Pecore",
-      "employer": "",
-      "title": "",
-      "topic": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal’s digital future",
-      "format": "Panel · 40 min",
+      "employer": "Women Techmakers Montreal",
+      "title": "President",
+      "topic": "Panel: Montreal Tech Community: How local tech groups are shaping Montreal’s digital future\nCoaching: Career coaching 1:1\nKeynote: Closing Keynote Kickoff & Community Remarks",
+      "format": "Panel · 40 min\n1:1 coaching · 25 min\nKeynote · 15 min",
       "link": "https://www.linkedin.com/in/stefaniapecore/",
       "image": "/assets/images/speakers/Stefania_Pecore.jpg",
       "category": "community"
@@ -230,11 +305,12 @@
       "name": "Stacy Véronneau",
       "employer": "TELUS Digital",
       "title": "Senior Customer Engineer",
-      "topic": "AI Isn’t Magic: The Infrastructure That Actually Wins the Race",
-      "format": "Talk · 40 min",
+      "topic": "Keynote: Opening & Closing Keynotes\nTalk: AI Isn’t Magic: The Infrastructure That Actually Wins the Race\nCoaching: Career coaching 1:1",
+      "format": "Keynote · 35 min\nTalk · 40 min\n1:1 coaching · 25 min",
       "link": "https://www.linkedin.com/in/stacyveronneau/",
       "image": "/assets/images/speakers/Stacy_Veronneau.jpg",
-      "category": "cloud"
+      "category": "cloud",
+      "categories": ["cloud", "ai", "community"]
     },
     {
       "name": "Daniel Wei",
@@ -249,7 +325,7 @@
     {
       "name": "Aisha Yaseen",
       "employer": "AREHSOFT",
-      "title": "",
+      "title": "Co-Founder & FDE",
       "topic": "Beyond Push-to-Talk: Real-Time Fact-Checking Agents with Gemini Live API and Google Search Grounding",
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/aisha-yaseen/",

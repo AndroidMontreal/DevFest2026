@@ -12,6 +12,22 @@
   "filter_appdev": "AppDev",
   "filter_community": "Communauté & Panels",
   "no_results": "Aucun conférencier ne correspond à votre recherche.",
+  "card_session_single": "1 Session",
+  "card_session_multiple": "{count} Sessions",
+  "card_view_talk_single": "Voir la session",
+  "card_view_talk_multiple": "Voir les sessions",
+  "card_click_to_flip": "Cliquer pour retourner ↷",
+  "card_back": "Retour",
+  "card_session_count": "Session {current} sur {total}",
+  "card_session_topic": "Titre de la session",
+  "card_next_talk": "Cliquer pour la session suivante",
+  "card_flip_back": "Cliquer pour retourner",
+  "card_go_to_talk": "Aller à la session {index}",
+  "badge_talk": "Conférence",
+  "badge_workshop": "Atelier",
+  "badge_panel": "Panel",
+  "badge_lightning_panel": "Panel éclair",
+  "badge_lightning": "Éclair",
   "items": [
     {
       "name": "Rebecca Abi Chahine",
@@ -47,11 +63,23 @@
       "name": "Olivier Bourgeois",
       "employer": "Google",
       "title": "Developer Advocate",
-      "topic": "Talk: So... You want to work at Google?\nWorkshop: AI-driven troubleshooting for Google Cloud infrastructure",
-      "format": "Talk · 40 min\nWorkshop · 90 min",
+      "topic": "Talk: So... You want to work at Google?\nAtelier: AI-driven troubleshooting for Google Cloud infrastructure",
+      "format": "Talk · 40 min\nAtelier · 90 min",
       "link": "https://www.linkedin.com/in/olivi-eh/",
       "image": "/assets/images/speakers/Olivier_Bourgeois.jpg",
-      "category": "cloud"
+      "category": "cloud",
+      "categories": ["cloud", "ai"]
+    },
+    {
+      "name": "Cesar Bustamante",
+      "employer": "PwC Canada",
+      "title": "Directeur principal, Infrastructure",
+      "topic": "Mentorat carrière 1:1",
+      "format": "Mentorat 1:1 · 25 min",
+      "link": "https://www.linkedin.com/in/c%C3%A9sarbustamante/",
+      "image": "/assets/images/speakers/Cesar_Bustamante.jpg",
+      "category": "cloud",
+      "categories": ["cloud", "community"]
     },
     {
       "name": "David Cardozo",
@@ -67,11 +95,23 @@
       "name": "Etienne Caron",
       "employer": "Kanastruk Services Conseils Inc.",
       "title": "CTO",
-      "topic": "Talk: Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach\nWorkshop: The Doomsday Course",
-      "format": "Talk · 40 min\nWorkshop · drop-in showcase",
+      "topic": "Talk: Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach\nAtelier: The Doomsday Course\nMentorat: Mentorat carrière 1:1",
+      "format": "Talk · 40 min\nAtelier · drop-in showcase\nMentorat 1:1 · 25 min",
       "link": "https://www.linkedin.com/in/etcaron/",
       "image": "/assets/images/speakers/Etienne_Caron.jpg",
-      "category": "ai"
+      "category": "ai",
+      "categories": ["ai", "community"]
+    },
+    {
+      "name": "Romain Chezeaud",
+      "employer": "Groupe BMR",
+      "title": "Directeur Stratégie Données et Innovation IA",
+      "topic": "Mentorat carrière 1:1",
+      "format": "Mentorat 1:1 · 25 min",
+      "link": "https://www.linkedin.com/in/romain-chezeaud-b0b0b63b/",
+      "image": "/assets/images/speakers/Romain_Chezeaud.jpg",
+      "category": "ai",
+      "categories": ["ai", "community"]
     },
     {
       "name": "Thomas Chong",
@@ -115,6 +155,28 @@
       "categories": ["appdev", "ai"]
     },
     {
+      "name": "Raphaelle Giraud",
+      "employer": "Vooban",
+      "title": "Team Lead Développeuse Agents IA",
+      "topic": "Mentorat carrière 1:1",
+      "format": "Mentorat 1:1 · 25 min",
+      "link": "https://www.linkedin.com/in/raphaelle-giraud/",
+      "image": "/assets/images/speakers/Raphaelle_Giraud.jpg",
+      "category": "ai",
+      "categories": ["ai", "community"]
+    },
+    {
+      "name": "Sebastian Senen Gonzalez",
+      "employer": "Google",
+      "title": "Outcome Customer Engineering (Google Cloud)",
+      "topic": "Mentorat carrière 1:1",
+      "format": "Mentorat 1:1 · 25 min",
+      "link": "https://www.linkedin.com/in/sebastiansg/",
+      "image": "/assets/images/speakers/Sebastian_Senen_Gonzalez.jpg",
+      "category": "cloud",
+      "categories": ["cloud", "community"]
+    },
+    {
       "name": "Angelo Italiano",
       "employer": "RAVL",
       "title": "Principal Engineering Manager",
@@ -137,8 +199,8 @@
     },
     {
       "name": "Felipe Lujan",
-      "employer": "",
-      "title": "",
+      "employer": "Google Developer Experts",
+      "title": "GDE",
       "topic": "Gemini Live: Architecting, building and pricing conversational experiences",
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/felipelujan/",
@@ -147,13 +209,14 @@
     },
     {
       "name": "JL Maréchaux",
-      "employer": "National Bank of Canada",
-      "title": "Senior Director, AI & Innovation",
-      "topic": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal’s digital future",
-      "format": "Panel · 40 min",
+      "employer": "Banque Nationale du Canada",
+      "title": "Directeur principal, IA & Innovation",
+      "topic": "Panel : Communauté tech montréalaise : Façonner l’avenir numérique local\nMentorat : Mentorat carrière 1:1",
+      "format": "Panel · 40 min\nMentorat 1:1 · 25 min",
       "link": "https://www.linkedin.com/in/jlmarechaux/",
       "image": "/assets/images/speakers/JL_Marechaux.jpg",
-      "category": "community"
+      "category": "community",
+      "categories": ["community", "ai"]
     },
     {
       "name": "Boris-Wilfried Nyasse",
@@ -173,14 +236,26 @@
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/glebotochkin/",
       "image": "/assets/images/speakers/Gleb_Otochkin.jpg",
-      "category": "ai"
+      "category": "ai",
+      "categories": ["ai", "cloud"]
+    },
+    {
+      "name": "Jihoo Park",
+      "employer": "WB Games",
+      "title": "CIA (Core Insights Agency)",
+      "topic": "Mentorat carrière 1:1",
+      "format": "Mentorat 1:1 · 25 min",
+      "link": "https://www.linkedin.com/in/jihoo-p-927569168/",
+      "image": "/assets/images/speakers/Jihoo_Park.jpg",
+      "category": "community",
+      "categories": ["community", "ai"]
     },
     {
       "name": "Stefania Pecore",
-      "employer": "",
-      "title": "",
-      "topic": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal’s digital future",
-      "format": "Panel · 40 min",
+      "employer": "Women Techmakers Montréal",
+      "title": "Présidente",
+      "topic": "Panel : Communauté tech montréalaise : Façonner l’avenir numérique local\nMentorat : Mentorat carrière 1:1\nKeynote : Mot de clôture et coup d’envoi communautaire",
+      "format": "Panel · 40 min\nMentorat 1:1 · 25 min\nKeynote · 15 min",
       "link": "https://www.linkedin.com/in/stefaniapecore/",
       "image": "/assets/images/speakers/Stefania_Pecore.jpg",
       "category": "community"
@@ -230,11 +305,12 @@
       "name": "Stacy Véronneau",
       "employer": "TELUS Digital",
       "title": "Senior Customer Engineer",
-      "topic": "AI Isn’t Magic: The Infrastructure That Actually Wins the Race",
-      "format": "Talk · 40 min",
+      "topic": "Keynote : Conférences d’ouverture et de clôture\nTalk : L’IA n’est pas magique : L’infrastructure qui gagne la course\nMentorat : Mentorat carrière 1:1",
+      "format": "Keynote · 35 min\nTalk · 40 min\nMentorat 1:1 · 25 min",
       "link": "https://www.linkedin.com/in/stacyveronneau/",
       "image": "/assets/images/speakers/Stacy_Veronneau.jpg",
-      "category": "cloud"
+      "category": "cloud",
+      "categories": ["cloud", "ai", "community"]
     },
     {
       "name": "Daniel Wei",
@@ -249,7 +325,7 @@
     {
       "name": "Aisha Yaseen",
       "employer": "AREHSOFT",
-      "title": "",
+      "title": "Co-Founder & FDE",
       "topic": "Beyond Push-to-Talk: Real-Time Fact-Checking Agents with Gemini Live API and Google Search Grounding",
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/aisha-yaseen/",
