@@ -54,7 +54,11 @@ export default async function SchedulePage({
 
         {/* Room Navigation Bar at the start of the page + Main Agenda & Room Schedules */}
         <div className="mb-16 md:mb-20">
-          <RoomAgendaSection tldrCopy={tldrCopy} copy={roomsSectionCopy} />
+          <RoomAgendaSection
+            tldrCopy={tldrCopy}
+            copy={roomsSectionCopy}
+            locale={locale}
+          />
         </div>
 
         {/* Coming Soon: Detailed Room & Track Sessions Notice */}

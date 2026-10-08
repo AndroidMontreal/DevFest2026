@@ -203,7 +203,7 @@
       "name": "Francois Légaré",
       "employer": "Bell",
       "title": "Senior Manager Data Science",
-      "gde": false,
+      "gde": true,
       "topic": "Under the Hood of Gemini Enterprise: No-Code Agents, and Workflow Automation",
       "format": "Talk · 40 min",
       "link": "",
