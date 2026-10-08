@@ -409,6 +409,44 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
                     />
                     {/* CRT Scanline overlay on hover */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-15 pointer-events-none transition-opacity duration-300 bg-gradient-to-b from-transparent via-white/50 to-transparent bg-[length:100%_4px]" />
+                    {speaker.gde && (
+                      <div
+                        title="Google Developer Expert (GDE)"
+                        className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 rounded-full border border-white/25 bg-[#0a0f1d]/90 px-2.5 py-1 font-mono-tech text-[10px] font-bold tracking-wider text-white uppercase shadow-[0_4px_12px_rgba(0,0,0,0.6)] backdrop-blur-md"
+                      >
+                        <svg
+                          viewBox="0 0 24 18"
+                          className="h-3 w-3.5 shrink-0"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M8.5 2.5L2.5 8.5"
+                            stroke="#EA4335"
+                            strokeWidth="3.2"
+                            strokeLinecap="round"
+                          />
+                          <path
+                            d="M2.5 9.5L8.5 15.5"
+                            stroke="#4285F4"
+                            strokeWidth="3.2"
+                            strokeLinecap="round"
+                          />
+                          <path
+                            d="M15.5 2.5L21.5 8.5"
+                            stroke="#34A853"
+                            strokeWidth="3.2"
+                            strokeLinecap="round"
+                          />
+                          <path
+                            d="M21.5 9.5L15.5 15.5"
+                            stroke="#FBBC04"
+                            strokeWidth="3.2"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <span>GDE</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Speaker Info */}
