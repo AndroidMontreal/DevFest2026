@@ -1,19 +1,15 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import {
-  ArrowRight,
   ExternalLink,
   GraduationCap,
   Laptop,
   Mic,
-  RotateCcw,
   Search,
   Sparkles,
   Users2,
   Zap,
 } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { FaLinkedin } from 'react-icons/fa';
@@ -25,6 +21,8 @@ export type SpeakerItem = {
   name: string;
   title?: string;
   employer?: string;
+  gde?: boolean;
+  googler?: boolean;
   topic: string;
   format?: string;
   link: string;
@@ -127,10 +125,7 @@ function parseSessionDetails(
     normTopic.startsWith('atelier:')
   ) {
     type = 'workshop';
-  } else if (
-    normFormat.includes('lightning') ||
-    normFormat.includes('éclair')
-  ) {
+  } else if (normFormat.includes('lightning')) {
     type = 'lightning';
   }
 
@@ -152,8 +147,7 @@ function parseSessionDetails(
   return { type, duration, title };
 }
 
-function renderSessionBadgeAndIcon(type: SessionType, locale?: string) {
-  const isFr = locale === 'fr';
+function renderSessionBadgeAndIcon(type: SessionType) {
   switch (type) {
     case 'keynote':
       return (
@@ -169,7 +163,7 @@ function renderSessionBadgeAndIcon(type: SessionType, locale?: string) {
         <>
           <GraduationCap className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
           <span className="inline-flex items-center rounded px-1.5 py-0.5 font-mono-tech text-[9px] uppercase tracking-wider font-bold border border-emerald-400/40 bg-emerald-400/10 text-emerald-300">
-            {isFr ? 'Mentorat 1:1' : '1:1 Coaching'}
+            1:1 Coaching
           </span>
         </>
       );
@@ -178,7 +172,7 @@ function renderSessionBadgeAndIcon(type: SessionType, locale?: string) {
         <>
           <Laptop className="h-3.5 w-3.5 text-google-red shrink-0" />
           <span className="inline-flex items-center rounded px-1.5 py-0.5 font-mono-tech text-[9px] uppercase tracking-wider font-bold border border-google-red/40 bg-google-red/10 text-google-red">
-            {isFr ? 'Atelier' : 'Workshop'}
+            Workshop
           </span>
         </>
       );
@@ -196,7 +190,7 @@ function renderSessionBadgeAndIcon(type: SessionType, locale?: string) {
         <>
           <Zap className="h-3.5 w-3.5 text-amber-400 shrink-0" />
           <span className="inline-flex items-center rounded px-1.5 py-0.5 font-mono-tech text-[9px] uppercase tracking-wider font-bold border border-orange-500/40 bg-orange-500/10 text-orange-400">
-            {isFr ? 'Panel éclair' : 'Lightning Panel'}
+            Lightning Panel
           </span>
         </>
       );
@@ -205,7 +199,7 @@ function renderSessionBadgeAndIcon(type: SessionType, locale?: string) {
         <>
           <Zap className="h-3.5 w-3.5 text-amber-400 shrink-0" />
           <span className="inline-flex items-center rounded px-1.5 py-0.5 font-mono-tech text-[9px] uppercase tracking-wider font-bold border border-amber-400/40 bg-amber-400/10 text-amber-300">
-            {isFr ? 'Éclair' : 'Lightning'}
+            Lightning
           </span>
         </>
       );
@@ -215,52 +209,71 @@ function renderSessionBadgeAndIcon(type: SessionType, locale?: string) {
         <>
           <Mic className="h-3.5 w-3.5 text-google-blue shrink-0" />
           <span className="inline-flex items-center rounded px-1.5 py-0.5 font-mono-tech text-[9px] uppercase tracking-wider font-bold border border-google-blue/40 bg-google-blue/10 text-google-blue">
-            {isFr ? 'Conférence' : 'Talk'}
+            Talk
           </span>
         </>
       );
   }
 }
 
-export type SpeakerSession = {
-  type: SessionType;
-  duration?: string;
-  title: string;
-};
-
-export function getSpeakerSessions(
-  topicStr: string,
-  formatStr?: string,
-): SpeakerSession[] {
-  const topicLines = topicStr
+function renderTopicSections(topic: string, format?: string) {
+  const topicLines = topic
     .split('\n')
     .map((l) => l.trim())
     .filter(Boolean);
-  const formatLines = (formatStr || '')
+  const formatLines = (format || '')
     .split('\n')
     .map((l) => l.trim())
     .filter(Boolean);
 
   if (topicLines.length > 1) {
-    return topicLines.map((topicLine, idx) => {
-      const formatLine =
-        formatLines[idx] ||
-        (topicLine.toLowerCase().startsWith('workshop:') ||
-        topicLine.toLowerCase().startsWith('atelier:')
-          ? 'Workshop · 90 min'
-          : topicLine.toLowerCase().startsWith('keynote:')
-            ? 'Keynote'
-            : topicLine.toLowerCase().startsWith('panel:')
-              ? 'Panel · 40 min'
-              : topicLine.toLowerCase().includes('coaching') ||
-                  topicLine.toLowerCase().includes('mentorat')
-                ? '1:1 coaching · 25 min'
-                : 'Talk · 40 min');
-      return parseSessionDetails(formatLine, topicLine);
-    });
+    return (
+      <div className="space-y-3 mt-4 pt-3 border-t border-white/5">
+        {topicLines.map((topicLine, idx) => {
+          const formatLine =
+            formatLines[idx] ||
+            (topicLine.toLowerCase().startsWith('workshop:')
+              ? 'Workshop'
+              : 'Talk');
+          const session = parseSessionDetails(formatLine, topicLine);
+
+          return (
+            <div key={idx} className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2">
+                {renderSessionBadgeAndIcon(session.type)}
+                {session.duration && (
+                  <span className="font-mono-tech text-[10px] text-white/50 tracking-wider">
+                    · {session.duration}
+                  </span>
+                )}
+              </div>
+              <p className="font-sans text-xs text-white/80 leading-relaxed pl-5">
+                {session.title}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    );
   }
 
-  return [parseSessionDetails(formatStr, topicStr)];
+  const session = parseSessionDetails(format, topic);
+
+  return (
+    <div className="space-y-1.5 mt-4 pt-3 border-t border-white/5">
+      <div className="flex items-center gap-2">
+        {renderSessionBadgeAndIcon(session.type)}
+        {session.duration && (
+          <span className="font-mono-tech text-[10px] text-white/50 tracking-wider">
+            · {session.duration}
+          </span>
+        )}
+      </div>
+      <p className="font-sans text-xs text-white/80 leading-relaxed pl-5 line-clamp-4">
+        {session.title}
+      </p>
+    </div>
+  );
 }
 
 function getSpeakerCategories(speaker: SpeakerItem): SpeakerCategory[] {
@@ -270,387 +283,9 @@ function getSpeakerCategories(speaker: SpeakerItem): SpeakerCategory[] {
   return speaker.category ? [speaker.category] : [];
 }
 
-type SpeakerCardProps = {
-  speaker: SpeakerItem;
-  index: number;
-};
-
-function SpeakerCard({ speaker, index }: SpeakerCardProps) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [currentSessionIndex, setCurrentSessionIndex] = useState(0);
-  const locale = useLocale();
-  const isFr = locale === 'fr';
-  const t = useTranslations('SpeakersPage');
-
-  const style = cardStyles[index % cardStyles.length];
-  const isLinkedin = speaker.link.includes('linkedin.com');
-  const sessions = useMemo(
-    () => getSpeakerSessions(speaker.topic, speaker.format),
-    [speaker.topic, speaker.format],
-  );
-  const totalSessions = sessions.length;
-  const currentSession = sessions[currentSessionIndex] || sessions[0];
-
-  const handleCardClick = () => {
-    if (!isFlipped) {
-      setIsFlipped(true);
-    } else {
-      if (totalSessions > 1 && currentSessionIndex < totalSessions - 1) {
-        setCurrentSessionIndex((prev) => prev + 1);
-      } else {
-        setIsFlipped(false);
-        setTimeout(() => {
-          setCurrentSessionIndex(0);
-        }, 300);
-      }
-    }
-  };
-
-  const handleFlipBack = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsFlipped(false);
-    setTimeout(() => {
-      setCurrentSessionIndex(0);
-    }, 300);
-  };
-
-  return (
-    <div className="perspective-1000 h-full select-none">
-      <div
-        className={`relative w-full h-full preserve-3d transition-transform duration-500 ease-in-out ${
-          isFlipped ? 'rotate-y-180' : ''
-        }`}
-      >
-        {/* FRONT FACE */}
-        <div
-          onClick={handleCardClick}
-          className={`group relative flex flex-col justify-between border border-white/10 bg-[#0a0f1d]/80 quad-border-tr p-5 backdrop-blur-xl transition-all duration-300 hover:border-transparent hover:scale-[1.02] hover:bg-[#0c1326] cursor-pointer backface-hidden ${
-            style.shadowHover
-          } ${isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
-        >
-          {/* Visual hover border highlight */}
-          <div
-            className={`pointer-events-none absolute inset-0 border border-transparent transition-colors duration-300 quad-border-tr ${style.borderHover}`}
-          />
-
-          <div>
-            {/* Photo with Cyberpunk Scanlines */}
-            <div className="relative aspect-square w-full overflow-hidden mb-5 bg-white/5 border border-white/10 quad-border-tr quad-border-bl">
-              <Image
-                src={speaker.image}
-                alt={speaker.name}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out"
-              />
-              {/* CRT Scanline overlay on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-15 pointer-events-none transition-opacity duration-300 bg-gradient-to-b from-transparent via-white/50 to-transparent bg-[length:100%_4px]" />
-
-              {/* Sessions indicator pill */}
-              <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1.5 bg-[#0a0f1d]/90 border border-white/20 px-2.5 py-1 font-mono-tech text-[10px] font-bold uppercase tracking-wider text-cyan-300 backdrop-blur-md">
-                <Sparkles className="h-3 w-3 text-cyan-400" />
-                {totalSessions > 1
-                  ? t('card_session_multiple', { count: totalSessions })
-                  : t('card_session_single')}
-              </div>
-            </div>
-
-            {/* Speaker Info */}
-            <div>
-              <h3
-                className={`font-display text-lg font-bold uppercase tracking-tight text-white transition-colors ${style.textHover}`}
-              >
-                {speaker.name}
-              </h3>
-
-              {/* Title & Employer */}
-              <div className="mt-1 flex flex-col gap-0.5 min-h-[36px]">
-                {speaker.title && (
-                  <p className="font-mono-tech text-xs text-google-yellow font-medium tracking-wide">
-                    {speaker.title}
-                  </p>
-                )}
-                {speaker.employer && (
-                  <p className="font-sans text-xs text-white/55">
-                    {speaker.employer}
-                  </p>
-                )}
-              </div>
-
-              {/* Click to Flip prompt */}
-              <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between gap-2">
-                <div className="font-mono-tech text-xs text-cyan-400 group-hover:text-cyan-300 transition-colors">
-                  {isFr ? (
-                    <div className="flex flex-col leading-tight">
-                      <span className="font-medium">
-                        {totalSessions > 1 ? 'Voir les' : 'Voir la'}
-                      </span>
-                      <span className="font-medium inline-flex items-center gap-1.5">
-                        <span>
-                          {totalSessions > 1 ? 'sessions' : 'session'}
-                        </span>
-                        <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
-                          →
-                        </span>
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="inline-flex items-center gap-1.5">
-                      <span className="font-medium">
-                        {totalSessions > 1
-                          ? t('card_view_talk_multiple')
-                          : t('card_view_talk_single')}
-                      </span>
-                      <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
-                        →
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {isFr ? (
-                  <div className="shrink-0 text-right font-mono-tech text-[10px] text-white/40 tracking-wider uppercase group-hover:text-white/70 transition-colors flex flex-col items-end leading-tight">
-                    <span>CLIQUER POUR</span>
-                    <span className="flex items-center gap-1">
-                      <span>RETOURNER</span>
-                      <span className="text-[11px] leading-none">↷</span>
-                    </span>
-                  </div>
-                ) : (
-                  <span className="font-mono-tech text-[10px] text-white/40 tracking-wider uppercase group-hover:text-white/70 transition-colors flex items-center gap-1">
-                    {t('card_click_to_flip')}
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Bar: Category Badge + LinkedIn Link */}
-          <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {getSpeakerCategories(speaker).map((cat, idx) => {
-                const label =
-                  cat === 'mobile' || cat === 'appdev'
-                    ? 'APPDEV'
-                    : cat.toUpperCase();
-                return (
-                  <span
-                    key={cat}
-                    className="font-mono-tech text-[10px] tracking-widest text-white/50 uppercase"
-                  >
-                    {idx > 0 && (
-                      <span className="text-white/20 mr-1.5 font-normal">
-                        /
-                      </span>
-                    )}
-                    {label}
-                  </span>
-                );
-              })}
-            </div>
-
-            <a
-              href={speaker.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className={`inline-flex h-9 w-9 items-center justify-center border border-white/15 bg-white/[0.03] text-white/80 transition-all rounded-none ${style.btnHover}`}
-              aria-label={
-                isFr ? `Profil de ${speaker.name}` : `${speaker.name} profile`
-              }
-            >
-              {isLinkedin ? (
-                <FaLinkedin className="h-5 w-5" />
-              ) : (
-                <ExternalLink className="h-[18px] w-[18px]" strokeWidth={2.5} />
-              )}
-            </a>
-          </div>
-        </div>
-
-        {/* BACK FACE (FLIPPED) */}
-        <div
-          onClick={handleCardClick}
-          className={`group absolute inset-0 w-full h-full flex flex-col justify-between border border-white/10 bg-[#0a0f1d] quad-border-tr p-5 backdrop-blur-xl transition-all duration-300 hover:scale-[1.02] hover:bg-[#0c1326] cursor-pointer rotate-y-180 backface-hidden ${
-            style.shadowHover
-          } ${isFlipped ? 'pointer-events-auto' : 'pointer-events-none'}`}
-        >
-          {/* Visual hover border highlight */}
-          <div
-            className={`pointer-events-none absolute inset-0 border border-transparent transition-colors duration-300 quad-border-tr ${style.borderHover}`}
-          />
-
-          {/* Back Header: Speaker avatar thumbnail + name + flip back button */}
-          <div className="flex items-center justify-between gap-3 pb-3 border-b border-white/10">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-white/20 bg-white/5">
-                <Image
-                  src={speaker.image}
-                  alt={speaker.name}
-                  fill
-                  sizes="36px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="min-w-0">
-                <h4 className="font-display text-xs font-bold uppercase tracking-tight text-white truncate">
-                  {speaker.name}
-                </h4>
-                <p className="font-mono-tech text-[9px] text-google-yellow truncate">
-                  {speaker.title ||
-                    speaker.employer ||
-                    (isFr ? 'Conférencier' : 'Speaker')}
-                </p>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleFlipBack}
-              className="shrink-0 inline-flex items-center gap-1 border border-white/15 bg-white/[0.04] px-2 py-0.5 font-mono-tech text-[9px] uppercase tracking-wider text-white/70 transition-colors hover:border-white/40 hover:bg-white/10 hover:text-white cursor-pointer"
-              aria-label={t('card_flip_back')}
-            >
-              <RotateCcw className="h-2.5 w-2.5" />
-              <span>{t('card_back')}</span>
-            </button>
-          </div>
-
-          {/* Back Center: Talk / Session Information */}
-          <div className="my-auto py-3 flex flex-col gap-3">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSessionIndex}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.2 }}
-                className="flex flex-col gap-3"
-              >
-                {/* Session Type Badge + Duration */}
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <div className="flex items-center gap-2">
-                    {renderSessionBadgeAndIcon(currentSession.type, locale)}
-                    {currentSession.duration && (
-                      <span className="font-mono-tech text-[10px] text-white/60 tracking-wider">
-                        ·{' '}
-                        {isFr && currentSession.duration === 'drop-in showcase'
-                          ? 'kiosque en accès libre'
-                          : currentSession.duration}
-                      </span>
-                    )}
-                  </div>
-
-                  {totalSessions > 1 && (
-                    <span className="inline-flex items-center rounded px-1.5 py-0.5 font-mono-tech text-[9px] uppercase tracking-wider font-semibold border border-cyan-400/40 bg-cyan-400/10 text-cyan-300">
-                      {t('card_session_count', {
-                        current: currentSessionIndex + 1,
-                        total: totalSessions,
-                      })}
-                    </span>
-                  )}
-                </div>
-
-                {/* Talk Title */}
-                <div className="relative pl-3.5 border-l-2 border-cyan-400">
-                  <p className="font-mono-tech text-[9px] uppercase tracking-widest text-cyan-400/80 mb-1">
-                    {t('card_session_topic')}
-                  </p>
-                  <h3 className="font-display text-base font-bold leading-snug text-white">
-                    {currentSession.title}
-                  </h3>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Interaction Prompt Bar */}
-            {totalSessions > 1 ? (
-              <div className="mt-1 flex items-center justify-between rounded border border-cyan-500/30 bg-cyan-950/30 px-3 py-1.5 text-xs font-mono-tech text-cyan-300">
-                {currentSessionIndex < totalSessions - 1 ? (
-                  <span className="flex items-center gap-1.5 text-[11px]">
-                    {t('card_next_talk')}
-                    <ArrowRight className="h-3 w-3 inline animate-pulse text-cyan-400" />
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-1.5 text-[11px] text-white/70">
-                    {t('card_flip_back')}
-                    <RotateCcw className="h-3 w-3 inline" />
-                  </span>
-                )}
-                <span className="text-[10px] text-cyan-400/70 uppercase">
-                  {currentSessionIndex + 1}/{totalSessions}
-                </span>
-              </div>
-            ) : (
-              <div className="mt-1 flex items-center rounded border border-white/10 bg-white/[0.02] px-3 py-1.5 text-xs font-mono-tech text-white/40">
-                <span className="flex items-center gap-1.5 text-[10px]">
-                  <RotateCcw className="h-3 w-3" />
-                  {t('card_flip_back')}
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Back Bottom Bar: Navigation / Dots on Left + NUMBER OF SESSIONS IN BOTTOM RIGHT CORNER (e.g. 1/2) */}
-          <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-            {/* Left side */}
-            <div className="flex items-center gap-2">
-              {totalSessions > 1 ? (
-                <div className="flex items-center gap-1.5">
-                  {sessions.map((_, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentSessionIndex(idx);
-                      }}
-                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                        idx === currentSessionIndex
-                          ? 'w-6 bg-cyan-400 shadow-[0_0_8px_rgba(0,240,255,0.6)]'
-                          : 'w-2 bg-white/20 hover:bg-white/50'
-                      }`}
-                      aria-label={t('card_go_to_talk', { index: idx + 1 })}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  {getSpeakerCategories(speaker).map((cat) => (
-                    <span
-                      key={cat}
-                      className="font-mono-tech text-[10px] tracking-widest text-white/40 uppercase"
-                    >
-                      {cat.toUpperCase()}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Bottom Right Corner: Number of sessions i.e.: 1/2 */}
-            <div
-              className="font-mono-tech text-xs font-bold tracking-widest text-cyan-300 bg-cyan-950/70 border border-cyan-400/50 px-2.5 py-1 quad-border-tr shadow-[0_0_12px_rgba(0,240,255,0.25)] flex items-center gap-1"
-              title={t('card_session_count', {
-                current: currentSessionIndex + 1,
-                total: totalSessions,
-              })}
-            >
-              <span>{currentSessionIndex + 1}</span>
-              <span className="text-white/40">/</span>
-              <span>{totalSessions}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const locale = useLocale();
-  const isFr = locale === 'fr';
 
   const filterTabs = [
     { id: 'all', label: copy.filter_all },
@@ -673,6 +308,7 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
         !query ||
         speaker.name.toLowerCase().includes(query) ||
         (speaker.title && speaker.title.toLowerCase().includes(query)) ||
+        (speaker.gde && 'gde'.includes(query)) ||
         (speaker.employer && speaker.employer.toLowerCase().includes(query)) ||
         (speaker.format && speaker.format.toLowerCase().includes(query)) ||
         speaker.topic.toLowerCase().includes(query);
@@ -701,7 +337,7 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
               onClick={() => setSearchQuery('')}
               className="absolute right-3 top-1/2 -translate-y-1/2 font-mono-tech text-[10px] text-white/40 hover:text-white cursor-pointer"
             >
-              {isFr ? 'EFFACER' : 'CLEAR'}
+              CLEAR
             </button>
           )}
         </div>
@@ -734,13 +370,7 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
           <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
           <span>
             {filteredSpeakers.length}{' '}
-            {filteredSpeakers.length === 1
-              ? isFr
-                ? 'Conférencier'
-                : 'Speaker'
-              : isFr
-                ? 'Conférenciers'
-                : 'Speakers'}
+            {filteredSpeakers.length === 1 ? 'Speaker' : 'Speakers'}
           </span>
         </div>
       </div>
@@ -754,9 +384,176 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
-          {filteredSpeakers.map((speaker, index) => (
-            <SpeakerCard key={speaker.name} speaker={speaker} index={index} />
-          ))}
+          {filteredSpeakers.map((speaker, index) => {
+            const style = cardStyles[index % cardStyles.length];
+            const isLinkedin = speaker.link.includes('linkedin.com');
+
+            return (
+              <div
+                key={speaker.name}
+                className={`group relative flex flex-col justify-between border border-white/10 bg-[#0a0f1d]/80 quad-border-tr p-5 backdrop-blur-xl transition-all duration-300 hover:border-transparent hover:scale-[1.02] hover:bg-[#0c1326] ${style.shadowHover}`}
+              >
+                {/* Visual hover border highlight */}
+                <div
+                  className={`pointer-events-none absolute inset-0 border border-transparent transition-colors duration-300 quad-border-tr ${style.borderHover}`}
+                />
+
+                <div>
+                  {/* Photo with Cyberpunk Scanlines */}
+                  <div className="relative aspect-square w-full overflow-hidden mb-5 bg-white/5 border border-white/10 quad-border-tr quad-border-bl">
+                    <Image
+                      src={speaker.image}
+                      alt={speaker.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out"
+                    />
+                    {/* CRT Scanline overlay on hover */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-15 pointer-events-none transition-opacity duration-300 bg-gradient-to-b from-transparent via-white/50 to-transparent bg-[length:100%_4px]" />
+                    {speaker.gde && (
+                      <div
+                        title="Google Developer Expert (GDE)"
+                        className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1.5 rounded-full border border-white/25 bg-[#0a0f1d]/90 px-2.5 py-1 font-mono-tech text-[10px] font-bold tracking-wider text-white uppercase shadow-[0_4px_12px_rgba(0,0,0,0.6)] backdrop-blur-md"
+                      >
+                        <svg
+                          viewBox="0 0 24 18"
+                          className="h-3 w-3.5 shrink-0"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M8.5 2.5L2.5 8.5"
+                            stroke="#EA4335"
+                            strokeWidth="3.2"
+                            strokeLinecap="round"
+                          />
+                          <path
+                            d="M2.5 9.5L8.5 15.5"
+                            stroke="#4285F4"
+                            strokeWidth="3.2"
+                            strokeLinecap="round"
+                          />
+                          <path
+                            d="M15.5 2.5L21.5 8.5"
+                            stroke="#34A853"
+                            strokeWidth="3.2"
+                            strokeLinecap="round"
+                          />
+                          <path
+                            d="M21.5 9.5L15.5 15.5"
+                            stroke="#FBBC04"
+                            strokeWidth="3.2"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <span>GDE</span>
+                      </div>
+                    )}
+                    {(speaker.googler ||
+                      speaker.employer?.toLowerCase() === 'google') && (
+                      <div
+                        title="Google"
+                        className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1.5 rounded-full border border-white/25 bg-[#0a0f1d]/90 px-2.5 py-1 font-mono-tech text-[10px] font-bold tracking-wider text-white uppercase shadow-[0_4px_12px_rgba(0,0,0,0.6)] backdrop-blur-md"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="h-3.5 w-3.5 shrink-0"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                            fill="#4285F4"
+                          />
+                          <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                            fill="#34A853"
+                          />
+                          <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                            fill="#FBBC05"
+                          />
+                          <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                            fill="#EA4335"
+                          />
+                        </svg>
+                        <span>Google</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Speaker Info */}
+                  <div>
+                    <h3
+                      className={`font-display text-lg font-bold uppercase tracking-tight text-white transition-colors ${style.textHover}`}
+                    >
+                      {speaker.name}
+                    </h3>
+
+                    {/* Title & Employer */}
+                    <div className="mt-1 flex flex-col gap-0.5 min-h-[36px]">
+                      {speaker.title && (
+                        <p className="font-mono-tech text-xs text-google-yellow font-medium tracking-wide">
+                          {speaker.title}
+                        </p>
+                      )}
+                      {speaker.employer && (
+                        <p className="font-sans text-xs text-white/55">
+                          {speaker.employer}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Topic Rendering with Blue Talk, Red Workshop, Orange Panel, Amber Lightning, Yellow Keynote & Green Coaching icons */}
+                    {renderTopicSections(speaker.topic, speaker.format)}
+                  </div>
+                </div>
+
+                {/* Bottom Bar: Category Badge + LinkedIn Link */}
+                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {getSpeakerCategories(speaker).map((cat, idx) => {
+                      const label =
+                        cat === 'mobile' || cat === 'appdev'
+                          ? 'APPDEV'
+                          : cat.toUpperCase();
+                      return (
+                        <span
+                          key={cat}
+                          className="font-mono-tech text-[10px] tracking-widest text-white/50 uppercase"
+                        >
+                          {idx > 0 && (
+                            <span className="text-white/20 mr-1.5 font-normal">
+                              /
+                            </span>
+                          )}
+                          {label}
+                        </span>
+                      );
+                    })}
+                  </div>
+
+                  {speaker.link && (
+                    <a
+                      href={speaker.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex h-9 w-9 items-center justify-center border border-white/15 bg-white/[0.03] text-white/80 transition-all rounded-none ${style.btnHover}`}
+                      aria-label={`${speaker.name} profile`}
+                    >
+                      {isLinkedin ? (
+                        <FaLinkedin className="h-5 w-5" />
+                      ) : (
+                        <ExternalLink
+                          className="h-[18px] w-[18px]"
+                          strokeWidth={2.5}
+                        />
+                      )}
+                    </a>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
