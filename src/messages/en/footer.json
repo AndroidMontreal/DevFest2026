@@ -23,7 +23,7 @@
   "quickLinks": {
     "title": "Quick Links",
     "links": [
-      { "label": "Agenda", "href": "/schedule" },
+      { "label": "Agendas", "href": "/schedule" },
       { "label": "Speakers", "href": "/speakers" },
       {
         "label": "Sponsorship Deck",

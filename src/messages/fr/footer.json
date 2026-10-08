@@ -23,7 +23,7 @@
   "quickLinks": {
     "title": "Liens Rapides",
     "links": [
-      { "label": "Horaire", "href": "/schedule" },
+      { "label": "Horaires", "href": "/schedule" },
       { "label": "Conférenciers", "href": "/speakers" },
       {
         "label": "Plan de commandite",
