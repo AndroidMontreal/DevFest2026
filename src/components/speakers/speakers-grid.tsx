@@ -412,7 +412,7 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
                     {speaker.gde && (
                       <div
                         title="Google Developer Expert (GDE)"
-                        className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 rounded-full border border-white/25 bg-[#0a0f1d]/90 px-2.5 py-1 font-mono-tech text-[10px] font-bold tracking-wider text-white uppercase shadow-[0_4px_12px_rgba(0,0,0,0.6)] backdrop-blur-md"
+                        className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1.5 rounded-full border border-white/25 bg-[#0a0f1d]/90 px-2.5 py-1 font-mono-tech text-[10px] font-bold tracking-wider text-white uppercase shadow-[0_4px_12px_rgba(0,0,0,0.6)] backdrop-blur-md"
                       >
                         <svg
                           viewBox="0 0 24 18"
@@ -459,15 +459,9 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
 
                     {/* Title & Employer */}
                     <div className="mt-1 flex flex-col gap-0.5 min-h-[36px]">
-                      {(speaker.title || speaker.gde) && (
+                      {speaker.title && (
                         <p className="font-mono-tech text-xs text-google-yellow font-medium tracking-wide">
-                          {speaker.title
-                            ? speaker.gde &&
-                              !speaker.title.includes('(GDE)') &&
-                              speaker.title !== 'GDE'
-                              ? `${speaker.title} (GDE)`
-                              : speaker.title
-                            : 'GDE'}
+                          {speaker.title}
                         </p>
                       )}
                       {speaker.employer && (
