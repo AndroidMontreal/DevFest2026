@@ -21,6 +21,7 @@ export type SpeakerItem = {
   name: string;
   title?: string;
   employer?: string;
+  gde?: boolean;
   topic: string;
   format?: string;
   link: string;
@@ -306,6 +307,7 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
         !query ||
         speaker.name.toLowerCase().includes(query) ||
         (speaker.title && speaker.title.toLowerCase().includes(query)) ||
+        (speaker.gde && 'gde'.includes(query)) ||
         (speaker.employer && speaker.employer.toLowerCase().includes(query)) ||
         (speaker.format && speaker.format.toLowerCase().includes(query)) ||
         speaker.topic.toLowerCase().includes(query);
@@ -419,9 +421,15 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
 
                     {/* Title & Employer */}
                     <div className="mt-1 flex flex-col gap-0.5 min-h-[36px]">
-                      {speaker.title && (
+                      {(speaker.title || speaker.gde) && (
                         <p className="font-mono-tech text-xs text-google-yellow font-medium tracking-wide">
-                          {speaker.title}
+                          {speaker.title
+                            ? speaker.gde &&
+                              !speaker.title.includes('(GDE)') &&
+                              speaker.title !== 'GDE'
+                              ? `${speaker.title} (GDE)`
+                              : speaker.title
+                            : 'GDE'}
                         </p>
                       )}
                       {speaker.employer && (
