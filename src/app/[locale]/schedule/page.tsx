@@ -1,7 +1,8 @@
+import { type OverallDayAgendaCopy } from '@/components/schedule/overall-day-agenda';
 import {
-  OverallDayAgenda,
-  type OverallDayAgendaCopy,
-} from '@/components/schedule/overall-day-agenda';
+  RoomAgendaSection,
+  type RoomAgendaSectionCopy,
+} from '@/components/schedule/room-agenda-section';
 import { Link } from '@/i18n/navigation';
 import { Sparkles, Ticket } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -17,6 +18,7 @@ export default async function SchedulePage({
   const t = await getTranslations({ locale, namespace: 'SchedulePage' });
 
   const tldrCopy = t.raw('tldr') as OverallDayAgendaCopy;
+  const roomsSectionCopy = t.raw('rooms_section') as RoomAgendaSectionCopy;
 
   return (
     <main className="relative min-h-screen overflow-hidden">
@@ -50,9 +52,9 @@ export default async function SchedulePage({
           </div>
         </div>
 
-        {/* First Agenda Item: Overall Day Agenda */}
+        {/* Room Navigation Bar at the start of the page + Main Agenda & Room Schedules */}
         <div className="mb-16 md:mb-20">
-          <OverallDayAgenda copy={tldrCopy} />
+          <RoomAgendaSection tldrCopy={tldrCopy} copy={roomsSectionCopy} />
         </div>
 
         {/* Coming Soon: Detailed Room & Track Sessions Notice */}

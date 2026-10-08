@@ -9,7 +9,7 @@
   "navigation": [
     { "label": "Home", "href": "/" },
     { "label": "About", "href": "/#about" },
-    { "label": "Agenda", "href": "/schedule" },
+    { "label": "Agendas", "href": "/schedule" },
     { "label": "Speakers", "href": "/speakers" },
     { "label": "Partners", "href": "/#sponsors" },
     { "label": "Team", "href": "/team" },

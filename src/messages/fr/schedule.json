@@ -1,12 +1,12 @@
 {
   "subheading": "DevFest Montréal 2026",
   "heading": {
-    "line1": "Horaire de la",
+    "line1": "Horaires de la",
     "line2": "Journée"
   },
-  "description": "Aperçu général du déroulement de la journée du vendredi 6 novembre 2026 à l'Espace AX.C, au centre-ville de Montréal.",
-  "more_info_title": "Horaire détaillé des sessions à venir",
-  "more_info_note": "La programmation détaillée des salles, ateliers pratiques et conférenciers sera dévoilée très prochainement.",
+  "description": "Aperçu général de la journée et programmation salle par salle du vendredi 6 novembre 2026 à l'Espace AX.C, au centre-ville de Montréal.",
+  "more_info_title": "Horaire sujet à ajustements",
+  "more_info_note": "L'attribution des salles et les créneaux horaires peuvent encore évoluer d'ici le 6 novembre au fur et à mesure que les créneaux libres sont complétés.",
   "tldr": {
     "level_map_badge": "CARTE DES NIVEAUX / LEVEL MAP",
     "title": "L'horaire en bref",
@@ -80,5 +80,410 @@
         }
       ]
     }
+  },
+  "rooms_section": {
+    "section_badge": "SALLES ET PISTES / TRACKS & ROOMS",
+    "section_title": "Naviguer par salle",
+    "section_subtitle": "Schedule by Room · Étages 3 et 4",
+    "main_agenda_tab": "Horaire général (TL;DR)",
+    "filter_all": "Toutes les salles (6)",
+    "subject_to_change_note": "Salles et horaires sujets à changements",
+    "rooms": [
+      {
+        "id": "3-1",
+        "worldCode": "3-1",
+        "locationBadgePrimary": "MONDE 3-1 · ÉTAGE 3",
+        "locationBadgeSecondary": "WORLD 3-1 · FLOOR 3",
+        "name": "Don’t Stop Believin’",
+        "typePrimary": "Scène principale · 75 places",
+        "typeSecondary": "Main stage · 75 seats",
+        "accent": "yellow",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "10:15 – 11:00",
+            "title": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal's digital future",
+            "speakers": "JL MARÉCHAUX · STEFANIA PECORE · WTM MONTRÉAL & AI TINKERERS",
+            "duration": "45 MIN",
+            "lang": "EN/FR"
+          },
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "11:15 – 12:00",
+            "title": "Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart",
+            "speakers": "JHIN LEE · UNITY · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "13:00 – 13:45",
+            "title": "From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases",
+            "speakers": "GLEB OTOCHKIN · GOOGLE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "14:00 – 14:45",
+            "title": "So... You want to work at Google?",
+            "speakers": "OLIVIER BOURGEOIS · GOOGLE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "15:00 – 15:45",
+            "title": "Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova",
+            "speakers": "LUDOVIC DESSEMON · OXYA CONSULTING",
+            "duration": "45 MIN",
+            "lang": "FR"
+          },
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "16:00 – 16:45",
+            "title": "AI Isn't Magic: The Infrastructure That Actually Wins the Race",
+            "speakers": "STACY VÉRONNEAU · TELUS DIGITAL · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          }
+        ]
+      },
+      {
+        "id": "3-4",
+        "worldCode": "3-4",
+        "locationBadgePrimary": "MONDE 3-4 · ÉTAGE 3",
+        "locationBadgeSecondary": "WORLD 3-4 · FLOOR 3",
+        "name": "Call Me",
+        "typePrimary": "Conférences · 20 places",
+        "typeSecondary": "Talks · 20 seats",
+        "accent": "blue",
+        "sessions": [
+          {
+            "kind": "open",
+            "time": "10:15 – 11:00",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "open",
+            "time": "11:15 – 12:00",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "open",
+            "time": "13:00 – 13:45",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "open",
+            "time": "14:00 – 14:45",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "open",
+            "time": "15:00 – 15:45",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "16:00 – 16:30",
+            "title": "Ronde éclair / Lightning round",
+            "duration": "2×15",
+            "lang": "EN",
+            "subItems": [
+              {
+                "time": "16:00",
+                "title": "GDG on Campus lightning panel",
+                "speakers": "Michael Persico, Rebecca Abi Chahine, Daniel Wei"
+              },
+              {
+                "time": "16:15",
+                "title": "The 90% You Don't See",
+                "speakers": "Guryash Singh Dhall"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3-5",
+        "worldCode": "3-5",
+        "locationBadgePrimary": "MONDE 3-5 · ÉTAGE 3",
+        "locationBadgeSecondary": "WORLD 3-5 · FLOOR 3",
+        "name": "Just Can’t Get Enough",
+        "typePrimary": "Ateliers et conférences · 25 places",
+        "typeSecondary": "Workshops & talks · 25 seats",
+        "accent": "blue",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "10:15 – 11:00",
+            "title": "Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach",
+            "speakers": "ETIENNE CARON · KANASTRUK · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "open",
+            "time": "11:15 – 12:00",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "13:00 – 13:45",
+            "title": "Off the Edge: Grading Google AI Edge and Gemini Against a Practitioner’s Eye",
+            "speakers": "BORIS-WILFRIED NYASSE · OLOODI · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "14:00 – 14:45",
+            "title": "Beyond Push-to-Talk: Real-Time Fact-Checking Agents with Gemini Live API and Google Search Grounding",
+            "speakers": "AISHA YASEEN · AREHSOFT",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "15:00 – 15:45",
+            "title": "Under the Hood of Gemini Enterprise: No-Code Agents, and Workflow Automation",
+            "speakers": "FRANÇOIS LÉGARÉ · BELL",
+            "duration": "45 MIN",
+            "lang": "EN/FR"
+          },
+          {
+            "kind": "open",
+            "time": "16:00 – 16:45",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          }
+        ]
+      },
+      {
+        "id": "4-4",
+        "worldCode": "4-4",
+        "locationBadgePrimary": "MONDE 4-4 · ÉTAGE 4",
+        "locationBadgeSecondary": "WORLD 4-4 · FLOOR 4",
+        "name": "Under Pressure",
+        "typePrimary": "Conférences · 40 places",
+        "typeSecondary": "Talks · 40 seats",
+        "accent": "blue",
+        "sessions": [
+          {
+            "kind": "open",
+            "time": "10:15 – 11:00",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "11:15 – 12:00",
+            "title": "Beyond Red, Blue and Purple: Meet the Gold Team",
+            "speakers": "FAUSTIN BOUCHARD · UNIVERSAL INTELLIGENCE ARCHITECTURE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "13:00 – 13:45",
+            "title": "Gemini Live: Architecting, building and pricing conversational experiences",
+            "speakers": "FELIPE LUJAN · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "open",
+            "time": "14:00 – 14:45",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "15:00 – 15:45",
+            "title": "Edge AI on Mobile: Practical Approaches and Challenges",
+            "speakers": "MATHIEU FILLION · WEPOINT",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "16:00 – 16:45",
+            "title": "Terminal to Stadium: Building an AI Sports PA Announcer with Gemini",
+            "speakers": "ANGELO ITALIANO · RAVL",
+            "duration": "45 MIN",
+            "lang": "EN"
+          }
+        ]
+      },
+      {
+        "id": "4-5",
+        "worldCode": "4-5",
+        "locationBadgePrimary": "MONDE 4-5 · ÉTAGE 4",
+        "locationBadgeSecondary": "WORLD 4-5 · FLOOR 4",
+        "name": "Never Gonna Give You Up",
+        "typePrimary": "Conférences · 40 places",
+        "typeSecondary": "Talks · 40 seats",
+        "accent": "blue",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "10:15 – 11:00",
+            "title": "The Web Could be Agentic: A first dive into Google's WebMCP Proposal",
+            "speakers": "LESTER BOTELLO · WEPOINT",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "11:15 – 12:00",
+            "title": "Attention Attention Everywhere",
+            "speakers": "DEV J. SHAH · TRIBALSCALE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "13:00 – 13:45",
+            "title": "Ouvrir la boîte noire : L'interprétabilité mécaniste des LLMs",
+            "speakers": "DAVID CARDOZO · DATAIKU · GDE",
+            "duration": "45 MIN",
+            "lang": "FR"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "14:00 – 14:45",
+            "title": "Android AppFunctions: Exposing Your App to AI Agents",
+            "speakers": "NAV SINGH · MANULIFE · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "open",
+            "time": "15:00 – 15:45",
+            "title": "Créneau de conférence libre",
+            "subtitle": "Open talk slot",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "16:00 – 16:45",
+            "title": "Make Your AI Agent Think Fast and Slow: System One Decisions in Google ADK",
+            "speakers": "THOMAS CHONG · BEEVER AI · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          }
+        ]
+      },
+      {
+        "id": "4-6",
+        "worldCode": "4-6",
+        "locationBadgePrimary": "MONDE 4-6 · ÉTAGE 4",
+        "locationBadgeSecondary": "WORLD 4-6 · FLOOR 4",
+        "name": "Hip To Be Square",
+        "typePrimary": "Ateliers · 91 places",
+        "typeSecondary": "Workshops · 91 seats",
+        "accent": "red",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "red",
+            "time": "10:15 – 11:45",
+            "title": "AI-driven troubleshooting for Google Cloud infrastructure",
+            "speakers": "OLIVIER BOURGEOIS · GOOGLE",
+            "duration": "90 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "open",
+            "variant": "red",
+            "time": "13:15 – 14:45",
+            "title": "Créneau d'atelier libre",
+            "subtitle": "Open workshop slot",
+            "duration": "90 MIN"
+          },
+          {
+            "kind": "session",
+            "variant": "red",
+            "time": "15:00 – 16:30",
+            "title": "Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script",
+            "speakers": "CYPRIEN TANKEU · MIRADIE CONSEILS · GDE",
+            "duration": "90 MIN",
+            "lang": "FR"
+          }
+        ]
+      }
+    ]
   }
 }
