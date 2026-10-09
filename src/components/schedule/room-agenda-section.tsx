@@ -112,8 +112,8 @@ export function RoomAgendaSection({
               onClick={() => setSelectedTab('main')}
               className={`inline-flex items-center justify-center sm:justify-start gap-2 rounded-lg border px-3 sm:px-4 py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                 selectedTab === 'main'
-                  ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
-                  : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
+                  ? 'border-emerald-400 bg-emerald-500/20 text-emerald-200 shadow-[0_0_18px_rgba(16,185,129,0.35)]'
+                  : 'border-emerald-400/35 bg-emerald-500/10 text-emerald-200/90 shadow-[0_0_12px_rgba(16,185,129,0.15)] hover:border-emerald-400 hover:text-white hover:shadow-[0_0_18px_rgba(16,185,129,0.3)]'
               }`}
             >
               <CalendarRange className="h-3.5 w-3.5 shrink-0" />
@@ -127,8 +127,8 @@ export function RoomAgendaSection({
               onClick={() => setSelectedTab('all')}
               className={`inline-flex items-center justify-center sm:justify-start gap-2 rounded-lg border px-3 sm:px-4 py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                 selectedTab === 'all'
-                  ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
-                  : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
+                  ? 'border-orange-400 bg-orange-500/20 text-orange-200 shadow-[0_0_18px_rgba(249,115,22,0.35)]'
+                  : 'border-orange-400/35 bg-orange-500/10 text-orange-200/90 shadow-[0_0_12px_rgba(249,115,22,0.15)] hover:border-orange-400 hover:text-white hover:shadow-[0_0_18px_rgba(249,115,22,0.3)]'
               }`}
             >
               <Layers className="h-3.5 w-3.5 shrink-0" />
