@@ -283,9 +283,16 @@ function getSpeakerCategories(speaker: SpeakerItem): SpeakerCategory[] {
   return speaker.category ? [speaker.category] : [];
 }
 
-export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
+export function SpeakersGrid({
+  copy,
+  locale = 'en',
+}: {
+  copy: SpeakersGridCopy;
+  locale?: string;
+}) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const isFr = locale === 'fr';
 
   const filterTabs = [
     { id: 'all', label: copy.filter_all },
@@ -309,6 +316,7 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
         speaker.name.toLowerCase().includes(query) ||
         (speaker.title && speaker.title.toLowerCase().includes(query)) ||
         (speaker.gde && 'gde'.includes(query)) ||
+        (speaker.googler && 'googler'.includes(query)) ||
         (speaker.employer && speaker.employer.toLowerCase().includes(query)) ||
         (speaker.format && speaker.format.toLowerCase().includes(query)) ||
         speaker.topic.toLowerCase().includes(query);
@@ -316,6 +324,35 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
       return matchesCategory && matchesSearch;
     });
   }, [copy.items, selectedCategory, searchQuery]);
+
+  const { googlersCount, gdesCount } = useMemo(() => {
+    let googlers = 0;
+    let gdes = 0;
+    for (const speaker of filteredSpeakers) {
+      if (speaker.googler || speaker.employer?.toLowerCase() === 'google') {
+        googlers += 1;
+      }
+      if (speaker.gde) {
+        gdes += 1;
+      }
+    }
+    return { googlersCount: googlers, gdesCount: gdes };
+  }, [filteredSpeakers]);
+
+  const breakdownText = useMemo(() => {
+    const parts: string[] = [];
+    if (googlersCount > 0) {
+      parts.push(
+        `${googlersCount} ${googlersCount === 1 ? 'Googler' : 'Googlers'}`,
+      );
+    }
+    if (gdesCount > 0) {
+      parts.push(`${gdesCount} ${gdesCount === 1 ? 'GDE' : 'GDEs'}`);
+    }
+    if (parts.length === 0) return '';
+    const joined = isFr ? parts.join(' et ') : parts.join(' and ');
+    return isFr ? `(incluant ${joined})` : `(including ${joined})`;
+  }, [googlersCount, gdesCount, isFr]);
 
   return (
     <div className="space-y-12">
@@ -365,12 +402,23 @@ export function SpeakersGrid({ copy }: { copy: SpeakersGridCopy }) {
       </div>
 
       {/* Results Counter */}
-      <div className="flex items-center justify-between text-white/40 font-mono-tech text-xs tracking-widest uppercase">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
+      <div className="flex items-center justify-between text-white/40 font-mono-tech text-xs tracking-widest">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Sparkles className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
           <span>
-            {filteredSpeakers.length}{' '}
-            {filteredSpeakers.length === 1 ? 'Speaker' : 'Speakers'}
+            <span className="uppercase">
+              {filteredSpeakers.length}{' '}
+              {isFr
+                ? filteredSpeakers.length === 1
+                  ? 'Conférencier'
+                  : 'Conférenciers'
+                : filteredSpeakers.length === 1
+                  ? 'Speaker'
+                  : 'Speakers'}
+            </span>
+            {breakdownText && (
+              <span className="ml-2 text-white/55">{breakdownText}</span>
+            )}
           </span>
         </div>
       </div>

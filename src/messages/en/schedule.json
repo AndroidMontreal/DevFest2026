@@ -313,11 +313,14 @@
         "accent": "blue",
         "sessions": [
           {
-            "kind": "open",
+            "kind": "session",
+            "variant": "blue",
+            "tentative": true,
             "time": "10:15 – 11:00",
-            "title": "Open talk slot",
-            "subtitle": "Créneau de conférence libre",
-            "duration": "45 MIN"
+            "title": "Building Real-Time RAG Systems with Gemini & the Multimodal Live API",
+            "speakers": "OLAYINKA PETER · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
           },
           {
             "kind": "session",
@@ -446,8 +449,8 @@
         "locationBadgePrimary": "WORLD 4-6 · FLOOR 4",
         "locationBadgeSecondary": "MONDE 4-6 · ÉTAGE 4",
         "name": "Hip To Be Square",
-        "typePrimary": "Workshops · 91 seats",
-        "typeSecondary": "Ateliers · 91 places",
+        "typePrimary": "Workshops & talks · 91 seats",
+        "typeSecondary": "Ateliers et conférences · 91 places",
         "accent": "red",
         "sessions": [
           {
@@ -466,12 +469,24 @@
             "subtitle": "DÎNER ET TIRAGE"
           },
           {
-            "kind": "open",
-            "variant": "red",
-            "time": "13:15 – 14:45",
-            "title": "Open workshop slot",
-            "subtitle": "Créneau d'atelier libre",
-            "duration": "90 MIN"
+            "kind": "session",
+            "variant": "blue",
+            "tentative": true,
+            "time": "13:00 – 13:45",
+            "title": "How to Govern in Agentic AI Using Google Cloud’s Model Armor",
+            "speakers": "JONATHAN ZHUO · CAPGEMINI · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "tentative": true,
+            "time": "14:00 – 14:45",
+            "title": "From Black Belts to Small Language Models: My Taekwondo AI Journey",
+            "speakers": "KEVIN MOORE · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
           },
           {
             "kind": "session",
@@ -480,7 +495,7 @@
             "title": "Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script",
             "speakers": "CYPRIEN TANKEU · MIRADIE CONSEILS · GDE",
             "duration": "90 MIN",
-            "lang": "FR"
+            "lang": "FR/EN"
           }
         ]
       }

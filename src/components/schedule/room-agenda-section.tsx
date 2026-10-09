@@ -25,6 +25,7 @@ export type LightningSubItem = {
 export type RoomSessionItem = {
   kind?: 'session' | 'lunch' | 'open';
   variant?: 'yellow' | 'blue' | 'red';
+  tentative?: boolean;
   time: string;
   title: string;
   subtitle?: string;
@@ -346,8 +347,9 @@ export function RoomAgendaSection({
                   // Regular Session (Talk / Panel / Workshop / Lightning Round)
                   const pillVariant = session.variant || room.accent || 'blue';
 
-                  const timePillClass =
-                    pillVariant === 'yellow'
+                  const timePillClass = session.tentative
+                    ? 'border border-google-yellow bg-transparent text-google-yellow font-bold'
+                    : pillVariant === 'yellow'
                       ? 'bg-google-yellow text-black font-bold shadow-[0_0_15px_rgba(251,188,4,0.3)]'
                       : pillVariant === 'red'
                         ? 'bg-google-red text-white font-bold shadow-[0_0_15px_rgba(234,67,53,0.3)]'
@@ -363,10 +365,14 @@ export function RoomAgendaSection({
                   return (
                     <div
                       key={`${session.time}-${idx}`}
-                      className="group relative flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-xl border border-white/10 bg-[#0d1222]/90 px-5 py-4 transition-all duration-300 hover:border-cyan-400/40 hover:bg-[#121931]"
+                      className={`group relative flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-xl px-5 py-4 transition-all duration-300 ${
+                        session.tentative
+                          ? 'border border-dashed border-google-yellow/80 bg-[#0d1222]/90 hover:border-google-yellow hover:bg-[#121931]'
+                          : 'border border-white/10 bg-[#0d1222]/90 hover:border-cyan-400/40 hover:bg-[#121931]'
+                      }`}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-1">
-                        {/* Solid Time Pill */}
+                        {/* Solid or Tentative Outlined Time Pill */}
                         <div className="shrink-0">
                           <span
                             className={`inline-flex min-w-[150px] items-center justify-center rounded-full px-4 py-2 font-mono-tech text-sm md:text-base tracking-wider ${timePillClass}`}
@@ -424,6 +430,16 @@ export function RoomAgendaSection({
                                   <span>GDE</span>
                                 </span>
                               )}
+                              {session.tentative && (
+                                <>
+                                  <span className="font-mono-tech text-xs text-white/35">
+                                    ·
+                                  </span>
+                                  <span className="font-mono-tech text-xs font-semibold uppercase tracking-wider text-google-yellow">
+                                    TENTATIVE / À CONFIRMER
+                                  </span>
+                                </>
+                              )}
                             </div>
                           )}
 
@@ -453,7 +469,7 @@ export function RoomAgendaSection({
                       </div>
 
                       {/* Right Badges: Duration + Language */}
-                      <div className="flex items-center gap-2.5 self-start md:self-center shrink-0">
+                      <div className="flex flex-wrap items-center gap-2.5 self-start md:self-center shrink-0">
                         {session.duration && (
                           <span
                             className={`inline-flex min-w-[78px] items-center justify-center rounded-full border px-3.5 py-1.5 font-mono-tech text-xs uppercase tracking-wider ${durationBadgeClass}`}

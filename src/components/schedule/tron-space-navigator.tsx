@@ -416,8 +416,8 @@ const MAP_NODES: MapNode[] = [
     code: 'WORLD 4-6',
     roomScheduleId: '4-6',
     name: 'Hip To Be Square',
-    subtitleEn: 'Hands-On 90-Minute Technical Workshops',
-    subtitleFr: 'Ateliers pratiques de 90 minutes',
+    subtitleEn: 'Hands-On Workshops & Technical Talks',
+    subtitleFr: 'Ateliers pratiques et conférences techniques',
     zone: 'Le Square · East Wing',
     capacityEn: '91 table seated (110 with 19 standing up)',
     capacityFr: '91 places assises aux tables (110 avec 19 debout)',
@@ -1848,9 +1848,18 @@ export function TronSpaceNavigator({
                           <span className="font-bold text-google-yellow">
                             {s.time}
                           </span>
-                          {s.duration && (
-                            <span className="text-cyan-300">{s.duration}</span>
-                          )}
+                          <div className="flex items-center gap-1.5">
+                            {s.tentative && (
+                              <span className="rounded border border-amber-400/60 bg-amber-500/15 px-1.5 py-0.5 text-[9px] font-bold uppercase text-amber-300">
+                                {isFr ? 'Provisoire' : 'Tentative'}
+                              </span>
+                            )}
+                            {s.duration && (
+                              <span className="text-cyan-300">
+                                {s.duration}
+                              </span>
+                            )}
+                          </div>
                         </div>
                         <div className="mt-0.5 font-display font-bold leading-snug line-clamp-2">
                           {s.title}
