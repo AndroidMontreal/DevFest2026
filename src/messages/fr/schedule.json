@@ -315,7 +315,6 @@
           {
             "kind": "session",
             "variant": "blue",
-            "tentative": true,
             "time": "10:15 – 11:00",
             "title": "Building Real-Time RAG Systems with Gemini & the Multimodal Live API",
             "speakers": "OLAYINKA PETER · GDE",
