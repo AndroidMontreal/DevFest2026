@@ -59,7 +59,7 @@ export default async function SpeakersPage({
         </div>
 
         {/* Interactive Speakers Grid with Search & Filters */}
-        <SpeakersGrid copy={copy} />
+        <SpeakersGrid copy={copy} locale={locale} />
       </section>
     </main>
   );

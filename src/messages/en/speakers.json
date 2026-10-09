@@ -234,6 +234,18 @@
       "categories": ["community", "ai"]
     },
     {
+      "name": "Kevin Moore",
+      "employer": "",
+      "title": "",
+      "gde": true,
+      "topic": "From Black Belts to Small Language Models: My Taekwondo AI Journey",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/kevin-d-moore/",
+      "image": "/assets/images/speakers/Kevin_Moore.jpg",
+      "category": "appdev",
+      "categories": ["appdev", "ai"]
+    },
+    {
       "name": "Boris-Wilfried Nyasse",
       "employer": "Oloodi",
       "title": "Founder",
@@ -290,6 +302,17 @@
       "link": "https://www.linkedin.com/in/michael-persico/",
       "image": "/assets/images/speakers/Michael_Persico.jpg",
       "category": "community"
+    },
+    {
+      "name": "Olayinka Peter",
+      "employer": "",
+      "title": "",
+      "gde": true,
+      "topic": "Building Real-Time RAG Systems with Gemini & the Multimodal Live API",
+      "format": "Talk · 40 min",
+      "link": "https://speakerdeck.com/olayinkapeter",
+      "image": "/assets/images/speakers/Olayinka_Peter.jpg",
+      "category": "ai"
     },
     {
       "name": "Dev J. Shah",
@@ -358,6 +381,18 @@
       "link": "https://www.linkedin.com/in/aisha-yaseen/",
       "image": "/assets/images/speakers/Aisha_Yaseen.jpg",
       "category": "ai"
+    },
+    {
+      "name": "Jonathan Zhuo",
+      "employer": "Capgemini",
+      "title": "GCP Principal Architect (Sr. Director)",
+      "gde": true,
+      "topic": "How to Govern in Agentic AI Using Google Cloud’s Model Armor",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/jonathanjiayinzhuo/",
+      "image": "/assets/images/speakers/Jonathan_Zhuo.jpg",
+      "category": "ai",
+      "categories": ["ai", "cloud"]
     }
   ]
 }
