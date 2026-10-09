@@ -29,6 +29,10 @@ export default async function Home({
       sponsor_btn: t_home('hero.sponsor_btn'),
     },
     stats: {
+      talks: {
+        label: t_home('stats.talks.label'),
+        value: t_home('stats.talks.value'),
+      },
       workshops: {
         label: t_home('stats.workshops.label'),
         value: t_home('stats.workshops.value'),
