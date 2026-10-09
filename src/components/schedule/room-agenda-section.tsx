@@ -104,7 +104,7 @@ export function RoomAgendaSection({
           </div>
         </div>
 
-        {/* Navigation Pills: Main Agenda + TRON Space Navigator + Each Room + All Rooms */}
+        {/* Navigation Pills: Main Agenda + All Rooms + Each Room + TRON Space Navigator */}
         <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2.5">
           <div className="grid grid-cols-2 sm:contents gap-2">
             <button
@@ -124,20 +124,15 @@ export function RoomAgendaSection({
 
             <button
               type="button"
-              onClick={() => setSelectedTab('map')}
+              onClick={() => setSelectedTab('all')}
               className={`inline-flex items-center justify-center sm:justify-start gap-2 rounded-lg border px-3 sm:px-4 py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                selectedTab === 'map'
-                  ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-200 shadow-[0_0_18px_rgba(217,70,239,0.35)]'
-                  : 'border-fuchsia-400/35 bg-fuchsia-500/10 text-fuchsia-200/90 hover:border-fuchsia-400 hover:text-white'
+                selectedTab === 'all'
+                  ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
+                  : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
               }`}
             >
-              <Compass className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate">
-                {copy.map_tab ||
-                  (locale === 'fr'
-                    ? 'Carte Interactive (3e & 4e)'
-                    : 'Space Navigator (Map)')}
-              </span>
+              <Layers className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">{copy.filter_all}</span>
             </button>
           </div>
 
@@ -171,15 +166,20 @@ export function RoomAgendaSection({
 
             <button
               type="button"
-              onClick={() => setSelectedTab('all')}
+              onClick={() => setSelectedTab('map')}
               className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 sm:py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                selectedTab === 'all'
-                  ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
-                  : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
+                selectedTab === 'map'
+                  ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-200 shadow-[0_0_18px_rgba(217,70,239,0.35)]'
+                  : 'border-fuchsia-400/35 bg-fuchsia-500/10 text-fuchsia-200/90 hover:border-fuchsia-400 hover:text-white'
               }`}
             >
-              <Layers className="h-3.5 w-3.5 shrink-0" />
-              <span>{copy.filter_all}</span>
+              <Compass className="h-3.5 w-3.5 shrink-0" />
+              <span>
+                {copy.map_tab ||
+                  (locale === 'fr'
+                    ? 'Carte Interactive (3e & 4e)'
+                    : 'Space Navigator (Map)')}
+              </span>
             </button>
           </div>
         </div>
