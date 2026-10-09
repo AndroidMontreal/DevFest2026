@@ -188,6 +188,18 @@
       "category": "ai"
     },
     {
+      "name": "Rishab Kumar",
+      "employer": "Twilio",
+      "title": "Staff DevRel",
+      "gde": true,
+      "topic": "Build a Personal Productivity Assistant on Cloud Run",
+      "format": "Workshop · 90 min",
+      "link": "https://www.linkedin.com/in/rishabkumar7/",
+      "image": "/assets/images/speakers/Rishab_Kumar.jpg",
+      "category": "cloud",
+      "categories": ["cloud", "ai"]
+    },
+    {
       "name": "Jhin Lee",
       "employer": "Unity",
       "title": "Senior Software Developer",
@@ -200,13 +212,13 @@
       "categories": ["appdev", "ai"]
     },
     {
-      "name": "Francois Légaré",
+      "name": "François Légaré",
       "employer": "Bell",
       "title": "Senior Manager Data Science",
       "gde": true,
       "topic": "Under the Hood of Gemini Enterprise: No-Code Agents, and Workflow Automation",
       "format": "Talk · 40 min",
-      "link": "",
+      "link": "https://www.linkedin.com/in/flegare/",
       "image": "/assets/images/speakers/Francois_Legare.jpg",
       "category": "ai"
     },
@@ -381,18 +393,6 @@
       "link": "https://www.linkedin.com/in/aisha-yaseen/",
       "image": "/assets/images/speakers/Aisha_Yaseen.jpg",
       "category": "ai"
-    },
-    {
-      "name": "Jonathan Zhuo",
-      "employer": "Capgemini",
-      "title": "GCP Principal Architect (Sr. Director)",
-      "gde": true,
-      "topic": "How to Govern in Agentic AI Using Google Cloud’s Model Armor",
-      "format": "Talk · 40 min",
-      "link": "https://www.linkedin.com/in/jonathanjiayinzhuo/",
-      "image": "/assets/images/speakers/Jonathan_Zhuo.jpg",
-      "category": "ai",
-      "categories": ["ai", "cloud"]
     }
   ]
 }
