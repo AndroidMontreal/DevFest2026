@@ -11,17 +11,21 @@
     "sponsor_btn": "Become a Partner"
   },
   "stats": {
-    "workshops": {
-      "label": "Workshops",
+    "talks": {
+      "label": "Talks (45 mins)",
       "value": "20+"
     },
+    "workshops": {
+      "label": "Workshops (90 mins)",
+      "value": "2+"
+    },
     "attendees": {
-      "label": "Attendees",
+      "label": "Attendees (Developers, AI Builders, Students, Professionals & Founders)",
       "value": "300+"
     },
     "speakers": {
-      "label": "Speakers",
-      "value": "15+"
+      "label": "Speakers (including Googlers and GDEs)",
+      "value": "30+"
     }
   },
   "hud": {
@@ -37,7 +41,7 @@
   "ticker": {
     "item1": "DEVFEST MONTREAL 2026 // NOVEMBER 6",
     "item2": "CONNECTING 300+ DEVELOPERS & EXPERTS",
-    "item3": "20+ WORKSHOPS // TECH IMMERSION",
+    "item3": "20+ TALKS & 2+ WORKSHOPS // 30+ SPEAKERS",
     "item4": "MONTREAL TECH ECOSYSTEM // GDG"
   },
   "about": {

@@ -37,30 +37,48 @@ export function HeroContent({ hero, stats }: HeroContentProps) {
         </p>
 
         {/* Refined compact stats section (Large numbers, wider container to prevent wrapping) */}
-        <div className="mt-12 grid w-full max-w-2xl grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-          {[stats.workshops, stats.attendees, stats.speakers].map((stat, i) => {
-            const colors = [
-              'bg-google-blue',
-              'bg-google-green',
-              'bg-google-yellow',
-            ];
-            return (
-              <div
-                key={i}
-                className={`flex flex-col items-center gap-1.5 transition-transform duration-300 hover:scale-105 ${i === 2 ? 'col-span-2 md:col-span-1' : ''}`}
-              >
-                <div className="flex items-center justify-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${colors[i]}`} />
-                  <p className="font-mono-tech text-[11px] tracking-widest text-white/50 uppercase whitespace-nowrap">
-                    {stat.label}
+        <div className="mt-12 grid w-full max-w-5xl grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          {[stats.attendees, stats.speakers, stats.talks, stats.workshops].map(
+            (stat, i) => {
+              const colors = [
+                'bg-google-blue',
+                'bg-google-red',
+                'bg-google-green',
+                'bg-google-yellow',
+              ];
+              const parenIdx = stat.label.indexOf('(');
+              const mainLabel =
+                parenIdx !== -1
+                  ? stat.label.slice(0, parenIdx).trim()
+                  : stat.label;
+              const subLabel =
+                parenIdx !== -1 ? stat.label.slice(parenIdx).trim() : '';
+
+              return (
+                <div
+                  key={i}
+                  className="flex flex-col items-center justify-between gap-2 transition-transform duration-300 hover:scale-105"
+                >
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <div
+                        className={`w-2 h-2 shrink-0 rounded-full ${colors[i]}`}
+                      />
+                      <p className="font-mono-tech text-[11px] tracking-widest text-white/50 uppercase whitespace-nowrap">
+                        {mainLabel}
+                      </p>
+                    </div>
+                    <p className="mt-1 min-h-[16px] max-w-[260px] text-center font-mono-tech text-[10px] leading-snug tracking-wider text-white/45">
+                      {subLabel}
+                    </p>
+                  </div>
+                  <p className="font-display text-5xl md:text-6xl font-bold text-white tabular-nums whitespace-nowrap">
+                    {stat.value}
                   </p>
                 </div>
-                <p className="font-display text-5xl md:text-6xl font-bold text-white tabular-nums">
-                  {stat.value}
-                </p>
-              </div>
-            );
-          })}
+              );
+            },
+          )}
         </div>
 
         {/* CTA Buttons */}

@@ -13,6 +13,10 @@ export type HomeLandingCopy = {
     sponsor_link?: string;
   };
   stats: {
+    talks: {
+      label: string;
+      value: string;
+    };
     workshops: {
       label: string;
       value: string;
