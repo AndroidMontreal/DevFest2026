@@ -1,15 +1,13 @@
-# Project: DevFest 2026 Web App
+# Project: DevFest Montreal 2026 Web App
 
-This is the official website for DevFest 2026.
+This is the official website for **DevFest Montreal 2026** (November 6, 2026 at Ax.c Hub, downtown Montreal).
 
 ## Technology Stack
 
-- **Framework:** Next.js 16 (with App Router)
-- **Language:** TypeScript
+- **Framework:** Next.js 16 (App Router, static export via `output: 'export'`)
+- **Language:** TypeScript 5
 - **Styling:** Tailwind CSS v4
-- **Internationalization (i18n):** `next-intl` is used for localized routing and content.
-  - Supported locales: English (`en`), French (`fr`)
-  - Content is statically exported.
+- **Internationalization (i18n):** `next-intl` for localized routing and content (`en` and `fr`).
 
 ## Getting Started
 
@@ -25,37 +23,50 @@ The site will be available at `http://localhost:3000`.
 ## Key Commands
 
 - `npm run dev`: Starts the development server.
-- `npm run build`: Creates a production-ready static build.
-- `npm run start`: Starts the production server (for serving the built files).
+- `npm run build`: Creates a production-ready static build (`out/`).
+- `npm run start`: Starts the production server.
 - `npm run lint`: Lints the code using ESLint.
-- `npm run typecheck`: Runs the TypeScript compiler to check for type errors.
+- `npm run typecheck`: Runs the TypeScript compiler (`tsc --noEmit`) to check for type errors.
 - `npm run format`: Formats code with Prettier.
-- `npm run check`: A comprehensive check that runs linting, type-checking, and a build.
+- `npm run format:check`: Verifies code formatting with Prettier.
+- `npm run check`: Runs linting, type-checking, and a production build.
 
 ## Project Structure
-
-The project follows a standard Next.js App Router structure with specific conventions for internationalization.
 
 ```text
 src/
 ├── app/
-│   ├── [locale]/        # Pages and layouts for each language
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── globals.css      # Global styles
-│   └── page.tsx         # Root page that redirects to the default locale
-├── components/          # Reusable React components
-├── i18n/                # Internationalization configuration (routing, navigation)
-└── messages/            # Translation files (JSON) for each locale
+│   ├── [locale]/              # Localized pages and layout (/en, /fr)
+│   │   ├── agenda/            # Alias route re-exporting SchedulePage
+│   │   ├── code-of-conduct/   # Code of Conduct page
+│   │   ├── faq/               # Interactive FAQ page
+│   │   ├── schedule/          # Event Agendas, Room tracks & TRON Space Navigator
+│   │   ├── speakers/          # Confirmed Speakers grid with category filters & search
+│   │   ├── team/              # Organizers team page
+│   │   ├── layout.tsx         # Locale layout shell
+│   │   └── page.tsx           # Home landing page
+│   ├── globals.css            # Global styles and theme utilities
+│   └── page.tsx               # Root page that redirects to the default locale
+├── components/
+│   ├── common/                # Shared layout & UI components
+│   ├── faq/                   # FAQ accordion component
+│   ├── gallery/               # Past editions photo gallery grid
+│   ├── home/                  # Hero, stats, countdown HUD, ticker, about section, navigation
+│   ├── schedule/              # Overall TL;DR agenda, room agendas, and TRON Space Navigator map
+│   ├── speakers/              # Speakers grid, session badges, GDE/Googler pills, search & filter controls
+│   └── sponsors/              # Partner & sponsor tier cards
+├── i18n/                      # Internationalization configuration (routing, navigation, request)
+└── messages/                  # Translation files (JSON) for each locale
     ├── en/
     └── fr/
 ```
 
 ## Development Conventions
 
-- **Localization:** To add new translated text, add the keys to the respective `*.json` files in `src/messages/en/` and `src/messages/fr/`. Make sure to register any new namespace in `src/i18n/request.ts`.
-- **Styling:** Use Tailwind CSS utility classes for styling. Global styles are in `src/app/globals.css`.
-- **Code Quality:** This project uses ESLint for linting and Prettier for code formatting. Always run `npm run check` before committing to ensure code quality.
+- **Localization:** Keep `src/messages/en/*.json` and `src/messages/fr/*.json` in sync across all 12 namespaces (`common`, `metadata`, `header`, `home`, `gallery`, `footer`, `sponsors`, `team`, `schedule`, `speakers`, `code-of-conduct`, `faq`). Register any new namespace in `src/i18n/request.ts`.
+- **Speaker & Schedule Sync:** When adding or moving a session in `src/messages/{en,fr}/schedule.json`, also update `SESSION_LOCATIONS` in `src/components/speakers/speakers-grid.tsx` and the room session arrays in `src/components/schedule/tron-space-navigator.tsx`. The schedule page supports deep-linking to specific room tabs via `/schedule?room=<roomId>#room-<roomId>`.
+- **Styling:** Use Tailwind CSS utility classes for styling. Global styles and custom utility classes are in `src/app/globals.css`.
+- **Code Quality:** Always run `npm run format` and `npm run check` before committing to ensure formatting, linting, types, and static export all pass cleanly.
 
 ## Deployment
 
