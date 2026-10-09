@@ -17,7 +17,7 @@
     },
     "workshops": {
       "label": "Workshops (90 mins)",
-      "value": "3"
+      "value": "4"
     },
     "attendees": {
       "label": "Attendees (Developers, AI Builders, Students, Professionals & Founders)",
@@ -41,7 +41,7 @@
   "ticker": {
     "item1": "DEVFEST MONTREAL 2026 // NOVEMBER 6",
     "item2": "CONNECTING 300+ DEVELOPERS & EXPERTS",
-    "item3": "20+ TALKS & 3 WORKSHOPS // 30+ SPEAKERS",
+    "item3": "20+ TALKS & 4 WORKSHOPS // 30+ SPEAKERS",
     "item4": "MONTREAL TECH ECOSYSTEM // GDG"
   },
   "about": {
