@@ -9,7 +9,7 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   OverallDayAgenda,
   type OverallDayAgendaCopy,
@@ -70,6 +70,21 @@ export function RoomAgendaSection({
   locale = 'en',
 }: RoomAgendaSectionProps) {
   const [selectedTab, setSelectedTab] = useState<string>('main');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const roomParam = params.get('room');
+    if (
+      roomParam &&
+      (roomParam === 'main' ||
+        roomParam === 'all' ||
+        roomParam === 'map' ||
+        copy.rooms.some((r) => r.id === roomParam))
+    ) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelectedTab(roomParam);
+    }
+  }, [copy.rooms]);
 
   const visibleRooms =
     selectedTab === 'main' || selectedTab === 'map'

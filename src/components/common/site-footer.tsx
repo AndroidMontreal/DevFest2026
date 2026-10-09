@@ -23,28 +23,23 @@ export const SiteFooter = () => {
 
   return (
     <footer className="bg-background pt-20 pb-12 relative overflow-hidden gradient-border-top">
-      {' '}
-      {/* Applied gradient-border-top */}
-      <div className="absolute inset-0 blueprint-subgrid opacity-20 pointer-events-none"></div>
+      <div className="absolute inset-0 blueprint-subgrid opacity-20 pointer-events-none" />
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
           {/* Column 1: Brand */}
           <div className="md:col-span-4 space-y-6">
-            <Link href="/" className="block w-[230px] h-[28px] relative">
-              {' '}
-              {/* Replaced text logo with Image */}
+            <Link href="/" className="block w-[230px] relative">
               <Image
                 src="/assets/images/logos/devfest-2026.svg"
                 alt="DevFest 2026 Logo"
-                className="object-contain"
+                className="h-auto w-[230px] object-contain"
                 width={230}
-                height={48}
+                height={28}
               />
             </Link>
             <p className="text-sm text-on-surface-variant leading-relaxed max-w-xs">
               {t('brand.description')}
             </p>
-            {/* Removed color dots div */}
           </div>
 
           {/* Column 2: Past Events */}
@@ -101,8 +96,6 @@ export const SiteFooter = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-outline-variant">
-          {' '}
-          {/* Moved border-t here for clarity */}
           <div className="flex items-center gap-4">
             <span className="font-mono text-[10px] text-on-surface-variant uppercase tracking-[0.2em]">
               {t('brand.copyright')}

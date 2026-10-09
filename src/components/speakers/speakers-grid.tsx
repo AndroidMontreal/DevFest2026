@@ -1,9 +1,11 @@
 'use client';
 
+import { Link } from '@/i18n/navigation';
 import {
   ExternalLink,
   GraduationCap,
   Laptop,
+  MapPin,
   Mic,
   Search,
   Sparkles,
@@ -85,6 +87,318 @@ type SessionType =
   | 'lightning'
   | 'keynote'
   | 'coaching';
+
+type SessionLocation = {
+  tabId: string;
+  roomCode: string;
+  roomName: string;
+  time: string;
+};
+
+function getSessionLocation(
+  sessionTitle: string,
+  sessionType: SessionType,
+  isFr: boolean,
+): SessionLocation | null {
+  if (sessionType === 'coaching') return null;
+
+  const t = sessionTitle.toLowerCase();
+
+  // Keynotes (World 3-1 · Don't Stop Believin')
+  if (sessionType === 'keynote') {
+    if (t.includes('closing') || t.includes('clôture')) {
+      return {
+        tabId: '3-1',
+        roomCode: '3-1',
+        roomName: "Don't Stop Believin'",
+        time:
+          t.includes('opening') || t.includes('ouverture')
+            ? '09:25 & 17:00'
+            : '17:00 – 17:15',
+      };
+    }
+    return {
+      tabId: '3-1',
+      roomCode: '3-1',
+      roomName: "Don't Stop Believin'",
+      time: '09:25 – 10:00',
+    };
+  }
+
+  // World 3-1 · Don't Stop Believin'
+  if (
+    t.includes('montreal tech community') ||
+    t.includes('communauté tech montréalaise')
+  ) {
+    return {
+      tabId: '3-1',
+      roomCode: '3-1',
+      roomName: "Don't Stop Believin'",
+      time: '10:15 – 11:00',
+    };
+  }
+  if (t.includes('flight mode ai')) {
+    return {
+      tabId: '3-1',
+      roomCode: '3-1',
+      roomName: "Don't Stop Believin'",
+      time: '11:15 – 12:00',
+    };
+  }
+  if (t.includes('from data to action')) {
+    return {
+      tabId: '3-1',
+      roomCode: '3-1',
+      roomName: "Don't Stop Believin'",
+      time: '13:00 – 13:45',
+    };
+  }
+  if (t.includes('work at google')) {
+    return {
+      tabId: '3-1',
+      roomCode: '3-1',
+      roomName: "Don't Stop Believin'",
+      time: '14:00 – 14:45',
+    };
+  }
+  if (t.includes('plateforme agentique') || t.includes('nova')) {
+    return {
+      tabId: '3-1',
+      roomCode: '3-1',
+      roomName: "Don't Stop Believin'",
+      time: '15:00 – 15:45',
+    };
+  }
+  if (
+    t.includes('magic') ||
+    t.includes('magique') ||
+    t.includes('wins the race')
+  ) {
+    return {
+      tabId: '3-1',
+      roomCode: '3-1',
+      roomName: "Don't Stop Believin'",
+      time: '16:00 – 16:45',
+    };
+  }
+
+  // World 3-2 · Mr. Roboto (Showcase)
+  if (t === 'the doomsday course') {
+    return {
+      tabId: 'map',
+      roomCode: '3-2',
+      roomName: 'Mr. Roboto',
+      time: isFr ? 'Toute la journée' : 'All Day',
+    };
+  }
+
+  // World 3-4 · Call Me (Lightning Round)
+  if (t.includes('gdg') && t.includes('campus')) {
+    return {
+      tabId: '3-4',
+      roomCode: '3-4',
+      roomName: 'Call Me',
+      time: '16:00 – 16:15',
+    };
+  }
+  if (t.includes('90%')) {
+    return {
+      tabId: '3-4',
+      roomCode: '3-4',
+      roomName: 'Call Me',
+      time: '16:15 – 16:30',
+    };
+  }
+
+  // World 3-5 · Just Can't Get Enough
+  if (t.includes('building the doomsday course')) {
+    return {
+      tabId: '3-5',
+      roomCode: '3-5',
+      roomName: "Just Can't Get Enough",
+      time: '10:15 – 11:00',
+    };
+  }
+  if (t.includes('off the edge')) {
+    return {
+      tabId: '3-5',
+      roomCode: '3-5',
+      roomName: "Just Can't Get Enough",
+      time: '13:00 – 13:45',
+    };
+  }
+  if (t.includes('beyond push-to-talk')) {
+    return {
+      tabId: '3-5',
+      roomCode: '3-5',
+      roomName: "Just Can't Get Enough",
+      time: '14:00 – 14:45',
+    };
+  }
+  if (t.includes('gemini enterprise')) {
+    return {
+      tabId: '3-5',
+      roomCode: '3-5',
+      roomName: "Just Can't Get Enough",
+      time: '15:00 – 15:45',
+    };
+  }
+
+  // World 4-4 · Under Pressure
+  if (t.includes('real-time rag')) {
+    return {
+      tabId: '4-4',
+      roomCode: '4-4',
+      roomName: 'Under Pressure',
+      time: '10:15 – 11:00',
+    };
+  }
+  if (t.includes('gold team')) {
+    return {
+      tabId: '4-4',
+      roomCode: '4-4',
+      roomName: 'Under Pressure',
+      time: '11:15 – 12:00',
+    };
+  }
+  if (t.includes('gemini live: architecting')) {
+    return {
+      tabId: '4-4',
+      roomCode: '4-4',
+      roomName: 'Under Pressure',
+      time: '13:00 – 13:45',
+    };
+  }
+  if (t.includes('taekwondo') || t.includes('black belts')) {
+    return {
+      tabId: '4-4',
+      roomCode: '4-4',
+      roomName: 'Under Pressure',
+      time: '14:00 – 14:45',
+    };
+  }
+  if (t.includes('edge ai on mobile')) {
+    return {
+      tabId: '4-4',
+      roomCode: '4-4',
+      roomName: 'Under Pressure',
+      time: '15:00 – 15:45',
+    };
+  }
+  if (t.includes('terminal to stadium')) {
+    return {
+      tabId: '4-4',
+      roomCode: '4-4',
+      roomName: 'Under Pressure',
+      time: '16:00 – 16:45',
+    };
+  }
+
+  // World 4-5 · Never Gonna Give You Up
+  if (t.includes('webmcp')) {
+    return {
+      tabId: '4-5',
+      roomCode: '4-5',
+      roomName: 'Never Gonna Give You Up',
+      time: '10:15 – 11:00',
+    };
+  }
+  if (t.includes('attention attention everywhere')) {
+    return {
+      tabId: '4-5',
+      roomCode: '4-5',
+      roomName: 'Never Gonna Give You Up',
+      time: '11:15 – 12:00',
+    };
+  }
+  if (t.includes('boîte noire') || t.includes('interprétabilité')) {
+    return {
+      tabId: '4-5',
+      roomCode: '4-5',
+      roomName: 'Never Gonna Give You Up',
+      time: '13:00 – 13:45',
+    };
+  }
+  if (t.includes('appfunctions')) {
+    return {
+      tabId: '4-5',
+      roomCode: '4-5',
+      roomName: 'Never Gonna Give You Up',
+      time: '14:00 – 14:45',
+    };
+  }
+  if (t.includes('think fast and slow')) {
+    return {
+      tabId: '4-5',
+      roomCode: '4-5',
+      roomName: 'Never Gonna Give You Up',
+      time: '16:00 – 16:45',
+    };
+  }
+
+  // World 4-6 · Hip To Be Square (Workshops)
+  if (t.includes('troubleshooting')) {
+    return {
+      tabId: '4-6',
+      roomCode: '4-6',
+      roomName: 'Hip To Be Square',
+      time: '10:15 – 11:45',
+    };
+  }
+  if (t.includes('productivity assistant on cloud run')) {
+    return {
+      tabId: '4-6',
+      roomCode: '4-6',
+      roomName: 'Hip To Be Square',
+      time: '13:15 – 14:45',
+    };
+  }
+  if (t.includes('automatisez la gestion des admissions')) {
+    return {
+      tabId: '4-6',
+      roomCode: '4-6',
+      roomName: 'Hip To Be Square',
+      time: '15:00 – 16:30',
+    };
+  }
+
+  return null;
+}
+
+function renderLocatePin(location: SessionLocation | null, isFr: boolean) {
+  if (!location) return null;
+
+  const href =
+    location.tabId === 'map'
+      ? '/schedule?room=map'
+      : `/schedule?room=${location.tabId}#room-${location.tabId}`;
+
+  return (
+    <Link
+      href={href}
+      title={`${isFr ? 'Localiser' : 'Locate'}: World ${location.roomCode} · ${location.roomName} (${location.time})`}
+      className="group/locate relative ml-auto inline-flex items-center gap-1 rounded border border-cyan-400/35 bg-cyan-400/10 px-1.5 py-0.5 font-mono-tech text-[9px] tracking-wider text-cyan-300 transition-all hover:border-cyan-400 hover:bg-cyan-400/20 hover:text-white hover:shadow-[0_0_12px_rgba(0,240,255,0.3)]"
+    >
+      <MapPin className="h-2.5 w-2.5 text-cyan-400 shrink-0 transition-transform group-hover/locate:scale-110" />
+      <span className="font-bold">{location.roomCode}</span>
+      <span className="text-cyan-400/50">·</span>
+      <span>{location.time}</span>
+
+      {/* Hover Tooltip */}
+      <span className="pointer-events-none absolute bottom-full right-0 mb-1.5 hidden w-max max-w-[230px] flex-col gap-0.5 rounded-lg border border-cyan-400/50 bg-[#070b16]/95 px-2.5 py-1.5 text-left shadow-[0_8px_25px_rgba(0,0,0,0.85)] backdrop-blur-xl group-hover/locate:flex z-30">
+        <span className="font-mono-tech text-[9px] uppercase tracking-widest text-cyan-400">
+          {isFr ? 'Salle & Horaire' : 'Room & Time'}
+        </span>
+        <span className="font-display text-[11px] font-bold text-white">
+          World {location.roomCode} · {location.roomName}
+        </span>
+        <span className="font-mono-tech text-[10px] text-white/75">
+          {location.time}
+        </span>
+      </span>
+    </Link>
+  );
+}
 
 function parseSessionDetails(
   formatStr?: string,
@@ -216,7 +530,11 @@ function renderSessionBadgeAndIcon(type: SessionType) {
   }
 }
 
-function renderTopicSections(topic: string, format?: string) {
+function renderTopicSections(
+  topic: string,
+  format?: string,
+  isFr: boolean = false,
+) {
   const topicLines = topic
     .split('\n')
     .map((l) => l.trim())
@@ -236,16 +554,22 @@ function renderTopicSections(topic: string, format?: string) {
               ? 'Workshop'
               : 'Talk');
           const session = parseSessionDetails(formatLine, topicLine);
+          const location = getSessionLocation(
+            session.title,
+            session.type,
+            isFr,
+          );
 
           return (
             <div key={idx} className="flex flex-col gap-1.5">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-1.5">
                 {renderSessionBadgeAndIcon(session.type)}
                 {session.duration && (
                   <span className="font-mono-tech text-[10px] text-white/50 tracking-wider">
                     · {session.duration}
                   </span>
                 )}
+                {renderLocatePin(location, isFr)}
               </div>
               <p className="font-sans text-xs text-white/80 leading-relaxed pl-5">
                 {session.title}
@@ -258,16 +582,18 @@ function renderTopicSections(topic: string, format?: string) {
   }
 
   const session = parseSessionDetails(format, topic);
+  const location = getSessionLocation(session.title, session.type, isFr);
 
   return (
     <div className="space-y-1.5 mt-4 pt-3 border-t border-white/5">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-1.5">
         {renderSessionBadgeAndIcon(session.type)}
         {session.duration && (
           <span className="font-mono-tech text-[10px] text-white/50 tracking-wider">
             · {session.duration}
           </span>
         )}
+        {renderLocatePin(location, isFr)}
       </div>
       <p className="font-sans text-xs text-white/80 leading-relaxed pl-5 line-clamp-4">
         {session.title}
@@ -552,7 +878,7 @@ export function SpeakersGrid({
                     </div>
 
                     {/* Topic Rendering with Blue Talk, Red Workshop, Orange Panel, Amber Lightning, Yellow Keynote & Green Coaching icons */}
-                    {renderTopicSections(speaker.topic, speaker.format)}
+                    {renderTopicSections(speaker.topic, speaker.format, isFr)}
                   </div>
                 </div>
 
