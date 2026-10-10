@@ -393,6 +393,18 @@
       "link": "https://www.linkedin.com/in/aisha-yaseen/",
       "image": "/assets/images/speakers/Aisha_Yaseen.jpg",
       "category": "ai"
+    },
+    {
+      "name": "Jonathan Zhuo",
+      "employer": "Capgemini",
+      "title": "GCP Principal Architect (Sr. Director)",
+      "gde": false,
+      "topic": "How to Govern in Agentic AI Using Google Cloud’s Model Armor",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/jonathanjiayinzhuo/",
+      "image": "/assets/images/speakers/Jonathan_Zhuo.jpg",
+      "category": "cloud",
+      "categories": ["cloud", "ai"]
     }
   ]
 }

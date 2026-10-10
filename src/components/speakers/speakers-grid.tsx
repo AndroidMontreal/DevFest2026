@@ -327,6 +327,14 @@ function getSessionLocation(
       time: '14:00 – 14:45',
     };
   }
+  if (t.includes('model armor')) {
+    return {
+      tabId: '4-5',
+      roomCode: '4-5',
+      roomName: 'Never Gonna Give You Up',
+      time: '15:00 – 15:45',
+    };
+  }
   if (t.includes('think fast and slow')) {
     return {
       tabId: '4-5',

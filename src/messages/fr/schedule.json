@@ -427,11 +427,13 @@
             "lang": "EN"
           },
           {
-            "kind": "open",
+            "kind": "session",
+            "variant": "blue",
             "time": "15:00 – 15:45",
-            "title": "Créneau de conférence libre",
-            "subtitle": "Open talk slot",
-            "duration": "45 MIN"
+            "title": "How to Govern in Agentic AI Using Google Cloud’s Model Armor",
+            "speakers": "JONATHAN ZHUO · CAPGEMINI",
+            "duration": "45 MIN",
+            "lang": "EN"
           },
           {
             "kind": "session",

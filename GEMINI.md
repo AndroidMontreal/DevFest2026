@@ -64,7 +64,7 @@ src/
 ## Development Conventions
 
 - **Localization:** Keep `src/messages/en/*.json` and `src/messages/fr/*.json` in sync across all 12 namespaces (`common`, `metadata`, `header`, `home`, `gallery`, `footer`, `sponsors`, `team`, `schedule`, `speakers`, `code-of-conduct`, `faq`). Register any new namespace in `src/i18n/request.ts`.
-- **Speaker & Schedule Sync:** When adding or moving a session in `src/messages/{en,fr}/schedule.json`, also update `SESSION_LOCATIONS` in `src/components/speakers/speakers-grid.tsx` and the room session arrays in `src/components/schedule/tron-space-navigator.tsx`. The schedule page supports deep-linking to specific room tabs via `/schedule?room=<roomId>#room-<roomId>`.
+- **Speaker & Schedule Sync:** When adding or moving a session in `src/messages/{en,fr}/schedule.json`, also update `getSessionLocation` in `src/components/speakers/speakers-grid.tsx` and the room metadata in `src/components/schedule/tron-space-navigator.tsx`. The schedule page supports deep-linking to specific room tabs via `/schedule?room=<roomId>#room-<roomId>`.
 - **Styling:** Use Tailwind CSS utility classes for styling. Global styles and custom utility classes are in `src/app/globals.css`.
 - **Code Quality:** Always run `npm run format` and `npm run check` before committing to ensure formatting, linting, types, and static export all pass cleanly.
 
