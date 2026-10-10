@@ -398,7 +398,7 @@
       "name": "Jonathan Zhuo",
       "employer": "Capgemini",
       "title": "GCP Principal Architect (Sr. Director)",
-      "gde": false,
+      "gde": true,
       "topic": "How to Govern in Agentic AI Using Google Cloud’s Model Armor",
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/jonathanjiayinzhuo/",
