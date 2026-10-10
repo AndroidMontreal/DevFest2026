@@ -58,7 +58,7 @@ src/
   - `common.json`, `metadata.json`, `header.json`, `home.json`, `gallery.json`, `footer.json`, `sponsors.json`, `team.json`, `schedule.json`, `speakers.json`, `code-of-conduct.json`, `faq.json`
 - Register any new namespace in `src/i18n/request.ts`.
 - Consume translations in Server/Client components with `getTranslations` or `useTranslations`.
-- When adding or moving a session in `src/messages/{en,fr}/schedule.json`, also update `SESSION_LOCATIONS` in `src/components/speakers/speakers-grid.tsx` and the room session arrays in `src/components/schedule/tron-space-navigator.tsx`. The schedule page supports deep-linking to specific room tabs via `/schedule?room=<roomId>#room-<roomId>`.
+- When adding or moving a session in `src/messages/{en,fr}/schedule.json`, also update `getSessionLocation` in `src/components/speakers/speakers-grid.tsx` and the room metadata in `src/components/schedule/tron-space-navigator.tsx`. The schedule page supports deep-linking to specific room tabs via `/schedule?room=<roomId>#room-<roomId>`.
 
 ## Developer experience scripts
 
