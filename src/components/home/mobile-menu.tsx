@@ -1,7 +1,6 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 
 type HeaderNavItem = {
@@ -15,6 +14,7 @@ type MobileMenuProps = {
   currentPathname: string;
   isOpen: boolean;
   toggleMenu: () => void;
+  ticketsLabel?: string;
 };
 
 function normalizePath(path: string) {
@@ -35,12 +35,8 @@ export function MobileMenu({
   currentPathname,
   isOpen,
   toggleMenu,
+  ticketsLabel,
 }: MobileMenuProps) {
-  const menuVariants = {
-    hidden: { x: '100%' },
-    visible: { x: 0, transition: { duration: 0.3 } },
-  };
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -53,55 +49,65 @@ export function MobileMenu({
     };
   }, [isOpen]);
 
+  if (!isOpen) return null;
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          variants={menuVariants}
-          className="fixed top-[80px] right-0 bottom-0 z-[110] flex w-full flex-col overflow-y-auto bg-[#050505] px-4 py-6 md:hidden"
-        >
-          <div className="flex-grow flex flex-col items-center gap-8 mt-0">
-            <motion.nav className="flex flex-col items-center gap-8">
-              {nav.map((item) => {
-                const isExternal =
-                  item.isExternal || item.href.startsWith('http');
-                const activeClass = isActiveNavItem(currentPathname, item.href)
-                  ? 'text-google-yellow'
-                  : 'text-white/75 hover:text-white';
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile Navigation"
+      className="fixed inset-0 top-0 z-[105] flex w-full flex-col overflow-y-auto bg-[#050505]/95 px-6 pt-24 pb-10 backdrop-blur-xl xl:hidden"
+    >
+      <div className="my-auto flex flex-grow flex-col items-center justify-center gap-7">
+        <nav className="flex flex-col items-center gap-6 sm:gap-7">
+          {nav.map((item) => {
+            const isExternal = item.isExternal || item.href.startsWith('http');
+            const activeClass = isActiveNavItem(currentPathname, item.href)
+              ? 'text-google-yellow font-bold'
+              : 'text-white/80 hover:text-white';
 
-                if (isExternal) {
-                  return (
-                    <a
-                      key={item.href}
-                      onClick={toggleMenu}
-                      className={`font-mono-tech text-xl uppercase transition-colors ${activeClass}`}
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {item.label}
-                    </a>
-                  );
-                }
+            if (isExternal) {
+              return (
+                <a
+                  key={item.href}
+                  onClick={toggleMenu}
+                  className={`font-mono-tech text-lg sm:text-xl tracking-[0.2em] uppercase transition-colors ${activeClass}`}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.label}
+                </a>
+              );
+            }
 
-                return (
-                  <Link
-                    key={item.href}
-                    onClick={toggleMenu}
-                    className={`font-mono-tech text-xl uppercase transition-colors ${activeClass}`}
-                    href={item.href}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </motion.nav>
+            return (
+              <Link
+                key={item.href}
+                onClick={toggleMenu}
+                className={`font-mono-tech text-lg sm:text-xl tracking-[0.2em] uppercase transition-colors ${activeClass}`}
+                href={item.href}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {ticketsLabel && (
+          <div className="mt-4 flex w-full max-w-xs justify-center border-t border-white/10 pt-6">
+            <a
+              href="https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26/cohost-gdg-montreal/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={toggleMenu}
+              className="inline-flex w-full items-center justify-center border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-6 py-3.5 font-mono-tech text-xs font-bold uppercase tracking-[0.22em] text-google-yellow transition-all duration-300 quad-border-tr shadow-[0_0_20px_rgba(251,188,4,0.2)]"
+            >
+              {ticketsLabel}
+            </a>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </div>
+    </div>
   );
 }

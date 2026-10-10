@@ -46,6 +46,7 @@ export function SiteHeaderShell({ header, nav }: SiteHeaderShellProps) {
         currentPathname={pathname}
         isOpen={isMenuOpen}
         toggleMenu={toggleMenu}
+        ticketsLabel={header.ticketsButton}
       />
     </>
   );
