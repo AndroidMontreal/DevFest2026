@@ -424,9 +424,9 @@ const MAP_NODES: MapNode[] = [
     category: 'room',
     x: 812,
     y: 356,
-    routeFromElevator: '530,330 496,330 496,252 736,252 736,356 812,356',
+    routeFromElevator: '530,330 496,330 496,404 852,404 852,356 812,356',
     routeFromStairs:
-      '137,190 137,146 208,146 208,336 496,336 496,252 736,252 736,356 812,356',
+      '137,190 137,146 208,146 208,336 496,336 496,404 852,404 852,356 812,356',
     color: 'red',
   },
   {
@@ -451,20 +451,43 @@ const MAP_NODES: MapNode[] = [
     id: 'l4-dining',
     floor: '04',
     numberBadge: '🍴',
-    code: 'DINING 4F',
-    name: 'Le Square Dining & Coat Racks',
-    subtitleEn: 'North & South Catering Zones + Coat Racks',
-    subtitleFr: 'Espaces de restauration nord et sud + vestiaires',
-    zone: 'East Wing · Flanking Le Square',
-    capacityEn: '2 Dining Zones + 2 Coat Racks',
-    capacityFr: '2 espaces repas + 2 vestiaires',
+    code: 'DINING 4F · PRIMARY',
+    name: 'Le Square Dining — South (Primary)',
+    subtitleEn:
+      'Primary 4F Catering & Dining Area + Coat Rack (South of Hip To Be Square)',
+    subtitleFr:
+      'Espace repas principal du 4e étage + vestiaire (au sud de Hip To Be Square)',
+    zone: 'East Wing · South of Le Square',
+    capacityEn: 'Primary Dining Area + Coat Rack',
+    capacityFr: 'Espace repas principal + vestiaire',
+    category: 'amenity',
+    x: 852,
+    y: 446,
+    routeFromElevator: '530,330 496,330 496,404 852,404 852,446',
+    routeFromStairs:
+      '137,190 137,146 208,146 208,336 496,336 496,404 852,404 852,446',
+    color: 'orange',
+  },
+  {
+    id: 'l4-dining-north',
+    floor: '04',
+    numberBadge: '🍴',
+    code: 'DINING 4F · SECONDARY',
+    name: 'Le Square Dining — North (Secondary)',
+    subtitleEn:
+      'Secondary Overflow Dining Area + Coat Rack (North of Hip To Be Square)',
+    subtitleFr:
+      'Espace repas secondaire + vestiaire (au nord de Hip To Be Square)',
+    zone: 'East Wing · North of Le Square',
+    capacityEn: 'Secondary Dining Area + Coat Rack',
+    capacityFr: 'Espace repas secondaire + vestiaire',
     category: 'amenity',
     x: 852,
     y: 224,
-    routeFromElevator: '530,330 496,330 496,252 800,252 852,224',
+    routeFromElevator: '530,330 496,330 496,252 852,252 852,224',
     routeFromStairs:
-      '137,190 137,146 208,146 208,336 496,336 496,252 800,252 852,224',
-    color: 'orange',
+      '137,190 137,146 208,146 208,336 496,336 496,252 852,252 852,224',
+    color: 'yellow',
   },
   {
     id: 'l4-stairs',
@@ -1139,10 +1162,10 @@ export function TronSpaceNavigator({
                             {/* South-West Corridor (to #415, #410, #403.1) */}
                             <rect x="266" y="346" width="16" height="184" />
                             <rect x="218" y="514" width="152" height="16" />
-                            {/* East Wing Ring Corridor to Le Square */}
-                            <rect x="488" y="242" width="18" height="186" />
-                            <rect x="488" y="242" width="252" height="20" />
-                            <rect x="488" y="408" width="252" height="20" />
+                            {/* East Wing Ring Corridor to Primary Food Area & Le Square Doorway */}
+                            <rect x="488" y="242" width="18" height="172" />
+                            <rect x="488" y="242" width="376" height="18" />
+                            <rect x="488" y="396" width="376" height="18" />
                           </g>
 
                           {/* West Wing Inner Hatched Utility Cores */}
@@ -1256,14 +1279,23 @@ export function TronSpaceNavigator({
                           {/* Le Square — Room 6: Hip To Be Square (91 Workshop Seats) */}
                           <rect
                             x="735"
-                            y="264"
+                            y="260"
                             width="148"
-                            height="152"
+                            height="136"
                             rx="4"
                             fill="rgba(244, 63, 94, 0.16)"
                             stroke="#fb7185"
                             strokeWidth="2.2"
                             filter="url(#tron-red-glow)"
+                          />
+                          {/* Doorway entry at South-East corner from Primary Food Area */}
+                          <line
+                            x1="840"
+                            y1="396"
+                            x2="864"
+                            y2="396"
+                            stroke="#00f0ff"
+                            strokeWidth="3"
                           />
                           <text
                             x="810"
@@ -1272,6 +1304,47 @@ export function TronSpaceNavigator({
                             className="fill-rose-300 font-mono-tech text-[11px] font-bold uppercase tracking-widest"
                           >
                             LE SQUARE
+                          </text>
+
+                          {/* South Dining Area — Primary Catering Zone (South of Hip To Be Square) */}
+                          <rect
+                            x="795"
+                            y="416"
+                            width="88"
+                            height="56"
+                            rx="3"
+                            fill="rgba(249, 115, 22, 0.16)"
+                            stroke="#f97316"
+                            strokeWidth="1.8"
+                          />
+                          <text
+                            x="839"
+                            y="484"
+                            textAnchor="middle"
+                            className="fill-orange-300/90 font-mono-tech text-[8px] font-bold uppercase tracking-wider"
+                          >
+                            PRIMARY FOOD
+                          </text>
+
+                          {/* North Dining Area — Secondary Catering Zone (North of Hip To Be Square) */}
+                          <rect
+                            x="795"
+                            y="196"
+                            width="88"
+                            height="54"
+                            rx="3"
+                            fill="rgba(251, 188, 4, 0.1)"
+                            stroke="rgba(251, 188, 4, 0.55)"
+                            strokeDasharray="4 3"
+                            strokeWidth="1.4"
+                          />
+                          <text
+                            x="839"
+                            y="190"
+                            textAnchor="middle"
+                            className="fill-amber-300/75 font-mono-tech text-[8px] uppercase tracking-wider"
+                          >
+                            SECONDARY FOOD
                           </text>
                         </g>
                       )}
