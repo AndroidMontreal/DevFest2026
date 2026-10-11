@@ -1,5 +1,6 @@
 'use client';
 
+import { TicketsTriggerButton } from '@/components/common/tickets-modal';
 import { Link } from '@/i18n/navigation';
 import { useEffect } from 'react';
 
@@ -24,6 +25,7 @@ function normalizePath(path: string) {
 }
 
 function isActiveNavItem(currentPathname: string, href: string) {
+  if (href.startsWith('mailto:') || href.startsWith('http')) return false;
   const current = normalizePath(currentPathname);
   const target = normalizePath(href);
   if (target === '/') return current === '/';
@@ -61,7 +63,9 @@ export function MobileMenu({
       <div className="my-auto flex flex-grow flex-col items-center justify-center gap-7">
         <nav className="flex flex-col items-center gap-6 sm:gap-7">
           {nav.map((item) => {
-            const isExternal = item.isExternal || item.href.startsWith('http');
+            const isMailto = item.href.startsWith('mailto:');
+            const isExternal =
+              item.isExternal || item.href.startsWith('http') || isMailto;
             const activeClass = isActiveNavItem(currentPathname, item.href)
               ? 'text-google-yellow font-bold'
               : 'text-white/80 hover:text-white';
@@ -73,8 +77,10 @@ export function MobileMenu({
                   onClick={toggleMenu}
                   className={`font-mono-tech text-lg sm:text-xl tracking-[0.2em] uppercase transition-colors ${activeClass}`}
                   href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...(!isMailto && {
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                  })}
                 >
                   {item.label}
                 </a>
@@ -96,15 +102,12 @@ export function MobileMenu({
 
         {ticketsLabel && (
           <div className="mt-4 flex w-full max-w-xs justify-center border-t border-white/10 pt-6">
-            <a
-              href="https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26/cohost-gdg-montreal/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <TicketsTriggerButton
               onClick={toggleMenu}
               className="inline-flex w-full items-center justify-center border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-6 py-3.5 font-mono-tech text-xs font-bold uppercase tracking-[0.22em] text-google-yellow transition-all duration-300 quad-border-tr shadow-[0_0_20px_rgba(251,188,4,0.2)]"
             >
               {ticketsLabel}
-            </a>
+            </TicketsTriggerButton>
           </div>
         )}
       </div>

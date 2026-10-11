@@ -1,3 +1,4 @@
+import { TicketsTriggerButton } from '@/components/common/tickets-modal';
 import { Link } from '@/i18n/navigation';
 import type { HomeLandingCopy } from './types';
 
@@ -83,14 +84,9 @@ export function HeroContent({ hero, stats }: HeroContentProps) {
 
         {/* CTA Buttons */}
         <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26/cohost-gdg-montreal/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center border border-google-yellow bg-google-yellow/5 hover:bg-google-yellow/20 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-yellow font-bold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(251,188,4,0.55)]"
-          >
+          <TicketsTriggerButton className="inline-flex items-center border border-google-yellow bg-google-yellow/5 hover:bg-google-yellow/20 px-6 py-4 font-mono-tech text-xs uppercase tracking-[0.2em] text-google-yellow font-bold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(251,188,4,0.55)]">
             {hero.tickets_btn}
-          </a>
+          </TicketsTriggerButton>
           {hero.agenda_btn && (
             <Link
               href="/schedule"

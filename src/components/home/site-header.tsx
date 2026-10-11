@@ -1,5 +1,6 @@
 'use client';
 
+import { TicketsTriggerButton } from '@/components/common/tickets-modal';
 import { Link } from '@/i18n/navigation';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
@@ -35,6 +36,7 @@ function normalizePath(path: string) {
 }
 
 function isActiveNavItem(currentPathname: string, href: string) {
+  if (href.startsWith('mailto:') || href.startsWith('http')) return false;
   const current = normalizePath(currentPathname);
   const target = normalizePath(href);
   if (target === '/') return current === '/';
@@ -83,14 +85,9 @@ export function SiteHeader({
 
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           {header.ticketsButton && (
-            <a
-              href="https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26/cohost-gdg-montreal/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono-tech text-[10px] sm:text-[11px] font-bold uppercase tracking-wider sm:tracking-widest text-google-yellow transition-all duration-300 quad-border-tr hover:shadow-[0_0_15px_rgba(251,188,4,0.3)]"
-            >
+            <TicketsTriggerButton className="inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono-tech text-[10px] sm:text-[11px] font-bold uppercase tracking-wider sm:tracking-widest text-google-yellow transition-all duration-300 quad-border-tr hover:shadow-[0_0_15px_rgba(251,188,4,0.3)]">
               {header.ticketsButton}
-            </a>
+            </TicketsTriggerButton>
           )}
           <LocaleSwitcher />
           <button
@@ -112,7 +109,7 @@ export function SiteHeader({
       </div>
 
       {/* Desktop Top Bar (>= 1280px) */}
-      <div className="hidden w-full items-center justify-between gap-6 xl:flex">
+      <div className="hidden w-full items-center justify-between gap-4 xl:flex">
         <div className="flex items-center gap-3 shrink-0">
           <Link href="/">
             <div className="relative h-auto w-auto">
@@ -121,13 +118,13 @@ export function SiteHeader({
                 width={220}
                 height={28}
                 alt={header.logoAlt}
-                className="h-auto w-[200px] 2xl:w-[220px] object-contain"
+                className="h-auto w-[185px] 2xl:w-[220px] object-contain"
               />
             </div>
           </Link>
         </div>
 
-        <nav className="flex items-center gap-6 2xl:gap-10">
+        <nav className="flex items-center gap-4 2xl:gap-8">
           {nav.map((item, index) => {
             const colors = ['blue', 'red', 'yellow', 'green'];
             const colorClass = `hover:text-google-${colors[index % colors.length]}`;
@@ -135,16 +132,20 @@ export function SiteHeader({
               ? 'text-white font-bold'
               : 'text-white/75 font-semibold';
 
-            const isExternal = item.isExternal || item.href.startsWith('http');
+            const isMailto = item.href.startsWith('mailto:');
+            const isExternal =
+              item.isExternal || item.href.startsWith('http') || isMailto;
 
             if (isExternal) {
               return (
                 <a
                   key={item.href}
-                  className={`font-mono-tech text-[12px] tracking-[0.16em] 2xl:tracking-[0.18em] whitespace-nowrap ${activeClass} ${colorClass} uppercase transition-colors`}
+                  className={`font-mono-tech text-[11px] 2xl:text-[12px] tracking-[0.14em] 2xl:tracking-[0.18em] whitespace-nowrap ${activeClass} ${colorClass} uppercase transition-colors`}
                   href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...(!isMailto && {
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                  })}
                 >
                   {item.label}
                 </a>
@@ -154,7 +155,7 @@ export function SiteHeader({
             return (
               <Link
                 key={item.href}
-                className={`font-mono-tech text-[12px] tracking-[0.16em] 2xl:tracking-[0.18em] whitespace-nowrap ${activeClass} ${colorClass} uppercase transition-colors`}
+                className={`font-mono-tech text-[11px] 2xl:text-[12px] tracking-[0.14em] 2xl:tracking-[0.18em] whitespace-nowrap ${activeClass} ${colorClass} uppercase transition-colors`}
                 href={item.href}
               >
                 {item.label}
@@ -165,14 +166,9 @@ export function SiteHeader({
 
         <div className="flex items-center gap-3 2xl:gap-5 shrink-0">
           {header.ticketsButton && (
-            <a
-              href="https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26/cohost-gdg-montreal/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center whitespace-nowrap border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-3.5 py-2 font-mono-tech text-[11px] font-bold uppercase tracking-widest text-google-yellow transition-all duration-300 quad-border-tr hover:shadow-[0_0_15px_rgba(251,188,4,0.3)]"
-            >
+            <TicketsTriggerButton className="inline-flex shrink-0 items-center whitespace-nowrap border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-3.5 py-2 font-mono-tech text-[11px] font-bold uppercase tracking-widest text-google-yellow transition-all duration-300 quad-border-tr hover:shadow-[0_0_15px_rgba(251,188,4,0.3)]">
               {header.ticketsButton}
-            </a>
+            </TicketsTriggerButton>
           )}
           <LocaleSwitcher />
         </div>

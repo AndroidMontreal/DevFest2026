@@ -13,6 +13,21 @@
     { "label": "Conférenciers", "href": "/speakers" },
     { "label": "Partenaires", "href": "/#sponsors" },
     { "label": "Équipe", "href": "/team" },
-    { "label": "FAQ", "href": "/faq" }
-  ]
+    { "label": "FAQ", "href": "/faq" },
+    {
+      "label": "Nous contacter",
+      "href": "mailto:info@gdgmontreal.com?subject=Information%20Request"
+    }
+  ],
+  "ticketsModal": {
+    "badge": "Plateforme de commande // Bevy",
+    "title": "Redirection vers Bevy",
+    "description": "Vous êtes redirigé vers notre plateforme de commande (Bevy), sur laquelle vous devrez créer un compte afin de compléter la transaction. Une fois sur la page Bevy (en anglais seulement), cliquez sur le bouton bleu 'Get tickets'.",
+    "proceedButton": "Continuer",
+    "cancelButton": "Annuler",
+    "issuePrefix": "En cas de problème, veuillez nous contacter à",
+    "issueEmail": "devfest2026@gdgmontreal.com",
+    "issueSubject": "Ticket Purchase Issue",
+    "closeAria": "Fermer la fenêtre"
+  }
 }
