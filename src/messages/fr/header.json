@@ -16,7 +16,7 @@
     { "label": "FAQ", "href": "/faq" },
     {
       "label": "Nous contacter",
-      "href": "mailto:info@gdgmontreal.com?subject=Information%20Request"
+      "href": "mailto:info@gdgmontreal.com?subject=Demande%20d%27information"
     }
   ],
   "ticketsModal": {
@@ -27,7 +27,7 @@
     "cancelButton": "Annuler",
     "issuePrefix": "En cas de problème, veuillez nous contacter à",
     "issueEmail": "devfest2026@gdgmontreal.com",
-    "issueSubject": "Ticket Purchase Issue",
+    "issueSubject": "Problème d'achat de billet",
     "closeAria": "Fermer la fenêtre"
   }
 }
