@@ -3,6 +3,7 @@ import {
   SiteHeaderShell,
   type HeaderNavItem,
 } from '@/components/common/site-header-shell';
+import { TicketsModalProvider } from '@/components/common/tickets-modal';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
@@ -85,15 +86,17 @@ export default async function LocaleLayout({
       >
         <div className="crt-global" />
         <NextIntlClientProvider messages={messages}>
-          <div className="relative isolate flex min-h-screen flex-col">
-            <div className="pointer-events-none fixed inset-0 -z-10 bg-background">
-              <div className="blueprint-subgrid absolute inset-0" />
-              <div className="blueprint-grid absolute inset-0" />
+          <TicketsModalProvider>
+            <div className="relative isolate flex min-h-screen flex-col">
+              <div className="pointer-events-none fixed inset-0 -z-10 bg-background">
+                <div className="blueprint-subgrid absolute inset-0" />
+                <div className="blueprint-grid absolute inset-0" />
+              </div>
+              <SiteHeaderShell header={header} nav={nav} />
+              <div className="relative z-0 flex-grow">{children}</div>
+              <SiteFooter />
             </div>
-            <SiteHeaderShell header={header} nav={nav} />
-            <div className="relative z-0 flex-grow">{children}</div>
-            <SiteFooter />
-          </div>
+          </TicketsModalProvider>
         </NextIntlClientProvider>
       </body>
     </html>

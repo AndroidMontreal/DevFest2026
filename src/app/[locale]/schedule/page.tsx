@@ -1,3 +1,4 @@
+import { TicketsTriggerButton } from '@/components/common/tickets-modal';
 import { type OverallDayAgendaCopy } from '@/components/schedule/overall-day-agenda';
 import {
   RoomAgendaSection,
@@ -80,15 +81,10 @@ export default async function SchedulePage({
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto shrink-0">
-              <a
-                href="https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26/cohost-gdg-montreal/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex justify-center items-center gap-2 border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-6 py-3.5 font-mono-tech text-xs uppercase tracking-widest text-google-yellow font-bold transition-all duration-300 quad-border-tr hover:shadow-[0_0_20px_rgba(251,188,4,0.4)]"
-              >
+              <TicketsTriggerButton className="inline-flex justify-center items-center gap-2 border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-6 py-3.5 font-mono-tech text-xs uppercase tracking-widest text-google-yellow font-bold transition-all duration-300 quad-border-tr hover:shadow-[0_0_20px_rgba(251,188,4,0.4)]">
                 <Ticket className="h-4 w-4" />
                 <span>Get Tickets</span>
-              </a>
+              </TicketsTriggerButton>
               <Link
                 href="/faq"
                 className="inline-flex justify-center items-center border border-white/20 bg-white/[0.03] hover:border-cyan-400 hover:text-cyan-300 px-6 py-3.5 font-mono-tech text-xs uppercase tracking-widest text-white/80 transition-all duration-300"
