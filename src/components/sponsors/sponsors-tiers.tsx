@@ -48,7 +48,11 @@ export function SponsorsTiers({
               <a
                 key={sponsor.name}
                 href={sponsor.link || '#'}
-                target="_blank"
+                target={
+                  sponsor.link?.includes('gdg.community.dev')
+                    ? '_top'
+                    : '_blank'
+                }
                 rel="noopener noreferrer"
                 className="group inline-flex w-full max-w-[420px] flex-col items-center justify-center rounded-lg bg-white p-6 transition-all duration-300 hover:scale-105 md:w-auto"
               >
