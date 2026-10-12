@@ -12,7 +12,7 @@ import {
 } from 'react';
 
 const BEVY_TICKETS_URL =
-  'https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26';
+  'https://gdg.community.dev/events/details/google-gdg-montreal-presents-devfest-mtl-26/';
 
 type TicketsModalContextValue = {
   openTicketsModal: () => void;
@@ -71,6 +71,32 @@ export function TicketsModalProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || window.self === window.top) return;
+
+    // When embedded in a sandboxed iframe without allow-popups-to-escape-sandbox (e.g. dev.events),
+    // target="_blank" popups inherit the sandbox and fail with ERR_BLOCKED_BY_RESPONSE on sites
+    // that send Cross-Origin-Opener-Policy headers (like gdg.community.dev, YouTube, Instagram).
+    // Route external _blank links through top-level navigation (allowed by allow-top-navigation).
+    const handleEmbeddedExternalClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const anchor = target?.closest(
+        'a[target="_blank"]',
+      ) as HTMLAnchorElement | null;
+      if (!anchor || !anchor.href || !anchor.href.startsWith('http')) return;
+
+      if (window.top) {
+        event.preventDefault();
+        window.top.location.href = anchor.href;
+      }
+    };
+
+    document.addEventListener('click', handleEmbeddedExternalClick);
+    return () => {
+      document.removeEventListener('click', handleEmbeddedExternalClick);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -88,6 +114,22 @@ export function TicketsModalProvider({ children }: { children: ReactNode }) {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, closeTicketsModal]);
+
+  const handleProceedClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (
+      typeof window !== 'undefined' &&
+      window.top &&
+      window.self !== window.top
+    ) {
+      event.preventDefault();
+      window.top.location.href = BEVY_TICKETS_URL;
+      return;
+    }
+
+    window.setTimeout(() => {
+      closeTicketsModal();
+    }, 150);
+  };
 
   const email = t('issueEmail');
   const subject = t('issueSubject');
@@ -157,9 +199,9 @@ export function TicketsModalProvider({ children }: { children: ReactNode }) {
             <div className="relative z-10 mt-7 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <a
                 href={BEVY_TICKETS_URL}
-                target="_blank"
+                target="_top"
                 rel="noopener noreferrer"
-                onClick={closeTicketsModal}
+                onClick={handleProceedClick}
                 className="inline-flex flex-1 items-center justify-center gap-2 border border-google-yellow bg-google-yellow px-6 py-3.5 font-mono-tech text-xs font-bold uppercase tracking-[0.2em] text-black transition-all duration-300 hover:bg-google-yellow/90 hover:shadow-[0_0_25px_rgba(251,188,4,0.45)] quad-border-tr"
               >
                 <span>{t('proceedButton')}</span>
