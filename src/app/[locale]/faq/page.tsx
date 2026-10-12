@@ -46,16 +46,19 @@ export default async function FaqPage({
               <div className="flex items-center gap-3 mb-6">
                 <span className="h-2 w-2 rounded-full bg-google-yellow animate-pulse" />
                 <span className="font-mono-tech text-[10px] tracking-[0.25em] text-white/40 uppercase">
-                  FAQ HELP DESK
+                  {locale === 'fr' ? 'ASSISTANCE FAQ' : 'FAQ HELP DESK'}
                 </span>
               </div>
 
               <h3 className="font-mono-tech text-md font-bold tracking-wider text-white uppercase mb-4">
-                Still have questions?
+                {locale === 'fr'
+                  ? 'Vous avez encore des questions ?'
+                  : 'Still have questions?'}
               </h3>
               <p className="font-sans text-sm leading-relaxed text-white/60 mb-8">
-                Can&apos;t find what you&apos;re looking for? Reach out to us or
-                join our developer community across our social channels.
+                {locale === 'fr'
+                  ? 'Vous ne trouvez pas ce que vous cherchez ? Contactez-nous ou rejoignez notre communauté de développeurs sur nos réseaux sociaux.'
+                  : "Can't find what you're looking for? Reach out to us or join our developer community across our social channels."}
               </p>
 
               {/* Seamlessly Integrated Brand Social Grid */}

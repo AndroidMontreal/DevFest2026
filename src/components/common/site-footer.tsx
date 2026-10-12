@@ -32,6 +32,7 @@ export const SiteFooter = () => {
               <Image
                 src="/assets/images/logos/devfest-2026.svg"
                 alt="DevFest 2026 Logo"
+                style={{ height: 'auto' }}
                 className="h-auto w-[230px] object-contain"
                 width={230}
                 height={28}

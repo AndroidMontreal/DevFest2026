@@ -69,7 +69,9 @@ export default async function SchedulePage({
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-google-yellow animate-pulse" />
                 <span className="font-mono-tech text-xs uppercase tracking-widest text-google-yellow">
-                  Tracks & Breakouts
+                  {locale === 'fr'
+                    ? 'Pistes & Conférences'
+                    : 'Tracks & Breakouts'}
                 </span>
               </div>
               <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-tight text-white">
@@ -83,7 +85,7 @@ export default async function SchedulePage({
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto shrink-0">
               <TicketsTriggerButton className="inline-flex justify-center items-center gap-2 border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-6 py-3.5 font-mono-tech text-xs uppercase tracking-widest text-google-yellow font-bold transition-all duration-300 quad-border-tr hover:shadow-[0_0_20px_rgba(251,188,4,0.4)]">
                 <Ticket className="h-4 w-4" />
-                <span>Get Tickets</span>
+                <span>{locale === 'fr' ? 'Billets' : 'Get Tickets'}</span>
               </TicketsTriggerButton>
               <Link
                 href="/faq"
