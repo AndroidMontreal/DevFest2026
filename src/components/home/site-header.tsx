@@ -1,25 +1,16 @@
 'use client';
 
+import {
+  isActiveNavItem,
+  type HeaderCopy,
+  type HeaderNavItem,
+} from '@/components/common/site-header-shell';
 import { TicketsTriggerButton } from '@/components/common/tickets-modal';
 import { Link } from '@/i18n/navigation';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { LocaleSwitcher } from './locale-switcher';
-
-type HeaderCopy = {
-  logoAlt: string;
-  city: string;
-  registerLabel: string;
-  registerAria: string;
-  ticketsButton?: string;
-};
-
-type HeaderNavItem = {
-  label: string;
-  href: string;
-  isExternal?: boolean;
-};
 
 type SiteHeaderProps = {
   header: HeaderCopy;
@@ -28,20 +19,6 @@ type SiteHeaderProps = {
   isMenuOpen: boolean;
   toggleMenu: () => void;
 };
-
-function normalizePath(path: string) {
-  const localeFreePath = path.replace(/^\/(en|fr)(?=\/|$)/, '') || '/';
-  if (localeFreePath === '/') return '/';
-  return localeFreePath.replace(/\/+$/, '');
-}
-
-function isActiveNavItem(currentPathname: string, href: string) {
-  if (href.startsWith('mailto:') || href.startsWith('http')) return false;
-  const current = normalizePath(currentPathname);
-  const target = normalizePath(href);
-  if (target === '/') return current === '/';
-  return current === target || current.startsWith(`${target}/`);
-}
 
 export function SiteHeader({
   header,
@@ -78,6 +55,7 @@ export function SiteHeader({
               width={220}
               height={28}
               alt={header.logoAlt}
+              style={{ height: 'auto' }}
               className="h-auto w-[135px] sm:w-[175px] md:w-[205px] object-contain"
             />
           </div>
@@ -118,6 +96,7 @@ export function SiteHeader({
                 width={220}
                 height={28}
                 alt={header.logoAlt}
+                style={{ height: 'auto' }}
                 className="h-auto w-[185px] 2xl:w-[220px] object-contain"
               />
             </div>

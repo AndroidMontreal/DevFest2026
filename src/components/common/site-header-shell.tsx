@@ -19,6 +19,20 @@ export type HeaderNavItem = {
   isExternal?: boolean;
 };
 
+function normalizePath(path: string) {
+  const localeFreePath = path.replace(/^\/(en|fr)(?=\/|$)/, '') || '/';
+  if (localeFreePath === '/') return '/';
+  return localeFreePath.replace(/\/+$/, '');
+}
+
+export function isActiveNavItem(currentPathname: string, href: string) {
+  if (href.startsWith('mailto:') || href.startsWith('http')) return false;
+  const current = normalizePath(currentPathname);
+  const target = normalizePath(href);
+  if (target === '/') return current === '/';
+  return current === target || current.startsWith(`${target}/`);
+}
+
 type SiteHeaderShellProps = {
   header: HeaderCopy;
   nav: HeaderNavItem[];

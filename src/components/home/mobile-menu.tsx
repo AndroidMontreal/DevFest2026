@@ -1,14 +1,12 @@
 'use client';
 
+import {
+  isActiveNavItem,
+  type HeaderNavItem,
+} from '@/components/common/site-header-shell';
 import { TicketsTriggerButton } from '@/components/common/tickets-modal';
 import { Link } from '@/i18n/navigation';
 import { useEffect } from 'react';
-
-type HeaderNavItem = {
-  label: string;
-  href: string;
-  isExternal?: boolean;
-};
 
 type MobileMenuProps = {
   nav: HeaderNavItem[];
@@ -17,20 +15,6 @@ type MobileMenuProps = {
   toggleMenu: () => void;
   ticketsLabel?: string;
 };
-
-function normalizePath(path: string) {
-  const localeFreePath = path.replace(/^\/(en|fr)(?=\/|$)/, '') || '/';
-  if (localeFreePath === '/') return '/';
-  return localeFreePath.replace(/\/+$/, '');
-}
-
-function isActiveNavItem(currentPathname: string, href: string) {
-  if (href.startsWith('mailto:') || href.startsWith('http')) return false;
-  const current = normalizePath(currentPathname);
-  const target = normalizePath(href);
-  if (target === '/') return current === '/';
-  return current === target || current.startsWith(`${target}/`);
-}
 
 export function MobileMenu({
   nav,
