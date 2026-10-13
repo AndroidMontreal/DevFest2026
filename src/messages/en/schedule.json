@@ -172,18 +172,23 @@
         "accent": "blue",
         "sessions": [
           {
-            "kind": "open",
+            "kind": "session",
+            "variant": "blue",
             "time": "10:15 – 11:00",
-            "title": "Open talk slot",
-            "subtitle": "Créneau de conférence libre",
-            "duration": "45 MIN"
+            "title": "From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP",
+            "speakers": "ECKARATH KHOUNSOMBATH · ECKA STUDIO",
+            "duration": "45 MIN",
+            "lang": "EN"
           },
           {
-            "kind": "open",
+            "kind": "session",
+            "variant": "blue",
+            "tentative": true,
             "time": "11:15 – 12:00",
-            "title": "Open talk slot",
-            "subtitle": "Créneau de conférence libre",
-            "duration": "45 MIN"
+            "title": "One Brain vs. The Hive What Actually Happens When AI Agents Swarm",
+            "speakers": "ANGIE ARIZA",
+            "duration": "45 MIN",
+            "lang": "EN"
           },
           {
             "kind": "lunch",
@@ -192,42 +197,49 @@
             "subtitle": "DÎNER ET TIRAGE"
           },
           {
-            "kind": "open",
+            "kind": "session",
+            "variant": "blue",
+            "tentative": true,
             "time": "13:00 – 13:45",
-            "title": "Open talk slot",
-            "subtitle": "Créneau de conférence libre",
-            "duration": "45 MIN"
-          },
-          {
-            "kind": "open",
-            "time": "14:00 – 14:45",
-            "title": "Open talk slot",
-            "subtitle": "Créneau de conférence libre",
-            "duration": "45 MIN"
-          },
-          {
-            "kind": "open",
-            "time": "15:00 – 15:45",
-            "title": "Open talk slot",
-            "subtitle": "Créneau de conférence libre",
-            "duration": "45 MIN"
+            "title": "Teach Your Coding Agent the Modern Web",
+            "speakers": "ARUNESH CHOUDHARY",
+            "duration": "45 MIN",
+            "lang": "EN"
           },
           {
             "kind": "session",
             "variant": "blue",
-            "time": "16:00 – 16:30",
+            "time": "14:00 – 14:15",
+            "title": "Six Agents, One Patient Record: A Google ADK Retrospective",
+            "speakers": "RADWAN BABA · INFO-TECH RESEARCH GROUP",
+            "duration": "15 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "15:00 – 15:45",
+            "title": "Building Applications with Google AI Studio and Databases",
+            "speakers": "GLEB OTOCHKIN · GOOGLE",
+            "duration": "45 MIN",
+            "lang": "EN"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "16:00 – 16:40",
             "title": "Lightning round / Ronde éclair",
             "duration": "2×15",
             "lang": "EN",
             "subItems": [
               {
-                "time": "16:00",
-                "title": "GDG on Campus lightning panel",
+                "time": "16:00 – 16:15",
+                "title": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
                 "speakers": "Michael Persico, Rebecca Abi Chahine, Daniel Wei"
               },
               {
-                "time": "16:15",
-                "title": "The 90% You Don't See",
+                "time": "16:25 – 16:40",
+                "title": "The 90% You Don’t See: Shipping AI Inside a Health System",
                 "speakers": "Guryash Singh Dhall"
               }
             ]
@@ -254,11 +266,14 @@
             "lang": "EN"
           },
           {
-            "kind": "open",
+            "kind": "session",
+            "variant": "blue",
+            "tentative": true,
             "time": "11:15 – 12:00",
-            "title": "Open talk slot",
-            "subtitle": "Créneau de conférence libre",
-            "duration": "45 MIN"
+            "title": "IA, Web et Synthèse Vocale : Démocratiser la Santé Numérique avec Google Cloud",
+            "speakers": "MOUSTAPHA KOUROUMA · DIASPORA MONDIALE SANTÉ",
+            "duration": "45 MIN",
+            "lang": "FR"
           },
           {
             "kind": "lunch",
@@ -294,11 +309,13 @@
             "lang": "EN/FR"
           },
           {
-            "kind": "open",
+            "kind": "session",
+            "variant": "blue",
             "time": "16:00 – 16:45",
-            "title": "Open talk slot",
-            "subtitle": "Créneau de conférence libre",
-            "duration": "45 MIN"
+            "title": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
+            "speakers": "ETHIEL ADIASSA · GDE",
+            "duration": "45 MIN",
+            "lang": "EN"
           }
         ]
       },

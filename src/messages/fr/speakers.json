@@ -25,6 +25,29 @@
       "category": "community"
     },
     {
+      "name": "Ethiel Adiassa",
+      "employer": "",
+      "title": "Senior Software Engineer",
+      "gde": true,
+      "topic": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/ethiel-adiassa",
+      "image": "/assets/images/speakers/Ethiel_Adiassa.jpg",
+      "category": "appdev",
+      "categories": ["appdev", "ai"]
+    },
+    {
+      "name": "Radwan Baba",
+      "employer": "Info-Tech Research Group",
+      "title": "AI Engineer",
+      "gde": false,
+      "topic": "Six Agents, One Patient Record: A Google ADK Retrospective",
+      "format": "Lightning · 15 min",
+      "link": "https://www.linkedin.com/in/radwanbaba",
+      "image": "/assets/images/speakers/Radwan_Baba.jpg",
+      "category": "ai"
+    },
+    {
       "name": "Lester Botello",
       "employer": "Wepoint",
       "title": "Software Development Team Lead",
@@ -188,6 +211,18 @@
       "category": "ai"
     },
     {
+      "name": "Eckarath Khounsombath",
+      "employer": "ECKA Studio",
+      "title": "Principal Solution Architect",
+      "gde": false,
+      "topic": "From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/eckarath",
+      "image": "/assets/images/speakers/Eckarath_Khounsombath.jpg",
+      "category": "ai",
+      "categories": ["ai", "cloud"]
+    },
+    {
       "name": "Rishab Kumar",
       "employer": "Twilio",
       "title": "Staff DevRel",
@@ -274,12 +309,12 @@
       "title": "Cloud Advocate",
       "gde": false,
       "googler": true,
-      "topic": "From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases",
-      "format": "Talk · 40 min",
+      "topic": "Talk: From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases\nTalk: Building Applications with Google AI Studio and Databases",
+      "format": "Talk · 40 min\nTalk · 40 min",
       "link": "https://www.linkedin.com/in/glebotochkin/",
       "image": "/assets/images/speakers/Gleb_Otochkin.jpg",
       "category": "ai",
-      "categories": ["ai", "cloud"]
+      "categories": ["ai", "cloud", "appdev"]
     },
     {
       "name": "Jihoo Park",
