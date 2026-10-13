@@ -16,7 +16,7 @@ import {
   ZoomOut,
 } from 'lucide-react';
 import Image from 'next/image';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { RoomTrack } from './room-agenda-section';
 
 type FloorId = '03' | '04';
@@ -1089,16 +1089,27 @@ function getNodeCandidatePoints(
   return [{ x: node.x, y: node.y }];
 }
 
+export type TronMapFocusRequest = {
+  floor: '03' | '04';
+  destinationNodeId: string;
+  originNodeId?: string;
+  labelEn?: string;
+  labelFr?: string;
+  seq: number;
+};
+
 type TronSpaceNavigatorProps = {
   rooms: RoomTrack[];
   onSelectRoomSchedule?: (roomId: string) => void;
   locale?: string;
+  focusRequest?: TronMapFocusRequest | null;
 };
 
 export function TronSpaceNavigator({
   rooms,
   onSelectRoomSchedule,
   locale = 'en',
+  focusRequest = null,
 }: TronSpaceNavigatorProps) {
   const isFr = locale === 'fr';
   const [activeFloor, setActiveFloor] = useState<FloorId>('03');
@@ -1118,6 +1129,28 @@ export function TronSpaceNavigator({
   const [zoomLevel, setZoomLevel] = useState<number>(1);
   const mapScrollRef = useRef<HTMLDivElement>(null);
   const mapViewportRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!focusRequest) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setActiveFloor(focusRequest.floor);
+    setSelectedCategory('all');
+    setOriginPointOverride(null);
+    setDestPointOverride(null);
+    setMapSelectionTarget('destination');
+    setOriginNodeId(
+      focusRequest.originNodeId ||
+        (focusRequest.floor === '03' ? 'l3-elevators' : 'l4-elevators'),
+    );
+    setSelectedNodeId(focusRequest.destinationNodeId);
+
+    requestAnimationFrame(() => {
+      mapViewportRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+  }, [focusRequest]);
 
   const floorNodes = useMemo(
     () =>
@@ -1288,6 +1321,25 @@ export function TronSpaceNavigator({
     >
       {/* Top Laser Border */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_20px_#00f0ff]" />
+
+      {focusRequest && (focusRequest.labelEn || focusRequest.labelFr) && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-fuchsia-400/50 bg-fuchsia-500/15 px-4 py-2.5 font-mono-tech text-xs text-fuchsia-200 shadow-[0_0_20px_rgba(217,70,239,0.2)]">
+          <div className="flex items-center gap-2">
+            <Navigation className="h-3.5 w-3.5 text-fuchsia-300 animate-pulse shrink-0" />
+            <span className="font-bold uppercase tracking-wider">
+              {isFr ? 'TRAJET MON AGENDA :' : 'ACTIVE AGENDA ROUTE:'}
+            </span>
+            <span className="text-white">
+              {isFr
+                ? focusRequest.labelFr || focusRequest.labelEn
+                : focusRequest.labelEn}
+            </span>
+          </div>
+          <span className="text-[10px] uppercase tracking-widest text-fuchsia-300/80">
+            {isFr ? `Niveau ${activeFloor}` : `Level ${activeFloor}`}
+          </span>
+        </div>
+      )}
 
       {/* Top HUD Command Bar */}
       <div className="mb-4 sm:mb-6 flex flex-col xl:flex-row xl:items-center justify-between gap-3.5 sm:gap-4 border-b border-cyan-500/20 pb-4 sm:pb-5">

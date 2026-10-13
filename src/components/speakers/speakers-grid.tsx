@@ -192,7 +192,47 @@ function getSessionLocation(
     };
   }
 
-  // World 3-4 · Call Me (Lightning Round)
+  // World 3-4 · Call Me (Talks & Lightning)
+  if (t.includes('harness engineering') || t.includes('prompt engineering')) {
+    return {
+      tabId: '3-4',
+      roomCode: '3-4',
+      roomName: 'Call Me',
+      time: '10:15 – 11:00',
+    };
+  }
+  if (t.includes('one brain vs. the hive') || t.includes('agents swarm')) {
+    return {
+      tabId: '3-4',
+      roomCode: '3-4',
+      roomName: 'Call Me',
+      time: '11:15 – 12:00',
+    };
+  }
+  if (t.includes('teach your coding agent')) {
+    return {
+      tabId: '3-4',
+      roomCode: '3-4',
+      roomName: 'Call Me',
+      time: '13:00 – 13:45',
+    };
+  }
+  if (t.includes('six agents') || t.includes('patient record')) {
+    return {
+      tabId: '3-4',
+      roomCode: '3-4',
+      roomName: 'Call Me',
+      time: '14:00 – 14:15',
+    };
+  }
+  if (t.includes('google ai studio and databases')) {
+    return {
+      tabId: '3-4',
+      roomCode: '3-4',
+      roomName: 'Call Me',
+      time: '15:00 – 15:45',
+    };
+  }
   if (t.includes('gdg') && t.includes('campus')) {
     return {
       tabId: '3-4',
@@ -206,7 +246,7 @@ function getSessionLocation(
       tabId: '3-4',
       roomCode: '3-4',
       roomName: 'Call Me',
-      time: '16:15 – 16:30',
+      time: '16:25 – 16:40',
     };
   }
 
@@ -217,6 +257,14 @@ function getSessionLocation(
       roomCode: '3-5',
       roomName: "Just Can't Get Enough",
       time: '10:15 – 11:00',
+    };
+  }
+  if (t.includes('santé numérique') || t.includes('synthèse vocale')) {
+    return {
+      tabId: '3-5',
+      roomCode: '3-5',
+      roomName: "Just Can't Get Enough",
+      time: '11:15 – 12:00',
     };
   }
   if (t.includes('off the edge')) {
@@ -241,6 +289,14 @@ function getSessionLocation(
       roomCode: '3-5',
       roomName: "Just Can't Get Enough",
       time: '15:00 – 15:45',
+    };
+  }
+  if (t.includes('agentic mobile testing') || t.includes('maestro mcp')) {
+    return {
+      tabId: '3-5',
+      roomCode: '3-5',
+      roomName: "Just Can't Get Enough",
+      time: '16:00 – 16:45',
     };
   }
 

@@ -1,6 +1,9 @@
 'use client';
 
 import {
+  AlertTriangle,
+  Bookmark,
+  BookmarkCheck,
   CalendarRange,
   Compass,
   DoorOpen,
@@ -11,10 +14,20 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import {
+  flattenRoomSessions,
+  makeSessionId,
+  MyAgendaBuilder,
+  parseTimeRangeToMinutes,
+  sessionsOverlap,
+} from './my-agenda-builder';
+import {
   OverallDayAgenda,
   type OverallDayAgendaCopy,
 } from './overall-day-agenda';
-import { TronSpaceNavigator } from './tron-space-navigator';
+import {
+  TronSpaceNavigator,
+  type TronMapFocusRequest,
+} from './tron-space-navigator';
 
 export type LightningSubItem = {
   time: string;
@@ -52,6 +65,7 @@ export type RoomAgendaSectionCopy = {
   section_title: string;
   section_subtitle: string;
   main_agenda_tab?: string;
+  my_agenda_tab?: string;
   map_tab?: string;
   filter_all: string;
   subject_to_change_note: string;
@@ -64,30 +78,148 @@ type RoomAgendaSectionProps = {
   locale?: string;
 };
 
+const STORAGE_KEY = 'devfest2026_my_agenda_v1';
+
 export function RoomAgendaSection({
   tldrCopy,
   copy,
   locale = 'en',
 }: RoomAgendaSectionProps) {
+  const isFr = locale === 'fr';
   const [selectedTab, setSelectedTab] = useState<string>('main');
+  const [savedIds, setSavedIds] = useState<string[]>([]);
+  const [primaryOverrides, setPrimaryOverrides] = useState<
+    Record<string, string>
+  >({});
+  const [mapFocusRequest, setMapFocusRequest] =
+    useState<TronMapFocusRequest | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const roomParam = params.get('room');
+    const planParam = params.get('plan');
+    const priParam = params.get('pri');
+
+    // Load saved agenda from URL ?plan= or localStorage
+    if (planParam) {
+      const fromUrl = planParam
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const priFromUrl: Record<string, string> = {};
+      if (priParam) {
+        for (const pair of priParam.split(',')) {
+          const [slotKey, sessId] = pair.split('=');
+          if (slotKey && sessId) {
+            priFromUrl[slotKey.trim()] = sessId.trim();
+          }
+        }
+      }
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSavedIds(fromUrl);
+      setPrimaryOverrides(priFromUrl);
+      try {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ savedIds: fromUrl, primaryOverrides: priFromUrl }),
+        );
+      } catch {
+        // ignore storage errors
+      }
+    } else {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw) as {
+            savedIds?: string[];
+            primaryOverrides?: Record<string, string>;
+          };
+          if (Array.isArray(parsed.savedIds)) {
+            setSavedIds(parsed.savedIds);
+          }
+          if (
+            parsed.primaryOverrides &&
+            typeof parsed.primaryOverrides === 'object'
+          ) {
+            setPrimaryOverrides(parsed.primaryOverrides);
+          }
+        }
+      } catch {
+        // ignore storage errors
+      }
+    }
+
     if (
       roomParam &&
       (roomParam === 'main' ||
+        roomParam === 'my-agenda' ||
         roomParam === 'all' ||
         roomParam === 'map' ||
         copy.rooms.some((r) => r.id === roomParam))
     ) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedTab(roomParam);
+    } else if (planParam) {
+      setSelectedTab('my-agenda');
     }
   }, [copy.rooms]);
 
+  const persistAgenda = (
+    nextSavedIds: string[],
+    nextPrimaryOverrides = primaryOverrides,
+  ) => {
+    setSavedIds(nextSavedIds);
+    setPrimaryOverrides(nextPrimaryOverrides);
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          savedIds: nextSavedIds,
+          primaryOverrides: nextPrimaryOverrides,
+        }),
+      );
+    } catch {
+      // ignore storage errors
+    }
+  };
+
+  const handleToggleSession = (sessionId: string) => {
+    const exists = savedIds.includes(sessionId);
+    const next = exists
+      ? savedIds.filter((id) => id !== sessionId)
+      : [...savedIds, sessionId];
+    persistAgenda(next);
+  };
+
+  const handleSetPrimaryForSlot = (slotId: string, sessionId: string) => {
+    const nextOverrides = { ...primaryOverrides, [slotId]: sessionId };
+    persistAgenda(savedIds, nextOverrides);
+  };
+
+  const handleLoadPreset = (sessionIds: string[]) => {
+    persistAgenda(sessionIds, {});
+  };
+
+  const handleClearAll = () => {
+    persistAgenda([], {});
+  };
+
+  const handleFocusMapRoute = (req: Omit<TronMapFocusRequest, 'seq'>) => {
+    setMapFocusRequest({
+      ...req,
+      seq: Date.now(),
+    });
+  };
+
+  const allFlat = flattenRoomSessions(copy.rooms);
+  const savedFlat = allFlat.filter((s) => savedIds.includes(s.id));
+  const hasAnyConflict = savedFlat.some((s1, i) =>
+    savedFlat.slice(i + 1).some((s2) => sessionsOverlap(s1, s2)),
+  );
+
   const visibleRooms =
-    selectedTab === 'main' || selectedTab === 'map'
+    selectedTab === 'main' ||
+    selectedTab === 'map' ||
+    selectedTab === 'my-agenda'
       ? []
       : selectedTab === 'all'
         ? copy.rooms
@@ -154,6 +286,9 @@ export function RoomAgendaSection({
           <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 sm:contents -mx-1 px-1">
             {copy.rooms.map((room) => {
               const isActive = selectedTab === room.id;
+              const roomSavedCount = savedFlat.filter(
+                (s) => s.roomId === room.id,
+              ).length;
               const activeClass =
                 room.accent === 'yellow'
                   ? 'border-google-yellow bg-google-yellow/20 text-google-yellow shadow-[0_0_15px_rgba(251,188,4,0.25)]'
@@ -175,6 +310,11 @@ export function RoomAgendaSection({
                   <span className="font-bold">{room.worldCode}</span>
                   <span className="opacity-40">·</span>
                   <span>{room.name}</span>
+                  {roomSavedCount > 0 && (
+                    <span className="ml-0.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full bg-cyan-400/90 px-1 font-mono-tech text-[9px] font-bold text-black">
+                      {roomSavedCount}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -200,15 +340,94 @@ export function RoomAgendaSection({
         </div>
       </div>
 
+      {/* Dedicated My Agenda Row / Bar right below Navigate by Room (outside the room cluster) */}
+      <div className="-mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-cyan-500/25 bg-[#070b16]/90 px-5 py-4 shadow-[0_0_30px_rgba(0,240,255,0.06)] backdrop-blur-2xl">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setSelectedTab('my-agenda')}
+            className={`inline-flex items-center justify-center sm:justify-start gap-2.5 rounded-lg border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+              selectedTab === 'my-agenda'
+                ? 'border-cyan-300 bg-cyan-400/25 text-white shadow-[0_0_20px_rgba(0,240,255,0.45)]'
+                : 'border-cyan-400/45 bg-cyan-500/15 text-cyan-200 shadow-[0_0_14px_rgba(0,240,255,0.18)] hover:border-cyan-300 hover:text-white hover:shadow-[0_0_20px_rgba(0,240,255,0.35)]'
+            }`}
+          >
+            <BookmarkCheck className="h-4 w-4 shrink-0 text-cyan-300" />
+            <span className="truncate font-bold">
+              {copy.my_agenda_tab || (isFr ? 'Mon Agenda' : 'My Agenda')}
+            </span>
+            <span
+              className={`inline-flex items-center justify-center rounded-full px-1.5 py-0.2 font-mono-tech text-[10px] font-bold ${
+                savedFlat.length > 0
+                  ? 'bg-cyan-400 text-black'
+                  : 'bg-google-yellow/90 text-black'
+              }`}
+              title={
+                isFr
+                  ? `4 événements principaux verrouillés + ${savedFlat.length} conférence(s)`
+                  : `4 locked core events + ${savedFlat.length} talk(s)`
+              }
+            >
+              {4 + savedFlat.length}
+            </span>
+            {hasAnyConflict && (
+              <span
+                title={
+                  isFr
+                    ? 'Chevauchement horaire (Principal + Plan B)'
+                    : 'Time overlap (Primary + Backup)'
+                }
+                className="inline-flex items-center"
+              >
+                <AlertTriangle className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+              </span>
+            )}
+          </button>
+
+          <span className="hidden md:inline-block font-mono-tech text-xs text-white/60">
+            {isFr
+              ? 'Créez votre horaire personnalisé, exportez en .ics ou partagez votre lien'
+              : 'Build your custom schedule, export to .ics calendar, or share your link'}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2 font-mono-tech text-[11px] text-cyan-300/80">
+          <span>
+            {isFr
+              ? `${4 + savedFlat.length} élément(s) à votre horaire (4 principaux + ${savedFlat.length} choix)`
+              : `${4 + savedFlat.length} item(s) in your schedule (4 core + ${savedFlat.length} selected)`}
+          </span>
+        </div>
+      </div>
+
       {/* Main Agenda (TL;DR) when 'main' is selected */}
       {selectedTab === 'main' && <OverallDayAgenda copy={tldrCopy} />}
 
-      {/* TRON Space Navigator on 'map' tab or below Main Agenda on 'main' tab */}
-      {(selectedTab === 'map' || selectedTab === 'main') && (
+      {/* My Custom Agenda Builder when 'my-agenda' is selected */}
+      {selectedTab === 'my-agenda' && (
+        <MyAgendaBuilder
+          rooms={copy.rooms}
+          savedIds={savedIds}
+          primaryOverrides={primaryOverrides}
+          onToggleSession={handleToggleSession}
+          onSetPrimaryForSlot={handleSetPrimaryForSlot}
+          onLoadPreset={handleLoadPreset}
+          onClearAll={handleClearAll}
+          onFocusMapRoute={handleFocusMapRoute}
+          onBrowseRoom={(roomId) => setSelectedTab(roomId)}
+          locale={locale}
+        />
+      )}
+
+      {/* TRON Space Navigator on 'map' tab, below Main Agenda, or below My Agenda */}
+      {(selectedTab === 'map' ||
+        selectedTab === 'main' ||
+        selectedTab === 'my-agenda') && (
         <TronSpaceNavigator
           rooms={copy.rooms}
           onSelectRoomSchedule={(roomId) => setSelectedTab(roomId)}
           locale={locale}
+          focusRequest={mapFocusRequest}
         />
       )}
 
@@ -360,6 +579,13 @@ export function RoomAgendaSection({
                   }
 
                   // Regular Session (Talk / Panel / Workshop / Lightning Round)
+                  const sessionId = makeSessionId(room.id, session.time);
+                  const isSaved = savedIds.includes(sessionId);
+                  const thisRange = parseTimeRangeToMinutes(session.time);
+                  const overlappingOtherSaved = savedFlat.filter(
+                    (s) => s.id !== sessionId && sessionsOverlap(thisRange, s),
+                  );
+
                   const pillVariant = session.variant || room.accent || 'blue';
 
                   const timePillClass = session.tentative
@@ -381,9 +607,11 @@ export function RoomAgendaSection({
                     <div
                       key={`${session.time}-${idx}`}
                       className={`group relative flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-xl px-5 py-4 transition-all duration-300 ${
-                        session.tentative
-                          ? 'border border-dashed border-google-yellow/80 bg-[#0d1222]/90 hover:border-google-yellow hover:bg-[#121931]'
-                          : 'border border-white/10 bg-[#0d1222]/90 hover:border-cyan-400/40 hover:bg-[#121931]'
+                        isSaved
+                          ? 'border-2 border-cyan-400/80 bg-[#101935]/95 shadow-[0_0_25px_rgba(0,240,255,0.14)]'
+                          : session.tentative
+                            ? 'border border-dashed border-google-yellow/80 bg-[#0d1222]/90 hover:border-google-yellow hover:bg-[#121931]'
+                            : 'border border-white/10 bg-[#0d1222]/90 hover:border-cyan-400/40 hover:bg-[#121931]'
                       }`}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-1">
@@ -458,6 +686,22 @@ export function RoomAgendaSection({
                             </div>
                           )}
 
+                          {/* Overlap / Conflict Notice if another session in this time window is saved */}
+                          {overlappingOtherSaved.length > 0 && (
+                            <div className="mt-1 flex items-center gap-1.5 font-mono-tech text-[10px] text-amber-300">
+                              <AlertTriangle className="h-3 w-3 shrink-0 text-amber-400" />
+                              <span>
+                                {isSaved
+                                  ? isFr
+                                    ? `Chevauchement avec Monde ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (géré en Principal / Plan B dans Mon Agenda)`
+                                    : `Overlaps with World ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (managed as Primary / Backup in My Agenda)`
+                                  : isFr
+                                    ? `Même créneau que votre choix dans Monde ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (ajoutable en Plan B)`
+                                    : `Same time window as your saved talk in World ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (can add as Backup)`}
+                              </span>
+                            </div>
+                          )}
+
                           {/* Sub-items for Lightning Round */}
                           {session.subItems && session.subItems.length > 0 && (
                             <div className="mt-1.5 space-y-1">
@@ -483,7 +727,7 @@ export function RoomAgendaSection({
                         </div>
                       </div>
 
-                      {/* Right Badges: Duration + Language */}
+                      {/* Right Badges: Duration + Language + Save to My Agenda */}
                       <div className="flex flex-wrap items-center gap-2.5 self-start md:self-center shrink-0">
                         {session.duration && (
                           <span
@@ -497,6 +741,35 @@ export function RoomAgendaSection({
                             {session.lang}
                           </span>
                         )}
+                        <button
+                          type="button"
+                          onClick={() => handleToggleSession(sessionId)}
+                          className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                            isSaved
+                              ? 'border-cyan-300 bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,240,255,0.4)]'
+                              : 'border-cyan-400/50 bg-cyan-400/10 text-cyan-200 hover:border-cyan-300 hover:bg-cyan-400 hover:text-black'
+                          }`}
+                        >
+                          {isSaved ? (
+                            <>
+                              <BookmarkCheck className="h-3.5 w-3.5" />
+                              <span>{isFr ? 'Sauvé' : 'Saved'}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Bookmark className="h-3.5 w-3.5" />
+                              <span>
+                                {overlappingOtherSaved.length > 0
+                                  ? isFr
+                                    ? '+ Plan B'
+                                    : '+ Backup'
+                                  : isFr
+                                    ? '+ Agenda'
+                                    : '+ My Agenda'}
+                              </span>
+                            </>
+                          )}
+                        </button>
                       </div>
                     </div>
                   );
