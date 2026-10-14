@@ -87,6 +87,13 @@
     "section_subtitle": "Schedule by Room · Étages 3 et 4",
     "main_agenda_tab": "Horaire général (TL;DR)",
     "filter_all": "Toutes les salles (6)",
+    "search_placeholder": "Rechercher par titre, conférencier, salle, catégorie ou niveau...",
+    "filter_all_sessions": "Toutes les sessions",
+    "filter_ai": "IA & Agents",
+    "filter_cloud": "Cloud & Infra",
+    "filter_appdev": "AppDev",
+    "filter_community": "Communauté & Panels",
+    "no_results": "Aucune session ne correspond à votre recherche.",
     "subject_to_change_note": "Salles et horaires sujets à changements",
     "rooms": [
       {

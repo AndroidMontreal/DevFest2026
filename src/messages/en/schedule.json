@@ -87,6 +87,13 @@
     "section_subtitle": "Horaire par salle · Floors 3 & 4",
     "main_agenda_tab": "Main Agenda (TL;DR)",
     "filter_all": "All Rooms (6)",
+    "search_placeholder": "Search by talk title, speaker, room, category or level...",
+    "filter_all_sessions": "All Sessions",
+    "filter_ai": "AI & Agents",
+    "filter_cloud": "Cloud & Infra",
+    "filter_appdev": "AppDev",
+    "filter_community": "Community & Panels",
+    "no_results": "No sessions found matching your search.",
     "subject_to_change_note": "Rooms & slots may still move",
     "rooms": [
       {
