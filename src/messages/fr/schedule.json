@@ -204,14 +204,13 @@
           {
             "kind": "session",
             "variant": "blue",
-            "tentative": true,
             "time": "11:15 – 12:00",
             "title": "One Brain vs. The Hive What Actually Happens When AI Agents Swarm",
-            "speakers": "ANGIE ARIZA",
+            "speakers": "ANGIE ARIZA · PLUS COMPANY",
             "duration": "45 MIN",
             "lang": "EN",
             "categories": ["IA & Agents"],
-            "level": "Intermédiaire"
+            "level": "Avancé"
           },
           {
             "kind": "lunch",
@@ -222,10 +221,9 @@
           {
             "kind": "session",
             "variant": "blue",
-            "tentative": true,
             "time": "13:00 – 13:45",
             "title": "Teach Your Coding Agent the Modern Web",
-            "speakers": "ARUNESH CHOUDHARY",
+            "speakers": "ARUNESH CHOUDHARY · DIALABOT.AI",
             "duration": "45 MIN",
             "lang": "EN",
             "categories": ["AppDev", "IA & Agents"],
@@ -287,8 +285,8 @@
         "locationBadgePrimary": "MONDE 3-5 · ÉTAGE 3",
         "locationBadgeSecondary": "WORLD 3-5 · FLOOR 3",
         "name": "Just Can’t Get Enough",
-        "typePrimary": "Ateliers et conférences · 25 places",
-        "typeSecondary": "Workshops & talks · 25 seats",
+        "typePrimary": "Conférences · 25 places",
+        "typeSecondary": "Talks · 25 seats",
         "accent": "blue",
         "sessions": [
           {
@@ -358,7 +356,7 @@
             "variant": "blue",
             "time": "16:00 – 16:45",
             "title": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
-            "speakers": "ETHIEL ADIASSA · GDE",
+            "speakers": "ETHIEL ADIASSA · AVA FINANCE · GDE",
             "duration": "45 MIN",
             "lang": "EN",
             "categories": ["AppDev", "IA & Agents"],

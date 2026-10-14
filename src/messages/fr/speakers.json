@@ -26,7 +26,7 @@
     },
     {
       "name": "Ethiel Adiassa",
-      "employer": "",
+      "employer": "Ava Finance",
       "title": "Senior Software Engineer",
       "gde": true,
       "topic": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
@@ -35,6 +35,17 @@
       "image": "/assets/images/speakers/Ethiel_Adiassa.jpg",
       "category": "appdev",
       "categories": ["appdev", "ai"]
+    },
+    {
+      "name": "Angie Ariza",
+      "employer": "Plus Company",
+      "title": "AI Tech Lead",
+      "gde": false,
+      "topic": "One Brain vs. The Hive What Actually Happens When AI Agents Swarm",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/angie-ariza/",
+      "image": "/assets/images/speakers/Angie_Ariza.jpg",
+      "category": "ai"
     },
     {
       "name": "Radwan Baba",
@@ -139,6 +150,18 @@
       "link": "https://www.linkedin.com/in/chongcht/",
       "image": "/assets/images/speakers/Thomas_Chong.jpg",
       "category": "ai"
+    },
+    {
+      "name": "Arunesh Choudhary",
+      "employer": "Dialabot.ai",
+      "title": "Conversational AI Engineer",
+      "gde": false,
+      "topic": "Teach Your Coding Agent the Modern Web",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/aruneshchoudhary/",
+      "image": "/assets/images/speakers/Arunesh_Choudhary.jpg",
+      "category": "appdev",
+      "categories": ["appdev", "ai"]
     },
     {
       "name": "Ludovic Dessemon",
