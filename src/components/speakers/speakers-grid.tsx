@@ -283,7 +283,7 @@ function getSessionLocation(
       time: '14:00 – 14:45',
     };
   }
-  if (t.includes('gemini enterprise')) {
+  if (t.includes('under the hood of gemini enterprise')) {
     return {
       tabId: '3-5',
       roomCode: '3-5',
@@ -383,7 +383,11 @@ function getSessionLocation(
       time: '14:00 – 14:45',
     };
   }
-  if (t.includes('model armor')) {
+  if (
+    t.includes('vibe-coded to trusted') ||
+    t.includes('gemini enterprise agent platform') ||
+    t.includes('model armor')
+  ) {
     return {
       tabId: '4-5',
       roomCode: '4-5',
