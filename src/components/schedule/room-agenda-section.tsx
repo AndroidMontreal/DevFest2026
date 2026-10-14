@@ -75,6 +75,9 @@ export function getLevelBadgeClass(level: string): string {
   if (lower.includes('intermediate') || lower.includes('intermédiaire')) {
     return 'border-indigo-400/50 bg-indigo-950/45 text-indigo-200';
   }
+  if (lower.includes('advanced') || lower.includes('avancé')) {
+    return 'border-rose-400/50 bg-rose-950/45 text-rose-200';
+  }
   return 'border-white/25 bg-white/10 text-white/90';
 }
 
