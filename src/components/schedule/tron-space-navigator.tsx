@@ -17,7 +17,11 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { RoomTrack } from './room-agenda-section';
+import {
+  getCategoryBadgeClass,
+  getLevelBadgeClass,
+  type RoomTrack,
+} from './room-agenda-section';
 
 type FloorId = '03' | '04';
 type RenderMode = 'tron' | 'blueprint';
@@ -3005,6 +3009,29 @@ export function TronSpaceNavigator({
                         {s.speakers && (
                           <div className="mt-0.5 font-mono-tech text-[10px] text-cyan-400/90 truncate">
                             {s.speakers}
+                          </div>
+                        )}
+                        {((s.categories && s.categories.length > 0) ||
+                          s.level) && (
+                          <div className="mt-1 flex flex-wrap items-center gap-1">
+                            {s.categories?.map((cat) => (
+                              <span
+                                key={cat}
+                                className={`inline-flex items-center rounded-full border px-1.5 py-0.2 font-mono-tech text-[8px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
+                              >
+                                {cat}
+                              </span>
+                            ))}
+                            {s.level && (
+                              <span
+                                className={`inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0.2 font-mono-tech text-[8px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(s.level)}`}
+                              >
+                                <span className="opacity-60">
+                                  {isFr ? 'Niv:' : 'Lvl:'}
+                                </span>
+                                <span>{s.level}</span>
+                              </span>
+                            )}
                           </div>
                         )}
                       </div>

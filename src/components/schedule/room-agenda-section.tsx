@@ -33,6 +33,8 @@ export type LightningSubItem = {
   time: string;
   title: string;
   speakers: string;
+  categories?: string[];
+  level?: string;
 };
 
 export type RoomSessionItem = {
@@ -45,8 +47,35 @@ export type RoomSessionItem = {
   speakers?: string;
   duration?: string;
   lang?: string;
+  categories?: string[];
+  level?: string;
   subItems?: LightningSubItem[];
 };
+
+export function getCategoryBadgeClass(category: string): string {
+  const lower = category.toLowerCase();
+  if (lower.includes('ai') || lower.includes('ia')) {
+    return 'border-fuchsia-400/50 bg-fuchsia-950/45 text-fuchsia-200';
+  }
+  if (lower.includes('cloud')) {
+    return 'border-sky-400/50 bg-sky-950/45 text-sky-200';
+  }
+  if (lower.includes('appdev')) {
+    return 'border-emerald-400/50 bg-emerald-950/45 text-emerald-200';
+  }
+  return 'border-amber-400/50 bg-amber-950/45 text-amber-200';
+}
+
+export function getLevelBadgeClass(level: string): string {
+  const lower = level.toLowerCase();
+  if (lower.includes('beginner') || lower.includes('débutant')) {
+    return 'border-teal-400/45 bg-teal-950/40 text-teal-200';
+  }
+  if (lower.includes('intermediate') || lower.includes('intermédiaire')) {
+    return 'border-indigo-400/50 bg-indigo-950/45 text-indigo-200';
+  }
+  return 'border-white/25 bg-white/10 text-white/90';
+}
 
 export type RoomTrack = {
   id: string;
@@ -686,6 +715,32 @@ export function RoomAgendaSection({
                             </div>
                           )}
 
+                          {/* Category & Level Badges */}
+                          {((session.categories &&
+                            session.categories.length > 0) ||
+                            session.level) && (
+                            <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                              {session.categories?.map((cat) => (
+                                <span
+                                  key={cat}
+                                  className={`inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono-tech text-[10px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
+                                >
+                                  {cat}
+                                </span>
+                              ))}
+                              {session.level && (
+                                <span
+                                  className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-mono-tech text-[10px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(session.level)}`}
+                                >
+                                  <span className="opacity-60">
+                                    {isFr ? 'Niv:' : 'Lvl:'}
+                                  </span>
+                                  <span>{session.level}</span>
+                                </span>
+                              )}
+                            </div>
+                          )}
+
                           {/* Overlap / Conflict Notice if another session in this time window is saved */}
                           {overlappingOtherSaved.length > 0 && (
                             <div className="mt-1 flex items-center gap-1.5 font-mono-tech text-[10px] text-amber-300">
@@ -704,11 +759,11 @@ export function RoomAgendaSection({
 
                           {/* Sub-items for Lightning Round */}
                           {session.subItems && session.subItems.length > 0 && (
-                            <div className="mt-1.5 space-y-1">
+                            <div className="mt-2 space-y-2 border-t border-white/10 pt-2">
                               {session.subItems.map((sub, subIdx) => (
                                 <div
                                   key={subIdx}
-                                  className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5 text-xs md:text-sm"
+                                  className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs md:text-sm"
                                 >
                                   <span className="font-mono-tech text-xs font-bold text-google-yellow">
                                     {sub.time}
@@ -720,6 +775,24 @@ export function RoomAgendaSection({
                                   <span className="font-sans text-cyan-300">
                                     {sub.speakers}
                                   </span>
+                                  {sub.categories?.map((cat) => (
+                                    <span
+                                      key={cat}
+                                      className={`inline-flex items-center rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
+                                    >
+                                      {cat}
+                                    </span>
+                                  ))}
+                                  {sub.level && (
+                                    <span
+                                      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(sub.level)}`}
+                                    >
+                                      <span className="opacity-60">
+                                        {isFr ? 'Niv:' : 'Lvl:'}
+                                      </span>
+                                      <span>{sub.level}</span>
+                                    </span>
+                                  )}
                                 </div>
                               ))}
                             </div>
