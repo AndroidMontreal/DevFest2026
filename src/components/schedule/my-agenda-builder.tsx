@@ -25,7 +25,12 @@ import {
   Zap,
 } from 'lucide-react';
 import { useState } from 'react';
-import type { RoomSessionItem, RoomTrack } from './room-agenda-section';
+import {
+  getCategoryBadgeClass,
+  getLevelBadgeClass,
+  type RoomSessionItem,
+  type RoomTrack,
+} from './room-agenda-section';
 import type { TronMapFocusRequest } from './tron-space-navigator';
 
 export type FlatSession = {
@@ -302,6 +307,10 @@ export function MyAgendaBuilder({
                 : 'Status: Primary Choice in My Agenda'
               : '',
           s.session.speakers ? `Speakers: ${s.session.speakers}` : '',
+          s.session.categories && s.session.categories.length > 0
+            ? `Categories: ${s.session.categories.join(', ')}`
+            : '',
+          s.session.level ? `Level: ${s.session.level}` : '',
           s.session.duration ? `Duration: ${s.session.duration}` : '',
           s.session.lang ? `Language: ${s.session.lang}` : '',
         ]
@@ -1040,6 +1049,31 @@ export function MyAgendaBuilder({
                               {primarySession.session.speakers}
                             </p>
                           )}
+
+                          {((primarySession.session.categories &&
+                            primarySession.session.categories.length > 0) ||
+                            primarySession.session.level) && (
+                            <div className="pt-0.5 flex flex-wrap items-center gap-1.5">
+                              {primarySession.session.categories?.map((cat) => (
+                                <span
+                                  key={cat}
+                                  className={`inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono-tech text-[10px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
+                                >
+                                  {cat}
+                                </span>
+                              ))}
+                              {primarySession.session.level && (
+                                <span
+                                  className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-mono-tech text-[10px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(primarySession.session.level)}`}
+                                >
+                                  <span className="opacity-60">
+                                    {isFr ? 'Niv:' : 'Lvl:'}
+                                  </span>
+                                  <span>{primarySession.session.level}</span>
+                                </span>
+                              )}
+                            </div>
+                          )}
                         </div>
 
                         <div className="flex flex-wrap items-center gap-2 shrink-0">
@@ -1107,6 +1141,30 @@ export function MyAgendaBuilder({
                                 {backup.session.speakers}
                               </p>
                             )}
+                            {((backup.session.categories &&
+                              backup.session.categories.length > 0) ||
+                              backup.session.level) && (
+                              <div className="pt-0.5 flex flex-wrap items-center gap-1.5">
+                                {backup.session.categories?.map((cat) => (
+                                  <span
+                                    key={cat}
+                                    className={`inline-flex items-center rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
+                                  >
+                                    {cat}
+                                  </span>
+                                ))}
+                                {backup.session.level && (
+                                  <span
+                                    className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(backup.session.level)}`}
+                                  >
+                                    <span className="opacity-60">
+                                      {isFr ? 'Niv:' : 'Lvl:'}
+                                    </span>
+                                    <span>{backup.session.level}</span>
+                                  </span>
+                                )}
+                              </div>
+                            )}
                           </div>
 
                           <div className="flex flex-wrap items-center gap-2 shrink-0">
@@ -1171,6 +1229,13 @@ export function MyAgendaBuilder({
                                 <option key={cand.id} value={cand.id}>
                                   [World {cand.worldCode} · {cand.roomName}]{' '}
                                   {cand.session.title} (
+                                  {cand.session.categories &&
+                                  cand.session.categories.length > 0
+                                    ? `${cand.session.categories.join(', ')} · `
+                                    : ''}
+                                  {cand.session.level
+                                    ? `${cand.session.level} · `
+                                    : ''}
                                   {cand.session.duration || '45 MIN'}
                                   {cand.session.lang
                                     ? ` · ${cand.session.lang}`
@@ -1224,7 +1289,15 @@ export function MyAgendaBuilder({
                             {cand.session.speakers
                               ? ` — ${cand.session.speakers}`
                               : ''}{' '}
-                            ({cand.session.duration || '45 MIN'}
+                            (
+                            {cand.session.categories &&
+                            cand.session.categories.length > 0
+                              ? `${cand.session.categories.join(', ')} · `
+                              : ''}
+                            {cand.session.level
+                              ? `${cand.session.level} · `
+                              : ''}
+                            {cand.session.duration || '45 MIN'}
                             {cand.session.lang ? ` · ${cand.session.lang}` : ''}
                             )
                           </option>

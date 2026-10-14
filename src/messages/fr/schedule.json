@@ -106,7 +106,9 @@
             "title": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal's digital future",
             "speakers": "JL MARÉCHAUX · STEFANIA PECORE · WTM MONTRÉAL & AI TINKERERS",
             "duration": "45 MIN",
-            "lang": "EN/FR"
+            "lang": "EN/FR",
+            "categories": ["Communauté & Panels", "IA & Agents"],
+            "level": "Tous niveaux"
           },
           {
             "kind": "session",
@@ -115,7 +117,9 @@
             "title": "Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart",
             "speakers": "JHIN LEE · UNITY · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "lunch",
@@ -130,7 +134,9 @@
             "title": "From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases",
             "speakers": "GLEB OTOCHKIN · GOOGLE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents", "Cloud & Infra", "AppDev"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -139,7 +145,9 @@
             "title": "So... You want to work at Google?",
             "speakers": "OLIVIER BOURGEOIS · GOOGLE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
           },
           {
             "kind": "session",
@@ -148,7 +156,9 @@
             "title": "Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova",
             "speakers": "LUDOVIC DESSEMON · OXYA CONSULTING",
             "duration": "45 MIN",
-            "lang": "FR"
+            "lang": "FR",
+            "categories": ["IA & Agents", "Cloud & Infra"],
+            "level": "Tous niveaux"
           },
           {
             "kind": "session",
@@ -157,7 +167,9 @@
             "title": "AI Isn't Magic: The Infrastructure That Actually Wins the Race",
             "speakers": "STACY VÉRONNEAU · TELUS DIGITAL · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["Cloud & Infra", "IA & Agents"],
+            "level": "Débutant"
           }
         ]
       },
@@ -178,7 +190,9 @@
             "title": "From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP",
             "speakers": "ECKARATH KHOUNSOMBATH · ECKA STUDIO",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents", "Cloud & Infra"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -188,7 +202,9 @@
             "title": "One Brain vs. The Hive What Actually Happens When AI Agents Swarm",
             "speakers": "ANGIE ARIZA",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "lunch",
@@ -204,7 +220,9 @@
             "title": "Teach Your Coding Agent the Modern Web",
             "speakers": "ARUNESH CHOUDHARY",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -213,7 +231,9 @@
             "title": "Six Agents, One Patient Record: A Google ADK Retrospective",
             "speakers": "RADWAN BABA · INFO-TECH RESEARCH GROUP",
             "duration": "15 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -222,7 +242,9 @@
             "title": "Building Applications with Google AI Studio and Databases",
             "speakers": "GLEB OTOCHKIN · GOOGLE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents", "Cloud & Infra"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -231,16 +253,22 @@
             "title": "Ronde éclair / Lightning round",
             "duration": "2×15",
             "lang": "EN",
+            "categories": ["Communauté & Panels", "IA & Agents"],
+            "level": "Tous niveaux",
             "subItems": [
               {
                 "time": "16:00 – 16:15",
                 "title": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
-                "speakers": "Michael Persico, Rebecca Abi Chahine, Daniel Wei"
+                "speakers": "Michael Persico, Rebecca Abi Chahine, Daniel Wei",
+                "categories": ["Communauté & Panels"],
+                "level": "Tous niveaux"
               },
               {
                 "time": "16:25 – 16:40",
                 "title": "The 90% You Don’t See: Shipping AI Inside a Health System",
-                "speakers": "Guryash Singh Dhall"
+                "speakers": "Guryash Singh Dhall",
+                "categories": ["IA & Agents"],
+                "level": "Tous niveaux"
               }
             ]
           }
@@ -263,7 +291,9 @@
             "title": "Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach",
             "speakers": "ETIENNE CARON · KANASTRUK · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents", "AppDev"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -273,7 +303,9 @@
             "title": "IA, Web et Synthèse Vocale : Démocratiser la Santé Numérique avec Google Cloud",
             "speakers": "MOUSTAPHA KOUROUMA · DIASPORA MONDIALE SANTÉ",
             "duration": "45 MIN",
-            "lang": "FR"
+            "lang": "FR",
+            "categories": ["IA & Agents", "Cloud & Infra"],
+            "level": "Tous niveaux"
           },
           {
             "kind": "lunch",
@@ -288,7 +320,9 @@
             "title": "Off the Edge: Grading Google AI Edge and Gemini Against a Practitioner’s Eye",
             "speakers": "BORIS-WILFRIED NYASSE · OLOODI · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents", "AppDev"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -297,7 +331,9 @@
             "title": "Beyond Push-to-Talk: Real-Time Fact-Checking Agents with Gemini Live API and Google Search Grounding",
             "speakers": "AISHA YASEEN · AREHSOFT",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -306,7 +342,9 @@
             "title": "Under the Hood of Gemini Enterprise: No-Code Agents, and Workflow Automation",
             "speakers": "FRANÇOIS LÉGARÉ · BELL · GDE",
             "duration": "45 MIN",
-            "lang": "EN/FR"
+            "lang": "EN/FR",
+            "categories": ["IA & Agents", "Cloud & Infra"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -315,7 +353,9 @@
             "title": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
             "speakers": "ETHIEL ADIASSA · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents"],
+            "level": "Intermédiaire"
           }
         ]
       },
@@ -336,7 +376,9 @@
             "title": "Building Real-Time RAG Systems with Gemini & the Multimodal Live API",
             "speakers": "OLAYINKA PETER OLUWAFEMI · BRAINBOX AI · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -345,7 +387,9 @@
             "title": "Beyond Red, Blue and Purple: Meet the Gold Team",
             "speakers": "FAUSTIN BOUCHARD · UNIVERSAL INTELLIGENCE ARCHITECTURE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents", "Cloud & Infra"],
+            "level": "Tous niveaux"
           },
           {
             "kind": "lunch",
@@ -360,7 +404,9 @@
             "title": "Gemini Live: Architecting, building and pricing conversational experiences",
             "speakers": "FELIPE LUJAN · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -369,7 +415,9 @@
             "title": "From Black Belts to Small Language Models: My Taekwondo AI Journey",
             "speakers": "KEVIN MOORE · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -378,7 +426,9 @@
             "title": "Edge AI on Mobile: Practical Approaches and Challenges",
             "speakers": "MATHIEU FILLION · WEPOINT",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents"],
+            "level": "Débutant"
           },
           {
             "kind": "session",
@@ -387,7 +437,9 @@
             "title": "Terminal to Stadium: Building an AI Sports PA Announcer with Gemini",
             "speakers": "ANGELO ITALIANO · RAVL · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents"],
+            "level": "Tous niveaux"
           }
         ]
       },
@@ -408,7 +460,9 @@
             "title": "The Web Could be Agentic: A first dive into Google's WebMCP Proposal",
             "speakers": "LESTER BOTELLO · WEPOINT",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -417,7 +471,9 @@
             "title": "Attention Attention Everywhere",
             "speakers": "DEV J. SHAH · TRIBALSCALE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "lunch",
@@ -432,7 +488,9 @@
             "title": "Ouvrir la boîte noire : L'interprétabilité mécaniste des LLMs",
             "speakers": "DAVID CARDOZO · DATAIKU · GDE",
             "duration": "45 MIN",
-            "lang": "FR"
+            "lang": "FR",
+            "categories": ["IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -441,7 +499,9 @@
             "title": "Android AppFunctions: Exposing Your App to AI Agents",
             "speakers": "NAV SINGH · MANULIFE · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -450,7 +510,9 @@
             "title": "How to Govern in Agentic AI Using Google Cloud’s Model Armor",
             "speakers": "JONATHAN ZHUO · CAPGEMINI · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["Cloud & Infra", "IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -459,7 +521,9 @@
             "title": "Make Your AI Agent Think Fast and Slow: System One Decisions in Google ADK",
             "speakers": "THOMAS CHONG · BEEVER AI · GDE",
             "duration": "45 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["IA & Agents"],
+            "level": "Intermédiaire"
           }
         ]
       },
@@ -480,7 +544,9 @@
             "title": "AI-driven troubleshooting for Google Cloud infrastructure",
             "speakers": "OLIVIER BOURGEOIS · GOOGLE",
             "duration": "90 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["Cloud & Infra", "IA & Agents"],
+            "level": "Tous niveaux"
           },
           {
             "kind": "lunch",
@@ -495,7 +561,9 @@
             "title": "Build a Personal Productivity Assistant on Cloud Run",
             "speakers": "RISHAB KUMAR · TWILIO · GDE",
             "duration": "90 MIN",
-            "lang": "EN"
+            "lang": "EN",
+            "categories": ["Cloud & Infra", "IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -504,7 +572,9 @@
             "title": "Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script",
             "speakers": "CYPRIEN TANKEU · MIRADIE CONSEILS · GDE",
             "duration": "90 MIN",
-            "lang": "FR/EN"
+            "lang": "FR/EN",
+            "categories": ["IA & Agents", "AppDev"],
+            "level": "Débutant"
           }
         ]
       }
