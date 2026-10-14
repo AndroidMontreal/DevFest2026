@@ -9,10 +9,11 @@ import {
   DoorOpen,
   Layers,
   MapPin,
+  Search,
   Sparkles,
   Users,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   flattenRoomSessions,
   makeSessionId,
@@ -97,6 +98,13 @@ export type RoomAgendaSectionCopy = {
   my_agenda_tab?: string;
   map_tab?: string;
   filter_all: string;
+  search_placeholder?: string;
+  filter_all_sessions?: string;
+  filter_ai?: string;
+  filter_cloud?: string;
+  filter_appdev?: string;
+  filter_community?: string;
+  no_results?: string;
   subject_to_change_note: string;
   rooms: RoomTrack[];
 };
@@ -116,6 +124,8 @@ export function RoomAgendaSection({
 }: RoomAgendaSectionProps) {
   const isFr = locale === 'fr';
   const [selectedTab, setSelectedTab] = useState<string>('main');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [primaryOverrides, setPrimaryOverrides] = useState<
     Record<string, string>
@@ -245,14 +255,135 @@ export function RoomAgendaSection({
     savedFlat.slice(i + 1).some((s2) => sessionsOverlap(s1, s2)),
   );
 
-  const visibleRooms =
-    selectedTab === 'main' ||
-    selectedTab === 'map' ||
-    selectedTab === 'my-agenda'
-      ? []
-      : selectedTab === 'all'
-        ? copy.rooms
-        : copy.rooms.filter((room) => room.id === selectedTab);
+  const isFiltering =
+    searchQuery.trim().length > 0 || selectedCategory !== 'all';
+
+  const categoryFilterTabs = [
+    {
+      id: 'all',
+      label:
+        copy.filter_all_sessions ||
+        (isFr ? 'Toutes les sessions' : 'All Sessions'),
+    },
+    {
+      id: 'ai',
+      label: copy.filter_ai || (isFr ? 'IA & Agents' : 'AI & Agents'),
+    },
+    { id: 'cloud', label: copy.filter_cloud || 'Cloud & Infra' },
+    { id: 'appdev', label: copy.filter_appdev || 'AppDev' },
+    {
+      id: 'community',
+      label:
+        copy.filter_community ||
+        (isFr ? 'Communauté & Panels' : 'Community & Panels'),
+    },
+  ];
+
+  const visibleRooms = useMemo(() => {
+    const isSpecificRoomTab = copy.rooms.some((r) => r.id === selectedTab);
+
+    if (!isFiltering) {
+      if (
+        selectedTab === 'main' ||
+        selectedTab === 'map' ||
+        selectedTab === 'my-agenda'
+      ) {
+        return [];
+      }
+      if (selectedTab === 'all') {
+        return copy.rooms;
+      }
+      return copy.rooms.filter((room) => room.id === selectedTab);
+    }
+
+    const baseRooms = isSpecificRoomTab
+      ? copy.rooms.filter((room) => room.id === selectedTab)
+      : copy.rooms;
+
+    const query = searchQuery.trim().toLowerCase();
+
+    return baseRooms
+      .map((room) => {
+        const matchingSessions = room.sessions.filter((session) => {
+          if (session.kind === 'lunch') return false;
+
+          if (selectedCategory !== 'all') {
+            const allCats = [
+              ...(session.categories || []),
+              ...(session.subItems?.flatMap((sub) => sub.categories || []) ||
+                []),
+            ].map((c) => c.toLowerCase());
+
+            const matchesCat =
+              selectedCategory === 'ai'
+                ? allCats.some((c) => c.includes('ai') || c.includes('ia'))
+                : selectedCategory === 'cloud'
+                  ? allCats.some((c) => c.includes('cloud'))
+                  : selectedCategory === 'appdev'
+                    ? allCats.some((c) => c.includes('appdev'))
+                    : selectedCategory === 'community'
+                      ? allCats.some(
+                          (c) =>
+                            c.includes('community') ||
+                            c.includes('communauté') ||
+                            c.includes('panel') ||
+                            c.includes('career') ||
+                            c.includes('carrière'),
+                        )
+                      : true;
+
+            if (!matchesCat) return false;
+          }
+
+          if (query) {
+            const haystack = [
+              session.title,
+              session.subtitle,
+              session.speakers,
+              session.time,
+              session.duration,
+              session.lang,
+              session.level,
+              ...(session.categories || []),
+              room.name,
+              room.worldCode,
+              room.typePrimary,
+              room.typeSecondary,
+              ...(session.subItems?.flatMap((sub) => [
+                sub.title,
+                sub.speakers,
+                sub.time,
+                sub.level,
+                ...(sub.categories || []),
+              ]) || []),
+            ]
+              .filter(Boolean)
+              .join(' ')
+              .toLowerCase();
+
+            if (!haystack.includes(query)) return false;
+          }
+
+          return true;
+        });
+
+        return {
+          ...room,
+          sessions: matchingSessions,
+        };
+      })
+      .filter((room) => room.sessions.length > 0);
+  }, [copy.rooms, isFiltering, searchQuery, selectedCategory, selectedTab]);
+
+  const totalMatchingSessions = useMemo(
+    () =>
+      visibleRooms.reduce(
+        (acc, room) =>
+          acc + room.sessions.filter((s) => s.kind !== 'lunch').length,
+        0,
+      ),
+    [visibleRooms],
+  );
 
   return (
     <div className="space-y-12">
@@ -285,9 +416,13 @@ export function RoomAgendaSection({
           <div className="grid grid-cols-2 sm:contents gap-2">
             <button
               type="button"
-              onClick={() => setSelectedTab('main')}
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+                setSelectedTab('main');
+              }}
               className={`inline-flex items-center justify-center sm:justify-start gap-2 rounded-lg border px-3 sm:px-4 py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                selectedTab === 'main'
+                selectedTab === 'main' && !isFiltering
                   ? 'border-emerald-400 bg-emerald-500/20 text-emerald-200 shadow-[0_0_18px_rgba(16,185,129,0.35)]'
                   : 'border-emerald-400/35 bg-emerald-500/10 text-emerald-200/90 shadow-[0_0_12px_rgba(16,185,129,0.15)] hover:border-emerald-400 hover:text-white hover:shadow-[0_0_18px_rgba(16,185,129,0.3)]'
               }`}
@@ -350,9 +485,13 @@ export function RoomAgendaSection({
 
             <button
               type="button"
-              onClick={() => setSelectedTab('map')}
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+                setSelectedTab('map');
+              }}
               className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 sm:py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                selectedTab === 'map'
+                selectedTab === 'map' && !isFiltering
                   ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-200 shadow-[0_0_18px_rgba(217,70,239,0.35)]'
                   : 'border-fuchsia-400/35 bg-fuchsia-500/10 text-fuchsia-200/90 hover:border-fuchsia-400 hover:text-white'
               }`}
@@ -374,9 +513,13 @@ export function RoomAgendaSection({
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => setSelectedTab('my-agenda')}
+            onClick={() => {
+              setSearchQuery('');
+              setSelectedCategory('all');
+              setSelectedTab('my-agenda');
+            }}
             className={`inline-flex items-center justify-center sm:justify-start gap-2.5 rounded-lg border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              selectedTab === 'my-agenda'
+              selectedTab === 'my-agenda' && !isFiltering
                 ? 'border-cyan-300 bg-cyan-400/25 text-white shadow-[0_0_20px_rgba(0,240,255,0.45)]'
                 : 'border-cyan-400/45 bg-cyan-500/15 text-cyan-200 shadow-[0_0_14px_rgba(0,240,255,0.18)] hover:border-cyan-300 hover:text-white hover:shadow-[0_0_20px_rgba(0,240,255,0.35)]'
             }`}
@@ -429,11 +572,137 @@ export function RoomAgendaSection({
         </div>
       </div>
 
-      {/* Main Agenda (TL;DR) when 'main' is selected */}
-      {selectedTab === 'main' && <OverallDayAgenda copy={tldrCopy} />}
+      {/* Controls Bar: Search + Category Filters (Matches Speakers Grid) */}
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 border-b border-white/10 pb-8">
+        {/* Search Input */}
+        <div className="relative w-full lg:max-w-md">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={
+              copy.search_placeholder ||
+              (isFr
+                ? 'Rechercher par titre, conférencier, salle, catégorie ou niveau...'
+                : 'Search by talk title, speaker, room, category or level...')
+            }
+            className="w-full rounded-none border border-white/15 bg-[#0a0a0a]/80 py-3 pl-11 pr-14 font-mono-tech text-xs tracking-wider text-white placeholder-white/40 outline-none transition-colors focus:border-cyan-400 focus:bg-white/[0.04]"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 font-mono-tech text-[10px] text-white/40 hover:text-white cursor-pointer"
+            >
+              CLEAR
+            </button>
+          )}
+        </div>
 
-      {/* My Custom Agenda Builder when 'my-agenda' is selected */}
-      {selectedTab === 'my-agenda' && (
+        {/* Category Filter Chips */}
+        <div className="flex flex-wrap items-center gap-2">
+          {categoryFilterTabs.map((tab) => {
+            const isActive = selectedCategory === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setSelectedCategory(tab.id)}
+                className={`rounded-none border px-4 py-2 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.25)]'
+                    : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Results Counter when searching/filtering or viewing room schedules */}
+      {(isFiltering || visibleRooms.length > 0) && (
+        <div className="-mt-6 flex items-center justify-between text-white/40 font-mono-tech text-xs tracking-widest">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Sparkles className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
+            <span className="uppercase">
+              {totalMatchingSessions}{' '}
+              {isFr
+                ? totalMatchingSessions === 1
+                  ? 'SESSION TROUVÉE'
+                  : 'SESSIONS TROUVÉES'
+                : totalMatchingSessions === 1
+                  ? 'SESSION FOUND'
+                  : 'SESSIONS FOUND'}{' '}
+              · {visibleRooms.length}{' '}
+              {isFr
+                ? visibleRooms.length === 1
+                  ? 'SALLE'
+                  : 'SALLES'
+                : visibleRooms.length === 1
+                  ? 'ROOM'
+                  : 'ROOMS'}
+            </span>
+          </div>
+          {isFiltering && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+              }}
+              className="font-mono-tech text-xs uppercase tracking-wider text-cyan-400 hover:text-cyan-200 cursor-pointer"
+            >
+              {isFr ? 'Réinitialiser les filtres' : 'Reset Filters'}
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* No Results Notice when filtering yields 0 sessions */}
+      {isFiltering && visibleRooms.length === 0 && (
+        <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-white/10 bg-[#070b16]/80 p-12 text-center">
+          <p className="font-mono-tech text-sm text-white/60">
+            {copy.no_results ||
+              (isFr
+                ? 'Aucune session ne correspond à votre recherche.'
+                : 'No sessions found matching your search.')}
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {copy.rooms.some((r) => r.id === selectedTab) && (
+              <button
+                type="button"
+                onClick={() => setSelectedTab('all')}
+                className="rounded-lg border border-cyan-400/50 bg-cyan-400/15 px-4 py-2 font-mono-tech text-xs uppercase tracking-wider text-cyan-200 hover:bg-cyan-400 hover:text-black transition-all cursor-pointer"
+              >
+                {isFr
+                  ? 'Chercher dans toutes les salles'
+                  : 'Search across all rooms'}
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+              }}
+              className="rounded-lg border border-white/20 bg-white/5 px-4 py-2 font-mono-tech text-xs uppercase tracking-wider text-white/80 hover:border-white/40 hover:text-white transition-all cursor-pointer"
+            >
+              {isFr ? 'Effacer la recherche' : 'Clear search'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Agenda (TL;DR) when 'main' is selected and not actively filtering */}
+      {selectedTab === 'main' && !isFiltering && (
+        <OverallDayAgenda copy={tldrCopy} />
+      )}
+
+      {/* My Custom Agenda Builder when 'my-agenda' is selected and not actively filtering */}
+      {selectedTab === 'my-agenda' && !isFiltering && (
         <MyAgendaBuilder
           rooms={copy.rooms}
           savedIds={savedIds}
@@ -448,17 +717,18 @@ export function RoomAgendaSection({
         />
       )}
 
-      {/* TRON Space Navigator on 'map' tab, below Main Agenda, or below My Agenda */}
+      {/* TRON Space Navigator on 'map' tab, below Main Agenda, or below My Agenda (when not filtering) */}
       {(selectedTab === 'map' ||
         selectedTab === 'main' ||
-        selectedTab === 'my-agenda') && (
-        <TronSpaceNavigator
-          rooms={copy.rooms}
-          onSelectRoomSchedule={(roomId) => setSelectedTab(roomId)}
-          locale={locale}
-          focusRequest={mapFocusRequest}
-        />
-      )}
+        selectedTab === 'my-agenda') &&
+        !isFiltering && (
+          <TronSpaceNavigator
+            rooms={copy.rooms}
+            onSelectRoomSchedule={(roomId) => setSelectedTab(roomId)}
+            locale={locale}
+            focusRequest={mapFocusRequest}
+          />
+        )}
 
       {/* Room Cards */}
       {visibleRooms.length > 0 && (
