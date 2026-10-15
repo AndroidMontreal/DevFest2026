@@ -209,7 +209,7 @@ function getSessionLocation(
       time: '11:15 – 12:00',
     };
   }
-  if (t.includes('teach your coding agent')) {
+  if (t === 'tbc' || t.includes('teach your coding agent')) {
     return {
       tabId: '3-4',
       roomCode: '3-4',
