@@ -5,6 +5,7 @@ import { SectionHeader } from '../common/section-header';
 import GalleryGrid from '../gallery/gallery-grid';
 import { SponsorsTiers } from '../sponsors/sponsors-tiers';
 import { AboutSection } from './about-section';
+import { FloppyBossAssistant } from './floppy-boss-assistant';
 import { HeroBottomHud } from './hero-bottom-hud';
 import { HeroContent } from './hero-content';
 import { HeroTicker } from './hero-ticker';
@@ -85,6 +86,9 @@ export function HomeLanding({ copy }: HomeLandingProps) {
           ctaLink={copy.sponsors.cta.link}
         />
       </section>
+
+      {/* Floating Clippy-style Floppy Disk Assistant (Home Page Only) */}
+      <FloppyBossAssistant />
     </main>
   );
 }
