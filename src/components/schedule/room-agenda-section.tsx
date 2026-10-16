@@ -1,5 +1,7 @@
 'use client';
 
+import { TalkAbstractControl } from '@/components/common/talk-abstract-control';
+import { getTalkAbstract } from '@/lib/talk-abstracts';
 import {
   AlertTriangle,
   Bookmark,
@@ -34,6 +36,7 @@ export type LightningSubItem = {
   time: string;
   title: string;
   speakers: string;
+  abstract?: string;
   categories?: string[];
   level?: string;
 };
@@ -46,6 +49,7 @@ export type RoomSessionItem = {
   title: string;
   subtitle?: string;
   speakers?: string;
+  abstract?: string;
   duration?: string;
   lang?: string;
   categories?: string[];
@@ -343,6 +347,7 @@ export function RoomAgendaSection({
               session.title,
               session.subtitle,
               session.speakers,
+              getTalkAbstract(session.title, session.abstract),
               session.time,
               session.duration,
               session.lang,
@@ -355,6 +360,7 @@ export function RoomAgendaSection({
               ...(session.subItems?.flatMap((sub) => [
                 sub.title,
                 sub.speakers,
+                getTalkAbstract(sub.title, sub.abstract),
                 sub.time,
                 sub.level,
                 ...(sub.categories || []),
@@ -928,9 +934,14 @@ export function RoomAgendaSection({
 
                         {/* Session Details */}
                         <div className="flex flex-col gap-1 flex-1">
-                          <h4 className="font-display text-base md:text-lg font-bold text-white leading-snug group-hover:text-cyan-100 transition-colors">
-                            {session.title}
-                          </h4>
+                          <TalkAbstractControl
+                            title={session.title}
+                            abstractText={getTalkAbstract(
+                              session.title,
+                              session.abstract,
+                            )}
+                            isFr={isFr}
+                          />
 
                           {session.speakers && (
                             <div className="flex flex-wrap items-center gap-2">
@@ -1032,40 +1043,48 @@ export function RoomAgendaSection({
 
                           {/* Sub-items for Lightning Round */}
                           {session.subItems && session.subItems.length > 0 && (
-                            <div className="mt-2 space-y-2 border-t border-white/10 pt-2">
+                            <div className="mt-2 space-y-2.5 border-t border-white/10 pt-2">
                               {session.subItems.map((sub, subIdx) => (
                                 <div
                                   key={subIdx}
-                                  className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs md:text-sm"
+                                  className="flex flex-col gap-1 text-xs md:text-sm"
                                 >
-                                  <span className="font-mono-tech text-xs font-bold text-google-yellow">
-                                    {sub.time}
-                                  </span>
-                                  <span className="font-display font-bold text-white">
-                                    {sub.title}
-                                  </span>
-                                  <span className="text-white/40">·</span>
-                                  <span className="font-sans text-cyan-300">
-                                    {sub.speakers}
-                                  </span>
-                                  {sub.categories?.map((cat) => (
-                                    <span
-                                      key={cat}
-                                      className={`inline-flex items-center rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
-                                    >
-                                      {cat}
+                                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                                    <span className="font-mono-tech text-xs font-bold text-google-yellow">
+                                      {sub.time}
                                     </span>
-                                  ))}
-                                  {sub.level && (
-                                    <span
-                                      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(sub.level)}`}
-                                    >
-                                      <span className="opacity-60">
-                                        {isFr ? 'Niv:' : 'Lvl:'}
+                                    <span className="font-sans text-cyan-300">
+                                      {sub.speakers}
+                                    </span>
+                                    {sub.categories?.map((cat) => (
+                                      <span
+                                        key={cat}
+                                        className={`inline-flex items-center rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
+                                      >
+                                        {cat}
                                       </span>
-                                      <span>{sub.level}</span>
-                                    </span>
-                                  )}
+                                    ))}
+                                    {sub.level && (
+                                      <span
+                                        className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(sub.level)}`}
+                                      >
+                                        <span className="opacity-60">
+                                          {isFr ? 'Niv:' : 'Lvl:'}
+                                        </span>
+                                        <span>{sub.level}</span>
+                                      </span>
+                                    )}
+                                  </div>
+                                  <TalkAbstractControl
+                                    title={sub.title}
+                                    abstractText={getTalkAbstract(
+                                      sub.title,
+                                      sub.abstract,
+                                    )}
+                                    isFr={isFr}
+                                    compact
+                                    titleClassName="font-display font-bold text-white text-xs md:text-sm leading-snug hover:text-cyan-100 transition-colors"
+                                  />
                                 </div>
                               ))}
                             </div>

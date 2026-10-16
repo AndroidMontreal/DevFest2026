@@ -1,6 +1,8 @@
 'use client';
 
+import { TalkAbstractControl } from '@/components/common/talk-abstract-control';
 import { Link } from '@/i18n/navigation';
+import { getTalkAbstract } from '@/lib/talk-abstracts';
 import {
   ExternalLink,
   GraduationCap,
@@ -209,7 +211,12 @@ function getSessionLocation(
       time: '11:15 – 12:00',
     };
   }
-  if (t === 'tbc' || t.includes('teach your coding agent')) {
+  if (
+    t.includes('agents working together') ||
+    t.includes('orchestration with adk') ||
+    t.includes('teach your coding agent') ||
+    t === 'tbc'
+  ) {
     return {
       tabId: '3-4',
       roomCode: '3-4',
@@ -639,9 +646,15 @@ function renderTopicSections(
                 )}
                 {renderLocatePin(location, isFr)}
               </div>
-              <p className="font-sans text-xs text-white/80 leading-relaxed pl-5">
-                {session.title}
-              </p>
+              <div className="pl-5">
+                <TalkAbstractControl
+                  title={session.title}
+                  abstractText={getTalkAbstract(session.title)}
+                  isFr={isFr}
+                  compact
+                  titleClassName="font-sans text-xs text-white/80 leading-relaxed hover:text-cyan-200 transition-colors"
+                />
+              </div>
             </div>
           );
         })}
@@ -663,9 +676,15 @@ function renderTopicSections(
         )}
         {renderLocatePin(location, isFr)}
       </div>
-      <p className="font-sans text-xs text-white/80 leading-relaxed pl-5 line-clamp-4">
-        {session.title}
-      </p>
+      <div className="pl-5">
+        <TalkAbstractControl
+          title={session.title}
+          abstractText={getTalkAbstract(session.title)}
+          isFr={isFr}
+          compact
+          titleClassName="font-sans text-xs text-white/80 leading-relaxed hover:text-cyan-200 transition-colors"
+        />
+      </div>
     </div>
   );
 }
@@ -705,6 +724,13 @@ export function SpeakersGrid({
         (selectedCategory === 'appdev' && categories.includes('mobile'));
 
       const query = searchQuery.trim().toLowerCase();
+      const speakerAbstracts = speaker.topic
+        .split('\n')
+        .map((line) => getTalkAbstract(line))
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
       const matchesSearch =
         !query ||
         speaker.name.toLowerCase().includes(query) ||
@@ -713,7 +739,8 @@ export function SpeakersGrid({
         (speaker.googler && 'googler'.includes(query)) ||
         (speaker.employer && speaker.employer.toLowerCase().includes(query)) ||
         (speaker.format && speaker.format.toLowerCase().includes(query)) ||
-        speaker.topic.toLowerCase().includes(query);
+        speaker.topic.toLowerCase().includes(query) ||
+        speakerAbstracts.includes(query);
 
       return matchesCategory && matchesSearch;
     });

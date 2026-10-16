@@ -222,11 +222,11 @@
             "kind": "session",
             "variant": "blue",
             "time": "13:00 – 13:45",
-            "title": "TBC",
+            "title": "Agents Working Together: Orchestration with ADK and A2A",
             "speakers": "ARUNESH CHOUDHARY · DIALABOT.AI",
             "duration": "45 MIN",
             "lang": "EN",
-            "categories": ["AppDev", "AI & Agents"],
+            "categories": ["AI & Agents", "AppDev"],
             "level": "Intermediate"
           },
           {

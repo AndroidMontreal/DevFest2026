@@ -156,12 +156,12 @@
       "employer": "Dialabot.ai",
       "title": "Conversational AI Engineer",
       "gde": false,
-      "topic": "TBC",
+      "topic": "Agents Working Together: Orchestration with ADK and A2A",
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/aruneshchoudhary/",
       "image": "/assets/images/speakers/Arunesh_Choudhary.jpg",
-      "category": "appdev",
-      "categories": ["appdev", "ai"]
+      "category": "ai",
+      "categories": ["ai", "appdev"]
     },
     {
       "name": "Ludovic Dessemon",

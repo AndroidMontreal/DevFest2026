@@ -1,5 +1,7 @@
 'use client';
 
+import { TalkAbstractControl } from '@/components/common/talk-abstract-control';
+import { getTalkAbstract } from '@/lib/talk-abstracts';
 import {
   AlertTriangle,
   ArrowDownUp,
@@ -1040,9 +1042,15 @@ export function MyAgendaBuilder({
                             )}
                           </div>
 
-                          <h4 className="font-display text-base sm:text-lg font-bold text-white">
-                            {primarySession.session.title}
-                          </h4>
+                          <TalkAbstractControl
+                            title={primarySession.session.title}
+                            abstractText={getTalkAbstract(
+                              primarySession.session.title,
+                              primarySession.session.abstract,
+                            )}
+                            isFr={isFr}
+                            titleClassName="font-display text-base sm:text-lg font-bold text-white leading-snug hover:text-cyan-100 transition-colors"
+                          />
 
                           {primarySession.session.speakers && (
                             <p className="font-mono-tech text-xs uppercase tracking-wider text-cyan-400">
@@ -1118,7 +1126,7 @@ export function MyAgendaBuilder({
                         className="rounded-xl border border-amber-400/35 bg-amber-950/15 p-3.5 sm:px-4"
                       >
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                          <div className="space-y-1">
+                          <div className="space-y-1 flex-1">
                             <div className="flex flex-wrap items-center gap-2">
                               <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/50 bg-amber-500/20 px-2.5 py-0.5 font-mono-tech text-[10px] font-bold uppercase tracking-wider text-amber-300">
                                 {isFr
@@ -1133,9 +1141,16 @@ export function MyAgendaBuilder({
                                 {backup.session.time}
                               </span>
                             </div>
-                            <h5 className="font-display text-sm sm:text-base font-bold text-white/90">
-                              {backup.session.title}
-                            </h5>
+                            <TalkAbstractControl
+                              title={backup.session.title}
+                              abstractText={getTalkAbstract(
+                                backup.session.title,
+                                backup.session.abstract,
+                              )}
+                              isFr={isFr}
+                              compact
+                              titleClassName="font-display text-sm sm:text-base font-bold text-white/90 hover:text-cyan-100 transition-colors"
+                            />
                             {backup.session.speakers && (
                               <p className="font-mono-tech text-[11px] uppercase text-cyan-300/75">
                                 {backup.session.speakers}
