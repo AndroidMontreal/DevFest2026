@@ -139,7 +139,7 @@ function getSessionLocation(
       time: '10:15 – 11:00',
     };
   }
-  if (t.includes('flight mode ai')) {
+  if (t.includes('plateforme agentique') || t.includes('nova')) {
     return {
       tabId: '3-1',
       roomCode: '3-1',
@@ -163,7 +163,7 @@ function getSessionLocation(
       time: '14:00 – 14:45',
     };
   }
-  if (t.includes('plateforme agentique') || t.includes('nova')) {
+  if (t.includes('workspace mcps') || t.includes('antigravity')) {
     return {
       tabId: '3-1',
       roomCode: '3-1',
@@ -190,7 +190,7 @@ function getSessionLocation(
       tabId: 'map',
       roomCode: '3-2',
       roomName: 'Mr. Roboto',
-      time: isFr ? 'Toute la journée' : 'All Day',
+      time: isFr ? '10:15 – 16:45 (En continu)' : '10:15 – 16:45 (Drop-in)',
     };
   }
 
@@ -266,7 +266,7 @@ function getSessionLocation(
       time: '10:15 – 11:00',
     };
   }
-  if (t.includes('santé numérique') || t.includes('synthèse vocale')) {
+  if (t.includes('flight mode ai')) {
     return {
       tabId: '3-5',
       roomCode: '3-5',
@@ -870,13 +870,26 @@ export function SpeakersGrid({
                 <div>
                   {/* Photo with Cyberpunk Scanlines */}
                   <div className="relative aspect-square w-full overflow-hidden mb-5 bg-white/5 border border-white/10 quad-border-tr quad-border-bl">
-                    <Image
-                      src={speaker.image}
-                      alt={speaker.name}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out"
-                    />
+                    {speaker.image ? (
+                      <Image
+                        src={speaker.image}
+                        alt={speaker.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-[#0d1630] via-[#090f20] to-[#050811] text-cyan-300/80">
+                        <span className="font-display text-4xl font-bold tracking-wider">
+                          {speaker.name
+                            .split(/\s+/)
+                            .map((part) => part[0])
+                            .slice(0, 2)
+                            .join('')
+                            .toUpperCase()}
+                        </span>
+                      </div>
+                    )}
                     {/* CRT Scanline overlay on hover */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-15 pointer-events-none transition-opacity duration-300 bg-gradient-to-b from-transparent via-white/50 to-transparent bg-[length:100%_4px]" />
                     {speaker.gde && (

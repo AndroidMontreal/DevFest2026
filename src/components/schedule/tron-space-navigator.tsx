@@ -1,14 +1,17 @@
 'use client';
 
+import { getRoomSongCredits } from '@/lib/room-song-synth';
 import {
   ArrowLeftRight,
   ArrowUpRight,
   Compass,
   Cpu,
   DoorOpen,
+  Headphones,
   Layers,
   LocateFixed,
   MapPin,
+  Music,
   Navigation,
   RotateCcw,
   Sparkles,
@@ -87,13 +90,13 @@ const MAP_NODES: MapNode[] = [
     subtitleEn: 'Tech Showcase & Drop-in Demos (The Doomsday Course)',
     subtitleFr: 'Vitrine techno et démos en continu (The Doomsday Course)',
     zone: 'Room #321 · West Atrium',
-    capacityEn: '5 seats · All-day drop-in',
-    capacityFr: '5 places · En continu toute la journée',
+    capacityEn: '5 seats · 10:15–16:45 drop-in',
+    capacityFr: '5 places · 10:15–16:45 en continu',
     category: 'showcase',
-    x: 194,
-    y: 214,
-    routeFromElevator: '551,345 512,345 512,342 184,342 184,214 194,214',
-    routeFromStairs: '147,190 184,190 184,214 194,214',
+    x: 197,
+    y: 232,
+    routeFromElevator: '551,345 512,345 512,342 184,342 184,232 197,232',
+    routeFromStairs: '147,190 184,190 184,232 197,232',
     color: 'cyan',
   },
   {
@@ -101,6 +104,7 @@ const MAP_NODES: MapNode[] = [
     floor: '03',
     numberBadge: '3',
     code: 'COACHING 3-3',
+    roomScheduleId: '3-3',
     name: 'Take On Me',
     subtitleEn: '1:1 Career Coaching Pod',
     subtitleFr: 'Salle de mentorat carrière 1:1',
@@ -193,13 +197,14 @@ const MAP_NODES: MapNode[] = [
     floor: '03',
     numberBadge: 'G',
     code: 'GOLD SPONSORS (G)',
-    name: 'Gold Sponsors: Vooban, oXya & Davidson Canada',
-    subtitleEn: 'Gold Sponsor Booths (G) — Vooban, oXya and Davidson Canada',
+    name: 'Gold Sponsors: Vooban, oXya, Davidson Canada & Kanastruk',
+    subtitleEn:
+      'Gold Sponsor Booths (G) — Vooban, oXya, Davidson Canada and Kanastruk',
     subtitleFr:
-      'Kiosques Commanditaires Or (G) — Vooban, oXya et Davidson Canada',
-    zone: 'Central Bridge Corridor (3 Booths)',
-    capacityEn: 'Vooban · oXya · Davidson Canada',
-    capacityFr: 'Vooban · oXya · Davidson Canada',
+      'Kiosques Commanditaires Or (G) — Vooban, oXya, Davidson Canada et Kanastruk',
+    zone: 'Central Bridge & Room #321 (4 Booths)',
+    capacityEn: 'Vooban · oXya · Davidson Canada · Kanastruk',
+    capacityFr: 'Vooban · oXya · Davidson Canada · Kanastruk',
     category: 'sponsor',
     x: 284,
     y: 324,
@@ -344,6 +349,7 @@ const MAP_NODES: MapNode[] = [
     floor: '04',
     numberBadge: '2',
     code: 'COACHING 4-2',
+    roomScheduleId: '4-2',
     name: 'Money For Nothing',
     subtitleEn: '1:1 Career Coaching Pod & Photo Booth (#417)',
     subtitleFr: 'Salle de mentorat carrière 1:1 et cabine photo (#417)',
@@ -380,6 +386,7 @@ const MAP_NODES: MapNode[] = [
     floor: '04',
     numberBadge: '3',
     code: 'COACHING 4-3',
+    roomScheduleId: '4-3',
     name: 'Working For The Weekend',
     subtitleEn: '1:1 Career Coaching Pod',
     subtitleFr: 'Salle de mentorat carrière 1:1',
@@ -460,6 +467,7 @@ const MAP_NODES: MapNode[] = [
     floor: '04',
     numberBadge: '7',
     code: 'COACHING 4-7',
+    roomScheduleId: '4-7',
     name: 'Should I Stay Or Should I Go',
     subtitleEn: '1:1 Career Coaching Pod',
     subtitleFr: 'Salle de mentorat carrière 1:1',
@@ -625,10 +633,14 @@ const LEVEL_03_EDGES: Array<[[number, number], [number, number]]> = [
   // West Atrium vertical spine (x = 184)
   [
     [184, 190],
-    [184, 214],
+    [184, 213],
   ],
   [
-    [184, 214],
+    [184, 213],
+    [184, 232],
+  ],
+  [
+    [184, 232],
     [184, 299],
   ],
   [
@@ -694,8 +706,12 @@ const LEVEL_03_EDGES: Array<[[number, number], [number, number]]> = [
     [176, 342],
   ],
   [
-    [194, 214],
-    [184, 214],
+    [194, 213],
+    [184, 213],
+  ],
+  [
+    [197, 232],
+    [184, 232],
   ],
   [
     [207, 299],
@@ -1076,6 +1092,14 @@ function getNodeCandidatePoints(
   overridePt: GridPoint | null,
 ): GridPoint[] {
   if (overridePt) return [overridePt];
+  if (node.id === 'l3-sponsor-g1') {
+    return [
+      { x: 268, y: 324 },
+      { x: 300, y: 324 },
+      { x: 301, y: 361 },
+      { x: 194, y: 213 },
+    ];
+  }
   if (node.id === 'l3-restrooms') {
     return [
       { x: 314, y: 415 },
@@ -2295,12 +2319,13 @@ export function TronSpaceNavigator({
                       },
                     }[node.color];
 
-                    // Special Case: Gold Sponsors (G) renders all 3 Gold Booths (Vooban, oXya, Davidson Canada)
+                    // Special Case: Gold Sponsors (G) renders all 4 Gold Booths (Vooban, oXya, Davidson Canada, Kanastruk)
                     if (node.id === 'l3-sponsor-g1') {
                       const goldBooths = [
                         { x: 268, y: 324, name: 'Vooban' },
                         { x: 300, y: 324, name: 'oXya' },
                         { x: 301, y: 361, name: 'Davidson Canada' },
+                        { x: 194, y: 213, name: 'Kanastruk' },
                       ];
                       return (
                         <g
@@ -2646,14 +2671,6 @@ export function TronSpaceNavigator({
                         node.category === 'coaching' ||
                         node.category === 'showcase' ||
                         node.id === 'l4-room-1';
-                      const labelText =
-                        node.numberBadge &&
-                        (isRoomDiamond ||
-                          node.category === 'sponsor' ||
-                          node.category === 'registration')
-                          ? `${node.numberBadge} · ${node.name}`
-                          : node.name;
-                      const halfWidth = Math.max(labelText.length * 3.5, 44);
                       const targetX =
                         node.id === selectedNode.id
                           ? computedRoute.endPt.x
@@ -2662,6 +2679,32 @@ export function TronSpaceNavigator({
                         node.id === selectedNode.id
                           ? computedRoute.endPt.y
                           : node.y;
+                      const goldBoothMatch =
+                        node.id === 'l3-sponsor-g1'
+                          ? [
+                              { x: 268, y: 324, name: 'Vooban (Gold Sponsor)' },
+                              { x: 300, y: 324, name: 'oXya (Gold Sponsor)' },
+                              {
+                                x: 301,
+                                y: 361,
+                                name: 'Davidson Canada (Gold Sponsor)',
+                              },
+                              {
+                                x: 194,
+                                y: 213,
+                                name: 'Kanastruk (Gold Sponsor · #321)',
+                              },
+                            ].find((b) => b.x === targetX && b.y === targetY)
+                          : undefined;
+                      const labelText = goldBoothMatch
+                        ? `G · ${goldBoothMatch.name}`
+                        : node.numberBadge &&
+                            (isRoomDiamond ||
+                              node.category === 'sponsor' ||
+                              node.category === 'registration')
+                          ? `${node.numberBadge} · ${node.name}`
+                          : node.name;
+                      const halfWidth = Math.max(labelText.length * 3.5, 44);
                       const clampedX = Math.min(
                         Math.max(targetX, halfWidth + 12),
                         1000 - halfWidth - 12,
@@ -2732,8 +2775,8 @@ export function TronSpaceNavigator({
                     <span className="inline-block h-3 w-3 shrink-0 rounded-sm bg-emerald-400" />
                     <span>
                       {isFr
-                        ? 'Commanditaires Or (G) : Vooban, oXya, Davidson Canada'
-                        : 'Gold Sponsors (G): Vooban, oXya, Davidson Canada'}
+                        ? 'Commanditaires Or (G) : Vooban, oXya, Davidson Canada, Kanastruk'
+                        : 'Gold Sponsors (G): Vooban, oXya, Davidson Canada, Kanastruk'}
                     </span>
                   </button>
                 )}
@@ -2825,9 +2868,65 @@ export function TronSpaceNavigator({
                     {selectedNode.numberBadge}
                   </span>
                 )}
-                <h4 className="font-display text-xl sm:text-2xl font-bold text-white leading-tight">
-                  {selectedNode.name}
-                </h4>
+                <div className="min-w-0">
+                  <h4 className="font-display text-xl sm:text-2xl font-bold text-white leading-tight">
+                    {selectedNode.name}
+                  </h4>
+                  {(() => {
+                    const credits =
+                      getRoomSongCredits(selectedNode.id) ||
+                      getRoomSongCredits(selectedNode.name);
+                    if (!credits) return null;
+                    return (
+                      <div className="mt-1 flex flex-wrap items-center gap-2 font-mono-tech text-[11px] uppercase tracking-[0.16em] text-google-yellow/90">
+                        <div className="flex items-center gap-1.5">
+                          <Music className="h-3 w-3 text-google-yellow shrink-0" />
+                          <span className="font-bold">{credits.artist}</span>
+                          <span className="text-white/35">·</span>
+                          <span className="text-cyan-300/90">
+                            {credits.year}
+                          </span>
+                        </div>
+                        {credits.youtubeUrl && (
+                          <a
+                            href={credits.youtubeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 rounded-full border border-red-500/45 bg-red-950/40 px-2 py-0.5 font-mono-tech text-[10px] font-bold uppercase tracking-wider text-white/95 hover:border-red-400 hover:bg-red-600/30 hover:text-white transition-all"
+                            title={
+                              isFr
+                                ? `Écouter ${credits.songTitle} sur YouTube Music`
+                                : `Play ${credits.songTitle} on YouTube Music`
+                            }
+                          >
+                            {/* YouTube Music Disc Logo */}
+                            <svg
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                              className="h-3.5 w-3.5 shrink-0"
+                            >
+                              <circle cx="12" cy="12" r="11" fill="#FF0000" />
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="6.2"
+                                fill="none"
+                                stroke="#FFFFFF"
+                                strokeWidth="1.4"
+                              />
+                              <polygon
+                                points="10.4,9.2 15.2,12 10.4,14.8"
+                                fill="#FFFFFF"
+                              />
+                            </svg>
+                            <Headphones className="h-3 w-3 text-red-300 shrink-0" />
+                            <span>{isFr ? 'Écouter' : 'Click to play'}</span>
+                          </a>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
               </div>
 
               <p className="mt-2 font-sans text-xs sm:text-sm text-cyan-100/80">
@@ -2909,20 +3008,65 @@ export function TronSpaceNavigator({
                       ? 'KIOSQUES COMMANDITAIRES OR (G)'
                       : 'GOLD SPONSOR BOOTHS (G)'}
                   </div>
-                  <div className="mt-2.5 grid grid-cols-3 gap-2">
-                    {['Vooban', 'oXya', 'Davidson Canada'].map((sponsor) => (
-                      <div
-                        key={sponsor}
-                        className="flex flex-col items-center justify-center rounded-lg border border-emerald-400/40 bg-[#071520] px-2 py-2.5 text-center"
-                      >
-                        <span className="font-mono-tech text-[10px] font-bold text-emerald-400">
-                          [G]
-                        </span>
-                        <span className="mt-1 font-display text-xs font-bold text-white leading-tight">
-                          {sponsor}
-                        </span>
-                      </div>
-                    ))}
+                  <div className="mt-2.5 grid grid-cols-2 gap-2">
+                    {[
+                      {
+                        name: 'Vooban',
+                        x: 268,
+                        y: 324,
+                        locEn: 'Central Bridge',
+                        locFr: 'Passerelle',
+                      },
+                      {
+                        name: 'oXya',
+                        x: 300,
+                        y: 324,
+                        locEn: 'Central Bridge',
+                        locFr: 'Passerelle',
+                      },
+                      {
+                        name: 'Davidson Canada',
+                        x: 301,
+                        y: 361,
+                        locEn: 'Central Bridge',
+                        locFr: 'Passerelle',
+                      },
+                      {
+                        name: 'Kanastruk',
+                        x: 194,
+                        y: 213,
+                        locEn: 'Near #321 (2)',
+                        locFr: 'Près du #321 (2)',
+                      },
+                    ].map((sponsor) => {
+                      const isActiveBooth =
+                        computedRoute.endPt.x === sponsor.x &&
+                        computedRoute.endPt.y === sponsor.y;
+                      return (
+                        <button
+                          key={sponsor.name}
+                          type="button"
+                          onClick={() =>
+                            handleNodeClick(selectedNode, false, {
+                              x: sponsor.x,
+                              y: sponsor.y,
+                            })
+                          }
+                          className={`flex flex-col items-center justify-center rounded-lg border px-2 py-2 text-center transition-all cursor-pointer ${
+                            isActiveBooth
+                              ? 'border-emerald-300 bg-emerald-500/25 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
+                              : 'border-emerald-400/35 bg-[#071520] hover:border-emerald-400'
+                          }`}
+                        >
+                          <span className="font-mono-tech text-[10px] font-bold text-emerald-400">
+                            [G] {isFr ? sponsor.locFr : sponsor.locEn}
+                          </span>
+                          <span className="mt-0.5 font-display text-xs font-bold text-white leading-tight">
+                            {sponsor.name}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}

@@ -1,6 +1,7 @@
 'use client';
 
 import { TalkAbstractControl } from '@/components/common/talk-abstract-control';
+import { getRoomSongCredits } from '@/lib/room-song-synth';
 import { getTalkAbstract } from '@/lib/talk-abstracts';
 import {
   AlertTriangle,
@@ -9,8 +10,10 @@ import {
   CalendarRange,
   Compass,
   DoorOpen,
+  Headphones,
   Layers,
   MapPin,
+  Music,
   Search,
   Sparkles,
   Users,
@@ -43,7 +46,7 @@ export type LightningSubItem = {
 
 export type RoomSessionItem = {
   kind?: 'session' | 'lunch' | 'open';
-  variant?: 'yellow' | 'blue' | 'red';
+  variant?: 'yellow' | 'blue' | 'red' | 'green';
   tentative?: boolean;
   time: string;
   title: string;
@@ -93,7 +96,7 @@ export type RoomTrack = {
   name: string;
   typePrimary: string;
   typeSecondary: string;
-  accent: 'yellow' | 'blue' | 'red';
+  accent: 'yellow' | 'blue' | 'red' | 'green';
   sessions: RoomSessionItem[];
 };
 
@@ -467,7 +470,9 @@ export function RoomAgendaSection({
                   ? 'border-google-yellow bg-google-yellow/20 text-google-yellow shadow-[0_0_15px_rgba(251,188,4,0.25)]'
                   : room.accent === 'red'
                     ? 'border-rose-400 bg-rose-500/20 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.25)]'
-                    : 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]';
+                    : room.accent === 'green'
+                      ? 'border-emerald-400 bg-emerald-500/20 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.25)]'
+                      : 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]';
               return (
                 <button
                   key={room.id}
@@ -476,7 +481,9 @@ export function RoomAgendaSection({
                   className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 sm:py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                     isActive
                       ? activeClass
-                      : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
+                      : room.accent === 'green'
+                        ? 'border-emerald-500/25 bg-emerald-500/[0.06] text-emerald-200/80 hover:border-emerald-400/55 hover:text-emerald-100'
+                        : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
                   }`}
                 >
                   <DoorOpen className="h-3.5 w-3.5 shrink-0" />
@@ -742,406 +749,477 @@ export function RoomAgendaSection({
       {/* Room Cards */}
       {visibleRooms.length > 0 && (
         <div className="space-y-12">
-          {visibleRooms.map((room) => (
-            <section
-              key={room.id}
-              id={`room-${room.id}`}
-              className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#070b16]/95 p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,0.6)] backdrop-blur-2xl scroll-mt-28"
-            >
-              {/* Ambient Top Glow */}
-              <div
-                className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${
-                  room.accent === 'yellow'
-                    ? 'via-google-yellow/60'
-                    : room.accent === 'red'
-                      ? 'via-rose-400/60'
-                      : 'via-cyan-400/60'
-                } to-transparent`}
-              />
-              <div
-                className={`pointer-events-none absolute -top-24 left-1/4 h-56 w-56 rounded-full ${
-                  room.accent === 'yellow'
-                    ? 'bg-google-yellow/10'
-                    : room.accent === 'red'
-                      ? 'bg-google-red/10'
-                      : 'bg-google-blue/10'
-                } blur-[100px]`}
-              />
+          {visibleRooms.map((room) => {
+            const songCredits =
+              getRoomSongCredits(room.id) || getRoomSongCredits(room.name);
+            return (
+              <section
+                key={room.id}
+                id={`room-${room.id}`}
+                className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#070b16]/95 p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,0.6)] backdrop-blur-2xl scroll-mt-28"
+              >
+                {/* Ambient Top Glow */}
+                <div
+                  className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${
+                    room.accent === 'yellow'
+                      ? 'via-google-yellow/60'
+                      : room.accent === 'red'
+                        ? 'via-rose-400/60'
+                        : room.accent === 'green'
+                          ? 'via-emerald-400/60'
+                          : 'via-cyan-400/60'
+                  } to-transparent`}
+                />
+                <div
+                  className={`pointer-events-none absolute -top-24 left-1/4 h-56 w-56 rounded-full ${
+                    room.accent === 'yellow'
+                      ? 'bg-google-yellow/10'
+                      : room.accent === 'red'
+                        ? 'bg-google-red/10'
+                        : room.accent === 'green'
+                          ? 'bg-emerald-500/10'
+                          : 'bg-google-blue/10'
+                  } blur-[100px]`}
+                />
 
-              {/* Room Header (Matches Slide Layout) */}
-              <div className="mb-8 border-b border-white/10 pb-6">
-                <div className="flex flex-wrap items-center gap-2 font-mono-tech text-xs md:text-sm uppercase tracking-[0.2em]">
-                  <MapPin
-                    className={`h-3.5 w-3.5 ${
-                      room.accent === 'yellow'
-                        ? 'text-google-yellow'
-                        : room.accent === 'red'
-                          ? 'text-rose-400'
-                          : 'text-cyan-400'
-                    }`}
-                  />
-                  <span
-                    className={
-                      room.accent === 'yellow'
-                        ? 'text-google-yellow/90'
-                        : room.accent === 'red'
-                          ? 'text-rose-400/90'
-                          : 'text-cyan-300/90'
-                    }
-                  >
-                    {room.locationBadgePrimary}
-                  </span>
-                  <span className="text-white/30">/</span>
-                  <span className="text-cyan-300/75">
-                    {room.locationBadgeSecondary}
-                  </span>
-                </div>
+                {/* Room Header (Matches Slide Layout) */}
+                <div className="mb-8 border-b border-white/10 pb-6">
+                  <div className="flex flex-wrap items-center gap-2 font-mono-tech text-xs md:text-sm uppercase tracking-[0.2em]">
+                    <MapPin
+                      className={`h-3.5 w-3.5 ${
+                        room.accent === 'yellow'
+                          ? 'text-google-yellow'
+                          : room.accent === 'red'
+                            ? 'text-rose-400'
+                            : room.accent === 'green'
+                              ? 'text-emerald-400'
+                              : 'text-cyan-400'
+                      }`}
+                    />
+                    <span
+                      className={
+                        room.accent === 'yellow'
+                          ? 'text-google-yellow/90'
+                          : room.accent === 'red'
+                            ? 'text-rose-400/90'
+                            : room.accent === 'green'
+                              ? 'text-emerald-400/90'
+                              : 'text-cyan-300/90'
+                      }
+                    >
+                      {room.locationBadgePrimary}
+                    </span>
+                    <span className="text-white/30">/</span>
+                    <span className="text-cyan-300/75">
+                      {room.locationBadgeSecondary}
+                    </span>
+                  </div>
 
-                <h3 className="mt-2 font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
-                  {room.name}
-                </h3>
+                  <h3 className="mt-2 font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+                    {room.name}
+                  </h3>
 
-                <div className="mt-2 flex flex-wrap items-center gap-2 font-display text-lg md:text-2xl text-white/90">
-                  <Users className="h-5 w-5 text-cyan-400/80 mr-1 hidden sm:inline-block" />
-                  <span>{room.typePrimary}</span>
-                  <span className="text-white/40">/</span>
-                  <span className="text-cyan-300">{room.typeSecondary}</span>
-                </div>
-              </div>
-
-              {/* Room Sessions List */}
-              <div className="space-y-3.5">
-                {room.sessions.map((session, idx) => {
-                  // Lunch Break Bar
-                  if (session.kind === 'lunch') {
-                    return (
-                      <div
-                        key={`lunch-${idx}`}
-                        className="my-4 flex flex-wrap items-center justify-center gap-2 rounded-lg border border-google-yellow/25 bg-google-yellow/[0.12] px-4 py-2.5 text-center font-mono-tech text-xs md:text-sm uppercase tracking-[0.18em]"
-                      >
-                        <span className="font-bold text-google-yellow">
-                          {session.time}
+                  {songCredits && (
+                    <div className="mt-1.5 flex flex-wrap items-center gap-2.5 font-mono-tech text-xs sm:text-sm uppercase tracking-[0.18em] text-google-yellow/90">
+                      <div className="flex items-center gap-2">
+                        <Music className="h-3.5 w-3.5 text-google-yellow shrink-0" />
+                        <span className="font-bold">{songCredits.artist}</span>
+                        <span className="text-white/35">·</span>
+                        <span className="text-cyan-300/90">
+                          {songCredits.year}
                         </span>
-                        <span className="text-google-yellow/50">·</span>
-                        <span className="font-semibold text-google-yellow">
-                          {session.title}
-                        </span>
-                        {session.subtitle && (
-                          <>
-                            <span className="text-white/40">/</span>
-                            <span className="text-cyan-200/90">
-                              {session.subtitle}
-                            </span>
-                          </>
-                        )}
                       </div>
-                    );
-                  }
+                      {songCredits.youtubeUrl && (
+                        <a
+                          href={songCredits.youtubeUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-red-500/45 bg-red-950/40 px-2.5 py-0.5 font-mono-tech text-[11px] font-bold uppercase tracking-wider text-white/95 hover:border-red-400 hover:bg-red-600/30 hover:text-white transition-all shadow-[0_0_12px_rgba(239,68,68,0.25)]"
+                          title={
+                            isFr
+                              ? `Écouter ${songCredits.songTitle} sur YouTube Music`
+                              : `Play ${songCredits.songTitle} on YouTube Music`
+                          }
+                        >
+                          {/* YouTube Music Disc Logo */}
+                          <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            className="h-4 w-4 shrink-0"
+                          >
+                            <circle cx="12" cy="12" r="11" fill="#FF0000" />
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="6.2"
+                              fill="none"
+                              stroke="#FFFFFF"
+                              strokeWidth="1.4"
+                            />
+                            <polygon
+                              points="10.4,9.2 15.2,12 10.4,14.8"
+                              fill="#FFFFFF"
+                            />
+                          </svg>
+                          <Headphones className="h-3.5 w-3.5 text-red-300 shrink-0" />
+                          <span>{isFr ? 'Écouter' : 'Click to play'}</span>
+                        </a>
+                      )}
+                    </div>
+                  )}
 
-                  // Open Talk / Workshop Slot (Dashed Border)
-                  if (session.kind === 'open') {
-                    const isRedOpen =
-                      session.variant === 'red' || room.accent === 'red';
-                    const openDurationClass = isRedOpen
-                      ? 'border-rose-400/80 bg-rose-500/10 text-rose-400'
-                      : 'border-cyan-400/70 bg-cyan-950/30 text-cyan-300';
+                  <div className="mt-2.5 flex flex-wrap items-center gap-2 font-display text-lg md:text-2xl text-white/90">
+                    <Users className="h-5 w-5 text-cyan-400/80 mr-1 hidden sm:inline-block" />
+                    <span>{room.typePrimary}</span>
+                    <span className="text-white/40">/</span>
+                    <span className="text-cyan-300">{room.typeSecondary}</span>
+                  </div>
+                </div>
+
+                {/* Room Sessions List */}
+                <div className="space-y-3.5">
+                  {room.sessions.map((session, idx) => {
+                    // Lunch Break Bar
+                    if (session.kind === 'lunch') {
+                      return (
+                        <div
+                          key={`lunch-${idx}`}
+                          className="my-4 flex flex-wrap items-center justify-center gap-2 rounded-lg border border-google-yellow/25 bg-google-yellow/[0.12] px-4 py-2.5 text-center font-mono-tech text-xs md:text-sm uppercase tracking-[0.18em]"
+                        >
+                          <span className="font-bold text-google-yellow">
+                            {session.time}
+                          </span>
+                          <span className="text-google-yellow/50">·</span>
+                          <span className="font-semibold text-google-yellow">
+                            {session.title}
+                          </span>
+                          {session.subtitle && (
+                            <>
+                              <span className="text-white/40">/</span>
+                              <span className="text-cyan-200/90">
+                                {session.subtitle}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      );
+                    }
+
+                    // Open Talk / Workshop Slot (Dashed Border)
+                    if (session.kind === 'open') {
+                      const isRedOpen =
+                        session.variant === 'red' || room.accent === 'red';
+                      const openDurationClass = isRedOpen
+                        ? 'border-rose-400/80 bg-rose-500/10 text-rose-400'
+                        : 'border-cyan-400/70 bg-cyan-950/30 text-cyan-300';
+
+                      return (
+                        <div
+                          key={`${session.time}-${idx}`}
+                          className="flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-xl border border-dashed border-cyan-200/35 bg-[#0c101d]/60 px-5 py-4 transition-colors hover:border-cyan-300/60 hover:bg-[#101628]/80"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                            {/* Outlined Time Pill */}
+                            <div className="shrink-0">
+                              <span className="inline-flex min-w-[150px] items-center justify-center rounded-full border border-cyan-200/60 bg-transparent px-4 py-2 font-mono-tech text-sm md:text-base tracking-wider text-cyan-100">
+                                {session.time}
+                              </span>
+                            </div>
+
+                            {/* Open Slot Text */}
+                            <div className="flex flex-col">
+                              <span className="font-display text-base md:text-lg font-bold text-white">
+                                {session.title}
+                              </span>
+                              {session.subtitle && (
+                                <span className="font-sans text-xs md:text-sm text-cyan-200/75">
+                                  {session.subtitle}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Duration Pill */}
+                          {session.duration && (
+                            <div className="flex items-center gap-2 self-start md:self-center">
+                              <span
+                                className={`inline-flex min-w-[78px] items-center justify-center rounded-full border px-3.5 py-1.5 font-mono-tech text-xs uppercase tracking-wider ${openDurationClass}`}
+                              >
+                                {session.duration}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+
+                    // Regular Session (Talk / Panel / Workshop / Lightning Round)
+                    const sessionId = makeSessionId(room.id, session.time);
+                    const isSaved = savedIds.includes(sessionId);
+                    const thisRange = parseTimeRangeToMinutes(session.time);
+                    const overlappingOtherSaved = savedFlat.filter(
+                      (s) =>
+                        s.id !== sessionId && sessionsOverlap(thisRange, s),
+                    );
+
+                    const pillVariant =
+                      session.variant || room.accent || 'blue';
+
+                    const timePillClass = session.tentative
+                      ? 'border border-google-yellow bg-transparent text-google-yellow font-bold'
+                      : pillVariant === 'yellow'
+                        ? 'bg-google-yellow text-black font-bold shadow-[0_0_15px_rgba(251,188,4,0.3)]'
+                        : pillVariant === 'red'
+                          ? 'bg-google-red text-white font-bold shadow-[0_0_15px_rgba(234,67,53,0.3)]'
+                          : pillVariant === 'green'
+                            ? 'bg-[#34A853] text-white font-bold shadow-[0_0_15px_rgba(52,168,83,0.3)]'
+                            : 'bg-google-blue text-white font-bold shadow-[0_0_15px_rgba(66,133,244,0.3)]';
+
+                    const durationBadgeClass =
+                      pillVariant === 'yellow'
+                        ? 'border-google-yellow/80 text-google-yellow bg-google-yellow/10'
+                        : pillVariant === 'red'
+                          ? 'border-rose-400/80 text-rose-400 bg-rose-500/10'
+                          : pillVariant === 'green'
+                            ? 'border-emerald-400/80 text-emerald-300 bg-emerald-500/10'
+                            : 'border-cyan-400/75 text-cyan-300 bg-cyan-950/30';
 
                     return (
                       <div
                         key={`${session.time}-${idx}`}
-                        className="flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-xl border border-dashed border-cyan-200/35 bg-[#0c101d]/60 px-5 py-4 transition-colors hover:border-cyan-300/60 hover:bg-[#101628]/80"
+                        className={`group relative flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-xl px-5 py-4 transition-all duration-300 ${
+                          isSaved
+                            ? 'border-2 border-cyan-400/80 bg-[#101935]/95 shadow-[0_0_25px_rgba(0,240,255,0.14)]'
+                            : session.tentative
+                              ? 'border border-dashed border-google-yellow/80 bg-[#0d1222]/90 hover:border-google-yellow hover:bg-[#121931]'
+                              : 'border border-white/10 bg-[#0d1222]/90 hover:border-cyan-400/40 hover:bg-[#121931]'
+                        }`}
                       >
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                          {/* Outlined Time Pill */}
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-1">
+                          {/* Solid or Tentative Outlined Time Pill */}
                           <div className="shrink-0">
-                            <span className="inline-flex min-w-[150px] items-center justify-center rounded-full border border-cyan-200/60 bg-transparent px-4 py-2 font-mono-tech text-sm md:text-base tracking-wider text-cyan-100">
+                            <span
+                              className={`inline-flex min-w-[150px] items-center justify-center rounded-full px-4 py-2 font-mono-tech text-sm md:text-base tracking-wider ${timePillClass}`}
+                            >
                               {session.time}
                             </span>
                           </div>
 
-                          {/* Open Slot Text */}
-                          <div className="flex flex-col">
-                            <span className="font-display text-base md:text-lg font-bold text-white">
-                              {session.title}
-                            </span>
-                            {session.subtitle && (
-                              <span className="font-sans text-xs md:text-sm text-cyan-200/75">
-                                {session.subtitle}
-                              </span>
+                          {/* Session Details */}
+                          <div className="flex flex-col gap-1 flex-1">
+                            <TalkAbstractControl
+                              title={session.title}
+                              abstractText={getTalkAbstract(
+                                session.title,
+                                session.abstract,
+                              )}
+                              isFr={isFr}
+                            />
+
+                            {session.speakers && (
+                              <div className="flex flex-wrap items-center gap-2">
+                                <p className="font-mono-tech text-xs uppercase tracking-wider text-cyan-400">
+                                  {session.speakers.replace(
+                                    /\s*·\s*GDE\b/i,
+                                    '',
+                                  )}
+                                </p>
+                                {/\bGDE\b/i.test(session.speakers) && (
+                                  <span
+                                    title="Google Developer Expert (GDE)"
+                                    className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-[#0a0f1d]/90 px-2.5 py-0.5 font-mono-tech text-[10px] font-bold tracking-wider text-white uppercase shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
+                                  >
+                                    <svg
+                                      viewBox="0 0 24 18"
+                                      className="h-2.5 w-3 shrink-0"
+                                      aria-hidden="true"
+                                    >
+                                      <path
+                                        d="M8.5 2.5L2.5 8.5"
+                                        stroke="#EA4335"
+                                        strokeWidth="3.2"
+                                        strokeLinecap="round"
+                                      />
+                                      <path
+                                        d="M2.5 9.5L8.5 15.5"
+                                        stroke="#4285F4"
+                                        strokeWidth="3.2"
+                                        strokeLinecap="round"
+                                      />
+                                      <path
+                                        d="M15.5 2.5L21.5 8.5"
+                                        stroke="#34A853"
+                                        strokeWidth="3.2"
+                                        strokeLinecap="round"
+                                      />
+                                      <path
+                                        d="M21.5 9.5L15.5 15.5"
+                                        stroke="#FBBC04"
+                                        strokeWidth="3.2"
+                                        strokeLinecap="round"
+                                      />
+                                    </svg>
+                                    <span>GDE</span>
+                                  </span>
+                                )}
+                                {session.tentative && (
+                                  <>
+                                    <span className="font-mono-tech text-xs text-white/35">
+                                      ·
+                                    </span>
+                                    <span className="font-mono-tech text-xs font-semibold uppercase tracking-wider text-google-yellow">
+                                      TENTATIVE / À CONFIRMER
+                                    </span>
+                                  </>
+                                )}
+                              </div>
                             )}
+
+                            {/* Category & Level Badges */}
+                            {((session.categories &&
+                              session.categories.length > 0) ||
+                              session.level) && (
+                              <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                                {session.categories?.map((cat) => (
+                                  <span
+                                    key={cat}
+                                    className={`inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono-tech text-[10px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
+                                  >
+                                    {cat}
+                                  </span>
+                                ))}
+                                {session.level && (
+                                  <span
+                                    className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-mono-tech text-[10px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(session.level)}`}
+                                  >
+                                    <span className="opacity-60">
+                                      {isFr ? 'Niv:' : 'Lvl:'}
+                                    </span>
+                                    <span>{session.level}</span>
+                                  </span>
+                                )}
+                              </div>
+                            )}
+
+                            {/* Overlap / Conflict Notice if another session in this time window is saved */}
+                            {overlappingOtherSaved.length > 0 && (
+                              <div className="mt-1 flex items-center gap-1.5 font-mono-tech text-[10px] text-amber-300">
+                                <AlertTriangle className="h-3 w-3 shrink-0 text-amber-400" />
+                                <span>
+                                  {isSaved
+                                    ? isFr
+                                      ? `Chevauchement avec Monde ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (géré en Principal / Plan B dans Mon Agenda)`
+                                      : `Overlaps with World ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (managed as Primary / Backup in My Agenda)`
+                                    : isFr
+                                      ? `Même créneau que votre choix dans Monde ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (ajoutable en Plan B)`
+                                      : `Same time window as your saved talk in World ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (can add as Backup)`}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* Sub-items for Lightning Round */}
+                            {session.subItems &&
+                              session.subItems.length > 0 && (
+                                <div className="mt-2 space-y-2.5 border-t border-white/10 pt-2">
+                                  {session.subItems.map((sub, subIdx) => (
+                                    <div
+                                      key={subIdx}
+                                      className="flex flex-col gap-1 text-xs md:text-sm"
+                                    >
+                                      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                                        <span className="font-mono-tech text-xs font-bold text-google-yellow">
+                                          {sub.time}
+                                        </span>
+                                        <span className="font-sans text-cyan-300">
+                                          {sub.speakers}
+                                        </span>
+                                        {sub.categories?.map((cat) => (
+                                          <span
+                                            key={cat}
+                                            className={`inline-flex items-center rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
+                                          >
+                                            {cat}
+                                          </span>
+                                        ))}
+                                        {sub.level && (
+                                          <span
+                                            className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(sub.level)}`}
+                                          >
+                                            <span className="opacity-60">
+                                              {isFr ? 'Niv:' : 'Lvl:'}
+                                            </span>
+                                            <span>{sub.level}</span>
+                                          </span>
+                                        )}
+                                      </div>
+                                      <TalkAbstractControl
+                                        title={sub.title}
+                                        abstractText={getTalkAbstract(
+                                          sub.title,
+                                          sub.abstract,
+                                        )}
+                                        isFr={isFr}
+                                        compact
+                                        titleClassName="font-display font-bold text-white text-xs md:text-sm leading-snug hover:text-cyan-100 transition-colors"
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                           </div>
                         </div>
 
-                        {/* Duration Pill */}
-                        {session.duration && (
-                          <div className="flex items-center gap-2 self-start md:self-center">
+                        {/* Right Badges: Duration + Language + Save to My Agenda */}
+                        <div className="flex flex-wrap items-center gap-2.5 self-start md:self-center shrink-0">
+                          {session.duration && (
                             <span
-                              className={`inline-flex min-w-[78px] items-center justify-center rounded-full border px-3.5 py-1.5 font-mono-tech text-xs uppercase tracking-wider ${openDurationClass}`}
+                              className={`inline-flex min-w-[78px] items-center justify-center rounded-full border px-3.5 py-1.5 font-mono-tech text-xs uppercase tracking-wider ${durationBadgeClass}`}
                             >
                               {session.duration}
                             </span>
-                          </div>
-                        )}
+                          )}
+                          {session.lang && (
+                            <span className="inline-flex min-w-[64px] items-center justify-center rounded-full border border-cyan-200/60 bg-cyan-950/30 px-3.5 py-1.5 font-mono-tech text-xs uppercase tracking-wider text-cyan-100">
+                              {session.lang}
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSession(sessionId)}
+                            className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                              isSaved
+                                ? 'border-cyan-300 bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,240,255,0.4)]'
+                                : 'border-cyan-400/50 bg-cyan-400/10 text-cyan-200 hover:border-cyan-300 hover:bg-cyan-400 hover:text-black'
+                            }`}
+                          >
+                            {isSaved ? (
+                              <>
+                                <BookmarkCheck className="h-3.5 w-3.5" />
+                                <span>{isFr ? 'Sauvé' : 'Saved'}</span>
+                              </>
+                            ) : (
+                              <>
+                                <Bookmark className="h-3.5 w-3.5" />
+                                <span>
+                                  {overlappingOtherSaved.length > 0
+                                    ? isFr
+                                      ? '+ Plan B'
+                                      : '+ Backup'
+                                    : isFr
+                                      ? '+ Agenda'
+                                      : '+ My Agenda'}
+                                </span>
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </div>
                     );
-                  }
-
-                  // Regular Session (Talk / Panel / Workshop / Lightning Round)
-                  const sessionId = makeSessionId(room.id, session.time);
-                  const isSaved = savedIds.includes(sessionId);
-                  const thisRange = parseTimeRangeToMinutes(session.time);
-                  const overlappingOtherSaved = savedFlat.filter(
-                    (s) => s.id !== sessionId && sessionsOverlap(thisRange, s),
-                  );
-
-                  const pillVariant = session.variant || room.accent || 'blue';
-
-                  const timePillClass = session.tentative
-                    ? 'border border-google-yellow bg-transparent text-google-yellow font-bold'
-                    : pillVariant === 'yellow'
-                      ? 'bg-google-yellow text-black font-bold shadow-[0_0_15px_rgba(251,188,4,0.3)]'
-                      : pillVariant === 'red'
-                        ? 'bg-google-red text-white font-bold shadow-[0_0_15px_rgba(234,67,53,0.3)]'
-                        : 'bg-google-blue text-white font-bold shadow-[0_0_15px_rgba(66,133,244,0.3)]';
-
-                  const durationBadgeClass =
-                    pillVariant === 'yellow'
-                      ? 'border-google-yellow/80 text-google-yellow bg-google-yellow/10'
-                      : pillVariant === 'red'
-                        ? 'border-rose-400/80 text-rose-400 bg-rose-500/10'
-                        : 'border-cyan-400/75 text-cyan-300 bg-cyan-950/30';
-
-                  return (
-                    <div
-                      key={`${session.time}-${idx}`}
-                      className={`group relative flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-xl px-5 py-4 transition-all duration-300 ${
-                        isSaved
-                          ? 'border-2 border-cyan-400/80 bg-[#101935]/95 shadow-[0_0_25px_rgba(0,240,255,0.14)]'
-                          : session.tentative
-                            ? 'border border-dashed border-google-yellow/80 bg-[#0d1222]/90 hover:border-google-yellow hover:bg-[#121931]'
-                            : 'border border-white/10 bg-[#0d1222]/90 hover:border-cyan-400/40 hover:bg-[#121931]'
-                      }`}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-1">
-                        {/* Solid or Tentative Outlined Time Pill */}
-                        <div className="shrink-0">
-                          <span
-                            className={`inline-flex min-w-[150px] items-center justify-center rounded-full px-4 py-2 font-mono-tech text-sm md:text-base tracking-wider ${timePillClass}`}
-                          >
-                            {session.time}
-                          </span>
-                        </div>
-
-                        {/* Session Details */}
-                        <div className="flex flex-col gap-1 flex-1">
-                          <TalkAbstractControl
-                            title={session.title}
-                            abstractText={getTalkAbstract(
-                              session.title,
-                              session.abstract,
-                            )}
-                            isFr={isFr}
-                          />
-
-                          {session.speakers && (
-                            <div className="flex flex-wrap items-center gap-2">
-                              <p className="font-mono-tech text-xs uppercase tracking-wider text-cyan-400">
-                                {session.speakers.replace(/\s*·\s*GDE\b/i, '')}
-                              </p>
-                              {/\bGDE\b/i.test(session.speakers) && (
-                                <span
-                                  title="Google Developer Expert (GDE)"
-                                  className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-[#0a0f1d]/90 px-2.5 py-0.5 font-mono-tech text-[10px] font-bold tracking-wider text-white uppercase shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
-                                >
-                                  <svg
-                                    viewBox="0 0 24 18"
-                                    className="h-2.5 w-3 shrink-0"
-                                    aria-hidden="true"
-                                  >
-                                    <path
-                                      d="M8.5 2.5L2.5 8.5"
-                                      stroke="#EA4335"
-                                      strokeWidth="3.2"
-                                      strokeLinecap="round"
-                                    />
-                                    <path
-                                      d="M2.5 9.5L8.5 15.5"
-                                      stroke="#4285F4"
-                                      strokeWidth="3.2"
-                                      strokeLinecap="round"
-                                    />
-                                    <path
-                                      d="M15.5 2.5L21.5 8.5"
-                                      stroke="#34A853"
-                                      strokeWidth="3.2"
-                                      strokeLinecap="round"
-                                    />
-                                    <path
-                                      d="M21.5 9.5L15.5 15.5"
-                                      stroke="#FBBC04"
-                                      strokeWidth="3.2"
-                                      strokeLinecap="round"
-                                    />
-                                  </svg>
-                                  <span>GDE</span>
-                                </span>
-                              )}
-                              {session.tentative && (
-                                <>
-                                  <span className="font-mono-tech text-xs text-white/35">
-                                    ·
-                                  </span>
-                                  <span className="font-mono-tech text-xs font-semibold uppercase tracking-wider text-google-yellow">
-                                    TENTATIVE / À CONFIRMER
-                                  </span>
-                                </>
-                              )}
-                            </div>
-                          )}
-
-                          {/* Category & Level Badges */}
-                          {((session.categories &&
-                            session.categories.length > 0) ||
-                            session.level) && (
-                            <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                              {session.categories?.map((cat) => (
-                                <span
-                                  key={cat}
-                                  className={`inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono-tech text-[10px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
-                                >
-                                  {cat}
-                                </span>
-                              ))}
-                              {session.level && (
-                                <span
-                                  className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-mono-tech text-[10px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(session.level)}`}
-                                >
-                                  <span className="opacity-60">
-                                    {isFr ? 'Niv:' : 'Lvl:'}
-                                  </span>
-                                  <span>{session.level}</span>
-                                </span>
-                              )}
-                            </div>
-                          )}
-
-                          {/* Overlap / Conflict Notice if another session in this time window is saved */}
-                          {overlappingOtherSaved.length > 0 && (
-                            <div className="mt-1 flex items-center gap-1.5 font-mono-tech text-[10px] text-amber-300">
-                              <AlertTriangle className="h-3 w-3 shrink-0 text-amber-400" />
-                              <span>
-                                {isSaved
-                                  ? isFr
-                                    ? `Chevauchement avec Monde ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (géré en Principal / Plan B dans Mon Agenda)`
-                                    : `Overlaps with World ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (managed as Primary / Backup in My Agenda)`
-                                  : isFr
-                                    ? `Même créneau que votre choix dans Monde ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (ajoutable en Plan B)`
-                                    : `Same time window as your saved talk in World ${overlappingOtherSaved.map((o) => o.worldCode).join(', ')} (can add as Backup)`}
-                              </span>
-                            </div>
-                          )}
-
-                          {/* Sub-items for Lightning Round */}
-                          {session.subItems && session.subItems.length > 0 && (
-                            <div className="mt-2 space-y-2.5 border-t border-white/10 pt-2">
-                              {session.subItems.map((sub, subIdx) => (
-                                <div
-                                  key={subIdx}
-                                  className="flex flex-col gap-1 text-xs md:text-sm"
-                                >
-                                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                                    <span className="font-mono-tech text-xs font-bold text-google-yellow">
-                                      {sub.time}
-                                    </span>
-                                    <span className="font-sans text-cyan-300">
-                                      {sub.speakers}
-                                    </span>
-                                    {sub.categories?.map((cat) => (
-                                      <span
-                                        key={cat}
-                                        className={`inline-flex items-center rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getCategoryBadgeClass(cat)}`}
-                                      >
-                                        {cat}
-                                      </span>
-                                    ))}
-                                    {sub.level && (
-                                      <span
-                                        className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-mono-tech text-[9px] font-semibold uppercase tracking-wider ${getLevelBadgeClass(sub.level)}`}
-                                      >
-                                        <span className="opacity-60">
-                                          {isFr ? 'Niv:' : 'Lvl:'}
-                                        </span>
-                                        <span>{sub.level}</span>
-                                      </span>
-                                    )}
-                                  </div>
-                                  <TalkAbstractControl
-                                    title={sub.title}
-                                    abstractText={getTalkAbstract(
-                                      sub.title,
-                                      sub.abstract,
-                                    )}
-                                    isFr={isFr}
-                                    compact
-                                    titleClassName="font-display font-bold text-white text-xs md:text-sm leading-snug hover:text-cyan-100 transition-colors"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Right Badges: Duration + Language + Save to My Agenda */}
-                      <div className="flex flex-wrap items-center gap-2.5 self-start md:self-center shrink-0">
-                        {session.duration && (
-                          <span
-                            className={`inline-flex min-w-[78px] items-center justify-center rounded-full border px-3.5 py-1.5 font-mono-tech text-xs uppercase tracking-wider ${durationBadgeClass}`}
-                          >
-                            {session.duration}
-                          </span>
-                        )}
-                        {session.lang && (
-                          <span className="inline-flex min-w-[64px] items-center justify-center rounded-full border border-cyan-200/60 bg-cyan-950/30 px-3.5 py-1.5 font-mono-tech text-xs uppercase tracking-wider text-cyan-100">
-                            {session.lang}
-                          </span>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => handleToggleSession(sessionId)}
-                          className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                            isSaved
-                              ? 'border-cyan-300 bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,240,255,0.4)]'
-                              : 'border-cyan-400/50 bg-cyan-400/10 text-cyan-200 hover:border-cyan-300 hover:bg-cyan-400 hover:text-black'
-                          }`}
-                        >
-                          {isSaved ? (
-                            <>
-                              <BookmarkCheck className="h-3.5 w-3.5" />
-                              <span>{isFr ? 'Sauvé' : 'Saved'}</span>
-                            </>
-                          ) : (
-                            <>
-                              <Bookmark className="h-3.5 w-3.5" />
-                              <span>
-                                {overlappingOtherSaved.length > 0
-                                  ? isFr
-                                    ? '+ Plan B'
-                                    : '+ Backup'
-                                  : isFr
-                                    ? '+ Agenda'
-                                    : '+ My Agenda'}
-                              </span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          ))}
+                  })}
+                </div>
+              </section>
+            );
+          })}
         </div>
       )}
     </div>

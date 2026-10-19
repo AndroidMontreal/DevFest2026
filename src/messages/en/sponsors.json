@@ -40,6 +40,11 @@
           "name": "Vooban",
           "logo": "/assets/images/sponsors/gold_vooban.svg",
           "link": "https://www.vooban.com/"
+        },
+        {
+          "name": "Kanastruk",
+          "logo": "/assets/images/sponsors/gold_kanastruk.svg",
+          "link": "https://kanastruk.com/"
         }
       ]
     },
@@ -57,11 +62,6 @@
           "name": "Oloodi",
           "logo": "/assets/images/sponsors/silver_oloodi.svg",
           "link": "https://oloodi.com/"
-        },
-        {
-          "name": "Kanastruk",
-          "logo": "/assets/images/sponsors/silver_kanastruk.svg",
-          "link": "https://kanastruk.com/"
         }
       ]
     },
