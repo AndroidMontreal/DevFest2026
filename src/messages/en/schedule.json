@@ -86,7 +86,7 @@
     "section_title": "Navigate by Room",
     "section_subtitle": "Horaire par salle · Floors 3 & 4",
     "main_agenda_tab": "Main Agenda (TL;DR)",
-    "filter_all": "All Rooms (6)",
+    "filter_all": "All Rooms (10)",
     "search_placeholder": "Search by talk title, speaker, room, category or level...",
     "filter_all_sessions": "All Sessions",
     "filter_ai": "AI & Agents",
@@ -111,7 +111,7 @@
             "variant": "yellow",
             "time": "10:15 – 11:00",
             "title": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal's digital future",
-            "speakers": "JL MARÉCHAUX · STEFANIA PECORE · WTM MONTRÉAL & AI TINKERERS",
+            "speakers": "JL MARÉCHAUX · PIERRE-ALEXANDRE LACERTE · STEFANIA PECORE · RAPHAELLE GIRAUD · NATIONAL BANK OF CANADA · UPGRADE, INC. · WTM MONTRÉAL · VOOBAN",
             "duration": "45 MIN",
             "lang": "EN/FR",
             "categories": ["Community & Panels", "AI & Agents"],
@@ -121,12 +121,12 @@
             "kind": "session",
             "variant": "yellow",
             "time": "11:15 – 12:00",
-            "title": "Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart",
-            "speakers": "JHIN LEE · UNITY · GDE",
+            "title": "Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova",
+            "speakers": "LUDOVIC DESSEMON · OXYA CONSULTING",
             "duration": "45 MIN",
-            "lang": "EN",
-            "categories": ["AppDev", "AI & Agents"],
-            "level": "Intermediate"
+            "lang": "FR",
+            "categories": ["AI & Agents", "Cloud & Infra"],
+            "level": "All Levels"
           },
           {
             "kind": "lunch",
@@ -160,11 +160,11 @@
             "kind": "session",
             "variant": "yellow",
             "time": "15:00 – 15:45",
-            "title": "Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova",
-            "speakers": "LUDOVIC DESSEMON · OXYA CONSULTING",
+            "title": "Google Workspace MCPs with Antigravity",
+            "speakers": "MOHAMMAD AL-ANSARI · GOOGLE",
             "duration": "45 MIN",
-            "lang": "FR",
-            "categories": ["AI & Agents", "Cloud & Infra"],
+            "lang": "EN",
+            "categories": ["AI & Agents", "AppDev"],
             "level": "All Levels"
           },
           {
@@ -303,14 +303,13 @@
           {
             "kind": "session",
             "variant": "blue",
-            "tentative": true,
             "time": "11:15 – 12:00",
-            "title": "IA, Web et Synthèse Vocale : Démocratiser la Santé Numérique avec Google Cloud",
-            "speakers": "MOUSTAPHA KOUROUMA · DIASPORA MONDIALE SANTÉ",
+            "title": "Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart",
+            "speakers": "JHIN LEE · UNITY · GDE",
             "duration": "45 MIN",
-            "lang": "FR",
-            "categories": ["AI & Agents", "Cloud & Infra"],
-            "level": "All Levels"
+            "lang": "EN",
+            "categories": ["AppDev", "AI & Agents"],
+            "level": "Intermediate"
           },
           {
             "kind": "lunch",
@@ -358,7 +357,7 @@
             "title": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
             "speakers": "ETHIEL ADIASSA · AVA FINANCE · GDE",
             "duration": "45 MIN",
-            "lang": "EN",
+            "lang": "EN/FR",
             "categories": ["AppDev", "AI & Agents"],
             "level": "Intermediate"
           }
@@ -580,6 +579,462 @@
             "lang": "FR/EN",
             "categories": ["AI & Agents", "AppDev"],
             "level": "Beginner"
+          }
+        ]
+      },
+      {
+        "id": "3-3",
+        "worldCode": "3-3",
+        "locationBadgePrimary": "COACHING 3-3 · FLOOR 3",
+        "locationBadgeSecondary": "MENTORAT 3-3 · ÉTAGE 3",
+        "name": "Take On Me",
+        "typePrimary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "typeSecondary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "1:1 Career Coaching — AI Strategy, Engineering Leadership & Data",
+            "speakers": "ROMAIN CHEZEAUD · GROUPE BMR",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "1:1 Career Coaching — Cloud Architecture, AI Infrastructure & Career Growth",
+            "speakers": "STACY VÉRONNEAU · TELUS DIGITAL · GDE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "LUNCH & RAFFLE",
+            "subtitle": "DÎNER ET TIRAGE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "1:1 Career Coaching — AI Strategy, Engineering Leadership & Data",
+            "speakers": "ROMAIN CHEZEAUD · GROUPE BMR",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "1:1 Career Coaching — Applied AI, Data Science & Engineering Career Path",
+            "speakers": "RAPHAELLE GIRAUD · VOOBAN",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "FR/EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "1:1 Career Coaching — Android, Kotlin, Mobile Architecture & GDE Path",
+            "speakers": "ETIENNE CARON · KANASTRUK · GDE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "1:1 Career Coaching — Tech Consulting, Enterprise AI & Career Transitions",
+            "speakers": "CESAR BUSTAMANTE · PWC CANADA",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "1:1 Career Coaching — AI Strategy, Engineering Leadership & Data",
+            "speakers": "ROMAIN CHEZEAUD · GROUPE BMR",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "1:1 Career Coaching — Tech Consulting, Enterprise AI & Career Transitions",
+            "speakers": "CESAR BUSTAMANTE · PWC CANADA",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          }
+        ]
+      },
+      {
+        "id": "4-2",
+        "worldCode": "4-2",
+        "locationBadgePrimary": "COACHING 4-2 · FLOOR 4",
+        "locationBadgeSecondary": "MENTORAT 4-2 · ÉTAGE 4",
+        "name": "Money For Nothing",
+        "typePrimary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "typeSecondary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "1:1 Career Coaching — Cloud Architecture, AI Infrastructure & Career Growth",
+            "speakers": "STACY VÉRONNEAU · TELUS DIGITAL · GDE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "1:1 Career Coaching — AI Strategy, Engineering Leadership & Data",
+            "speakers": "ROMAIN CHEZEAUD · GROUPE BMR",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "LUNCH & RAFFLE",
+            "subtitle": "DÎNER ET TIRAGE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "1:1 Career Coaching — Android, Kotlin, Mobile Architecture & GDE Path",
+            "speakers": "ETIENNE CARON · KANASTRUK · GDE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "1:1 Career Coaching — Software Engineering & Working at Google",
+            "speakers": "SEBASTIAN SENEN GONZALEZ · GOOGLE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "1:1 Career Coaching — Software Engineering & Working at Google",
+            "speakers": "SEBASTIAN SENEN GONZALEZ · GOOGLE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "1:1 Career Coaching — Applied AI, Data Science & Engineering Career Path",
+            "speakers": "RAPHAELLE GIRAUD · VOOBAN",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "FR/EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "1:1 Career Coaching — Software Engineering & Working at Google",
+            "speakers": "SEBASTIAN SENEN GONZALEZ · GOOGLE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "1:1 Career Coaching — Software Engineering & Working at Google",
+            "speakers": "SEBASTIAN SENEN GONZALEZ · GOOGLE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          }
+        ]
+      },
+      {
+        "id": "4-3",
+        "worldCode": "4-3",
+        "locationBadgePrimary": "COACHING 4-3 · FLOOR 4",
+        "locationBadgeSecondary": "MENTORAT 4-3 · ÉTAGE 4",
+        "name": "Working For The Weekend",
+        "typePrimary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "typeSecondary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
+            "speakers": "JIHOO PARK · WB GAMES",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
+            "speakers": "JL MARÉCHAUX · NATIONAL BANK OF CANADA",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "LUNCH & RAFFLE",
+            "subtitle": "DÎNER ET TIRAGE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
+            "speakers": "JIHOO PARK · WB GAMES",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
+            "speakers": "JL MARÉCHAUX · NATIONAL BANK OF CANADA",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
+            "speakers": "JIHOO PARK · WB GAMES",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
+            "speakers": "JIHOO PARK · WB GAMES",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
+            "speakers": "JL MARÉCHAUX · NATIONAL BANK OF CANADA",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
+            "speakers": "JL MARÉCHAUX · NATIONAL BANK OF CANADA",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          }
+        ]
+      },
+      {
+        "id": "4-7",
+        "worldCode": "4-7",
+        "locationBadgePrimary": "COACHING 4-7 · FLOOR 4",
+        "locationBadgeSecondary": "MENTORAT 4-7 · ÉTAGE 4",
+        "name": "Should I Stay Or Should I Go",
+        "typePrimary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "typeSecondary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "1:1 Career Coaching — Tech Consulting, Enterprise AI & Career Transitions",
+            "speakers": "CESAR BUSTAMANTE · PWC CANADA",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "1:1 Career Coaching — Tech Consulting, Enterprise AI & Career Transitions",
+            "speakers": "CESAR BUSTAMANTE · PWC CANADA",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "LUNCH & RAFFLE",
+            "subtitle": "DÎNER ET TIRAGE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "1:1 Career Coaching — NLP, AI Leadership & Women in Tech Mentorship",
+            "speakers": "STEFANIA PECORE · WOMEN TECHMAKERS MONTREAL",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "1:1 Career Coaching — NLP, AI Leadership & Women in Tech Mentorship",
+            "speakers": "STEFANIA PECORE · WOMEN TECHMAKERS MONTREAL",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "1:1 Career Coaching — NLP, AI Leadership & Women in Tech Mentorship",
+            "speakers": "STEFANIA PECORE · WOMEN TECHMAKERS MONTREAL",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "1:1 Career Coaching — NLP, AI Leadership & Women in Tech Mentorship",
+            "speakers": "STEFANIA PECORE · WOMEN TECHMAKERS MONTREAL",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "1:1 Career Coaching — Android, Kotlin, Mobile Architecture & GDE Path",
+            "speakers": "ETIENNE CARON · KANASTRUK · GDE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "1:1 Career Coaching — Android, Kotlin, Mobile Architecture & GDE Path",
+            "speakers": "ETIENNE CARON · KANASTRUK · GDE",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
           }
         ]
       }

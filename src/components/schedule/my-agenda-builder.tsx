@@ -43,7 +43,7 @@ export type FlatSession = {
   floor: '03' | '04';
   mapNodeId: string;
   seats: number;
-  roomAccent: 'yellow' | 'blue' | 'red';
+  roomAccent: 'yellow' | 'blue' | 'red' | 'green';
   session: RoomSessionItem;
   startMin: number;
   endMin: number;
@@ -70,11 +70,15 @@ const ROOM_TO_MAP_NODE: Record<
   { floor: '03' | '04'; nodeId: string; seats: number }
 > = {
   '3-1': { floor: '03', nodeId: 'l3-room-1', seats: 75 },
+  '3-3': { floor: '03', nodeId: 'l3-room-3', seats: 2 },
   '3-4': { floor: '03', nodeId: 'l3-room-4', seats: 20 },
   '3-5': { floor: '03', nodeId: 'l3-room-5', seats: 25 },
+  '4-2': { floor: '04', nodeId: 'l4-room-2', seats: 2 },
+  '4-3': { floor: '04', nodeId: 'l4-room-3', seats: 2 },
   '4-4': { floor: '04', nodeId: 'l4-room-4', seats: 40 },
   '4-5': { floor: '04', nodeId: 'l4-room-5', seats: 40 },
   '4-6': { floor: '04', nodeId: 'l4-room-6', seats: 91 },
+  '4-7': { floor: '04', nodeId: 'l4-room-7', seats: 2 },
 };
 
 export function makeSessionId(roomId: string, time: string): string {
@@ -190,10 +194,11 @@ export function MyAgendaBuilder({
     const isContinuationOfLongSession =
       primarySession !== null && primarySession.startMin < slot.startMin - 10;
 
-    // Available regular talks/workshops in this slot
+    // Available regular talks/workshops in this slot (excluding 1:1 coaching pods which require prior RSVP)
     const availableConferencesInSlot = allFlatSessions.filter(
       (s) =>
         s.session.kind !== 'open' &&
+        s.roomAccent !== 'green' &&
         sessionsOverlap(
           { startMin: s.startMin, endMin: s.endMin },
           { startMin: slot.startMin, endMin: slot.endMin },

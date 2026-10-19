@@ -86,7 +86,7 @@
     "section_title": "Naviguer par salle",
     "section_subtitle": "Schedule by Room · Étages 3 et 4",
     "main_agenda_tab": "Horaire général (TL;DR)",
-    "filter_all": "Toutes les salles (6)",
+    "filter_all": "Toutes les salles (10)",
     "search_placeholder": "Rechercher par titre, conférencier, salle, catégorie ou niveau...",
     "filter_all_sessions": "Toutes les sessions",
     "filter_ai": "IA & Agents",
@@ -111,7 +111,7 @@
             "variant": "yellow",
             "time": "10:15 – 11:00",
             "title": "Panel – Montreal Tech Community: How local tech groups are shaping Montreal's digital future",
-            "speakers": "JL MARÉCHAUX · STEFANIA PECORE · WTM MONTRÉAL & AI TINKERERS",
+            "speakers": "JL MARÉCHAUX · PIERRE-ALEXANDRE LACERTE · STEFANIA PECORE · RAPHAELLE GIRAUD · NATIONAL BANK OF CANADA · UPGRADE, INC. · WTM MONTRÉAL · VOOBAN",
             "duration": "45 MIN",
             "lang": "EN/FR",
             "categories": ["Communauté & Panels", "IA & Agents"],
@@ -121,12 +121,12 @@
             "kind": "session",
             "variant": "yellow",
             "time": "11:15 – 12:00",
-            "title": "Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart",
-            "speakers": "JHIN LEE · UNITY · GDE",
+            "title": "Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova",
+            "speakers": "LUDOVIC DESSEMON · OXYA CONSULTING",
             "duration": "45 MIN",
-            "lang": "EN",
-            "categories": ["AppDev", "IA & Agents"],
-            "level": "Intermédiaire"
+            "lang": "FR",
+            "categories": ["IA & Agents", "Cloud & Infra"],
+            "level": "Tous niveaux"
           },
           {
             "kind": "lunch",
@@ -160,11 +160,11 @@
             "kind": "session",
             "variant": "yellow",
             "time": "15:00 – 15:45",
-            "title": "Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova",
-            "speakers": "LUDOVIC DESSEMON · OXYA CONSULTING",
+            "title": "Google Workspace MCPs with Antigravity",
+            "speakers": "MOHAMMAD AL-ANSARI · GOOGLE",
             "duration": "45 MIN",
-            "lang": "FR",
-            "categories": ["IA & Agents", "Cloud & Infra"],
+            "lang": "EN",
+            "categories": ["IA & Agents", "AppDev"],
             "level": "Tous niveaux"
           },
           {
@@ -303,14 +303,13 @@
           {
             "kind": "session",
             "variant": "blue",
-            "tentative": true,
             "time": "11:15 – 12:00",
-            "title": "IA, Web et Synthèse Vocale : Démocratiser la Santé Numérique avec Google Cloud",
-            "speakers": "MOUSTAPHA KOUROUMA · DIASPORA MONDIALE SANTÉ",
+            "title": "Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart",
+            "speakers": "JHIN LEE · UNITY · GDE",
             "duration": "45 MIN",
-            "lang": "FR",
-            "categories": ["IA & Agents", "Cloud & Infra"],
-            "level": "Tous niveaux"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "lunch",
@@ -358,7 +357,7 @@
             "title": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
             "speakers": "ETHIEL ADIASSA · AVA FINANCE · GDE",
             "duration": "45 MIN",
-            "lang": "EN",
+            "lang": "EN/FR",
             "categories": ["AppDev", "IA & Agents"],
             "level": "Intermédiaire"
           }
@@ -580,6 +579,462 @@
             "lang": "FR/EN",
             "categories": ["IA & Agents", "AppDev"],
             "level": "Débutant"
+          }
+        ]
+      },
+      {
+        "id": "3-3",
+        "worldCode": "3-3",
+        "locationBadgePrimary": "MENTORAT 3-3 · ÉTAGE 3",
+        "locationBadgeSecondary": "COACHING 3-3 · FLOOR 3",
+        "name": "Take On Me",
+        "typePrimary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "typeSecondary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "Mentorat carrière 1:1 — Stratégie IA, leadership en ingénierie et données",
+            "speakers": "ROMAIN CHEZEAUD · GROUPE BMR",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "Mentorat carrière 1:1 — Architecture Cloud, infrastructure IA et progression de carrière",
+            "speakers": "STACY VÉRONNEAU · TELUS DIGITAL · GDE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "Mentorat carrière 1:1 — Stratégie IA, leadership en ingénierie et données",
+            "speakers": "ROMAIN CHEZEAUD · GROUPE BMR",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "Mentorat carrière 1:1 — IA appliquée, science des données et parcours en ingénierie",
+            "speakers": "RAPHAELLE GIRAUD · VOOBAN",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "FR/EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "Mentorat carrière 1:1 — Android, Kotlin, architecture mobile et parcours GDE",
+            "speakers": "ETIENNE CARON · KANASTRUK · GDE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "Mentorat carrière 1:1 — Conseil techno, IA d'entreprise et transitions de carrière",
+            "speakers": "CESAR BUSTAMANTE · PWC CANADA",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "Mentorat carrière 1:1 — Stratégie IA, leadership en ingénierie et données",
+            "speakers": "ROMAIN CHEZEAUD · GROUPE BMR",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "Mentorat carrière 1:1 — Conseil techno, IA d'entreprise et transitions de carrière",
+            "speakers": "CESAR BUSTAMANTE · PWC CANADA",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          }
+        ]
+      },
+      {
+        "id": "4-2",
+        "worldCode": "4-2",
+        "locationBadgePrimary": "MENTORAT 4-2 · ÉTAGE 4",
+        "locationBadgeSecondary": "COACHING 4-2 · FLOOR 4",
+        "name": "Money For Nothing",
+        "typePrimary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "typeSecondary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "Mentorat carrière 1:1 — Architecture Cloud, infrastructure IA et progression de carrière",
+            "speakers": "STACY VÉRONNEAU · TELUS DIGITAL · GDE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "Mentorat carrière 1:1 — Stratégie IA, leadership en ingénierie et données",
+            "speakers": "ROMAIN CHEZEAUD · GROUPE BMR",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "Mentorat carrière 1:1 — Android, Kotlin, architecture mobile et parcours GDE",
+            "speakers": "ETIENNE CARON · KANASTRUK · GDE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "Mentorat carrière 1:1 — Ingénierie logicielle et carrière chez Google",
+            "speakers": "SEBASTIAN SENEN GONZALEZ · GOOGLE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "Mentorat carrière 1:1 — Ingénierie logicielle et carrière chez Google",
+            "speakers": "SEBASTIAN SENEN GONZALEZ · GOOGLE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "Mentorat carrière 1:1 — IA appliquée, science des données et parcours en ingénierie",
+            "speakers": "RAPHAELLE GIRAUD · VOOBAN",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "FR/EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "Mentorat carrière 1:1 — Ingénierie logicielle et carrière chez Google",
+            "speakers": "SEBASTIAN SENEN GONZALEZ · GOOGLE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "Mentorat carrière 1:1 — Ingénierie logicielle et carrière chez Google",
+            "speakers": "SEBASTIAN SENEN GONZALEZ · GOOGLE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          }
+        ]
+      },
+      {
+        "id": "4-3",
+        "worldCode": "4-3",
+        "locationBadgePrimary": "MENTORAT 4-3 · ÉTAGE 4",
+        "locationBadgeSecondary": "COACHING 4-3 · FLOOR 4",
+        "name": "Working For The Weekend",
+        "typePrimary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "typeSecondary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
+            "speakers": "JIHOO PARK · WB GAMES",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
+            "speakers": "JL MARÉCHAUX · NATIONAL BANK OF CANADA",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
+            "speakers": "JIHOO PARK · WB GAMES",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
+            "speakers": "JL MARÉCHAUX · NATIONAL BANK OF CANADA",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
+            "speakers": "JIHOO PARK · WB GAMES",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
+            "speakers": "JIHOO PARK · WB GAMES",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
+            "speakers": "JL MARÉCHAUX · NATIONAL BANK OF CANADA",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
+            "speakers": "JL MARÉCHAUX · NATIONAL BANK OF CANADA",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          }
+        ]
+      },
+      {
+        "id": "4-7",
+        "worldCode": "4-7",
+        "locationBadgePrimary": "MENTORAT 4-7 · ÉTAGE 4",
+        "locationBadgeSecondary": "COACHING 4-7 · FLOOR 4",
+        "name": "Should I Stay Or Should I Go",
+        "typePrimary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "typeSecondary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "Mentorat carrière 1:1 — Conseil techno, IA d'entreprise et transitions de carrière",
+            "speakers": "CESAR BUSTAMANTE · PWC CANADA",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "Mentorat carrière 1:1 — Conseil techno, IA d'entreprise et transitions de carrière",
+            "speakers": "CESAR BUSTAMANTE · PWC CANADA",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "Mentorat carrière 1:1 — TALN (NLP), leadership IA et mentorat Women in Tech",
+            "speakers": "STEFANIA PECORE · WOMEN TECHMAKERS MONTREAL",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "Mentorat carrière 1:1 — TALN (NLP), leadership IA et mentorat Women in Tech",
+            "speakers": "STEFANIA PECORE · WOMEN TECHMAKERS MONTREAL",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "Mentorat carrière 1:1 — TALN (NLP), leadership IA et mentorat Women in Tech",
+            "speakers": "STEFANIA PECORE · WOMEN TECHMAKERS MONTREAL",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "Mentorat carrière 1:1 — TALN (NLP), leadership IA et mentorat Women in Tech",
+            "speakers": "STEFANIA PECORE · WOMEN TECHMAKERS MONTREAL",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "Mentorat carrière 1:1 — Android, Kotlin, architecture mobile et parcours GDE",
+            "speakers": "ETIENNE CARON · KANASTRUK · GDE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "Mentorat carrière 1:1 — Android, Kotlin, architecture mobile et parcours GDE",
+            "speakers": "ETIENNE CARON · KANASTRUK · GDE",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
           }
         ]
       }

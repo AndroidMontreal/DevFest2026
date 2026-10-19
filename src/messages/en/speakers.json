@@ -31,10 +31,22 @@
       "gde": true,
       "topic": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
       "format": "Talk · 40 min",
-      "link": "https://www.linkedin.com/in/ethiel-adiassa",
+      "link": "https://www.linkedin.com/in/ethiel-adiassa/",
       "image": "/assets/images/speakers/Ethiel_Adiassa.jpg",
       "category": "appdev",
       "categories": ["appdev", "ai"]
+    },
+    {
+      "name": "Mohammad Al-Ansari",
+      "employer": "Google",
+      "title": "Staff Developer Advocate (Workspace)",
+      "gde": false,
+      "googler": true,
+      "topic": "Google Workspace MCPs with Antigravity",
+      "format": "Talk · 40 min",
+      "link": "https://www.linkedin.com/in/alansari-ca/",
+      "image": "/assets/images/speakers/Mohammad_Al-Ansari.jpg",
+      "category": "ai"
     },
     {
       "name": "Angie Ariza",
@@ -54,7 +66,7 @@
       "gde": false,
       "topic": "Six Agents, One Patient Record: A Google ADK Retrospective",
       "format": "Lightning · 15 min",
-      "link": "https://www.linkedin.com/in/radwanbaba",
+      "link": "https://www.linkedin.com/in/radwan-baba-80543019a/",
       "image": "/assets/images/speakers/Radwan_Baba.jpg",
       "category": "ai"
     },
@@ -202,8 +214,8 @@
       "employer": "Vooban",
       "title": "Team Lead Développeuse Agents IA",
       "gde": false,
-      "topic": "Career coaching 1:1",
-      "format": "1:1 coaching · 25 min",
+      "topic": "Panel: Montreal Tech Community: How local tech groups are shaping Montreal’s digital future\nCoaching: Career coaching 1:1",
+      "format": "Panel · 40 min\n1:1 coaching · 25 min",
       "link": "https://www.linkedin.com/in/raphaelle-giraud/",
       "image": "/assets/images/speakers/Raphaelle_Giraud.jpg",
       "category": "ai",
@@ -256,6 +268,17 @@
       "image": "/assets/images/speakers/Rishab_Kumar.jpg",
       "category": "cloud",
       "categories": ["cloud", "ai"]
+    },
+    {
+      "name": "Pierre-Alexandre Lacerte",
+      "employer": "Upgrade, Inc.",
+      "title": "Senior Director of Software Development",
+      "gde": false,
+      "topic": "Panel: Montreal Tech Community: How local tech groups are shaping Montreal’s digital future",
+      "format": "Panel · 40 min",
+      "link": "https://www.linkedin.com/in/pierrealexandrelacerte/",
+      "image": "/assets/images/speakers/Pierre-Alexandre_Lacerte.jpg",
+      "category": "community"
     },
     {
       "name": "Jhin Lee",
@@ -327,6 +350,17 @@
       "category": "ai"
     },
     {
+      "name": "Olayinka Peter Oluwafemi",
+      "employer": "BrainBox AI",
+      "title": "Sr. ML Engineer",
+      "gde": true,
+      "topic": "Building Real-Time RAG Systems with Gemini & the Multimodal Live API",
+      "format": "Talk · 40 min",
+      "link": "https://speakerdeck.com/olayinkapeter",
+      "image": "/assets/images/speakers/Olayinka_Peter.jpg",
+      "category": "ai"
+    },
+    {
       "name": "Gleb Otochkin",
       "employer": "Google",
       "title": "Cloud Advocate",
@@ -341,8 +375,8 @@
     },
     {
       "name": "Jihoo Park",
-      "employer": "",
-      "title": "Senior Data Analyst | WTM Ambassador",
+      "employer": "WB Games",
+      "title": "CIA (Core Insights Agency)",
       "gde": false,
       "topic": "Career coaching 1:1",
       "format": "1:1 coaching · 25 min",
@@ -372,17 +406,6 @@
       "link": "https://www.linkedin.com/in/michael-persico/",
       "image": "/assets/images/speakers/Michael_Persico.jpg",
       "category": "community"
-    },
-    {
-      "name": "Olayinka Peter Oluwafemi",
-      "employer": "",
-      "title": "Sr. ML Engineer @ Brainbox AI",
-      "gde": true,
-      "topic": "Building Real-Time RAG Systems with Gemini & the Multimodal Live API",
-      "format": "Talk · 40 min",
-      "link": "https://speakerdeck.com/olayinkapeter",
-      "image": "/assets/images/speakers/Olayinka_Peter.jpg",
-      "category": "ai"
     },
     {
       "name": "Dev J. Shah",
