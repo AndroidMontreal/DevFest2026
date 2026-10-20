@@ -628,8 +628,8 @@ export function RoomAgendaSection({
           </div>
           <span className="font-mono-tech text-[11px] text-fuchsia-200/65">
             {isFr
-              ? 'Orientation point-à-point, salles, kiosques et commodités · Niveaux 03 & 04'
-              : 'Point-to-point wayfinding, rooms, booths & amenities · Levels 03 & 04'}
+              ? 'Salles, kiosques et commodités · Niveaux 03 & 04'
+              : 'Interactive rooms, booths & amenities · Levels 03 & 04'}
           </span>
         </div>
 

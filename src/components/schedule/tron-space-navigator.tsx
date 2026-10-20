@@ -2,17 +2,17 @@
 
 import { getRoomSongCredits } from '@/lib/room-song-synth';
 import {
-  ArrowLeftRight,
   ArrowUpRight,
   Compass,
   DoorOpen,
   Headphones,
   Layers,
-  LocateFixed,
+  MapPin,
   Music,
   Navigation,
   RotateCcw,
   Sparkles,
+  X,
   ZoomIn,
   ZoomOut,
 } from 'lucide-react';
@@ -1041,7 +1041,6 @@ function computeShortestCorridorPath(
           curr = prev.get(curr);
         }
 
-        // Simplify collinear intermediate points for clean SVG polylines
         const pts = pathKeys.map((k) => coords.get(k)!);
         const simplified: GridPoint[] = [];
         for (const p of pts) {
@@ -1115,6 +1114,135 @@ function getNodeCandidatePoints(
   return [{ x: node.x, y: node.y }];
 }
 
+function pointToRectDistance(
+  px: number,
+  py: number,
+  rx1: number,
+  ry1: number,
+  rx2: number,
+  ry2: number,
+): number {
+  const dx = Math.max(rx1 - px, 0, px - rx2);
+  const dy = Math.max(ry1 - py, 0, py - ry2);
+  return Math.hypot(dx, dy);
+}
+
+function computeNonOverlappingPopoverCenter(
+  targetPt: GridPoint,
+  originPt: GridPoint,
+  routePointsStr: string,
+  hasActiveRoute: boolean,
+  isTransitSelected: boolean,
+): GridPoint {
+  const hw = 175;
+  const hh = 78;
+  const tx = targetPt.x;
+  const ty = targetPt.y;
+
+  const routeSamples: GridPoint[] = [];
+  if (hasActiveRoute && routePointsStr) {
+    const rawPts = routePointsStr
+      .trim()
+      .split(/\s+/)
+      .map((pair) => {
+        const [xStr, yStr] = pair.split(',');
+        return { x: Number(xStr), y: Number(yStr) };
+      })
+      .filter((p) => !Number.isNaN(p.x) && !Number.isNaN(p.y));
+
+    for (let i = 0; i < rawPts.length - 1; i++) {
+      const a = rawPts[i];
+      const b = rawPts[i + 1];
+      const segLen = Math.hypot(b.x - a.x, b.y - a.y);
+      const steps = Math.max(2, Math.ceil(segLen / 6));
+      for (let s = 0; s <= steps; s++) {
+        const t = s / steps;
+        routeSamples.push({
+          x: a.x + (b.x - a.x) * t,
+          y: a.y + (b.y - a.y) * t,
+        });
+      }
+    }
+  }
+
+  const rawCandidates: GridPoint[] = [
+    { x: tx, y: ty - hh - 38 }, // Above
+    { x: tx, y: ty + hh + 38 }, // Below
+    { x: tx + hw + 38, y: ty }, // Right
+    { x: tx - hw - 38, y: ty }, // Left
+    { x: tx + hw * 0.8, y: ty - hh - 36 }, // Top-Right
+    { x: tx + hw * 0.8, y: ty + hh + 36 }, // Bottom-Right
+    { x: tx - hw * 0.8, y: ty - hh - 36 }, // Top-Left
+    { x: tx - hw * 0.8, y: ty + hh + 36 }, // Bottom-Left
+    { x: tx + hw + 34, y: ty - hh * 0.7 }, // Upper-Right
+    { x: tx + hw + 34, y: ty + hh * 0.7 }, // Lower-Right
+    { x: tx - hw - 34, y: ty - hh * 0.7 }, // Upper-Left
+    { x: tx - hw - 34, y: ty + hh * 0.7 }, // Lower-Left
+    { x: tx, y: ty - hh - 95 }, // Far Above
+    { x: tx, y: ty + hh + 95 }, // Far Below
+    { x: 540, y: 125 }, // Open Upper-Center
+    { x: 540, y: 575 }, // Open Lower-Center
+    { x: 770, y: 130 }, // Open Top-Right
+    { x: 770, y: 570 }, // Open Bottom-Right
+  ];
+
+  let bestCandidate: GridPoint = { x: tx, y: ty > 350 ? ty - 115 : ty + 115 };
+  let bestScore = Infinity;
+
+  for (const cand of rawCandidates) {
+    const cx = Math.min(Math.max(cand.x, hw + 16), 1000 - hw - 16);
+    const cy = Math.min(Math.max(cand.y, hh + 16), 700 - hh - 16);
+    const rx1 = cx - hw;
+    const ry1 = cy - hh;
+    const rx2 = cx + hw;
+    const ry2 = cy + hh;
+
+    // Avoid covering top-left zoom controls (0..210, 0..75)
+    const hitsZoomControls = rx1 < 210 && ry1 < 75;
+
+    // Distance from rectangle to clicked target pin and origin pin
+    const targetDist = pointToRectDistance(tx, ty, rx1, ry1, rx2, ry2);
+    const originDist = hasActiveRoute
+      ? pointToRectDistance(originPt.x, originPt.y, rx1, ry1, rx2, ry2)
+      : 999;
+
+    // Avoid covering the on-map purple floor-switch pill below transit nodes
+    const transitPillDist = isTransitSelected
+      ? pointToRectDistance(tx, ty + 34, rx1 - 95, ry1 - 12, rx2 + 95, ry2 + 12)
+      : 999;
+
+    // Minimum distance from rectangle to any point on the ray-traced path
+    let minRouteDist = 999;
+    let overlappingSamples = 0;
+    for (const pt of routeSamples) {
+      const d = pointToRectDistance(pt.x, pt.y, rx1, ry1, rx2, ry2);
+      if (d < minRouteDist) minRouteDist = d;
+      if (d < 12) overlappingSamples++;
+    }
+
+    const distFromPin = Math.hypot(cx - tx, cy - ty);
+
+    let penalty = 0;
+    if (targetDist < 22) penalty += 500000;
+    if (originDist < 22) penalty += 250000;
+    if (transitPillDist < 10) penalty += 300000;
+    if (hitsZoomControls) penalty += 80000;
+    if (overlappingSamples > 0) {
+      penalty += 100000 + overlappingSamples * 4000;
+    } else if (minRouteDist < 24) {
+      penalty += (24 - minRouteDist) * 500;
+    }
+
+    const score = penalty + distFromPin;
+    if (score < bestScore) {
+      bestScore = score;
+      bestCandidate = { x: cx, y: cy };
+    }
+  }
+
+  return bestCandidate;
+}
+
 export type TronMapFocusRequest = {
   floor: '03' | '04';
   destinationNodeId: string;
@@ -1139,18 +1267,16 @@ export function TronSpaceNavigator({
 }: TronSpaceNavigatorProps) {
   const isFr = locale === 'fr';
   const [activeFloor, setActiveFloor] = useState<FloorId>('03');
-  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [originNodeId, setOriginNodeId] = useState<string>('l3-elevators');
-  const [selectedNodeId, setSelectedNodeId] = useState<string>('l3-room-1');
-  const [mapSelectionTarget, setMapSelectionTarget] = useState<
-    'destination' | 'origin'
-  >('destination');
   const [originPointOverride, setOriginPointOverride] =
     useState<GridPoint | null>(null);
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedNodeId, setSelectedNodeId] = useState<string>('l3-room-1');
   const [destPointOverride, setDestPointOverride] = useState<GridPoint | null>(
     null,
   );
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(true);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
   const mapScrollRef = useRef<HTMLDivElement>(null);
   const mapViewportRef = useRef<HTMLDivElement>(null);
@@ -1160,14 +1286,14 @@ export function TronSpaceNavigator({
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveFloor(focusRequest.floor);
     setSelectedCategory('all');
-    setOriginPointOverride(null);
     setDestPointOverride(null);
-    setMapSelectionTarget('destination');
-    setOriginNodeId(
-      focusRequest.originNodeId ||
-        (focusRequest.floor === '03' ? 'l3-elevators' : 'l4-elevators'),
-    );
+    setOriginPointOverride(null);
+    const defaultOrigin =
+      focusRequest.originNodeId ??
+      (focusRequest.floor === '03' ? 'l3-elevators' : 'l4-elevators');
+    setOriginNodeId(defaultOrigin);
     setSelectedNodeId(focusRequest.destinationNodeId);
+    setIsPopoverOpen(true);
 
     requestAnimationFrame(() => {
       mapViewportRef.current?.scrollIntoView({
@@ -1255,15 +1381,26 @@ export function TronSpaceNavigator({
     }
   };
 
-  const handleFloorSwitch = (floor: FloorId) => {
+  const handleFloorSwitch = (
+    floor: FloorId,
+    preserveTransitKind?: 'stairs' | 'elevators',
+  ) => {
     setActiveFloor(floor);
     setHoveredNodeId(null);
-    setOriginPointOverride(null);
     setDestPointOverride(null);
-    setMapSelectionTarget('destination');
-    setOriginNodeId(floor === '03' ? 'l3-elevators' : 'l4-elevators');
+    setOriginPointOverride(null);
+    const nextOriginId =
+      preserveTransitKind === 'stairs'
+        ? floor === '03'
+          ? 'l3-stairs'
+          : 'l4-stairs'
+        : floor === '03'
+          ? 'l3-elevators'
+          : 'l4-elevators';
+    setOriginNodeId(nextOriginId);
     const defaultId = floor === '03' ? 'l3-room-1' : 'l4-room-6';
     setSelectedNodeId(defaultId);
+    setIsPopoverOpen(true);
     const nextNode = MAP_NODES.find((n) => n.id === defaultId);
     if (nextNode && zoomLevel > 1) {
       centerMapOnPoint(nextNode.x, nextNode.y, zoomLevel);
@@ -1276,14 +1413,9 @@ export function TronSpaceNavigator({
     specificPoint?: GridPoint,
   ) => {
     const targetPt = specificPoint ?? { x: node.x, y: node.y };
-    if (mapSelectionTarget === 'origin') {
-      setOriginNodeId(node.id);
-      setOriginPointOverride(specificPoint ?? null);
-      setMapSelectionTarget('destination');
-    } else {
-      setSelectedNodeId(node.id);
-      setDestPointOverride(specificPoint ?? null);
-    }
+    setSelectedNodeId(node.id);
+    setDestPointOverride(specificPoint ?? null);
+    setIsPopoverOpen(true);
 
     if (zoomLevel > 1) {
       centerMapOnPoint(targetPt.x, targetPt.y, zoomLevel);
@@ -1300,22 +1432,12 @@ export function TronSpaceNavigator({
     }
   };
 
-  const handleSwapOriginAndDest = () => {
-    const prevOriginId = originNode.id;
-    const prevOriginPt = originPointOverride;
-    setOriginNodeId(selectedNode.id);
-    setOriginPointOverride(destPointOverride);
-    setSelectedNodeId(prevOriginId);
-    setDestPointOverride(prevOriginPt);
+  const handleSetAsCurrentLocation = (node: MapNode, pt?: GridPoint | null) => {
+    setOriginNodeId(node.id);
+    setOriginPointOverride(pt ?? null);
   };
 
-  const isRestroomSelected =
-    selectedNode.id === 'l3-restrooms' ||
-    selectedNode.id === 'l4-restrooms' ||
-    originNode.id === 'l3-restrooms' ||
-    originNode.id === 'l4-restrooms';
-
-  const computedRoute = useMemo(() => {
+  const activeRoute = useMemo(() => {
     const startCandidates = getNodeCandidatePoints(
       originNode,
       originPointOverride,
@@ -1337,7 +1459,43 @@ export function TronSpaceNavigator({
     destPointOverride,
   ]);
 
-  const activeRoutePoints = computedRoute.points;
+  const selectedEndPt: GridPoint = activeRoute.endPt;
+  const activeOriginPt: GridPoint = activeRoute.startPt;
+  const activeRoutePoints = activeRoute.points;
+
+  const isCurrentNodeOrigin =
+    originNode.id === selectedNode.id &&
+    activeOriginPt.x === selectedEndPt.x &&
+    activeOriginPt.y === selectedEndPt.y;
+
+  const isTransitSelected =
+    selectedNode.id === 'l3-stairs' ||
+    selectedNode.id === 'l4-stairs' ||
+    selectedNode.id === 'l3-elevators' ||
+    selectedNode.id === 'l4-elevators';
+
+  const elevatorNodeId = activeFloor === '03' ? 'l3-elevators' : 'l4-elevators';
+  const stairsNodeId = activeFloor === '03' ? 'l3-stairs' : 'l4-stairs';
+  const isCustomOrigin =
+    originNode.id !== elevatorNodeId && originNode.id !== stairsNodeId;
+
+  const popoverCenter = useMemo(
+    () =>
+      computeNonOverlappingPopoverCenter(
+        selectedEndPt,
+        activeOriginPt,
+        activeRoutePoints,
+        !isCurrentNodeOrigin,
+        isTransitSelected,
+      ),
+    [
+      selectedEndPt,
+      activeOriginPt,
+      activeRoutePoints,
+      isCurrentNodeOrigin,
+      isTransitSelected,
+    ],
+  );
 
   return (
     <div
@@ -1346,25 +1504,6 @@ export function TronSpaceNavigator({
     >
       {/* Top Laser Border */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_20px_#00f0ff]" />
-
-      {focusRequest && (focusRequest.labelEn || focusRequest.labelFr) && (
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-fuchsia-400/50 bg-fuchsia-500/15 px-4 py-2.5 font-mono-tech text-xs text-fuchsia-200 shadow-[0_0_20px_rgba(217,70,239,0.2)]">
-          <div className="flex items-center gap-2">
-            <Navigation className="h-3.5 w-3.5 text-fuchsia-300 animate-pulse shrink-0" />
-            <span className="font-bold uppercase tracking-wider">
-              {isFr ? 'TRAJET MON AGENDA :' : 'ACTIVE AGENDA ROUTE:'}
-            </span>
-            <span className="text-white">
-              {isFr
-                ? focusRequest.labelFr || focusRequest.labelEn
-                : focusRequest.labelEn}
-            </span>
-          </div>
-          <span className="text-[10px] uppercase tracking-widest text-fuchsia-300/80">
-            {isFr ? `Niveau ${activeFloor}` : `Level ${activeFloor}`}
-          </span>
-        </div>
-      )}
 
       {/* Top HUD Command Bar */}
       <div className="mb-4 sm:mb-6 flex flex-col xl:flex-row xl:items-center justify-between gap-3.5 sm:gap-4 border-b border-cyan-500/20 pb-4 sm:pb-5">
@@ -1396,7 +1535,7 @@ export function TronSpaceNavigator({
           </h3>
         </div>
 
-        {/* Controls: Floor Switcher (Full-width segmented bar on mobile) */}
+        {/* Controls: Floor Switcher + Simple Route Origin Toggle */}
         <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 sm:gap-2.5 w-full xl:w-auto">
           {/* Floor Toggle */}
           <div className="grid grid-cols-2 sm:inline-flex rounded-xl border border-cyan-400/40 bg-[#071024] p-1 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
@@ -1425,155 +1564,50 @@ export function TronSpaceNavigator({
               <span>{isFr ? 'Niveau 04 (4e)' : 'Level 04 (4F)'}</span>
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* Point-to-Point Wayfinding Planner: Select Where You Are & Where You Want To Go */}
-      <div className="mb-3.5 sm:mb-4 rounded-xl border border-cyan-400/30 bg-[#060d1f]/90 p-2.5 sm:p-3.5 shadow-[0_0_25px_rgba(0,240,255,0.08)]">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
-          {/* WHERE I AM (START / ORIGIN) */}
-          <div
-            className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-lg border p-2 sm:px-3 sm:py-2 transition-all ${
-              mapSelectionTarget === 'origin'
-                ? 'border-emerald-400 bg-emerald-500/15 shadow-[0_0_15px_rgba(16,185,129,0.25)]'
-                : 'border-emerald-500/35 bg-[#081523]/80'
-            }`}
-          >
-            <div className="flex items-center gap-2 min-w-0 flex-1">
-              <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-emerald-500/25 border border-emerald-400/60 text-emerald-300">
-                <LocateFixed className="h-3.5 w-3.5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <label
-                  htmlFor="map-origin-select"
-                  className="block font-mono-tech text-[9px] font-bold uppercase tracking-[0.18em] text-emerald-300"
-                >
-                  {isFr ? '📍 Où je suis (Départ)' : '📍 Where I Am (Start)'}
-                </label>
-                <select
-                  id="map-origin-select"
-                  value={originNode.id}
-                  onChange={(e) => {
-                    setOriginNodeId(e.target.value);
-                    setOriginPointOverride(null);
-                  }}
-                  className="mt-0.5 w-full bg-transparent font-display text-xs sm:text-sm font-bold text-white focus:outline-none cursor-pointer truncate"
-                >
-                  {allCurrentFloorNodes.map((n) => (
-                    <option
-                      key={`origin-opt-${n.id}`}
-                      value={n.id}
-                      className="bg-[#071024] text-white"
-                    >
-                      {n.numberBadge ? `[${n.numberBadge}] ` : ''}
-                      {n.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+          {/* Current Location ("From") Quick Switcher: Elevators, Stairs, or Custom "I'm Here" Pin */}
+          <div className="flex flex-wrap items-center gap-1 rounded-xl border border-white/15 bg-[#070d1c] p-1">
             <button
               type="button"
-              onClick={() =>
-                setMapSelectionTarget(
-                  mapSelectionTarget === 'origin' ? 'destination' : 'origin',
-                )
-              }
-              className={`shrink-0 rounded-md border px-2.5 py-1 font-mono-tech text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                mapSelectionTarget === 'origin'
-                  ? 'border-emerald-300 bg-emerald-400 text-black shadow-[0_0_10px_rgba(16,185,129,0.5)]'
-                  : 'border-emerald-400/40 bg-emerald-500/15 text-emerald-200 hover:bg-emerald-500/30'
+              onClick={() => {
+                setOriginNodeId(elevatorNodeId);
+                setOriginPointOverride(null);
+              }}
+              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
+                originNode.id === elevatorNodeId
+                  ? 'bg-fuchsia-500/25 border border-fuchsia-400/60 text-fuchsia-200 shadow-[0_0_12px_rgba(217,70,239,0.3)]'
+                  : 'text-white/55 hover:text-white'
               }`}
             >
-              {mapSelectionTarget === 'origin'
-                ? isFr
-                  ? 'Touchez une icône...'
-                  : 'Tap map icon...'
-                : isFr
-                  ? 'Choisir sur carte'
-                  : 'Pick on Map'}
+              <span className="text-fuchsia-400 font-bold">★</span>
+              <span>{isFr ? 'Depuis Ascenseurs' : 'From Elevators'}</span>
             </button>
-          </div>
-
-          {/* SWAP ORIGIN <-> DESTINATION BUTTON */}
-          <div className="flex items-center justify-center">
             <button
               type="button"
-              onClick={handleSwapOriginAndDest}
-              title={
-                isFr
-                  ? 'Inverser le départ et la destination'
-                  : 'Swap Start and Destination'
-              }
-              className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-400/35 bg-[#09142a] px-3 py-1.5 lg:p-2 font-mono-tech text-[10px] uppercase tracking-wider text-cyan-300 hover:border-cyan-400 hover:bg-cyan-400/20 hover:text-white transition-all cursor-pointer"
-            >
-              <ArrowLeftRight className="h-3.5 w-3.5" />
-              <span className="lg:hidden">
-                {isFr ? 'Inverser' : 'Swap Route'}
-              </span>
-            </button>
-          </div>
-
-          {/* WHERE I WANT TO GO (DESTINATION) */}
-          <div
-            className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-lg border p-2 sm:px-3 sm:py-2 transition-all ${
-              mapSelectionTarget === 'destination'
-                ? 'border-cyan-400 bg-cyan-500/15 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
-                : 'border-cyan-500/30 bg-[#081226]/80'
-            }`}
-          >
-            <div className="flex items-center gap-2 min-w-0 flex-1">
-              <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-cyan-500/25 border border-cyan-400/60 text-cyan-300">
-                <Navigation className="h-3.5 w-3.5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <label
-                  htmlFor="map-dest-select"
-                  className="block font-mono-tech text-[9px] font-bold uppercase tracking-[0.18em] text-cyan-300"
-                >
-                  {isFr
-                    ? '🏁 Où je veux aller (Destination)'
-                    : '🏁 Where I Want To Go (Destination)'}
-                </label>
-                <select
-                  id="map-dest-select"
-                  value={selectedNode.id}
-                  onChange={(e) => {
-                    setSelectedNodeId(e.target.value);
-                    setDestPointOverride(null);
-                  }}
-                  className="mt-0.5 w-full bg-transparent font-display text-xs sm:text-sm font-bold text-white focus:outline-none cursor-pointer truncate"
-                >
-                  {allCurrentFloorNodes.map((n) => (
-                    <option
-                      key={`dest-opt-${n.id}`}
-                      value={n.id}
-                      className="bg-[#071024] text-white"
-                    >
-                      {n.numberBadge ? `[${n.numberBadge}] ` : ''}
-                      {n.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setMapSelectionTarget('destination')}
-              className={`shrink-0 rounded-md border px-2.5 py-1 font-mono-tech text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                mapSelectionTarget === 'destination'
-                  ? 'border-cyan-300 bg-cyan-400 text-black shadow-[0_0_10px_rgba(0,240,255,0.5)]'
-                  : 'border-cyan-400/40 bg-cyan-500/15 text-cyan-200 hover:bg-cyan-500/30'
+              onClick={() => {
+                setOriginNodeId(stairsNodeId);
+                setOriginPointOverride(null);
+              }}
+              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
+                originNode.id === stairsNodeId
+                  ? 'bg-cyan-500/25 border border-cyan-400/60 text-cyan-200 shadow-[0_0_12px_rgba(0,240,255,0.3)]'
+                  : 'text-white/55 hover:text-white'
               }`}
             >
-              {mapSelectionTarget === 'destination'
-                ? isFr
-                  ? 'Mode Carte Actif'
-                  : 'Map Tap Active'
-                : isFr
-                  ? 'Choisir sur carte'
-                  : 'Pick on Map'}
+              <span className="text-cyan-300 font-bold">⇅</span>
+              <span>{isFr ? 'Depuis Escaliers' : 'From Stairs'}</span>
             </button>
+            {isCustomOrigin && (
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-400/60 bg-emerald-500/25 px-2.5 sm:px-3 py-2 font-mono-tech text-[11px] font-bold uppercase tracking-wider text-emerald-200 shadow-[0_0_12px_rgba(16,185,129,0.3)]">
+                <MapPin className="h-3.5 w-3.5 text-emerald-300 shrink-0" />
+                <span className="truncate max-w-[160px]">
+                  {isFr ? 'Ici : ' : 'Here: '}
+                  {originNode.numberBadge
+                    ? `${originNode.numberBadge} · ${originNode.name}`
+                    : originNode.name}
+                </span>
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -1711,16 +1745,6 @@ export function TronSpaceNavigator({
               )}
             </div>
 
-            {/* Top-Right Level Watermark */}
-            <div className="pointer-events-none absolute right-3 sm:right-4 top-2.5 sm:top-3 z-20 text-right">
-              <div className="font-mono-tech text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.3em] text-cyan-400/70">
-                NIVEAU / LEVEL
-              </div>
-              <div className="font-display text-2xl sm:text-5xl font-black leading-none tracking-tighter text-cyan-400/25">
-                {activeFloor}
-              </div>
-            </div>
-
             {/* Scrollable / Pan-Ready Map Viewport Container */}
             <div
               ref={mapScrollRef}
@@ -1747,6 +1771,7 @@ export function TronSpaceNavigator({
                 {/* SVG Interactive Overlay */}
                 <svg
                   viewBox="0 0 1000 700"
+                  onClick={() => setIsPopoverOpen(false)}
                   className="relative z-10 h-full w-full select-none"
                 >
                   <defs>
@@ -1781,17 +1806,16 @@ export function TronSpaceNavigator({
                     </filter>
                   </defs>
 
-                  {/* Animated TRON Ray-Traced Light-Cycle Path from Origin Icon to Destination Icon */}
-                  {activeRoutePoints && (
-                    <g>
-                      {/* Outer Neon Path Glow */}
+                  {/* Animated Ray-Traced Path Line from Current Location (Origin) to Selected Destination */}
+                  {activeRoutePoints && !isCurrentNodeOrigin && (
+                    <g className="pointer-events-none">
                       <polyline
                         points={activeRoutePoints}
                         fill="none"
                         stroke={
-                          isRestroomSelected
-                            ? '#eab308'
-                            : originNode.id.endsWith('elevators')
+                          isCustomOrigin
+                            ? '#10b981'
+                            : originNode.id === elevatorNodeId
                               ? '#ff007f'
                               : '#00f0ff'
                         }
@@ -1801,14 +1825,13 @@ export function TronSpaceNavigator({
                         opacity="0.38"
                         filter="url(#tron-cyan-glow)"
                       />
-                      {/* Core Animated Energy Beam */}
                       <polyline
                         points={activeRoutePoints}
                         fill="none"
                         stroke={
-                          isRestroomSelected
-                            ? '#fde047'
-                            : originNode.id.endsWith('elevators')
+                          isCustomOrigin
+                            ? '#34d399'
+                            : originNode.id === elevatorNodeId
                               ? '#ff4da6'
                               : '#00f0ff'
                         }
@@ -1828,16 +1851,16 @@ export function TronSpaceNavigator({
                     </g>
                   )}
 
-                  {/* Pulsing "Where I Am" (Origin) Beacon Ring at Start Point */}
+                  {/* Glowing Green "YOU ARE HERE" Beacon on Current Origin Point */}
                   <g
-                    transform={`translate(${computedRoute.startPt.x}, ${computedRoute.startPt.y})`}
+                    transform={`translate(${activeOriginPt.x}, ${activeOriginPt.y})`}
                     className="pointer-events-none"
                   >
                     <circle
-                      r="22"
+                      r="21"
                       fill="none"
-                      stroke="#10b981"
-                      strokeWidth="2"
+                      stroke="#34d399"
+                      strokeWidth="1.8"
                       strokeDasharray="4 3"
                     >
                       <animateTransform
@@ -1849,20 +1872,30 @@ export function TronSpaceNavigator({
                         repeatCount="indefinite"
                       />
                     </circle>
-                    <circle r="16" fill="rgba(16, 185, 129, 0.28)">
-                      <animate
-                        attributeName="r"
-                        values="14;22;14"
-                        dur="1.8s"
-                        repeatCount="indefinite"
+                    <g transform="translate(0, -24)">
+                      <rect
+                        x="-24"
+                        y="-9"
+                        width="48"
+                        height="14"
+                        rx="4"
+                        fill="#059669"
+                        stroke="#a7f3d0"
+                        strokeWidth="1"
                       />
-                    </circle>
+                      <text
+                        y="1"
+                        textAnchor="middle"
+                        className="fill-white font-mono-tech text-[8px] font-bold uppercase tracking-wider"
+                      >
+                        {isFr ? '● ICI' : '● HERE'}
+                      </text>
+                    </g>
                   </g>
 
                   {/* Interactive Map Nodes */}
                   {floorNodes.map((node) => {
                     const isSelected = selectedNode.id === node.id;
-                    const isOrigin = originNode.id === node.id;
                     const isHovered = hoveredNodeId === node.id;
                     const isRoomDiamond =
                       node.category === 'room' ||
@@ -1943,7 +1976,7 @@ export function TronSpaceNavigator({
                                 height="36"
                                 fill="transparent"
                               />
-                              {(isSelected || isOrigin) && (
+                              {isSelected && (
                                 <rect
                                   x="-15"
                                   y="-11"
@@ -1964,14 +1997,12 @@ export function TronSpaceNavigator({
                                 rx="3"
                                 fill="#10b981"
                                 stroke={
-                                  isSelected || isOrigin || isHovered
+                                  isSelected || isHovered
                                     ? '#ffffff'
                                     : '#6ee7b7'
                                 }
                                 strokeWidth={
-                                  isSelected || isOrigin || isHovered
-                                    ? '2.2'
-                                    : '1.4'
+                                  isSelected || isHovered ? '2.2' : '1.4'
                                 }
                                 filter="url(#tron-cyan-glow)"
                               />
@@ -2027,7 +2058,7 @@ export function TronSpaceNavigator({
                             >
                               {/* Generous Mobile Touch Target */}
                               <circle r="22" fill="transparent" />
-                              {(isSelected || isOrigin) && (
+                              {isSelected && (
                                 <circle
                                   r="19"
                                   fill="none"
@@ -2040,14 +2071,12 @@ export function TronSpaceNavigator({
                                 r="12"
                                 fill="#f97316"
                                 stroke={
-                                  isSelected || isOrigin || isHovered
+                                  isSelected || isHovered
                                     ? '#ffffff'
                                     : '#fdba74'
                                 }
                                 strokeWidth={
-                                  isSelected || isOrigin || isHovered
-                                    ? '2.2'
-                                    : '1.5'
+                                  isSelected || isHovered ? '2.2' : '1.5'
                                 }
                                 filter="url(#tron-cyan-glow)"
                               />
@@ -2104,7 +2133,10 @@ export function TronSpaceNavigator({
                       <g
                         key={node.id}
                         transform={`translate(${node.x}, ${node.y})`}
-                        onClick={() => handleNodeClick(node)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNodeClick(node);
+                        }}
                         onMouseEnter={() => setHoveredNodeId(node.id)}
                         onMouseLeave={() => setHoveredNodeId(null)}
                         className="cursor-pointer group"
@@ -2158,14 +2190,10 @@ export function TronSpaceNavigator({
                             points="0,-15 15,0 0,15 -15,0"
                             fill="#ea4335"
                             stroke={
-                              isSelected || isOrigin || isHovered
-                                ? '#ffffff'
-                                : '#fca5a5'
+                              isSelected || isHovered ? '#ffffff' : '#fca5a5'
                             }
                             strokeWidth={
-                              isSelected || isOrigin || isHovered
-                                ? '2.5'
-                                : '1.5'
+                              isSelected || isHovered ? '2.5' : '1.5'
                             }
                             filter="url(#tron-red-glow)"
                           />
@@ -2178,14 +2206,12 @@ export function TronSpaceNavigator({
                             rx="3"
                             fill={palette.fill}
                             stroke={
-                              isSelected || isOrigin || isHovered
+                              isSelected || isHovered
                                 ? '#ffffff'
                                 : palette.stroke
                             }
                             strokeWidth={
-                              isSelected || isOrigin || isHovered
-                                ? '2.3'
-                                : '1.5'
+                              isSelected || isHovered ? '2.3' : '1.5'
                             }
                             filter="url(#tron-cyan-glow)"
                           />
@@ -2194,14 +2220,12 @@ export function TronSpaceNavigator({
                             r="13"
                             fill={palette.fill}
                             stroke={
-                              isSelected || isOrigin || isHovered
+                              isSelected || isHovered
                                 ? '#ffffff'
                                 : palette.stroke
                             }
                             strokeWidth={
-                              isSelected || isOrigin || isHovered
-                                ? '2.5'
-                                : '1.5'
+                              isSelected || isHovered ? '2.5' : '1.5'
                             }
                             filter="url(#tron-cyan-glow)"
                           />
@@ -2219,36 +2243,6 @@ export function TronSpaceNavigator({
                     );
                   })}
 
-                  {/* Floating "YOU ARE HERE" Pill Badge on the Origin Icon */}
-                  {originNode.id !== selectedNode.id && (
-                    <g
-                      transform={`translate(${Math.min(Math.max(computedRoute.startPt.x, 68), 932)}, ${
-                        computedRoute.startPt.y > 640
-                          ? computedRoute.startPt.y - 26
-                          : computedRoute.startPt.y + 30
-                      })`}
-                      className="pointer-events-none"
-                    >
-                      <rect
-                        x="-56"
-                        y="-13"
-                        width="112"
-                        height="19"
-                        rx="4"
-                        fill="rgba(16, 185, 129, 0.95)"
-                        stroke="#ffffff"
-                        strokeWidth="1"
-                      />
-                      <text
-                        y="-0.5"
-                        textAnchor="middle"
-                        className="fill-black font-mono-tech text-[9px] font-bold tracking-wider"
-                      >
-                        {isFr ? '📍 VOUS ÊTES ICI' : '📍 YOU ARE HERE'}
-                      </text>
-                    </g>
-                  )}
-
                   {/* Top-Layer Floating Tooltip Label (Shows hovered node on desktop, or active selected node on mobile/tap, clamped inside SVG bounds) */}
                   {floorNodes
                     .filter(
@@ -2261,13 +2255,9 @@ export function TronSpaceNavigator({
                         node.category === 'showcase' ||
                         node.id === 'l4-room-1';
                       const targetX =
-                        node.id === selectedNode.id
-                          ? computedRoute.endPt.x
-                          : node.x;
+                        node.id === selectedNode.id ? selectedEndPt.x : node.x;
                       const targetY =
-                        node.id === selectedNode.id
-                          ? computedRoute.endPt.y
-                          : node.y;
+                        node.id === selectedNode.id ? selectedEndPt.y : node.y;
                       const goldBoothMatch =
                         node.id === 'l3-sponsor-g1'
                           ? [
@@ -2328,7 +2318,240 @@ export function TronSpaceNavigator({
                         </g>
                       );
                     })}
+
+                  {/* Direct Floor Switch Action Pill on Map when Stairs or Elevators is clicked */}
+                  {isTransitSelected && (
+                    <g
+                      transform={`translate(${Math.min(Math.max(selectedNode.x, 120), 880)}, ${
+                        selectedNode.y + 34
+                      })`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleFloorSwitch(
+                          activeFloor === '03' ? '04' : '03',
+                          selectedNode.id.endsWith('stairs')
+                            ? 'stairs'
+                            : 'elevators',
+                        );
+                      }}
+                      className="cursor-pointer group"
+                    >
+                      <rect
+                        x="-105"
+                        y="-14"
+                        width="210"
+                        height="26"
+                        rx="6"
+                        fill="rgba(217, 70, 239, 0.95)"
+                        stroke="#ffffff"
+                        strokeWidth="1.5"
+                        filter="url(#tron-cyan-glow)"
+                      />
+                      <text
+                        y="2"
+                        textAnchor="middle"
+                        className="fill-white font-mono-tech text-[10.5px] font-bold uppercase tracking-wider pointer-events-none"
+                      >
+                        {activeFloor === '03'
+                          ? isFr
+                            ? '⬆ Monter au Niveau 04 →'
+                            : '⬆ Go Up to Level 04 →'
+                          : isFr
+                            ? '⬇ Descendre au Niveau 03 →'
+                            : '⬇ Go Down to Level 03 →'}
+                      </text>
+                    </g>
+                  )}
+
+                  {/* Subtle HUD Leader Line connecting Clicked Pin to Non-Overlapping Popover */}
+                  {isPopoverOpen && (
+                    <line
+                      x1={selectedEndPt.x}
+                      y1={selectedEndPt.y}
+                      x2={popoverCenter.x}
+                      y2={popoverCenter.y}
+                      stroke="#00f0ff"
+                      strokeWidth="1.5"
+                      strokeDasharray="4 4"
+                      opacity="0.65"
+                      className="pointer-events-none"
+                    />
+                  )}
                 </svg>
+
+                {/* On-Map Floating HUD Popover Card (Positioned to Never Overlap Ray-Traced Path) */}
+                {isPopoverOpen &&
+                  (() => {
+                    const leftPct = (popoverCenter.x / 1000) * 100;
+                    const topPct = (popoverCenter.y / 700) * 100;
+                    const goldBoothMatch =
+                      selectedNode.id === 'l3-sponsor-g1'
+                        ? [
+                            { x: 268, y: 324, name: 'Vooban (Gold Sponsor)' },
+                            { x: 300, y: 324, name: 'oXya (Gold Sponsor)' },
+                            {
+                              x: 301,
+                              y: 361,
+                              name: 'Davidson Canada (Gold Sponsor)',
+                            },
+                            {
+                              x: 194,
+                              y: 213,
+                              name: 'Kanastruk (Gold Sponsor · #321)',
+                            },
+                          ].find(
+                            (b) =>
+                              b.x === selectedEndPt.x &&
+                              b.y === selectedEndPt.y,
+                          )
+                        : undefined;
+
+                    return (
+                      <div
+                        style={{
+                          left: `${leftPct}%`,
+                          top: `${topPct}%`,
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute z-30 w-[250px] sm:w-[295px] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-cyan-400/70 bg-[#050d21]/95 p-3 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_22px_rgba(0,240,255,0.28)] backdrop-blur-xl transition-all duration-200"
+                      >
+                        {/* Header: Badge + Name + Dismiss X */}
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            {selectedNode.numberBadge && (
+                              <span
+                                className={`inline-flex h-6 min-w-6 shrink-0 items-center justify-center rounded-md px-1.5 font-mono-tech text-xs font-bold ${
+                                  selectedNode.category === 'room'
+                                    ? 'bg-google-red text-white'
+                                    : selectedNode.category === 'sponsor' ||
+                                        selectedNode.category === 'coaching'
+                                      ? 'bg-emerald-500 text-black'
+                                      : 'bg-cyan-400 text-black'
+                                }`}
+                              >
+                                {selectedNode.numberBadge}
+                              </span>
+                            )}
+                            <div className="min-w-0">
+                              <div className="font-display text-xs sm:text-sm font-bold text-white leading-tight truncate">
+                                {goldBoothMatch
+                                  ? goldBoothMatch.name
+                                  : selectedNode.name}
+                              </div>
+                              <div className="font-mono-tech text-[10px] text-cyan-300/90 truncate">
+                                {isFr
+                                  ? selectedNode.capacityFr
+                                  : selectedNode.capacityEn}
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setIsPopoverOpen(false)}
+                            aria-label="Close popover"
+                            className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-white/50 hover:bg-white/10 hover:text-white cursor-pointer"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+
+                        {/* Route Status Pill inside Popover */}
+                        <div className="mt-2 flex items-center justify-between gap-1.5 rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5 font-mono-tech text-[10px]">
+                          {isCurrentNodeOrigin ? (
+                            <span className="inline-flex items-center gap-1.5 text-emerald-300 font-bold">
+                              <MapPin className="h-3 w-3 text-emerald-400 shrink-0" />
+                              <span>
+                                {isFr
+                                  ? 'Vous êtes ici — touchez une autre icône pour tracer'
+                                  : 'You are here — tap any other icon to trace route'}
+                              </span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-white/75 truncate">
+                              <Navigation className="h-3 w-3 text-cyan-400 shrink-0" />
+                              <span className="truncate">
+                                {isFr ? 'Depuis ' : 'From '}
+                                <strong className="text-white">
+                                  {originNode.numberBadge
+                                    ? `${originNode.numberBadge} · ${originNode.name}`
+                                    : originNode.name}
+                                </strong>
+                              </span>
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Action Buttons Row inside Popover */}
+                        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleSetAsCurrentLocation(
+                                selectedNode,
+                                destPointOverride,
+                              )
+                            }
+                            disabled={isCurrentNodeOrigin}
+                            className={`flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-mono-tech text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                              isCurrentNodeOrigin
+                                ? 'border-emerald-400/50 bg-emerald-500/20 text-emerald-200 cursor-default'
+                                : 'border-emerald-400/70 bg-emerald-500/25 text-emerald-200 hover:bg-emerald-400 hover:text-black'
+                            }`}
+                          >
+                            <MapPin className="h-3 w-3 shrink-0" />
+                            <span>
+                              {isCurrentNodeOrigin
+                                ? isFr
+                                  ? 'Position actuelle'
+                                  : 'Current Location'
+                                : isFr
+                                  ? 'Je suis ici (Départ)'
+                                  : "I'm Here (Set Start)"}
+                            </span>
+                          </button>
+
+                          {linkedRoomSchedule && onSelectRoomSchedule && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                onSelectRoomSchedule(linkedRoomSchedule.id)
+                              }
+                              className="inline-flex items-center justify-center gap-1 rounded-lg border border-cyan-400/70 bg-cyan-400/20 px-2.5 py-1.5 font-mono-tech text-[10px] font-bold uppercase tracking-wider text-cyan-200 hover:bg-cyan-400 hover:text-black transition-all cursor-pointer"
+                            >
+                              <DoorOpen className="h-3 w-3 shrink-0" />
+                              <span>{isFr ? 'Horaire ↓' : 'Schedule ↓'}</span>
+                            </button>
+                          )}
+
+                          {isTransitSelected && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleFloorSwitch(
+                                  activeFloor === '03' ? '04' : '03',
+                                  selectedNode.id.endsWith('stairs')
+                                    ? 'stairs'
+                                    : 'elevators',
+                                )
+                              }
+                              className="w-full inline-flex items-center justify-center gap-1.5 rounded-lg border border-fuchsia-400/80 bg-fuchsia-500/30 px-2.5 py-1.5 font-mono-tech text-[10px] font-bold uppercase tracking-wider text-white hover:bg-fuchsia-400 hover:text-black transition-all cursor-pointer"
+                            >
+                              <Layers className="h-3 w-3 shrink-0" />
+                              <span>
+                                {activeFloor === '03'
+                                  ? isFr
+                                    ? '⬆ Monter au Niveau 04 →'
+                                    : '⬆ Go Up to Level 04 →'
+                                  : isFr
+                                    ? '⬇ Descendre au Niveau 03 →'
+                                    : '⬇ Go Down to Level 03 →'}
+                              </span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
               </div>
             </div>
 
@@ -2401,13 +2624,9 @@ export function TronSpaceNavigator({
                   ? isFr
                     ? 'Glissez pour déplacer la carte'
                     : 'Drag / swipe to pan zoomed map'
-                  : mapSelectionTarget === 'origin'
-                    ? isFr
-                      ? 'Touchez votre position actuelle sur la carte'
-                      : 'Tap your current location on the map'
-                    : isFr
-                      ? 'Touchez une icône pour tracer la route'
-                      : 'Tap any icon to ray-trace route'}
+                  : isFr
+                    ? 'Touchez une icône pour inspecter la salle'
+                    : 'Tap any icon to inspect room or zone'}
               </span>
             </div>
           </div>
@@ -2546,45 +2765,31 @@ export function TronSpaceNavigator({
                     {isFr ? selectedNode.capacityFr : selectedNode.capacityEn}
                   </span>
                 </div>
-                <div className="flex items-center justify-between gap-2 border-t border-white/5 pt-2">
-                  <span className="text-white/45 uppercase">
-                    {isFr ? 'Départ actuel :' : 'Routing From:'}
-                  </span>
-                  <span className="text-emerald-300 font-bold text-right truncate">
-                    {originNode.numberBadge
-                      ? `[${originNode.numberBadge}] `
-                      : ''}
-                    {originNode.name}
-                  </span>
-                </div>
               </div>
 
-              {/* Quick "I Am Here" Action Button */}
+              {/* 1-Click "I'm Here" Current Location Button in Inspector */}
               <div className="mt-3">
                 <button
                   type="button"
-                  onClick={() => {
-                    setOriginNodeId(selectedNode.id);
-                    setOriginPointOverride(destPointOverride);
-                  }}
-                  disabled={
-                    originNode.id === selectedNode.id &&
-                    originPointOverride?.x === destPointOverride?.x &&
-                    originPointOverride?.y === destPointOverride?.y
+                  onClick={() =>
+                    handleSetAsCurrentLocation(selectedNode, destPointOverride)
                   }
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-400/50 bg-emerald-500/15 px-3.5 py-2 font-mono-tech text-[11px] font-bold uppercase tracking-wider text-emerald-200 hover:bg-emerald-400 hover:text-black disabled:opacity-50 disabled:pointer-events-none transition-all cursor-pointer"
+                  disabled={isCurrentNodeOrigin}
+                  className={`w-full inline-flex items-center justify-center gap-2 rounded-xl border px-3.5 py-2.5 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                    isCurrentNodeOrigin
+                      ? 'border-emerald-400/50 bg-emerald-500/20 text-emerald-200 cursor-default'
+                      : 'border-emerald-400/70 bg-emerald-500/20 text-emerald-200 hover:bg-emerald-400 hover:text-black'
+                  }`}
                 >
-                  <LocateFixed className="h-3.5 w-3.5" />
+                  <MapPin className="h-3.5 w-3.5 shrink-0" />
                   <span>
-                    {originNode.id === selectedNode.id &&
-                    originPointOverride?.x === destPointOverride?.x &&
-                    originPointOverride?.y === destPointOverride?.y
+                    {isCurrentNodeOrigin
                       ? isFr
-                        ? '✓ Vous êtes ici (Point de départ)'
-                        : '✓ You Are Here (Current Start)'
+                        ? '🟢 Vous êtes ici — touchez une autre icône pour tracer'
+                        : '🟢 You Are Here — tap any icon to route'
                       : isFr
-                        ? '📍 Je suis ici — Partir de ce point'
-                        : '📍 I Am Here — Route From This Spot'}
+                        ? '📍 Je suis ici (Définir comme départ)'
+                        : "📍 I'm Here (Set as Current Location)"}
                   </span>
                 </button>
               </div>
@@ -2629,8 +2834,8 @@ export function TronSpaceNavigator({
                       },
                     ].map((sponsor) => {
                       const isActiveBooth =
-                        computedRoute.endPt.x === sponsor.x &&
-                        computedRoute.endPt.y === sponsor.y;
+                        selectedEndPt.x === sponsor.x &&
+                        selectedEndPt.y === sponsor.y;
                       return (
                         <button
                           key={sponsor.name}
@@ -2661,9 +2866,8 @@ export function TronSpaceNavigator({
               )}
             </div>
 
-            {/* If Stairs is selected, offer instant Floor Jump button */}
-            {(selectedNode.id === 'l3-stairs' ||
-              selectedNode.id === 'l4-stairs') && (
+            {/* If Stairs or Elevators is selected, offer instant Floor Jump button */}
+            {isTransitSelected && (
               <div className="mt-5">
                 <button
                   type="button"
@@ -2677,10 +2881,10 @@ export function TronSpaceNavigator({
                     {activeFloor === '03'
                       ? isFr
                         ? 'Monter au Niveau 04 →'
-                        : 'Go Upstairs to Level 04 →'
+                        : 'Go Up to Level 04 →'
                       : isFr
                         ? 'Descendre au Niveau 03 →'
-                        : 'Go Downstairs to Level 03 →'}
+                        : 'Go Down to Level 03 →'}
                   </span>
                 </button>
               </div>
