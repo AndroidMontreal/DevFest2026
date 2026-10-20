@@ -1114,6 +1114,135 @@ function getNodeCandidatePoints(
   return [{ x: node.x, y: node.y }];
 }
 
+function pointToRectDistance(
+  px: number,
+  py: number,
+  rx1: number,
+  ry1: number,
+  rx2: number,
+  ry2: number,
+): number {
+  const dx = Math.max(rx1 - px, 0, px - rx2);
+  const dy = Math.max(ry1 - py, 0, py - ry2);
+  return Math.hypot(dx, dy);
+}
+
+function computeNonOverlappingPopoverCenter(
+  targetPt: GridPoint,
+  originPt: GridPoint,
+  routePointsStr: string,
+  hasActiveRoute: boolean,
+  isTransitSelected: boolean,
+): GridPoint {
+  const hw = 175;
+  const hh = 78;
+  const tx = targetPt.x;
+  const ty = targetPt.y;
+
+  const routeSamples: GridPoint[] = [];
+  if (hasActiveRoute && routePointsStr) {
+    const rawPts = routePointsStr
+      .trim()
+      .split(/\s+/)
+      .map((pair) => {
+        const [xStr, yStr] = pair.split(',');
+        return { x: Number(xStr), y: Number(yStr) };
+      })
+      .filter((p) => !Number.isNaN(p.x) && !Number.isNaN(p.y));
+
+    for (let i = 0; i < rawPts.length - 1; i++) {
+      const a = rawPts[i];
+      const b = rawPts[i + 1];
+      const segLen = Math.hypot(b.x - a.x, b.y - a.y);
+      const steps = Math.max(2, Math.ceil(segLen / 6));
+      for (let s = 0; s <= steps; s++) {
+        const t = s / steps;
+        routeSamples.push({
+          x: a.x + (b.x - a.x) * t,
+          y: a.y + (b.y - a.y) * t,
+        });
+      }
+    }
+  }
+
+  const rawCandidates: GridPoint[] = [
+    { x: tx, y: ty - hh - 38 }, // Above
+    { x: tx, y: ty + hh + 38 }, // Below
+    { x: tx + hw + 38, y: ty }, // Right
+    { x: tx - hw - 38, y: ty }, // Left
+    { x: tx + hw * 0.8, y: ty - hh - 36 }, // Top-Right
+    { x: tx + hw * 0.8, y: ty + hh + 36 }, // Bottom-Right
+    { x: tx - hw * 0.8, y: ty - hh - 36 }, // Top-Left
+    { x: tx - hw * 0.8, y: ty + hh + 36 }, // Bottom-Left
+    { x: tx + hw + 34, y: ty - hh * 0.7 }, // Upper-Right
+    { x: tx + hw + 34, y: ty + hh * 0.7 }, // Lower-Right
+    { x: tx - hw - 34, y: ty - hh * 0.7 }, // Upper-Left
+    { x: tx - hw - 34, y: ty + hh * 0.7 }, // Lower-Left
+    { x: tx, y: ty - hh - 95 }, // Far Above
+    { x: tx, y: ty + hh + 95 }, // Far Below
+    { x: 540, y: 125 }, // Open Upper-Center
+    { x: 540, y: 575 }, // Open Lower-Center
+    { x: 770, y: 130 }, // Open Top-Right
+    { x: 770, y: 570 }, // Open Bottom-Right
+  ];
+
+  let bestCandidate: GridPoint = { x: tx, y: ty > 350 ? ty - 115 : ty + 115 };
+  let bestScore = Infinity;
+
+  for (const cand of rawCandidates) {
+    const cx = Math.min(Math.max(cand.x, hw + 16), 1000 - hw - 16);
+    const cy = Math.min(Math.max(cand.y, hh + 16), 700 - hh - 16);
+    const rx1 = cx - hw;
+    const ry1 = cy - hh;
+    const rx2 = cx + hw;
+    const ry2 = cy + hh;
+
+    // Avoid covering top-left zoom controls (0..210, 0..75)
+    const hitsZoomControls = rx1 < 210 && ry1 < 75;
+
+    // Distance from rectangle to clicked target pin and origin pin
+    const targetDist = pointToRectDistance(tx, ty, rx1, ry1, rx2, ry2);
+    const originDist = hasActiveRoute
+      ? pointToRectDistance(originPt.x, originPt.y, rx1, ry1, rx2, ry2)
+      : 999;
+
+    // Avoid covering the on-map purple floor-switch pill below transit nodes
+    const transitPillDist = isTransitSelected
+      ? pointToRectDistance(tx, ty + 34, rx1 - 95, ry1 - 12, rx2 + 95, ry2 + 12)
+      : 999;
+
+    // Minimum distance from rectangle to any point on the ray-traced path
+    let minRouteDist = 999;
+    let overlappingSamples = 0;
+    for (const pt of routeSamples) {
+      const d = pointToRectDistance(pt.x, pt.y, rx1, ry1, rx2, ry2);
+      if (d < minRouteDist) minRouteDist = d;
+      if (d < 12) overlappingSamples++;
+    }
+
+    const distFromPin = Math.hypot(cx - tx, cy - ty);
+
+    let penalty = 0;
+    if (targetDist < 22) penalty += 500000;
+    if (originDist < 22) penalty += 250000;
+    if (transitPillDist < 10) penalty += 300000;
+    if (hitsZoomControls) penalty += 80000;
+    if (overlappingSamples > 0) {
+      penalty += 100000 + overlappingSamples * 4000;
+    } else if (minRouteDist < 24) {
+      penalty += (24 - minRouteDist) * 500;
+    }
+
+    const score = penalty + distFromPin;
+    if (score < bestScore) {
+      bestScore = score;
+      bestCandidate = { x: cx, y: cy };
+    }
+  }
+
+  return bestCandidate;
+}
+
 export type TronMapFocusRequest = {
   floor: '03' | '04';
   destinationNodeId: string;
@@ -1349,6 +1478,24 @@ export function TronSpaceNavigator({
   const stairsNodeId = activeFloor === '03' ? 'l3-stairs' : 'l4-stairs';
   const isCustomOrigin =
     originNode.id !== elevatorNodeId && originNode.id !== stairsNodeId;
+
+  const popoverCenter = useMemo(
+    () =>
+      computeNonOverlappingPopoverCenter(
+        selectedEndPt,
+        activeOriginPt,
+        activeRoutePoints,
+        !isCurrentNodeOrigin,
+        isTransitSelected,
+      ),
+    [
+      selectedEndPt,
+      activeOriginPt,
+      activeRoutePoints,
+      isCurrentNodeOrigin,
+      isTransitSelected,
+    ],
+  );
 
   return (
     <div
@@ -2215,17 +2362,28 @@ export function TronSpaceNavigator({
                       </text>
                     </g>
                   )}
+
+                  {/* Subtle HUD Leader Line connecting Clicked Pin to Non-Overlapping Popover */}
+                  {isPopoverOpen && (
+                    <line
+                      x1={selectedEndPt.x}
+                      y1={selectedEndPt.y}
+                      x2={popoverCenter.x}
+                      y2={popoverCenter.y}
+                      stroke="#00f0ff"
+                      strokeWidth="1.5"
+                      strokeDasharray="4 4"
+                      opacity="0.65"
+                      className="pointer-events-none"
+                    />
+                  )}
                 </svg>
 
-                {/* On-Map Floating HUD Popover Card Anchored to Clicked Icon */}
+                {/* On-Map Floating HUD Popover Card (Positioned to Never Overlap Ray-Traced Path) */}
                 {isPopoverOpen &&
                   (() => {
-                    const leftPct = Math.min(
-                      Math.max((selectedEndPt.x / 1000) * 100, 22),
-                      78,
-                    );
-                    const topPct = (selectedEndPt.y / 700) * 100;
-                    const showAbove = selectedEndPt.y > 370;
+                    const leftPct = (popoverCenter.x / 1000) * 100;
+                    const topPct = (popoverCenter.y / 700) * 100;
                     const goldBoothMatch =
                       selectedNode.id === 'l3-sponsor-g1'
                         ? [
@@ -2255,11 +2413,7 @@ export function TronSpaceNavigator({
                           top: `${topPct}%`,
                         }}
                         onClick={(e) => e.stopPropagation()}
-                        className={` absolute z-30 w-[250px] sm:w-[295px] -translate-x-1/2 ${
-                          showAbove
-                            ? '-translate-y-[calc(100%+32px)]'
-                            : 'translate-y-[32px]'
-                        } rounded-xl border border-cyan-400/70 bg-[#050d21]/95 p-3 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_22px_rgba(0,240,255,0.28)] backdrop-blur-xl transition-all duration-200`}
+                        className="absolute z-30 w-[250px] sm:w-[295px] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-cyan-400/70 bg-[#050d21]/95 p-3 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_22px_rgba(0,240,255,0.28)] backdrop-blur-xl transition-all duration-200"
                       >
                         {/* Header: Badge + Name + Dismiss X */}
                         <div className="flex items-start justify-between gap-2">
