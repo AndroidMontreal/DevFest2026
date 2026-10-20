@@ -1325,7 +1325,10 @@ export function RoomAgendaSection({
               )}
 
               {visibleCoachingRooms.length > 0 && (
-                <div className="relative overflow-hidden rounded-2xl border border-emerald-500/35 bg-[#051015]/90 p-5 sm:p-6 md:p-8 shadow-[0_0_50px_rgba(16,185,129,0.08)] space-y-8">
+                <div
+                  id="coaching-block"
+                  className="relative overflow-hidden rounded-2xl border border-emerald-500/35 bg-[#051015]/90 p-5 sm:p-6 md:p-8 shadow-[0_0_50px_rgba(16,185,129,0.08)] space-y-8 scroll-mt-28"
+                >
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
                   <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-emerald-500/20 pb-5">
                     <div>
