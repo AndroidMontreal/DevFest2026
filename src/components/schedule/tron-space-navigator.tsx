@@ -2,15 +2,12 @@
 
 import { getRoomSongCredits } from '@/lib/room-song-synth';
 import {
-  ArrowLeftRight,
   ArrowUpRight,
   Compass,
   DoorOpen,
   Headphones,
   Layers,
-  LocateFixed,
   Music,
-  Navigation,
   RotateCcw,
   Sparkles,
   ZoomIn,
@@ -581,540 +578,6 @@ const MAP_NODES: MapNode[] = [
 
 type GridPoint = { x: number; y: number };
 
-const LEVEL_03_EDGES: Array<[[number, number], [number, number]]> = [
-  // Main horizontal bridge spine (y = 342)
-  [
-    [176, 342],
-    [184, 342],
-  ],
-  [
-    [184, 342],
-    [232, 342],
-  ],
-  [
-    [232, 342],
-    [268, 342],
-  ],
-  [
-    [268, 342],
-    [284, 342],
-  ],
-  [
-    [284, 342],
-    [300, 342],
-  ],
-  [
-    [300, 342],
-    [301, 342],
-  ],
-  [
-    [301, 342],
-    [322, 342],
-  ],
-  [
-    [322, 342],
-    [379, 342],
-  ],
-  [
-    [379, 342],
-    [439, 342],
-  ],
-  [
-    [439, 342],
-    [440, 342],
-  ],
-  [
-    [440, 342],
-    [512, 342],
-  ],
-
-  // West Atrium vertical spine (x = 184)
-  [
-    [184, 190],
-    [184, 213],
-  ],
-  [
-    [184, 213],
-    [184, 232],
-  ],
-  [
-    [184, 232],
-    [184, 299],
-  ],
-  [
-    [184, 299],
-    [184, 342],
-  ],
-  [
-    [184, 342],
-    [184, 367],
-  ],
-  [
-    [184, 367],
-    [184, 451],
-  ],
-  [
-    [184, 451],
-    [184, 606],
-  ],
-
-  // Far-West Parquet vertical spine (x = 147)
-  [
-    [147, 190],
-    [147, 367],
-  ],
-  [
-    [147, 367],
-    [147, 606],
-  ],
-
-  // East Elevator Core vertical spine (x = 512)
-  [
-    [512, 281],
-    [512, 342],
-  ],
-  [
-    [512, 342],
-    [512, 345],
-  ],
-  [
-    [512, 345],
-    [512, 405],
-  ],
-
-  // Node spurs & cross-links
-  [
-    [147, 190],
-    [184, 190],
-  ],
-  [
-    [133, 367],
-    [147, 367],
-  ],
-  [
-    [147, 367],
-    [176, 367],
-  ],
-  [
-    [176, 367],
-    [184, 367],
-  ],
-  [
-    [176, 367],
-    [176, 342],
-  ],
-  [
-    [194, 213],
-    [184, 213],
-  ],
-  [
-    [197, 232],
-    [184, 232],
-  ],
-  [
-    [207, 299],
-    [184, 299],
-  ],
-  [
-    [440, 363],
-    [440, 342],
-  ],
-  [
-    [439, 312],
-    [439, 342],
-  ],
-  [
-    [379, 341],
-    [379, 342],
-  ],
-  [
-    [232, 361],
-    [232, 342],
-  ],
-  [
-    [268, 324],
-    [268, 342],
-  ],
-  [
-    [284, 324],
-    [284, 342],
-  ],
-  [
-    [300, 324],
-    [300, 342],
-  ],
-  [
-    [301, 361],
-    [301, 342],
-  ],
-  [
-    [147, 606],
-    [165, 606],
-  ],
-  [
-    [165, 606],
-    [184, 606],
-  ],
-  [
-    [197, 451],
-    [184, 451],
-  ],
-  [
-    [314, 415],
-    [322, 415],
-  ],
-  [
-    [322, 415],
-    [322, 342],
-  ],
-  [
-    [571, 281],
-    [512, 281],
-  ],
-  [
-    [571, 405],
-    [512, 405],
-  ],
-  [
-    [551, 345],
-    [512, 345],
-  ],
-];
-
-const LEVEL_04_EDGES: Array<[[number, number], [number, number]]> = [
-  // Central horizontal spine (y = 336)
-  [
-    [208, 336],
-    [273, 336],
-  ],
-  [
-    [273, 336],
-    [341, 336],
-  ],
-  [
-    [341, 336],
-    [496, 336],
-  ],
-
-  // North-West vertical spine (x = 208)
-  [
-    [208, 140],
-    [208, 146],
-  ],
-  [
-    [208, 146],
-    [208, 198],
-  ],
-  [
-    [208, 198],
-    [208, 336],
-  ],
-
-  // North-West Stairs & Cafe connectors
-  [
-    [137, 190],
-    [137, 146],
-  ],
-  [
-    [137, 146],
-    [137, 140],
-  ],
-  [
-    [137, 146],
-    [208, 146],
-  ],
-  [
-    [137, 140],
-    [140, 140],
-  ],
-  [
-    [140, 140],
-    [164, 140],
-  ],
-  [
-    [164, 140],
-    [208, 140],
-  ],
-  [
-    [140, 77],
-    [140, 140],
-  ],
-  [
-    [164, 59],
-    [164, 140],
-  ],
-  [
-    [221, 146],
-    [208, 146],
-  ],
-  [
-    [213, 198],
-    [208, 198],
-  ],
-
-  // South-West vertical spine (x = 273)
-  [
-    [273, 336],
-    [273, 403],
-  ],
-  [
-    [273, 403],
-    [273, 514],
-  ],
-  [
-    [273, 514],
-    [273, 522],
-  ],
-
-  // South-West horizontal spine (y = 522) & spurs
-  [
-    [221, 522],
-    [273, 522],
-  ],
-  [
-    [273, 522],
-    [365, 522],
-  ],
-  [
-    [221, 495],
-    [221, 522],
-  ],
-  [
-    [284, 514],
-    [273, 514],
-  ],
-  [
-    [365, 501],
-    [365, 522],
-  ],
-  [
-    [341, 350],
-    [341, 336],
-  ],
-  [
-    [292, 403],
-    [273, 403],
-  ],
-
-  // East Elevator Core vertical spine (x = 496)
-  [
-    [496, 252],
-    [496, 266],
-  ],
-  [
-    [496, 266],
-    [496, 330],
-  ],
-  [
-    [496, 330],
-    [496, 336],
-  ],
-  [
-    [496, 336],
-    [496, 384],
-  ],
-  [
-    [496, 384],
-    [496, 404],
-  ],
-  [
-    [530, 330],
-    [496, 330],
-  ],
-  [
-    [556, 266],
-    [496, 266],
-  ],
-  [
-    [556, 384],
-    [496, 384],
-  ],
-
-  // East Wing: Primary South Food Area & Hip To Be Square (doorway at 852,356)
-  [
-    [496, 404],
-    [852, 404],
-  ],
-  [
-    [852, 446],
-    [852, 404],
-  ],
-  [
-    [852, 404],
-    [852, 356],
-  ],
-  [
-    [812, 356],
-    [852, 356],
-  ],
-
-  // East Wing: Secondary North Food Area
-  [
-    [496, 252],
-    [852, 252],
-  ],
-  [
-    [852, 224],
-    [852, 252],
-  ],
-];
-
-function computeShortestCorridorPath(
-  floor: FloorId,
-  startCandidates: GridPoint[],
-  endCandidates: GridPoint[],
-): { points: string; distance: number; startPt: GridPoint; endPt: GridPoint } {
-  const edges = floor === '03' ? LEVEL_03_EDGES : LEVEL_04_EDGES;
-  const adj = new Map<string, Array<{ key: string; cost: number }>>();
-  const coords = new Map<string, GridPoint>();
-
-  for (const [[x1, y1], [x2, y2]] of edges) {
-    const k1 = `${x1},${y1}`;
-    const k2 = `${x2},${y2}`;
-    coords.set(k1, { x: x1, y: y1 });
-    coords.set(k2, { x: x2, y: y2 });
-    const cost = Math.hypot(x2 - x1, y2 - y1);
-    if (!adj.has(k1)) adj.set(k1, []);
-    if (!adj.has(k2)) adj.set(k2, []);
-    adj.get(k1)!.push({ key: k2, cost });
-    adj.get(k2)!.push({ key: k1, cost });
-  }
-
-  let bestResult: {
-    points: string;
-    distance: number;
-    startPt: GridPoint;
-    endPt: GridPoint;
-  } | null = null;
-
-  for (const sPt of startCandidates) {
-    for (const ePt of endCandidates) {
-      const startKey = `${sPt.x},${sPt.y}`;
-      const endKey = `${ePt.x},${ePt.y}`;
-
-      if (startKey === endKey) {
-        return {
-          points: startKey,
-          distance: 0,
-          startPt: sPt,
-          endPt: ePt,
-        };
-      }
-
-      const dist = new Map<string, number>();
-      const prev = new Map<string, string>();
-      const visited = new Set<string>();
-
-      for (const k of adj.keys()) {
-        dist.set(k, Infinity);
-      }
-      dist.set(startKey, 0);
-
-      while (true) {
-        let u: string | null = null;
-        let minD = Infinity;
-        for (const [k, d] of dist.entries()) {
-          if (!visited.has(k) && d < minD) {
-            minD = d;
-            u = k;
-          }
-        }
-        if (u === null || u === endKey) break;
-        visited.add(u);
-
-        for (const neighbor of adj.get(u) ?? []) {
-          if (visited.has(neighbor.key)) continue;
-          const alt = minD + neighbor.cost;
-          if (alt < (dist.get(neighbor.key) ?? Infinity)) {
-            dist.set(neighbor.key, alt);
-            prev.set(neighbor.key, u);
-          }
-        }
-      }
-
-      const totalDist = dist.get(endKey) ?? Infinity;
-      if (totalDist < Infinity) {
-        const pathKeys: string[] = [];
-        let curr: string | undefined = endKey;
-        while (curr) {
-          pathKeys.unshift(curr);
-          curr = prev.get(curr);
-        }
-
-        // Simplify collinear intermediate points for clean SVG polylines
-        const pts = pathKeys.map((k) => coords.get(k)!);
-        const simplified: GridPoint[] = [];
-        for (const p of pts) {
-          if (simplified.length >= 2) {
-            const p1 = simplified[simplified.length - 2];
-            const p2 = simplified[simplified.length - 1];
-            const collinearX = p1.x === p2.x && p2.x === p.x;
-            const collinearY = p1.y === p2.y && p2.y === p.y;
-            if (collinearX || collinearY) {
-              simplified[simplified.length - 1] = p;
-              continue;
-            }
-          }
-          simplified.push(p);
-        }
-
-        if (!bestResult || totalDist < bestResult.distance) {
-          bestResult = {
-            points: simplified.map((p) => `${p.x},${p.y}`).join(' '),
-            distance: totalDist,
-            startPt: sPt,
-            endPt: ePt,
-          };
-        }
-      }
-    }
-  }
-
-  const fallbackS = startCandidates[0];
-  const fallbackE = endCandidates[0];
-  return (
-    bestResult ?? {
-      points: `${fallbackS.x},${fallbackS.y} ${fallbackE.x},${fallbackE.y}`,
-      distance: Math.hypot(
-        fallbackE.x - fallbackS.x,
-        fallbackE.y - fallbackS.y,
-      ),
-      startPt: fallbackS,
-      endPt: fallbackE,
-    }
-  );
-}
-
-function getNodeCandidatePoints(
-  node: MapNode,
-  overridePt: GridPoint | null,
-): GridPoint[] {
-  if (overridePt) return [overridePt];
-  if (node.id === 'l3-sponsor-g1') {
-    return [
-      { x: 268, y: 324 },
-      { x: 300, y: 324 },
-      { x: 301, y: 361 },
-      { x: 194, y: 213 },
-    ];
-  }
-  if (node.id === 'l3-restrooms') {
-    return [
-      { x: 314, y: 415 },
-      { x: 571, y: 281 },
-      { x: 571, y: 405 },
-    ];
-  }
-  if (node.id === 'l4-restrooms') {
-    return [
-      { x: 292, y: 403 },
-      { x: 556, y: 266 },
-      { x: 556, y: 384 },
-    ];
-  }
-  return [{ x: node.x, y: node.y }];
-}
-
 export type TronMapFocusRequest = {
   floor: '03' | '04';
   destinationNodeId: string;
@@ -1141,13 +604,7 @@ export function TronSpaceNavigator({
   const [activeFloor, setActiveFloor] = useState<FloorId>('03');
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [originNodeId, setOriginNodeId] = useState<string>('l3-elevators');
   const [selectedNodeId, setSelectedNodeId] = useState<string>('l3-room-1');
-  const [mapSelectionTarget, setMapSelectionTarget] = useState<
-    'destination' | 'origin'
-  >('destination');
-  const [originPointOverride, setOriginPointOverride] =
-    useState<GridPoint | null>(null);
   const [destPointOverride, setDestPointOverride] = useState<GridPoint | null>(
     null,
   );
@@ -1160,13 +617,7 @@ export function TronSpaceNavigator({
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveFloor(focusRequest.floor);
     setSelectedCategory('all');
-    setOriginPointOverride(null);
     setDestPointOverride(null);
-    setMapSelectionTarget('destination');
-    setOriginNodeId(
-      focusRequest.originNodeId ||
-        (focusRequest.floor === '03' ? 'l3-elevators' : 'l4-elevators'),
-    );
     setSelectedNodeId(focusRequest.destinationNodeId);
 
     requestAnimationFrame(() => {
@@ -1191,19 +642,6 @@ export function TronSpaceNavigator({
     () => MAP_NODES.filter((n) => n.floor === activeFloor),
     [activeFloor],
   );
-
-  const originNode = useMemo(() => {
-    const found = MAP_NODES.find(
-      (n) => n.id === originNodeId && n.floor === activeFloor,
-    );
-    if (found) return found;
-    return (
-      MAP_NODES.find(
-        (n) =>
-          n.id === (activeFloor === '03' ? 'l3-elevators' : 'l4-elevators'),
-      ) || MAP_NODES[0]
-    );
-  }, [originNodeId, activeFloor]);
 
   const selectedNode = useMemo(() => {
     const found = MAP_NODES.find(
@@ -1258,10 +696,7 @@ export function TronSpaceNavigator({
   const handleFloorSwitch = (floor: FloorId) => {
     setActiveFloor(floor);
     setHoveredNodeId(null);
-    setOriginPointOverride(null);
     setDestPointOverride(null);
-    setMapSelectionTarget('destination');
-    setOriginNodeId(floor === '03' ? 'l3-elevators' : 'l4-elevators');
     const defaultId = floor === '03' ? 'l3-room-1' : 'l4-room-6';
     setSelectedNodeId(defaultId);
     const nextNode = MAP_NODES.find((n) => n.id === defaultId);
@@ -1276,14 +711,8 @@ export function TronSpaceNavigator({
     specificPoint?: GridPoint,
   ) => {
     const targetPt = specificPoint ?? { x: node.x, y: node.y };
-    if (mapSelectionTarget === 'origin') {
-      setOriginNodeId(node.id);
-      setOriginPointOverride(specificPoint ?? null);
-      setMapSelectionTarget('destination');
-    } else {
-      setSelectedNodeId(node.id);
-      setDestPointOverride(specificPoint ?? null);
-    }
+    setSelectedNodeId(node.id);
+    setDestPointOverride(specificPoint ?? null);
 
     if (zoomLevel > 1) {
       centerMapOnPoint(targetPt.x, targetPt.y, zoomLevel);
@@ -1300,44 +729,10 @@ export function TronSpaceNavigator({
     }
   };
 
-  const handleSwapOriginAndDest = () => {
-    const prevOriginId = originNode.id;
-    const prevOriginPt = originPointOverride;
-    setOriginNodeId(selectedNode.id);
-    setOriginPointOverride(destPointOverride);
-    setSelectedNodeId(prevOriginId);
-    setDestPointOverride(prevOriginPt);
+  const selectedEndPt: GridPoint = destPointOverride ?? {
+    x: selectedNode.x,
+    y: selectedNode.y,
   };
-
-  const isRestroomSelected =
-    selectedNode.id === 'l3-restrooms' ||
-    selectedNode.id === 'l4-restrooms' ||
-    originNode.id === 'l3-restrooms' ||
-    originNode.id === 'l4-restrooms';
-
-  const computedRoute = useMemo(() => {
-    const startCandidates = getNodeCandidatePoints(
-      originNode,
-      originPointOverride,
-    );
-    const endCandidates = getNodeCandidatePoints(
-      selectedNode,
-      destPointOverride,
-    );
-    return computeShortestCorridorPath(
-      activeFloor,
-      startCandidates,
-      endCandidates,
-    );
-  }, [
-    activeFloor,
-    originNode,
-    originPointOverride,
-    selectedNode,
-    destPointOverride,
-  ]);
-
-  const activeRoutePoints = computedRoute.points;
 
   return (
     <div
@@ -1346,25 +741,6 @@ export function TronSpaceNavigator({
     >
       {/* Top Laser Border */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_20px_#00f0ff]" />
-
-      {focusRequest && (focusRequest.labelEn || focusRequest.labelFr) && (
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-fuchsia-400/50 bg-fuchsia-500/15 px-4 py-2.5 font-mono-tech text-xs text-fuchsia-200 shadow-[0_0_20px_rgba(217,70,239,0.2)]">
-          <div className="flex items-center gap-2">
-            <Navigation className="h-3.5 w-3.5 text-fuchsia-300 animate-pulse shrink-0" />
-            <span className="font-bold uppercase tracking-wider">
-              {isFr ? 'TRAJET MON AGENDA :' : 'ACTIVE AGENDA ROUTE:'}
-            </span>
-            <span className="text-white">
-              {isFr
-                ? focusRequest.labelFr || focusRequest.labelEn
-                : focusRequest.labelEn}
-            </span>
-          </div>
-          <span className="text-[10px] uppercase tracking-widest text-fuchsia-300/80">
-            {isFr ? `Niveau ${activeFloor}` : `Level ${activeFloor}`}
-          </span>
-        </div>
-      )}
 
       {/* Top HUD Command Bar */}
       <div className="mb-4 sm:mb-6 flex flex-col xl:flex-row xl:items-center justify-between gap-3.5 sm:gap-4 border-b border-cyan-500/20 pb-4 sm:pb-5">
@@ -1423,156 +799,6 @@ export function TronSpaceNavigator({
             >
               <Layers className="h-3.5 w-3.5 shrink-0" />
               <span>{isFr ? 'Niveau 04 (4e)' : 'Level 04 (4F)'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Point-to-Point Wayfinding Planner: Select Where You Are & Where You Want To Go */}
-      <div className="mb-3.5 sm:mb-4 rounded-xl border border-cyan-400/30 bg-[#060d1f]/90 p-2.5 sm:p-3.5 shadow-[0_0_25px_rgba(0,240,255,0.08)]">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
-          {/* WHERE I AM (START / ORIGIN) */}
-          <div
-            className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-lg border p-2 sm:px-3 sm:py-2 transition-all ${
-              mapSelectionTarget === 'origin'
-                ? 'border-emerald-400 bg-emerald-500/15 shadow-[0_0_15px_rgba(16,185,129,0.25)]'
-                : 'border-emerald-500/35 bg-[#081523]/80'
-            }`}
-          >
-            <div className="flex items-center gap-2 min-w-0 flex-1">
-              <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-emerald-500/25 border border-emerald-400/60 text-emerald-300">
-                <LocateFixed className="h-3.5 w-3.5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <label
-                  htmlFor="map-origin-select"
-                  className="block font-mono-tech text-[9px] font-bold uppercase tracking-[0.18em] text-emerald-300"
-                >
-                  {isFr ? '📍 Où je suis (Départ)' : '📍 Where I Am (Start)'}
-                </label>
-                <select
-                  id="map-origin-select"
-                  value={originNode.id}
-                  onChange={(e) => {
-                    setOriginNodeId(e.target.value);
-                    setOriginPointOverride(null);
-                  }}
-                  className="mt-0.5 w-full bg-transparent font-display text-xs sm:text-sm font-bold text-white focus:outline-none cursor-pointer truncate"
-                >
-                  {allCurrentFloorNodes.map((n) => (
-                    <option
-                      key={`origin-opt-${n.id}`}
-                      value={n.id}
-                      className="bg-[#071024] text-white"
-                    >
-                      {n.numberBadge ? `[${n.numberBadge}] ` : ''}
-                      {n.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() =>
-                setMapSelectionTarget(
-                  mapSelectionTarget === 'origin' ? 'destination' : 'origin',
-                )
-              }
-              className={`shrink-0 rounded-md border px-2.5 py-1 font-mono-tech text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                mapSelectionTarget === 'origin'
-                  ? 'border-emerald-300 bg-emerald-400 text-black shadow-[0_0_10px_rgba(16,185,129,0.5)]'
-                  : 'border-emerald-400/40 bg-emerald-500/15 text-emerald-200 hover:bg-emerald-500/30'
-              }`}
-            >
-              {mapSelectionTarget === 'origin'
-                ? isFr
-                  ? 'Touchez une icône...'
-                  : 'Tap map icon...'
-                : isFr
-                  ? 'Choisir sur carte'
-                  : 'Pick on Map'}
-            </button>
-          </div>
-
-          {/* SWAP ORIGIN <-> DESTINATION BUTTON */}
-          <div className="flex items-center justify-center">
-            <button
-              type="button"
-              onClick={handleSwapOriginAndDest}
-              title={
-                isFr
-                  ? 'Inverser le départ et la destination'
-                  : 'Swap Start and Destination'
-              }
-              className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-400/35 bg-[#09142a] px-3 py-1.5 lg:p-2 font-mono-tech text-[10px] uppercase tracking-wider text-cyan-300 hover:border-cyan-400 hover:bg-cyan-400/20 hover:text-white transition-all cursor-pointer"
-            >
-              <ArrowLeftRight className="h-3.5 w-3.5" />
-              <span className="lg:hidden">
-                {isFr ? 'Inverser' : 'Swap Route'}
-              </span>
-            </button>
-          </div>
-
-          {/* WHERE I WANT TO GO (DESTINATION) */}
-          <div
-            className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-lg border p-2 sm:px-3 sm:py-2 transition-all ${
-              mapSelectionTarget === 'destination'
-                ? 'border-cyan-400 bg-cyan-500/15 shadow-[0_0_15px_rgba(0,240,255,0.2)]'
-                : 'border-cyan-500/30 bg-[#081226]/80'
-            }`}
-          >
-            <div className="flex items-center gap-2 min-w-0 flex-1">
-              <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-cyan-500/25 border border-cyan-400/60 text-cyan-300">
-                <Navigation className="h-3.5 w-3.5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <label
-                  htmlFor="map-dest-select"
-                  className="block font-mono-tech text-[9px] font-bold uppercase tracking-[0.18em] text-cyan-300"
-                >
-                  {isFr
-                    ? '🏁 Où je veux aller (Destination)'
-                    : '🏁 Where I Want To Go (Destination)'}
-                </label>
-                <select
-                  id="map-dest-select"
-                  value={selectedNode.id}
-                  onChange={(e) => {
-                    setSelectedNodeId(e.target.value);
-                    setDestPointOverride(null);
-                  }}
-                  className="mt-0.5 w-full bg-transparent font-display text-xs sm:text-sm font-bold text-white focus:outline-none cursor-pointer truncate"
-                >
-                  {allCurrentFloorNodes.map((n) => (
-                    <option
-                      key={`dest-opt-${n.id}`}
-                      value={n.id}
-                      className="bg-[#071024] text-white"
-                    >
-                      {n.numberBadge ? `[${n.numberBadge}] ` : ''}
-                      {n.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setMapSelectionTarget('destination')}
-              className={`shrink-0 rounded-md border px-2.5 py-1 font-mono-tech text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                mapSelectionTarget === 'destination'
-                  ? 'border-cyan-300 bg-cyan-400 text-black shadow-[0_0_10px_rgba(0,240,255,0.5)]'
-                  : 'border-cyan-400/40 bg-cyan-500/15 text-cyan-200 hover:bg-cyan-500/30'
-              }`}
-            >
-              {mapSelectionTarget === 'destination'
-                ? isFr
-                  ? 'Mode Carte Actif'
-                  : 'Map Tap Active'
-                : isFr
-                  ? 'Choisir sur carte'
-                  : 'Pick on Map'}
             </button>
           </div>
         </div>
@@ -1771,88 +997,9 @@ export function TronSpaceNavigator({
                     </filter>
                   </defs>
 
-                  {/* Animated TRON Ray-Traced Light-Cycle Path from Origin Icon to Destination Icon */}
-                  {activeRoutePoints && (
-                    <g>
-                      {/* Outer Neon Path Glow */}
-                      <polyline
-                        points={activeRoutePoints}
-                        fill="none"
-                        stroke={
-                          isRestroomSelected
-                            ? '#eab308'
-                            : originNode.id.endsWith('elevators')
-                              ? '#ff007f'
-                              : '#00f0ff'
-                        }
-                        strokeWidth="7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        opacity="0.38"
-                        filter="url(#tron-cyan-glow)"
-                      />
-                      {/* Core Animated Energy Beam */}
-                      <polyline
-                        points={activeRoutePoints}
-                        fill="none"
-                        stroke={
-                          isRestroomSelected
-                            ? '#fde047'
-                            : originNode.id.endsWith('elevators')
-                              ? '#ff4da6'
-                              : '#00f0ff'
-                        }
-                        strokeWidth="3.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeDasharray="10 6"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          from="64"
-                          to="0"
-                          dur="1.4s"
-                          repeatCount="indefinite"
-                        />
-                      </polyline>
-                    </g>
-                  )}
-
-                  {/* Pulsing "Where I Am" (Origin) Beacon Ring at Start Point */}
-                  <g
-                    transform={`translate(${computedRoute.startPt.x}, ${computedRoute.startPt.y})`}
-                    className="pointer-events-none"
-                  >
-                    <circle
-                      r="22"
-                      fill="none"
-                      stroke="#10b981"
-                      strokeWidth="2"
-                      strokeDasharray="4 3"
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        type="rotate"
-                        from="360"
-                        to="0"
-                        dur="5s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-                    <circle r="16" fill="rgba(16, 185, 129, 0.28)">
-                      <animate
-                        attributeName="r"
-                        values="14;22;14"
-                        dur="1.8s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-                  </g>
-
                   {/* Interactive Map Nodes */}
                   {floorNodes.map((node) => {
                     const isSelected = selectedNode.id === node.id;
-                    const isOrigin = originNode.id === node.id;
                     const isHovered = hoveredNodeId === node.id;
                     const isRoomDiamond =
                       node.category === 'room' ||
@@ -1933,7 +1080,7 @@ export function TronSpaceNavigator({
                                 height="36"
                                 fill="transparent"
                               />
-                              {(isSelected || isOrigin) && (
+                              {isSelected && (
                                 <rect
                                   x="-15"
                                   y="-11"
@@ -1954,14 +1101,12 @@ export function TronSpaceNavigator({
                                 rx="3"
                                 fill="#10b981"
                                 stroke={
-                                  isSelected || isOrigin || isHovered
+                                  isSelected || isHovered
                                     ? '#ffffff'
                                     : '#6ee7b7'
                                 }
                                 strokeWidth={
-                                  isSelected || isOrigin || isHovered
-                                    ? '2.2'
-                                    : '1.4'
+                                  isSelected || isHovered ? '2.2' : '1.4'
                                 }
                                 filter="url(#tron-cyan-glow)"
                               />
@@ -2017,7 +1162,7 @@ export function TronSpaceNavigator({
                             >
                               {/* Generous Mobile Touch Target */}
                               <circle r="22" fill="transparent" />
-                              {(isSelected || isOrigin) && (
+                              {isSelected && (
                                 <circle
                                   r="19"
                                   fill="none"
@@ -2030,14 +1175,12 @@ export function TronSpaceNavigator({
                                 r="12"
                                 fill="#f97316"
                                 stroke={
-                                  isSelected || isOrigin || isHovered
+                                  isSelected || isHovered
                                     ? '#ffffff'
                                     : '#fdba74'
                                 }
                                 strokeWidth={
-                                  isSelected || isOrigin || isHovered
-                                    ? '2.2'
-                                    : '1.5'
+                                  isSelected || isHovered ? '2.2' : '1.5'
                                 }
                                 filter="url(#tron-cyan-glow)"
                               />
@@ -2148,14 +1291,10 @@ export function TronSpaceNavigator({
                             points="0,-15 15,0 0,15 -15,0"
                             fill="#ea4335"
                             stroke={
-                              isSelected || isOrigin || isHovered
-                                ? '#ffffff'
-                                : '#fca5a5'
+                              isSelected || isHovered ? '#ffffff' : '#fca5a5'
                             }
                             strokeWidth={
-                              isSelected || isOrigin || isHovered
-                                ? '2.5'
-                                : '1.5'
+                              isSelected || isHovered ? '2.5' : '1.5'
                             }
                             filter="url(#tron-red-glow)"
                           />
@@ -2168,14 +1307,12 @@ export function TronSpaceNavigator({
                             rx="3"
                             fill={palette.fill}
                             stroke={
-                              isSelected || isOrigin || isHovered
+                              isSelected || isHovered
                                 ? '#ffffff'
                                 : palette.stroke
                             }
                             strokeWidth={
-                              isSelected || isOrigin || isHovered
-                                ? '2.3'
-                                : '1.5'
+                              isSelected || isHovered ? '2.3' : '1.5'
                             }
                             filter="url(#tron-cyan-glow)"
                           />
@@ -2184,14 +1321,12 @@ export function TronSpaceNavigator({
                             r="13"
                             fill={palette.fill}
                             stroke={
-                              isSelected || isOrigin || isHovered
+                              isSelected || isHovered
                                 ? '#ffffff'
                                 : palette.stroke
                             }
                             strokeWidth={
-                              isSelected || isOrigin || isHovered
-                                ? '2.5'
-                                : '1.5'
+                              isSelected || isHovered ? '2.5' : '1.5'
                             }
                             filter="url(#tron-cyan-glow)"
                           />
@@ -2209,36 +1344,6 @@ export function TronSpaceNavigator({
                     );
                   })}
 
-                  {/* Floating "YOU ARE HERE" Pill Badge on the Origin Icon */}
-                  {originNode.id !== selectedNode.id && (
-                    <g
-                      transform={`translate(${Math.min(Math.max(computedRoute.startPt.x, 68), 932)}, ${
-                        computedRoute.startPt.y > 640
-                          ? computedRoute.startPt.y - 26
-                          : computedRoute.startPt.y + 30
-                      })`}
-                      className="pointer-events-none"
-                    >
-                      <rect
-                        x="-56"
-                        y="-13"
-                        width="112"
-                        height="19"
-                        rx="4"
-                        fill="rgba(16, 185, 129, 0.95)"
-                        stroke="#ffffff"
-                        strokeWidth="1"
-                      />
-                      <text
-                        y="-0.5"
-                        textAnchor="middle"
-                        className="fill-black font-mono-tech text-[9px] font-bold tracking-wider"
-                      >
-                        {isFr ? '📍 VOUS ÊTES ICI' : '📍 YOU ARE HERE'}
-                      </text>
-                    </g>
-                  )}
-
                   {/* Top-Layer Floating Tooltip Label (Shows hovered node on desktop, or active selected node on mobile/tap, clamped inside SVG bounds) */}
                   {floorNodes
                     .filter(
@@ -2251,13 +1356,9 @@ export function TronSpaceNavigator({
                         node.category === 'showcase' ||
                         node.id === 'l4-room-1';
                       const targetX =
-                        node.id === selectedNode.id
-                          ? computedRoute.endPt.x
-                          : node.x;
+                        node.id === selectedNode.id ? selectedEndPt.x : node.x;
                       const targetY =
-                        node.id === selectedNode.id
-                          ? computedRoute.endPt.y
-                          : node.y;
+                        node.id === selectedNode.id ? selectedEndPt.y : node.y;
                       const goldBoothMatch =
                         node.id === 'l3-sponsor-g1'
                           ? [
@@ -2391,13 +1492,9 @@ export function TronSpaceNavigator({
                   ? isFr
                     ? 'Glissez pour déplacer la carte'
                     : 'Drag / swipe to pan zoomed map'
-                  : mapSelectionTarget === 'origin'
-                    ? isFr
-                      ? 'Touchez votre position actuelle sur la carte'
-                      : 'Tap your current location on the map'
-                    : isFr
-                      ? 'Touchez une icône pour tracer la route'
-                      : 'Tap any icon to ray-trace route'}
+                  : isFr
+                    ? 'Touchez une icône pour inspecter la salle'
+                    : 'Tap any icon to inspect room or zone'}
               </span>
             </div>
           </div>
@@ -2536,47 +1633,6 @@ export function TronSpaceNavigator({
                     {isFr ? selectedNode.capacityFr : selectedNode.capacityEn}
                   </span>
                 </div>
-                <div className="flex items-center justify-between gap-2 border-t border-white/5 pt-2">
-                  <span className="text-white/45 uppercase">
-                    {isFr ? 'Départ actuel :' : 'Routing From:'}
-                  </span>
-                  <span className="text-emerald-300 font-bold text-right truncate">
-                    {originNode.numberBadge
-                      ? `[${originNode.numberBadge}] `
-                      : ''}
-                    {originNode.name}
-                  </span>
-                </div>
-              </div>
-
-              {/* Quick "I Am Here" Action Button */}
-              <div className="mt-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOriginNodeId(selectedNode.id);
-                    setOriginPointOverride(destPointOverride);
-                  }}
-                  disabled={
-                    originNode.id === selectedNode.id &&
-                    originPointOverride?.x === destPointOverride?.x &&
-                    originPointOverride?.y === destPointOverride?.y
-                  }
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-400/50 bg-emerald-500/15 px-3.5 py-2 font-mono-tech text-[11px] font-bold uppercase tracking-wider text-emerald-200 hover:bg-emerald-400 hover:text-black disabled:opacity-50 disabled:pointer-events-none transition-all cursor-pointer"
-                >
-                  <LocateFixed className="h-3.5 w-3.5" />
-                  <span>
-                    {originNode.id === selectedNode.id &&
-                    originPointOverride?.x === destPointOverride?.x &&
-                    originPointOverride?.y === destPointOverride?.y
-                      ? isFr
-                        ? '✓ Vous êtes ici (Point de départ)'
-                        : '✓ You Are Here (Current Start)'
-                      : isFr
-                        ? '📍 Je suis ici — Partir de ce point'
-                        : '📍 I Am Here — Route From This Spot'}
-                  </span>
-                </button>
               </div>
 
               {/* Gold Sponsors Explicit Lineup when G is selected */}
@@ -2619,8 +1675,8 @@ export function TronSpaceNavigator({
                       },
                     ].map((sponsor) => {
                       const isActiveBooth =
-                        computedRoute.endPt.x === sponsor.x &&
-                        computedRoute.endPt.y === sponsor.y;
+                        selectedEndPt.x === sponsor.x &&
+                        selectedEndPt.y === sponsor.y;
                       return (
                         <button
                           key={sponsor.name}
