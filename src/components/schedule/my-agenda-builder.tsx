@@ -70,7 +70,7 @@ const ROOM_TO_MAP_NODE: Record<
   string,
   { floor: '03' | '04'; nodeId: string; seats: number }
 > = {
-  '3-1': { floor: '03', nodeId: 'l3-room-1', seats: 75 },
+  '3-1': { floor: '03', nodeId: 'l3-room-1', seats: 100 },
   '3-3': { floor: '03', nodeId: 'l3-room-3', seats: 2 },
   '3-4': { floor: '03', nodeId: 'l3-room-4', seats: 20 },
   '3-5': { floor: '03', nodeId: 'l3-room-5', seats: 25 },
@@ -78,7 +78,7 @@ const ROOM_TO_MAP_NODE: Record<
   '4-3': { floor: '04', nodeId: 'l4-room-3', seats: 2 },
   '4-4': { floor: '04', nodeId: 'l4-room-4', seats: 40 },
   '4-5': { floor: '04', nodeId: 'l4-room-5', seats: 40 },
-  '4-6': { floor: '04', nodeId: 'l4-room-6', seats: 91 },
+  '4-6': { floor: '04', nodeId: 'l4-room-6', seats: 100 },
   '4-7': { floor: '04', nodeId: 'l4-room-7', seats: 2 },
 };
 

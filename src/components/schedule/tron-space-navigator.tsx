@@ -5,12 +5,10 @@ import {
   ArrowLeftRight,
   ArrowUpRight,
   Compass,
-  Cpu,
   DoorOpen,
   Headphones,
   Layers,
   LocateFixed,
-  MapPin,
   Music,
   Navigation,
   RotateCcw,
@@ -28,7 +26,6 @@ import {
 } from './room-agenda-section';
 
 type FloorId = '03' | '04';
-type RenderMode = 'tron' | 'blueprint';
 
 export type MapNodeCategory =
   | 'room'
@@ -73,8 +70,8 @@ const MAP_NODES: MapNode[] = [
     subtitleEn: 'Main Stage · Keynotes, Panels & Talks',
     subtitleFr: 'Scène principale · Keynotes, panels et conférences',
     zone: 'Le Parquet · West Wing',
-    capacityEn: '75 seats',
-    capacityFr: '75 places',
+    capacityEn: '100 seats',
+    capacityFr: '100 places',
     category: 'room',
     x: 133,
     y: 367,
@@ -453,8 +450,8 @@ const MAP_NODES: MapNode[] = [
     subtitleEn: 'Hands-On Workshops',
     subtitleFr: 'Ateliers pratiques',
     zone: 'Le Square · East Wing',
-    capacityEn: '91 table seated (110 with 19 standing up)',
-    capacityFr: '91 places assises aux tables (110 avec 19 debout)',
+    capacityEn: '100 seats',
+    capacityFr: '100 places',
     category: 'room',
     x: 812,
     y: 356,
@@ -1142,7 +1139,6 @@ export function TronSpaceNavigator({
 }: TronSpaceNavigatorProps) {
   const isFr = locale === 'fr';
   const [activeFloor, setActiveFloor] = useState<FloorId>('03');
-  const [renderMode, setRenderMode] = useState<RenderMode>('tron');
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [originNodeId, setOriginNodeId] = useState<string>('l3-elevators');
@@ -1379,9 +1375,17 @@ export function TronSpaceNavigator({
               style={{ animationDuration: '12s' }}
             />
             <span className="font-mono-tech text-[10px] sm:text-[11px] uppercase tracking-[0.22em] sm:tracking-[0.28em] text-cyan-400">
-              {isFr
-                ? 'SYSTÈME DE NAVIGATION SPATIALE // AX.C HUB'
-                : 'TRON SPACE NAVIGATOR // AX.C HUB'}
+              {isFr ? (
+                <>
+                  SYSTÈME DE NAVIGATION SPATIALE //{' '}
+                  <span className="normal-case">Espace Ax.c</span>
+                </>
+              ) : (
+                <>
+                  TRON SPACE NAVIGATOR //{' '}
+                  <span className="normal-case">Ax.c</span> HUB
+                </>
+              )}
             </span>
           </div>
           <h3 className="mt-1 font-display text-xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight text-white">
@@ -1392,7 +1396,7 @@ export function TronSpaceNavigator({
           </h3>
         </div>
 
-        {/* Controls: Floor Switcher + Render Mode (Full-width segmented bars on mobile) */}
+        {/* Controls: Floor Switcher (Full-width segmented bar on mobile) */}
         <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 sm:gap-2.5 w-full xl:w-auto">
           {/* Floor Toggle */}
           <div className="grid grid-cols-2 sm:inline-flex rounded-xl border border-cyan-400/40 bg-[#071024] p-1 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
@@ -1419,34 +1423,6 @@ export function TronSpaceNavigator({
             >
               <Layers className="h-3.5 w-3.5 shrink-0" />
               <span>{isFr ? 'Niveau 04 (4e)' : 'Level 04 (4F)'}</span>
-            </button>
-          </div>
-
-          {/* Render Mode Selector */}
-          <div className="grid grid-cols-2 sm:inline-flex rounded-xl border border-white/15 bg-[#070d1c] p-1">
-            <button
-              type="button"
-              onClick={() => setRenderMode('tron')}
-              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
-                renderMode === 'tron'
-                  ? 'bg-fuchsia-500/25 border border-fuchsia-400/60 text-fuchsia-200 shadow-[0_0_12px_rgba(217,70,239,0.3)]'
-                  : 'text-white/55 hover:text-white'
-              }`}
-            >
-              <Cpu className="h-3.5 w-3.5 shrink-0" />
-              <span>TRON Ray-Trace</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setRenderMode('blueprint')}
-              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
-                renderMode === 'blueprint'
-                  ? 'bg-google-yellow/25 border border-google-yellow/60 text-google-yellow'
-                  : 'text-white/55 hover:text-white'
-              }`}
-            >
-              <MapPin className="h-3.5 w-3.5 shrink-0" />
-              <span>{isFr ? 'Plan Original' : 'Original Map'}</span>
             </button>
           </div>
         </div>
@@ -1758,21 +1734,17 @@ export function TronSpaceNavigator({
                 style={{ width: `${zoomLevel * 100}%` }}
                 className="relative aspect-[1000/700] transition-[width] duration-200 ease-out"
               >
-                {/* Architectural Map Image (Glowing Cyan CAD Wireframe in TRON Mode, Full Color in Original Mode) */}
+                {/* Architectural Map Image */}
                 <div className="pointer-events-none absolute inset-0 z-0">
                   <Image
                     src={`/assets/images/maps/level-${activeFloor}.jpg`}
                     alt={`Level ${activeFloor} floor plan`}
                     fill
-                    className={`object-fill transition-all duration-500 ${
-                      renderMode === 'tron'
-                        ? 'invert hue-rotate-180 contrast-150 brightness-75 saturate-200 opacity-35 mix-blend-screen'
-                        : 'opacity-90'
-                    }`}
+                    className="object-fill opacity-95 transition-all duration-500"
                   />
                 </div>
 
-                {/* SVG Ray-Traced Vector Architecture & Interactive Overlay */}
+                {/* SVG Interactive Overlay */}
                 <svg
                   viewBox="0 0 1000 700"
                   className="relative z-10 h-full w-full select-none"
@@ -1807,389 +1779,7 @@ export function TronSpaceNavigator({
                         <feMergeNode in="SourceGraphic" />
                       </feMerge>
                     </filter>
-
-                    {/* Diagonal Hatch Pattern for Utility/Atrium Cores */}
-                    <pattern
-                      id="tron-hatch"
-                      width="10"
-                      height="10"
-                      patternTransform="rotate(45 0 0)"
-                      patternUnits="userSpaceOnUse"
-                    >
-                      <line
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="10"
-                        stroke="rgba(0, 240, 255, 0.18)"
-                        strokeWidth="1.5"
-                      />
-                    </pattern>
-
-                    {/* Fine Subgrid Pattern */}
-                    <pattern
-                      id="tron-subgrid"
-                      width="25"
-                      height="25"
-                      patternUnits="userSpaceOnUse"
-                    >
-                      <path
-                        d="M 25 0 L 0 0 0 25"
-                        fill="none"
-                        stroke="rgba(0, 240, 255, 0.06)"
-                        strokeWidth="0.75"
-                      />
-                    </pattern>
                   </defs>
-
-                  {/* Base TRON Coordinate Grid */}
-                  {renderMode === 'tron' && (
-                    <rect width="1000" height="700" fill="url(#tron-subgrid)" />
-                  )}
-
-                  {/* Architectural Vector Blueprint Walls & Corridors (Visible in TRON mode) */}
-                  {renderMode === 'tron' && (
-                    <g className="transition-opacity duration-500">
-                      {/* Outer Building Hull — West Wing + Bridge + East Wing */}
-                      <polygon
-                        points="28,46 412,42 414,185 506,185 506,170 520,170 520,108 824,112 824,188 886,190 895,355 880,505 824,505 818,578 510,575 510,520 495,520 495,495 415,495 415,636 42,626"
-                        fill="rgba(4, 10, 24, 0.45)"
-                        stroke="#00f0ff"
-                        strokeWidth="2.2"
-                        filter="url(#tron-cyan-glow)"
-                      />
-
-                      {/* East Wing Central Hatched Courtyard Core */}
-                      <rect
-                        x="578"
-                        y="268"
-                        width="148"
-                        height="145"
-                        fill="url(#tron-hatch)"
-                        stroke="rgba(0, 240, 255, 0.45)"
-                        strokeWidth="1.5"
-                      />
-
-                      {/* Level 03 Specific Vector Rooms & Walkable Corridors */}
-                      {activeFloor === '03' && (
-                        <g>
-                          {/* Walkable Corridor Conduits (Level 03) */}
-                          <g
-                            fill="rgba(0, 240, 255, 0.06)"
-                            stroke="rgba(0, 240, 255, 0.35)"
-                            strokeDasharray="5 4"
-                            strokeWidth="1"
-                          >
-                            {/* Central East-West Bridge Corridor */}
-                            <rect x="176" y="328" width="340" height="28" />
-                            {/* West Atrium North-South Corridor */}
-                            <rect x="172" y="166" width="24" height="445" />
-                            {/* East Wing Elevator Lobby & Courtyard Corridor */}
-                            <rect x="504" y="252" width="20" height="184" />
-                          </g>
-
-                          {/* West Wing Inner Hatched Utility Cores */}
-                          <rect
-                            x="244"
-                            y="170"
-                            width="72"
-                            height="142"
-                            fill="url(#tron-hatch)"
-                            stroke="rgba(0, 240, 255, 0.35)"
-                            strokeWidth="1.2"
-                          />
-                          <rect
-                            x="240"
-                            y="376"
-                            width="76"
-                            height="122"
-                            fill="url(#tron-hatch)"
-                            stroke="rgba(0, 240, 255, 0.35)"
-                            strokeWidth="1.2"
-                          />
-
-                          {/* Le Parquet — Main Stage 3-1 Zone */}
-                          <rect
-                            x="110"
-                            y="122"
-                            width="90"
-                            height="465"
-                            rx="4"
-                            fill="rgba(251, 188, 4, 0.07)"
-                            stroke="rgba(251, 188, 4, 0.45)"
-                            strokeWidth="1.5"
-                          />
-                          <text
-                            x="155"
-                            y="338"
-                            textAnchor="middle"
-                            className="fill-yellow-300/75 font-mono-tech text-[10px] uppercase tracking-widest"
-                          >
-                            LE PARQUET
-                          </text>
-
-                          {/* Room #321 (2 - Mr. Roboto) */}
-                          <rect
-                            x="205"
-                            y="196"
-                            width="39"
-                            height="48"
-                            fill="rgba(0, 240, 255, 0.14)"
-                            stroke="#00f0ff"
-                            strokeWidth="1.6"
-                          />
-                          {/* Room #319 (3 - Take On Me) */}
-                          <rect
-                            x="205"
-                            y="284"
-                            width="39"
-                            height="34"
-                            fill="rgba(52, 211, 153, 0.14)"
-                            stroke="#34d399"
-                            strokeWidth="1.6"
-                          />
-
-                          {/* Room #342 (5 - Just Can't Get Enough) */}
-                          <rect
-                            x="416"
-                            y="263"
-                            width="76"
-                            height="56"
-                            fill="rgba(234, 67, 53, 0.16)"
-                            stroke="#ea4335"
-                            strokeWidth="1.8"
-                          />
-                          {/* Room #302 (4 - Call Me) */}
-                          <rect
-                            x="416"
-                            y="366"
-                            width="42"
-                            height="62"
-                            fill="rgba(234, 67, 53, 0.16)"
-                            stroke="#ea4335"
-                            strokeWidth="1.8"
-                          />
-                        </g>
-                      )}
-
-                      {/* Level 04 Specific Vector Rooms & Walkable Corridors */}
-                      {activeFloor === '04' && (
-                        <g>
-                          {/* Walkable Corridor Conduits (Level 04) */}
-                          <g
-                            fill="rgba(0, 240, 255, 0.06)"
-                            stroke="rgba(0, 240, 255, 0.35)"
-                            strokeDasharray="5 4"
-                            strokeWidth="1"
-                          >
-                            {/* Central East-West Bridge Corridor */}
-                            <rect x="200" y="324" width="302" height="22" />
-                            {/* North-West Corridor (Stairs / Le Café to Central Bridge) */}
-                            <rect x="198" y="134" width="22" height="202" />
-                            <rect x="130" y="134" width="88" height="20" />
-                            {/* South-West Corridor (to #415, #410, #403.1) */}
-                            <rect x="266" y="346" width="16" height="184" />
-                            <rect x="218" y="514" width="152" height="16" />
-                            {/* East Wing Ring Corridor to Primary Food Area & Le Square Doorway */}
-                            <rect x="488" y="242" width="18" height="172" />
-                            <rect x="488" y="242" width="376" height="18" />
-                            <rect x="488" y="396" width="376" height="18" />
-                          </g>
-
-                          {/* West Wing Inner Hatched Utility Cores */}
-                          <rect
-                            x="268"
-                            y="185"
-                            width="44"
-                            height="138"
-                            fill="url(#tron-hatch)"
-                            stroke="rgba(0, 240, 255, 0.35)"
-                            strokeWidth="1.2"
-                          />
-                          <rect
-                            x="226"
-                            y="374"
-                            width="40"
-                            height="102"
-                            fill="url(#tron-hatch)"
-                            stroke="rgba(0, 240, 255, 0.35)"
-                            strokeWidth="1.2"
-                          />
-
-                          {/* Le Café (1 - The Danger Zone + Badge Station) */}
-                          <rect
-                            x="98"
-                            y="44"
-                            width="95"
-                            height="84"
-                            fill="rgba(56, 189, 248, 0.15)"
-                            stroke="#38bdf8"
-                            strokeWidth="1.8"
-                          />
-                          <text
-                            x="145"
-                            y="116"
-                            textAnchor="middle"
-                            className="fill-sky-300/80 font-mono-tech text-[9px] uppercase tracking-widest"
-                          >
-                            LE CAFÉ
-                          </text>
-
-                          {/* Le Parquet Upper Mezzanine Void (Hatched) */}
-                          <rect
-                            x="28"
-                            y="128"
-                            width="165"
-                            height="404"
-                            fill="url(#tron-hatch)"
-                            stroke="rgba(0, 240, 255, 0.25)"
-                            strokeWidth="1.2"
-                          />
-                          <text
-                            x="110"
-                            y="340"
-                            textAnchor="middle"
-                            className="fill-cyan-300/60 font-mono-tech text-[10px] uppercase tracking-widest"
-                          >
-                            LE PARQUET (MEZZANINE)
-                          </text>
-
-                          {/* Room #403 (4 - Under Pressure) */}
-                          <rect
-                            x="315"
-                            y="346"
-                            width="68"
-                            height="91"
-                            fill="rgba(234, 67, 53, 0.16)"
-                            stroke="#ea4335"
-                            strokeWidth="1.8"
-                          />
-                          {/* Room #403.1 (5 - Never Gonna Give You Up) */}
-                          <rect
-                            x="315"
-                            y="437"
-                            width="68"
-                            height="93"
-                            fill="rgba(234, 67, 53, 0.16)"
-                            stroke="#ea4335"
-                            strokeWidth="1.8"
-                          />
-
-                          {/* Coaching Pods: #418 (2), #415 (3), #410 (7) */}
-                          <rect
-                            x="226"
-                            y="134"
-                            width="42"
-                            height="34"
-                            fill="rgba(52, 211, 153, 0.15)"
-                            stroke="#34d399"
-                            strokeWidth="1.5"
-                          />
-                          <rect
-                            x="226"
-                            y="476"
-                            width="40"
-                            height="52"
-                            fill="rgba(52, 211, 153, 0.15)"
-                            stroke="#34d399"
-                            strokeWidth="1.5"
-                          />
-                          <rect
-                            x="280"
-                            y="482"
-                            width="35"
-                            height="46"
-                            fill="rgba(52, 211, 153, 0.15)"
-                            stroke="#34d399"
-                            strokeWidth="1.5"
-                          />
-
-                          {/* Le Square — Room 6: Hip To Be Square (91 Workshop Seats) */}
-                          <rect
-                            x="735"
-                            y="260"
-                            width="148"
-                            height="136"
-                            rx="4"
-                            fill="rgba(244, 63, 94, 0.16)"
-                            stroke="#fb7185"
-                            strokeWidth="2.2"
-                            filter="url(#tron-red-glow)"
-                          />
-                          {/* Doorway entry at South-East corner from Primary Food Area */}
-                          <line
-                            x1="840"
-                            y1="396"
-                            x2="864"
-                            y2="396"
-                            stroke="#00f0ff"
-                            strokeWidth="3"
-                          />
-                          <text
-                            x="810"
-                            y="326"
-                            textAnchor="middle"
-                            className="fill-rose-300 font-mono-tech text-[11px] font-bold uppercase tracking-widest"
-                          >
-                            LE SQUARE
-                          </text>
-
-                          {/* South Dining Area — Primary Catering Zone (South of Hip To Be Square) */}
-                          <rect
-                            x="795"
-                            y="416"
-                            width="88"
-                            height="56"
-                            rx="3"
-                            fill="rgba(249, 115, 22, 0.16)"
-                            stroke="#f97316"
-                            strokeWidth="1.8"
-                          />
-                          <text
-                            x="839"
-                            y="484"
-                            textAnchor="middle"
-                            className="fill-orange-300/90 font-mono-tech text-[8px] font-bold uppercase tracking-wider"
-                          >
-                            PRIMARY FOOD
-                          </text>
-
-                          {/* North Dining Area — Secondary Catering Zone (North of Hip To Be Square) */}
-                          <rect
-                            x="795"
-                            y="196"
-                            width="88"
-                            height="54"
-                            rx="3"
-                            fill="rgba(251, 188, 4, 0.1)"
-                            stroke="rgba(251, 188, 4, 0.55)"
-                            strokeDasharray="4 3"
-                            strokeWidth="1.4"
-                          />
-                          <text
-                            x="839"
-                            y="190"
-                            textAnchor="middle"
-                            className="fill-amber-300/75 font-mono-tech text-[8px] uppercase tracking-wider"
-                          >
-                            SECONDARY FOOD
-                          </text>
-                        </g>
-                      )}
-
-                      {/* Stairs Inverted Triangle Symbol */}
-                      <polygon
-                        points={
-                          activeFloor === '03'
-                            ? '119,166 175,166 147,219'
-                            : '109,166 165,166 137,219'
-                        }
-                        fill="rgba(0, 240, 255, 0.14)"
-                        stroke="#00f0ff"
-                        strokeWidth="1.5"
-                      />
-                    </g>
-                  )}
 
                   {/* Animated TRON Ray-Traced Light-Cycle Path from Origin Icon to Destination Icon */}
                   {activeRoutePoints && (
@@ -3236,7 +2826,10 @@ export function TronSpaceNavigator({
 
           {/* Bottom Floor Directory Footer */}
           <div className="mt-6 border-t border-white/10 pt-3 flex items-center justify-between font-mono-tech text-[10px] uppercase tracking-widest text-white/40">
-            <span>AX.C // 800 SQUARE-VICTORIA</span>
+            <span>
+              <span className="normal-case">Espace Ax.c</span>
+              {' // 800 SQUARE-VICTORIA'}
+            </span>
             <span className="text-cyan-400">GRID STATUS: ONLINE</span>
           </div>
         </div>

@@ -89,7 +89,8 @@ export function getLevelBadgeClass(level: string): string {
 }
 
 export function renderSpeakersWithParens(speakersText: string) {
-  const parts = speakersText.split(/(\([^)]+\))/g);
+  const cleaned = speakersText.replace(/\s*·\s*GDE\b/gi, '');
+  const parts = cleaned.split(/(\([^)]+\))/g);
   return parts.map((part, i) => {
     if (part.startsWith('(') && part.endsWith(')')) {
       return (
@@ -543,28 +544,6 @@ export function RoomAgendaSection({
                 </button>
               );
             })}
-
-            <button
-              type="button"
-              onClick={() => {
-                setSearchQuery('');
-                setSelectedCategory('all');
-                setSelectedTab('map');
-              }}
-              className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 sm:py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                selectedTab === 'map' && !isFiltering
-                  ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-200 shadow-[0_0_18px_rgba(217,70,239,0.35)]'
-                  : 'border-fuchsia-400/35 bg-fuchsia-500/10 text-fuchsia-200/90 hover:border-fuchsia-400 hover:text-white'
-              }`}
-            >
-              <Compass className="h-3.5 w-3.5 shrink-0" />
-              <span>
-                {copy.map_tab ||
-                  (locale === 'fr'
-                    ? 'Carte Interactive (3e & 4e)'
-                    : 'Space Navigator (Map)')}
-              </span>
-            </button>
           </div>
         </div>
       </div>
@@ -635,6 +614,95 @@ export function RoomAgendaSection({
           </div>
         </div>
       )}
+
+      {/* Dedicated Interactive Maps (Space Navigator) Section */}
+      <div className="-mt-6 flex flex-col gap-3.5 rounded-2xl border border-fuchsia-500/30 bg-[#11081a]/90 px-5 py-4 md:px-6 md:py-5 shadow-[0_0_30px_rgba(217,70,239,0.06)] backdrop-blur-2xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Compass className="h-4 w-4 text-fuchsia-400 shrink-0" />
+            <span className="font-mono-tech text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-300">
+              {isFr
+                ? 'Cartes Interactives & Navigateur Spatial'
+                : 'Interactive Floor Maps & Space Navigator'}
+            </span>
+          </div>
+          <span className="font-mono-tech text-[11px] text-fuchsia-200/65">
+            {isFr
+              ? 'Orientation point-à-point, salles, kiosques et commodités · Niveaux 03 & 04'
+              : 'Point-to-point wayfinding, rooms, booths & amenities · Levels 03 & 04'}
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setSearchQuery('');
+              setSelectedCategory('all');
+              setSelectedTab('map');
+            }}
+            className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+              selectedTab === 'map' && !isFiltering
+                ? 'border-fuchsia-300 bg-fuchsia-500/25 text-white shadow-[0_0_18px_rgba(217,70,239,0.4)]'
+                : 'border-fuchsia-400/45 bg-fuchsia-500/15 text-fuchsia-200 hover:border-fuchsia-300 hover:text-white'
+            }`}
+          >
+            <Compass className="h-3.5 w-3.5 shrink-0 text-fuchsia-300" />
+            <span className="font-bold">
+              {copy.map_tab ||
+                (isFr
+                  ? 'Carte Interactive (3e & 4e)'
+                  : 'Space Navigator (Map)')}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setSearchQuery('');
+              setSelectedCategory('all');
+              setSelectedTab('map');
+              handleFocusMapRoute({
+                floor: '03',
+                destinationNodeId: 'l3-room-1',
+              });
+            }}
+            className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+              selectedTab === 'map' && mapFocusRequest?.floor === '03'
+                ? 'border-fuchsia-400 bg-fuchsia-500/25 text-fuchsia-200 shadow-[0_0_15px_rgba(217,70,239,0.3)]'
+                : 'border-fuchsia-500/25 bg-fuchsia-500/[0.06] text-fuchsia-200/80 hover:border-fuchsia-400/60 hover:text-fuchsia-100'
+            }`}
+          >
+            <Layers className="h-3.5 w-3.5 shrink-0 text-fuchsia-400" />
+            <span className="font-bold">
+              {isFr ? 'Niveau 03 (3e étage)' : 'Level 03 (3rd Floor)'}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setSearchQuery('');
+              setSelectedCategory('all');
+              setSelectedTab('map');
+              handleFocusMapRoute({
+                floor: '04',
+                destinationNodeId: 'l4-room-6',
+              });
+            }}
+            className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+              selectedTab === 'map' && mapFocusRequest?.floor === '04'
+                ? 'border-fuchsia-400 bg-fuchsia-500/25 text-fuchsia-200 shadow-[0_0_15px_rgba(217,70,239,0.3)]'
+                : 'border-fuchsia-500/25 bg-fuchsia-500/[0.06] text-fuchsia-200/80 hover:border-fuchsia-400/60 hover:text-fuchsia-100'
+            }`}
+          >
+            <Layers className="h-3.5 w-3.5 shrink-0 text-fuchsia-400" />
+            <span className="font-bold">
+              {isFr ? 'Niveau 04 (4e étage)' : 'Level 04 (4th Floor)'}
+            </span>
+          </button>
+        </div>
+      </div>
 
       {/* Dedicated My Agenda Row / Bar right below Navigate by Room (outside the room cluster) */}
       <div className="-mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-cyan-500/25 bg-[#070b16]/90 px-5 py-4 shadow-[0_0_30px_rgba(0,240,255,0.06)] backdrop-blur-2xl">
@@ -1245,7 +1313,9 @@ export function RoomAgendaSection({
                                           {sub.time}
                                         </span>
                                         <span className="font-sans text-cyan-300">
-                                          {sub.speakers}
+                                          {renderSpeakersWithParens(
+                                            sub.speakers,
+                                          )}
                                         </span>
                                         {sub.categories?.map((cat) => (
                                           <span

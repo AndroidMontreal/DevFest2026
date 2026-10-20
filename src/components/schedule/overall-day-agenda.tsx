@@ -208,7 +208,7 @@ export function OverallDayAgenda({ copy }: OverallDayAgendaProps) {
 
             {/* Card Footer Decorative Badge */}
             <div className="mt-8 border-t border-white/10 pt-4 flex items-center justify-between font-mono-tech text-[10px] text-white/40 uppercase tracking-widest">
-              <span>Ax.C Hub · Montreal</span>
+              <span className="normal-case">Ax.c Hub · Montreal</span>
               <span className="text-cyan-400">Nov 6, 2026</span>
             </div>
           </div>
