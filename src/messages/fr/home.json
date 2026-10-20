@@ -30,7 +30,7 @@
   },
   "hud": {
     "date": "6 novembre 2026",
-    "location": "Espace AX.C, 800 Square-Victoria, Montréal"
+    "location": "Espace Ax.c, 800 Square-Victoria, Montréal"
   },
   "countdown": {
     "days": "Jours",
@@ -52,7 +52,7 @@
         "line2": "DevFest Montréal ?"
       }
     },
-    "venueAddress": "Espace AX.C, 800 Square-Victoria, Montréal",
+    "venueAddress": "Espace Ax.c, 800 Square-Victoria, Montréal",
     "blocks": [
       {
         "id": "01",
@@ -67,7 +67,7 @@
       {
         "id": "03",
         "title": "LE LIEU",
-        "content": "Espace AX.C, un superbe espace événementiel au 800 Square-Victoria, au centre-ville de Montréal, juste au-dessus du métro Square-Victoria-OACI. Plusieurs salles, toutes sous le même toit."
+        "content": "Espace Ax.c, un superbe espace événementiel au 800 Square-Victoria, au centre-ville de Montréal, juste au-dessus du métro Square-Victoria-OACI. Plusieurs salles, toutes sous le même toit."
       }
     ]
   }

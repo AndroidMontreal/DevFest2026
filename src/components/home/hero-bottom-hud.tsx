@@ -64,7 +64,7 @@ export function HeroBottomHud({ hud }: HeroBottomHudProps) {
           </div>
           <div className="flex items-center gap-3">
             <MapPin className="w-4 h-4 text-google-red" />
-            <span className="font-mono-tech uppercase tracking-wider text-xs text-white/90">
+            <span className="font-mono-tech tracking-wider text-xs text-white/90">
               {hud.location}
             </span>
           </div>

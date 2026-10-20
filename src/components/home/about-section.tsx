@@ -87,7 +87,7 @@ export function AboutSection({ about }: AboutSectionProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
           <div className="absolute bottom-4 left-4 font-mono-tech text-[10px] tracking-widest text-white/60 bg-black/60 px-3 py-1 rounded border border-white/5 backdrop-blur-sm">
-            Ax.C Hub
+            Ax.c Hub
           </div>
         </div>
 
@@ -129,8 +129,8 @@ export function AboutSection({ about }: AboutSectionProps) {
                 <span className="font-mono-tech text-xs font-bold text-google-green bg-google-green/10 px-2 py-0.5 rounded border border-google-green/20">
                   [ {venueBlock.id} ]
                 </span>
-                <span className="font-mono-tech text-[10px] tracking-[0.25em] text-white/40 uppercase">
-                  Ax.C Hub
+                <span className="font-mono-tech text-[10px] tracking-[0.25em] text-white/40">
+                  Ax.c Hub
                 </span>
               </div>
 
@@ -173,7 +173,7 @@ export function AboutSection({ about }: AboutSectionProps) {
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-white/80 font-bold uppercase tracking-wider text-[10px] truncate">
+                  <div className="text-white/80 font-bold tracking-wider text-[10px] truncate">
                     {about.venueAddress}
                   </div>
                 </div>

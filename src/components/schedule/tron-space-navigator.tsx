@@ -1379,9 +1379,17 @@ export function TronSpaceNavigator({
               style={{ animationDuration: '12s' }}
             />
             <span className="font-mono-tech text-[10px] sm:text-[11px] uppercase tracking-[0.22em] sm:tracking-[0.28em] text-cyan-400">
-              {isFr
-                ? 'SYSTÈME DE NAVIGATION SPATIALE // AX.C HUB'
-                : 'TRON SPACE NAVIGATOR // AX.C HUB'}
+              {isFr ? (
+                <>
+                  SYSTÈME DE NAVIGATION SPATIALE //{' '}
+                  <span className="normal-case">Espace Ax.c</span>
+                </>
+              ) : (
+                <>
+                  TRON SPACE NAVIGATOR //{' '}
+                  <span className="normal-case">Ax.c</span> HUB
+                </>
+              )}
             </span>
           </div>
           <h3 className="mt-1 font-display text-xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight text-white">
@@ -3236,7 +3244,10 @@ export function TronSpaceNavigator({
 
           {/* Bottom Floor Directory Footer */}
           <div className="mt-6 border-t border-white/10 pt-3 flex items-center justify-between font-mono-tech text-[10px] uppercase tracking-widest text-white/40">
-            <span>AX.C // 800 SQUARE-VICTORIA</span>
+            <span>
+              <span className="normal-case">Espace Ax.c</span>
+              {' // 800 SQUARE-VICTORIA'}
+            </span>
             <span className="text-cyan-400">GRID STATUS: ONLINE</span>
           </div>
         </div>
