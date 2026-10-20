@@ -102,8 +102,8 @@
         "locationBadgePrimary": "WORLD 3-1 · FLOOR 3",
         "locationBadgeSecondary": "MONDE 3-1 · ÉTAGE 3",
         "name": "Don’t Stop Believin’",
-        "typePrimary": "Main stage · 75 seats",
-        "typeSecondary": "Scène principale · 75 places",
+        "typePrimary": "Main stage · 100 seats",
+        "typeSecondary": "Scène principale · 100 places",
         "accent": "yellow",
         "sessions": [
           {
@@ -537,8 +537,8 @@
         "locationBadgePrimary": "WORLD 4-6 · FLOOR 4",
         "locationBadgeSecondary": "MONDE 4-6 · ÉTAGE 4",
         "name": "Hip To Be Square",
-        "typePrimary": "Workshops · 91 seats",
-        "typeSecondary": "Ateliers · 91 places",
+        "typePrimary": "Workshops · 100 seats",
+        "typeSecondary": "Ateliers · 100 places",
         "accent": "red",
         "sessions": [
           {

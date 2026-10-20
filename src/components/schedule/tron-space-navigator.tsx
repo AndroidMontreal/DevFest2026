@@ -73,8 +73,8 @@ const MAP_NODES: MapNode[] = [
     subtitleEn: 'Main Stage · Keynotes, Panels & Talks',
     subtitleFr: 'Scène principale · Keynotes, panels et conférences',
     zone: 'Le Parquet · West Wing',
-    capacityEn: '75 seats',
-    capacityFr: '75 places',
+    capacityEn: '100 seats',
+    capacityFr: '100 places',
     category: 'room',
     x: 133,
     y: 367,
@@ -453,8 +453,8 @@ const MAP_NODES: MapNode[] = [
     subtitleEn: 'Hands-On Workshops',
     subtitleFr: 'Ateliers pratiques',
     zone: 'Le Square · East Wing',
-    capacityEn: '91 table seated (110 with 19 standing up)',
-    capacityFr: '91 places assises aux tables (110 avec 19 debout)',
+    capacityEn: '100 seats',
+    capacityFr: '100 places',
     category: 'room',
     x: 812,
     y: 356,
@@ -2112,7 +2112,7 @@ export function TronSpaceNavigator({
                             strokeWidth="1.5"
                           />
 
-                          {/* Le Square — Room 6: Hip To Be Square (91 Workshop Seats) */}
+                          {/* Le Square — Room 6: Hip To Be Square (100 Workshop Seats) */}
                           <rect
                             x="735"
                             y="260"
