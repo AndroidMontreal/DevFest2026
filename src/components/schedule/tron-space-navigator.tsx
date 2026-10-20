@@ -23,6 +23,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   getCategoryBadgeClass,
   getLevelBadgeClass,
+  renderSpeakersWithParens,
   type RoomTrack,
 } from './room-agenda-section';
 
@@ -3150,7 +3151,7 @@ export function TronSpaceNavigator({
                         </div>
                         {s.speakers && (
                           <div className="mt-0.5 font-mono-tech text-[10px] text-cyan-400/90 truncate">
-                            {s.speakers}
+                            {renderSpeakersWithParens(s.speakers)}
                           </div>
                         )}
                         {((s.categories && s.categories.length > 0) ||

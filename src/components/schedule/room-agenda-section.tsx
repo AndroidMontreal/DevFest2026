@@ -88,6 +88,23 @@ export function getLevelBadgeClass(level: string): string {
   return 'border-white/25 bg-white/10 text-white/90';
 }
 
+export function renderSpeakersWithParens(speakersText: string) {
+  const parts = speakersText.split(/(\([^)]+\))/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('(') && part.endsWith(')')) {
+      return (
+        <span
+          key={i}
+          className="text-[0.8em] font-normal text-cyan-200/75 tracking-normal"
+        >
+          {part}
+        </span>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
 export type RoomTrack = {
   id: string;
   worldCode: string;
@@ -1114,9 +1131,11 @@ export function RoomAgendaSection({
                             {session.speakers && (
                               <div className="flex flex-wrap items-center gap-2">
                                 <p className="font-mono-tech text-xs uppercase tracking-wider text-cyan-400">
-                                  {session.speakers.replace(
-                                    /\s*·\s*GDE\b/i,
-                                    '',
+                                  {renderSpeakersWithParens(
+                                    session.speakers.replace(
+                                      /\s*·\s*GDE\b/i,
+                                      '',
+                                    ),
                                   )}
                                 </p>
                                 {/\bGDE\b/i.test(session.speakers) && (
