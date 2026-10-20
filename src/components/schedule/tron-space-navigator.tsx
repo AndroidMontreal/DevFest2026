@@ -602,6 +602,9 @@ export function TronSpaceNavigator({
 }: TronSpaceNavigatorProps) {
   const isFr = locale === 'fr';
   const [activeFloor, setActiveFloor] = useState<FloorId>('03');
+  const [routeOrigin, setRouteOrigin] = useState<'elevator' | 'stairs'>(
+    'elevator',
+  );
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedNodeId, setSelectedNodeId] = useState<string>('l3-room-1');
@@ -618,6 +621,11 @@ export function TronSpaceNavigator({
     setActiveFloor(focusRequest.floor);
     setSelectedCategory('all');
     setDestPointOverride(null);
+    if (focusRequest.originNodeId?.endsWith('stairs')) {
+      setRouteOrigin('stairs');
+    } else if (focusRequest.originNodeId?.endsWith('elevators')) {
+      setRouteOrigin('elevator');
+    }
     setSelectedNodeId(focusRequest.destinationNodeId);
 
     requestAnimationFrame(() => {
@@ -734,6 +742,51 @@ export function TronSpaceNavigator({
     y: selectedNode.y,
   };
 
+  const activeRoutePoints = useMemo(() => {
+    if (selectedNode.id === 'l3-sponsor-g1' && destPointOverride) {
+      const { x, y } = destPointOverride;
+      if (x === 194 && y === 213) {
+        return routeOrigin === 'elevator'
+          ? '551,345 512,345 512,342 184,342 184,213 194,213'
+          : '147,190 184,190 184,213 194,213';
+      }
+      return routeOrigin === 'elevator'
+        ? `551,345 512,345 512,342 ${x},342 ${x},${y}`
+        : `147,190 184,190 184,342 ${x},342 ${x},${y}`;
+    }
+    if (selectedNode.id === 'l3-restrooms' && destPointOverride) {
+      const { x, y } = destPointOverride;
+      if (x === 314) {
+        return routeOrigin === 'elevator'
+          ? '551,345 512,345 512,342 322,342 322,415 314,415'
+          : '147,190 184,190 184,342 322,342 322,415 314,415';
+      }
+      return routeOrigin === 'elevator'
+        ? `551,345 512,345 512,${y} ${x},${y}`
+        : `147,190 184,190 184,342 512,342 512,${y} ${x},${y}`;
+    }
+    if (selectedNode.id === 'l4-restrooms' && destPointOverride) {
+      const { x, y } = destPointOverride;
+      if (x === 292) {
+        return routeOrigin === 'elevator'
+          ? '530,330 496,330 496,336 273,336 273,403 292,403'
+          : '137,190 137,146 208,146 208,336 273,336 273,403 292,403';
+      }
+      return routeOrigin === 'elevator'
+        ? `530,330 496,330 496,${y} ${x},${y}`
+        : `137,190 137,146 208,146 208,336 496,336 496,${y} ${x},${y}`;
+    }
+    return routeOrigin === 'elevator'
+      ? selectedNode.routeFromElevator
+      : selectedNode.routeFromStairs;
+  }, [selectedNode, destPointOverride, routeOrigin]);
+
+  const isTransitSelected =
+    selectedNode.id === 'l3-stairs' ||
+    selectedNode.id === 'l4-stairs' ||
+    selectedNode.id === 'l3-elevators' ||
+    selectedNode.id === 'l4-elevators';
+
   return (
     <div
       ref={mapViewportRef}
@@ -772,7 +825,7 @@ export function TronSpaceNavigator({
           </h3>
         </div>
 
-        {/* Controls: Floor Switcher (Full-width segmented bar on mobile) */}
+        {/* Controls: Floor Switcher + Simple Route Origin Toggle */}
         <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 sm:gap-2.5 w-full xl:w-auto">
           {/* Floor Toggle */}
           <div className="grid grid-cols-2 sm:inline-flex rounded-xl border border-cyan-400/40 bg-[#071024] p-1 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
@@ -799,6 +852,34 @@ export function TronSpaceNavigator({
             >
               <Layers className="h-3.5 w-3.5 shrink-0" />
               <span>{isFr ? 'Niveau 04 (4e)' : 'Level 04 (4F)'}</span>
+            </button>
+          </div>
+
+          {/* Simple 1-Click Route Origin Toggle: From Elevators vs From Stairs */}
+          <div className="grid grid-cols-2 sm:inline-flex rounded-xl border border-white/15 bg-[#070d1c] p-1">
+            <button
+              type="button"
+              onClick={() => setRouteOrigin('elevator')}
+              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
+                routeOrigin === 'elevator'
+                  ? 'bg-fuchsia-500/25 border border-fuchsia-400/60 text-fuchsia-200 shadow-[0_0_12px_rgba(217,70,239,0.3)]'
+                  : 'text-white/55 hover:text-white'
+              }`}
+            >
+              <span className="text-fuchsia-400 font-bold">★</span>
+              <span>{isFr ? 'Depuis Ascenseurs' : 'From Elevators'}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRouteOrigin('stairs')}
+              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
+                routeOrigin === 'stairs'
+                  ? 'bg-cyan-500/25 border border-cyan-400/60 text-cyan-200 shadow-[0_0_12px_rgba(0,240,255,0.3)]'
+                  : 'text-white/55 hover:text-white'
+              }`}
+            >
+              <span className="text-cyan-300 font-bold">⇅</span>
+              <span>{isFr ? 'Depuis Escaliers' : 'From Stairs'}</span>
             </button>
           </div>
         </div>
@@ -996,6 +1077,43 @@ export function TronSpaceNavigator({
                       </feMerge>
                     </filter>
                   </defs>
+
+                  {/* Simple Animated Path Line from Elevators or Stairs to Selected Node */}
+                  {activeRoutePoints && (
+                    <g className="pointer-events-none">
+                      <polyline
+                        points={activeRoutePoints}
+                        fill="none"
+                        stroke={
+                          routeOrigin === 'elevator' ? '#ff007f' : '#00f0ff'
+                        }
+                        strokeWidth="7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        opacity="0.38"
+                        filter="url(#tron-cyan-glow)"
+                      />
+                      <polyline
+                        points={activeRoutePoints}
+                        fill="none"
+                        stroke={
+                          routeOrigin === 'elevator' ? '#ff4da6' : '#00f0ff'
+                        }
+                        strokeWidth="3.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeDasharray="10 6"
+                      >
+                        <animate
+                          attributeName="stroke-dashoffset"
+                          from="64"
+                          to="0"
+                          dur="1.4s"
+                          repeatCount="indefinite"
+                        />
+                      </polyline>
+                    </g>
+                  )}
 
                   {/* Interactive Map Nodes */}
                   {floorNodes.map((node) => {
@@ -1419,6 +1537,45 @@ export function TronSpaceNavigator({
                         </g>
                       );
                     })}
+
+                  {/* Direct Floor Switch Action Pill on Map when Stairs or Elevators is clicked */}
+                  {isTransitSelected && (
+                    <g
+                      transform={`translate(${Math.min(Math.max(selectedNode.x, 120), 880)}, ${
+                        selectedNode.y + 34
+                      })`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleFloorSwitch(activeFloor === '03' ? '04' : '03');
+                      }}
+                      className="cursor-pointer group"
+                    >
+                      <rect
+                        x="-105"
+                        y="-14"
+                        width="210"
+                        height="26"
+                        rx="6"
+                        fill="rgba(217, 70, 239, 0.95)"
+                        stroke="#ffffff"
+                        strokeWidth="1.5"
+                        filter="url(#tron-cyan-glow)"
+                      />
+                      <text
+                        y="2"
+                        textAnchor="middle"
+                        className="fill-white font-mono-tech text-[10.5px] font-bold uppercase tracking-wider pointer-events-none"
+                      >
+                        {activeFloor === '03'
+                          ? isFr
+                            ? '⬆ Monter au Niveau 04 →'
+                            : '⬆ Go Up to Level 04 →'
+                          : isFr
+                            ? '⬇ Descendre au Niveau 03 →'
+                            : '⬇ Go Down to Level 03 →'}
+                      </text>
+                    </g>
+                  )}
                 </svg>
               </div>
             </div>
@@ -1707,9 +1864,8 @@ export function TronSpaceNavigator({
               )}
             </div>
 
-            {/* If Stairs is selected, offer instant Floor Jump button */}
-            {(selectedNode.id === 'l3-stairs' ||
-              selectedNode.id === 'l4-stairs') && (
+            {/* If Stairs or Elevators is selected, offer instant Floor Jump button */}
+            {isTransitSelected && (
               <div className="mt-5">
                 <button
                   type="button"
@@ -1723,10 +1879,10 @@ export function TronSpaceNavigator({
                     {activeFloor === '03'
                       ? isFr
                         ? 'Monter au Niveau 04 →'
-                        : 'Go Upstairs to Level 04 →'
+                        : 'Go Up to Level 04 →'
                       : isFr
                         ? 'Descendre au Niveau 03 →'
-                        : 'Go Downstairs to Level 03 →'}
+                        : 'Go Down to Level 03 →'}
                   </span>
                 </button>
               </div>
