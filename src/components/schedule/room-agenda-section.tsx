@@ -89,7 +89,8 @@ export function getLevelBadgeClass(level: string): string {
 }
 
 export function renderSpeakersWithParens(speakersText: string) {
-  const parts = speakersText.split(/(\([^)]+\))/g);
+  const cleaned = speakersText.replace(/\s*·\s*GDE\b/gi, '');
+  const parts = cleaned.split(/(\([^)]+\))/g);
   return parts.map((part, i) => {
     if (part.startsWith('(') && part.endsWith(')')) {
       return (
@@ -1245,7 +1246,9 @@ export function RoomAgendaSection({
                                           {sub.time}
                                         </span>
                                         <span className="font-sans text-cyan-300">
-                                          {sub.speakers}
+                                          {renderSpeakersWithParens(
+                                            sub.speakers,
+                                          )}
                                         </span>
                                         {sub.categories?.map((cat) => (
                                           <span
