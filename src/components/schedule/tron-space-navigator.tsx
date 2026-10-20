@@ -1711,16 +1711,6 @@ export function TronSpaceNavigator({
               )}
             </div>
 
-            {/* Top-Right Level Watermark */}
-            <div className="pointer-events-none absolute right-3 sm:right-4 top-2.5 sm:top-3 z-20 text-right">
-              <div className="font-mono-tech text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.3em] text-cyan-400/70">
-                NIVEAU / LEVEL
-              </div>
-              <div className="font-display text-2xl sm:text-5xl font-black leading-none tracking-tighter text-cyan-400/25">
-                {activeFloor}
-              </div>
-            </div>
-
             {/* Scrollable / Pan-Ready Map Viewport Container */}
             <div
               ref={mapScrollRef}
