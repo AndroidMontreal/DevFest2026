@@ -7,9 +7,12 @@ import {
   DoorOpen,
   Headphones,
   Layers,
+  MapPin,
   Music,
+  Navigation,
   RotateCcw,
   Sparkles,
+  X,
   ZoomIn,
   ZoomOut,
 } from 'lucide-react';
@@ -578,6 +581,539 @@ const MAP_NODES: MapNode[] = [
 
 type GridPoint = { x: number; y: number };
 
+const LEVEL_03_EDGES: Array<[[number, number], [number, number]]> = [
+  // Main horizontal bridge spine (y = 342)
+  [
+    [176, 342],
+    [184, 342],
+  ],
+  [
+    [184, 342],
+    [232, 342],
+  ],
+  [
+    [232, 342],
+    [268, 342],
+  ],
+  [
+    [268, 342],
+    [284, 342],
+  ],
+  [
+    [284, 342],
+    [300, 342],
+  ],
+  [
+    [300, 342],
+    [301, 342],
+  ],
+  [
+    [301, 342],
+    [322, 342],
+  ],
+  [
+    [322, 342],
+    [379, 342],
+  ],
+  [
+    [379, 342],
+    [439, 342],
+  ],
+  [
+    [439, 342],
+    [440, 342],
+  ],
+  [
+    [440, 342],
+    [512, 342],
+  ],
+
+  // West Atrium vertical spine (x = 184)
+  [
+    [184, 190],
+    [184, 213],
+  ],
+  [
+    [184, 213],
+    [184, 232],
+  ],
+  [
+    [184, 232],
+    [184, 299],
+  ],
+  [
+    [184, 299],
+    [184, 342],
+  ],
+  [
+    [184, 342],
+    [184, 367],
+  ],
+  [
+    [184, 367],
+    [184, 451],
+  ],
+  [
+    [184, 451],
+    [184, 606],
+  ],
+
+  // Far-West Parquet vertical spine (x = 147)
+  [
+    [147, 190],
+    [147, 367],
+  ],
+  [
+    [147, 367],
+    [147, 606],
+  ],
+
+  // East Elevator Core vertical spine (x = 512)
+  [
+    [512, 281],
+    [512, 342],
+  ],
+  [
+    [512, 342],
+    [512, 345],
+  ],
+  [
+    [512, 345],
+    [512, 405],
+  ],
+
+  // Node spurs & cross-links
+  [
+    [147, 190],
+    [184, 190],
+  ],
+  [
+    [133, 367],
+    [147, 367],
+  ],
+  [
+    [147, 367],
+    [176, 367],
+  ],
+  [
+    [176, 367],
+    [184, 367],
+  ],
+  [
+    [176, 367],
+    [176, 342],
+  ],
+  [
+    [194, 213],
+    [184, 213],
+  ],
+  [
+    [197, 232],
+    [184, 232],
+  ],
+  [
+    [207, 299],
+    [184, 299],
+  ],
+  [
+    [440, 363],
+    [440, 342],
+  ],
+  [
+    [439, 312],
+    [439, 342],
+  ],
+  [
+    [379, 341],
+    [379, 342],
+  ],
+  [
+    [232, 361],
+    [232, 342],
+  ],
+  [
+    [268, 324],
+    [268, 342],
+  ],
+  [
+    [284, 324],
+    [284, 342],
+  ],
+  [
+    [300, 324],
+    [300, 342],
+  ],
+  [
+    [301, 361],
+    [301, 342],
+  ],
+  [
+    [147, 606],
+    [165, 606],
+  ],
+  [
+    [165, 606],
+    [184, 606],
+  ],
+  [
+    [197, 451],
+    [184, 451],
+  ],
+  [
+    [314, 415],
+    [322, 415],
+  ],
+  [
+    [322, 415],
+    [322, 342],
+  ],
+  [
+    [571, 281],
+    [512, 281],
+  ],
+  [
+    [571, 405],
+    [512, 405],
+  ],
+  [
+    [551, 345],
+    [512, 345],
+  ],
+];
+
+const LEVEL_04_EDGES: Array<[[number, number], [number, number]]> = [
+  // Central horizontal spine (y = 336)
+  [
+    [208, 336],
+    [273, 336],
+  ],
+  [
+    [273, 336],
+    [341, 336],
+  ],
+  [
+    [341, 336],
+    [496, 336],
+  ],
+
+  // North-West vertical spine (x = 208)
+  [
+    [208, 140],
+    [208, 146],
+  ],
+  [
+    [208, 146],
+    [208, 198],
+  ],
+  [
+    [208, 198],
+    [208, 336],
+  ],
+
+  // North-West Stairs & Cafe connectors
+  [
+    [137, 190],
+    [137, 146],
+  ],
+  [
+    [137, 146],
+    [137, 140],
+  ],
+  [
+    [137, 146],
+    [208, 146],
+  ],
+  [
+    [137, 140],
+    [140, 140],
+  ],
+  [
+    [140, 140],
+    [164, 140],
+  ],
+  [
+    [164, 140],
+    [208, 140],
+  ],
+  [
+    [140, 77],
+    [140, 140],
+  ],
+  [
+    [164, 59],
+    [164, 140],
+  ],
+  [
+    [221, 146],
+    [208, 146],
+  ],
+  [
+    [213, 198],
+    [208, 198],
+  ],
+
+  // South-West vertical spine (x = 273)
+  [
+    [273, 336],
+    [273, 403],
+  ],
+  [
+    [273, 403],
+    [273, 514],
+  ],
+  [
+    [273, 514],
+    [273, 522],
+  ],
+
+  // South-West horizontal spine (y = 522) & spurs
+  [
+    [221, 522],
+    [273, 522],
+  ],
+  [
+    [273, 522],
+    [365, 522],
+  ],
+  [
+    [221, 495],
+    [221, 522],
+  ],
+  [
+    [284, 514],
+    [273, 514],
+  ],
+  [
+    [365, 501],
+    [365, 522],
+  ],
+  [
+    [341, 350],
+    [341, 336],
+  ],
+  [
+    [292, 403],
+    [273, 403],
+  ],
+
+  // East Elevator Core vertical spine (x = 496)
+  [
+    [496, 252],
+    [496, 266],
+  ],
+  [
+    [496, 266],
+    [496, 330],
+  ],
+  [
+    [496, 330],
+    [496, 336],
+  ],
+  [
+    [496, 336],
+    [496, 384],
+  ],
+  [
+    [496, 384],
+    [496, 404],
+  ],
+  [
+    [530, 330],
+    [496, 330],
+  ],
+  [
+    [556, 266],
+    [496, 266],
+  ],
+  [
+    [556, 384],
+    [496, 384],
+  ],
+
+  // East Wing: Primary South Food Area & Hip To Be Square (doorway at 852,356)
+  [
+    [496, 404],
+    [852, 404],
+  ],
+  [
+    [852, 446],
+    [852, 404],
+  ],
+  [
+    [852, 404],
+    [852, 356],
+  ],
+  [
+    [812, 356],
+    [852, 356],
+  ],
+
+  // East Wing: Secondary North Food Area
+  [
+    [496, 252],
+    [852, 252],
+  ],
+  [
+    [852, 224],
+    [852, 252],
+  ],
+];
+
+function computeShortestCorridorPath(
+  floor: FloorId,
+  startCandidates: GridPoint[],
+  endCandidates: GridPoint[],
+): { points: string; distance: number; startPt: GridPoint; endPt: GridPoint } {
+  const edges = floor === '03' ? LEVEL_03_EDGES : LEVEL_04_EDGES;
+  const adj = new Map<string, Array<{ key: string; cost: number }>>();
+  const coords = new Map<string, GridPoint>();
+
+  for (const [[x1, y1], [x2, y2]] of edges) {
+    const k1 = `${x1},${y1}`;
+    const k2 = `${x2},${y2}`;
+    coords.set(k1, { x: x1, y: y1 });
+    coords.set(k2, { x: x2, y: y2 });
+    const cost = Math.hypot(x2 - x1, y2 - y1);
+    if (!adj.has(k1)) adj.set(k1, []);
+    if (!adj.has(k2)) adj.set(k2, []);
+    adj.get(k1)!.push({ key: k2, cost });
+    adj.get(k2)!.push({ key: k1, cost });
+  }
+
+  let bestResult: {
+    points: string;
+    distance: number;
+    startPt: GridPoint;
+    endPt: GridPoint;
+  } | null = null;
+
+  for (const sPt of startCandidates) {
+    for (const ePt of endCandidates) {
+      const startKey = `${sPt.x},${sPt.y}`;
+      const endKey = `${ePt.x},${ePt.y}`;
+
+      if (startKey === endKey) {
+        return {
+          points: startKey,
+          distance: 0,
+          startPt: sPt,
+          endPt: ePt,
+        };
+      }
+
+      const dist = new Map<string, number>();
+      const prev = new Map<string, string>();
+      const visited = new Set<string>();
+
+      for (const k of adj.keys()) {
+        dist.set(k, Infinity);
+      }
+      dist.set(startKey, 0);
+
+      while (true) {
+        let u: string | null = null;
+        let minD = Infinity;
+        for (const [k, d] of dist.entries()) {
+          if (!visited.has(k) && d < minD) {
+            minD = d;
+            u = k;
+          }
+        }
+        if (u === null || u === endKey) break;
+        visited.add(u);
+
+        for (const neighbor of adj.get(u) ?? []) {
+          if (visited.has(neighbor.key)) continue;
+          const alt = minD + neighbor.cost;
+          if (alt < (dist.get(neighbor.key) ?? Infinity)) {
+            dist.set(neighbor.key, alt);
+            prev.set(neighbor.key, u);
+          }
+        }
+      }
+
+      const totalDist = dist.get(endKey) ?? Infinity;
+      if (totalDist < Infinity) {
+        const pathKeys: string[] = [];
+        let curr: string | undefined = endKey;
+        while (curr) {
+          pathKeys.unshift(curr);
+          curr = prev.get(curr);
+        }
+
+        const pts = pathKeys.map((k) => coords.get(k)!);
+        const simplified: GridPoint[] = [];
+        for (const p of pts) {
+          if (simplified.length >= 2) {
+            const p1 = simplified[simplified.length - 2];
+            const p2 = simplified[simplified.length - 1];
+            const collinearX = p1.x === p2.x && p2.x === p.x;
+            const collinearY = p1.y === p2.y && p2.y === p.y;
+            if (collinearX || collinearY) {
+              simplified[simplified.length - 1] = p;
+              continue;
+            }
+          }
+          simplified.push(p);
+        }
+
+        if (!bestResult || totalDist < bestResult.distance) {
+          bestResult = {
+            points: simplified.map((p) => `${p.x},${p.y}`).join(' '),
+            distance: totalDist,
+            startPt: sPt,
+            endPt: ePt,
+          };
+        }
+      }
+    }
+  }
+
+  const fallbackS = startCandidates[0];
+  const fallbackE = endCandidates[0];
+  return (
+    bestResult ?? {
+      points: `${fallbackS.x},${fallbackS.y} ${fallbackE.x},${fallbackE.y}`,
+      distance: Math.hypot(
+        fallbackE.x - fallbackS.x,
+        fallbackE.y - fallbackS.y,
+      ),
+      startPt: fallbackS,
+      endPt: fallbackE,
+    }
+  );
+}
+
+function getNodeCandidatePoints(
+  node: MapNode,
+  overridePt: GridPoint | null,
+): GridPoint[] {
+  if (overridePt) return [overridePt];
+  if (node.id === 'l3-sponsor-g1') {
+    return [
+      { x: 268, y: 324 },
+      { x: 300, y: 324 },
+      { x: 301, y: 361 },
+      { x: 194, y: 213 },
+    ];
+  }
+  if (node.id === 'l3-restrooms') {
+    return [
+      { x: 314, y: 415 },
+      { x: 571, y: 281 },
+      { x: 571, y: 405 },
+    ];
+  }
+  if (node.id === 'l4-restrooms') {
+    return [
+      { x: 292, y: 403 },
+      { x: 556, y: 266 },
+      { x: 556, y: 384 },
+    ];
+  }
+  return [{ x: node.x, y: node.y }];
+}
+
 export type TronMapFocusRequest = {
   floor: '03' | '04';
   destinationNodeId: string;
@@ -602,15 +1138,16 @@ export function TronSpaceNavigator({
 }: TronSpaceNavigatorProps) {
   const isFr = locale === 'fr';
   const [activeFloor, setActiveFloor] = useState<FloorId>('03');
-  const [routeOrigin, setRouteOrigin] = useState<'elevator' | 'stairs'>(
-    'elevator',
-  );
+  const [originNodeId, setOriginNodeId] = useState<string>('l3-elevators');
+  const [originPointOverride, setOriginPointOverride] =
+    useState<GridPoint | null>(null);
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedNodeId, setSelectedNodeId] = useState<string>('l3-room-1');
   const [destPointOverride, setDestPointOverride] = useState<GridPoint | null>(
     null,
   );
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(true);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
   const mapScrollRef = useRef<HTMLDivElement>(null);
   const mapViewportRef = useRef<HTMLDivElement>(null);
@@ -621,12 +1158,13 @@ export function TronSpaceNavigator({
     setActiveFloor(focusRequest.floor);
     setSelectedCategory('all');
     setDestPointOverride(null);
-    if (focusRequest.originNodeId?.endsWith('stairs')) {
-      setRouteOrigin('stairs');
-    } else if (focusRequest.originNodeId?.endsWith('elevators')) {
-      setRouteOrigin('elevator');
-    }
+    setOriginPointOverride(null);
+    const defaultOrigin =
+      focusRequest.originNodeId ??
+      (focusRequest.floor === '03' ? 'l3-elevators' : 'l4-elevators');
+    setOriginNodeId(defaultOrigin);
     setSelectedNodeId(focusRequest.destinationNodeId);
+    setIsPopoverOpen(true);
 
     requestAnimationFrame(() => {
       mapViewportRef.current?.scrollIntoView({
@@ -650,6 +1188,19 @@ export function TronSpaceNavigator({
     () => MAP_NODES.filter((n) => n.floor === activeFloor),
     [activeFloor],
   );
+
+  const originNode = useMemo(() => {
+    const found = MAP_NODES.find(
+      (n) => n.id === originNodeId && n.floor === activeFloor,
+    );
+    if (found) return found;
+    return (
+      MAP_NODES.find(
+        (n) =>
+          n.id === (activeFloor === '03' ? 'l3-elevators' : 'l4-elevators'),
+      ) || MAP_NODES[0]
+    );
+  }, [originNodeId, activeFloor]);
 
   const selectedNode = useMemo(() => {
     const found = MAP_NODES.find(
@@ -701,12 +1252,26 @@ export function TronSpaceNavigator({
     }
   };
 
-  const handleFloorSwitch = (floor: FloorId) => {
+  const handleFloorSwitch = (
+    floor: FloorId,
+    preserveTransitKind?: 'stairs' | 'elevators',
+  ) => {
     setActiveFloor(floor);
     setHoveredNodeId(null);
     setDestPointOverride(null);
+    setOriginPointOverride(null);
+    const nextOriginId =
+      preserveTransitKind === 'stairs'
+        ? floor === '03'
+          ? 'l3-stairs'
+          : 'l4-stairs'
+        : floor === '03'
+          ? 'l3-elevators'
+          : 'l4-elevators';
+    setOriginNodeId(nextOriginId);
     const defaultId = floor === '03' ? 'l3-room-1' : 'l4-room-6';
     setSelectedNodeId(defaultId);
+    setIsPopoverOpen(true);
     const nextNode = MAP_NODES.find((n) => n.id === defaultId);
     if (nextNode && zoomLevel > 1) {
       centerMapOnPoint(nextNode.x, nextNode.y, zoomLevel);
@@ -721,6 +1286,7 @@ export function TronSpaceNavigator({
     const targetPt = specificPoint ?? { x: node.x, y: node.y };
     setSelectedNodeId(node.id);
     setDestPointOverride(specificPoint ?? null);
+    setIsPopoverOpen(true);
 
     if (zoomLevel > 1) {
       centerMapOnPoint(targetPt.x, targetPt.y, zoomLevel);
@@ -737,55 +1303,56 @@ export function TronSpaceNavigator({
     }
   };
 
-  const selectedEndPt: GridPoint = destPointOverride ?? {
-    x: selectedNode.x,
-    y: selectedNode.y,
+  const handleSetAsCurrentLocation = (node: MapNode, pt?: GridPoint | null) => {
+    setOriginNodeId(node.id);
+    setOriginPointOverride(pt ?? null);
   };
 
-  const activeRoutePoints = useMemo(() => {
-    if (selectedNode.id === 'l3-sponsor-g1' && destPointOverride) {
-      const { x, y } = destPointOverride;
-      if (x === 194 && y === 213) {
-        return routeOrigin === 'elevator'
-          ? '551,345 512,345 512,342 184,342 184,213 194,213'
-          : '147,190 184,190 184,213 194,213';
-      }
-      return routeOrigin === 'elevator'
-        ? `551,345 512,345 512,342 ${x},342 ${x},${y}`
-        : `147,190 184,190 184,342 ${x},342 ${x},${y}`;
-    }
-    if (selectedNode.id === 'l3-restrooms' && destPointOverride) {
-      const { x, y } = destPointOverride;
-      if (x === 314) {
-        return routeOrigin === 'elevator'
-          ? '551,345 512,345 512,342 322,342 322,415 314,415'
-          : '147,190 184,190 184,342 322,342 322,415 314,415';
-      }
-      return routeOrigin === 'elevator'
-        ? `551,345 512,345 512,${y} ${x},${y}`
-        : `147,190 184,190 184,342 512,342 512,${y} ${x},${y}`;
-    }
-    if (selectedNode.id === 'l4-restrooms' && destPointOverride) {
-      const { x, y } = destPointOverride;
-      if (x === 292) {
-        return routeOrigin === 'elevator'
-          ? '530,330 496,330 496,336 273,336 273,403 292,403'
-          : '137,190 137,146 208,146 208,336 273,336 273,403 292,403';
-      }
-      return routeOrigin === 'elevator'
-        ? `530,330 496,330 496,${y} ${x},${y}`
-        : `137,190 137,146 208,146 208,336 496,336 496,${y} ${x},${y}`;
-    }
-    return routeOrigin === 'elevator'
-      ? selectedNode.routeFromElevator
-      : selectedNode.routeFromStairs;
-  }, [selectedNode, destPointOverride, routeOrigin]);
+  const activeRoute = useMemo(() => {
+    const startCandidates = getNodeCandidatePoints(
+      originNode,
+      originPointOverride,
+    );
+    const endCandidates = getNodeCandidatePoints(
+      selectedNode,
+      destPointOverride,
+    );
+    return computeShortestCorridorPath(
+      activeFloor,
+      startCandidates,
+      endCandidates,
+    );
+  }, [
+    activeFloor,
+    originNode,
+    originPointOverride,
+    selectedNode,
+    destPointOverride,
+  ]);
+
+  const selectedEndPt: GridPoint = activeRoute.endPt;
+  const activeOriginPt: GridPoint = activeRoute.startPt;
+  const activeRoutePoints = activeRoute.points;
+  const estimatedWalkSeconds = Math.max(
+    10,
+    Math.round(activeRoute.distance * 0.14),
+  );
+
+  const isCurrentNodeOrigin =
+    originNode.id === selectedNode.id &&
+    activeOriginPt.x === selectedEndPt.x &&
+    activeOriginPt.y === selectedEndPt.y;
 
   const isTransitSelected =
     selectedNode.id === 'l3-stairs' ||
     selectedNode.id === 'l4-stairs' ||
     selectedNode.id === 'l3-elevators' ||
     selectedNode.id === 'l4-elevators';
+
+  const elevatorNodeId = activeFloor === '03' ? 'l3-elevators' : 'l4-elevators';
+  const stairsNodeId = activeFloor === '03' ? 'l3-stairs' : 'l4-stairs';
+  const isCustomOrigin =
+    originNode.id !== elevatorNodeId && originNode.id !== stairsNodeId;
 
   return (
     <div
@@ -855,13 +1422,16 @@ export function TronSpaceNavigator({
             </button>
           </div>
 
-          {/* Simple 1-Click Route Origin Toggle: From Elevators vs From Stairs */}
-          <div className="grid grid-cols-2 sm:inline-flex rounded-xl border border-white/15 bg-[#070d1c] p-1">
+          {/* Current Location ("From") Quick Switcher: Elevators, Stairs, or Custom "I'm Here" Pin */}
+          <div className="flex flex-wrap items-center gap-1 rounded-xl border border-white/15 bg-[#070d1c] p-1">
             <button
               type="button"
-              onClick={() => setRouteOrigin('elevator')}
-              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
-                routeOrigin === 'elevator'
+              onClick={() => {
+                setOriginNodeId(elevatorNodeId);
+                setOriginPointOverride(null);
+              }}
+              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
+                originNode.id === elevatorNodeId
                   ? 'bg-fuchsia-500/25 border border-fuchsia-400/60 text-fuchsia-200 shadow-[0_0_12px_rgba(217,70,239,0.3)]'
                   : 'text-white/55 hover:text-white'
               }`}
@@ -871,9 +1441,12 @@ export function TronSpaceNavigator({
             </button>
             <button
               type="button"
-              onClick={() => setRouteOrigin('stairs')}
-              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
-                routeOrigin === 'stairs'
+              onClick={() => {
+                setOriginNodeId(stairsNodeId);
+                setOriginPointOverride(null);
+              }}
+              className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-2 font-mono-tech text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
+                originNode.id === stairsNodeId
                   ? 'bg-cyan-500/25 border border-cyan-400/60 text-cyan-200 shadow-[0_0_12px_rgba(0,240,255,0.3)]'
                   : 'text-white/55 hover:text-white'
               }`}
@@ -881,6 +1454,17 @@ export function TronSpaceNavigator({
               <span className="text-cyan-300 font-bold">⇅</span>
               <span>{isFr ? 'Depuis Escaliers' : 'From Stairs'}</span>
             </button>
+            {isCustomOrigin && (
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-400/60 bg-emerald-500/25 px-2.5 sm:px-3 py-2 font-mono-tech text-[11px] font-bold uppercase tracking-wider text-emerald-200 shadow-[0_0_12px_rgba(16,185,129,0.3)]">
+                <MapPin className="h-3.5 w-3.5 text-emerald-300 shrink-0" />
+                <span className="truncate max-w-[160px]">
+                  {isFr ? 'Ici : ' : 'Here: '}
+                  {originNode.numberBadge
+                    ? `${originNode.numberBadge} · ${originNode.name}`
+                    : originNode.name}
+                </span>
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -1044,6 +1628,7 @@ export function TronSpaceNavigator({
                 {/* SVG Interactive Overlay */}
                 <svg
                   viewBox="0 0 1000 700"
+                  onClick={() => setIsPopoverOpen(false)}
                   className="relative z-10 h-full w-full select-none"
                 >
                   <defs>
@@ -1078,14 +1663,18 @@ export function TronSpaceNavigator({
                     </filter>
                   </defs>
 
-                  {/* Simple Animated Path Line from Elevators or Stairs to Selected Node */}
-                  {activeRoutePoints && (
+                  {/* Animated Ray-Traced Path Line from Current Location (Origin) to Selected Destination */}
+                  {activeRoutePoints && !isCurrentNodeOrigin && (
                     <g className="pointer-events-none">
                       <polyline
                         points={activeRoutePoints}
                         fill="none"
                         stroke={
-                          routeOrigin === 'elevator' ? '#ff007f' : '#00f0ff'
+                          isCustomOrigin
+                            ? '#10b981'
+                            : originNode.id === elevatorNodeId
+                              ? '#ff007f'
+                              : '#00f0ff'
                         }
                         strokeWidth="7"
                         strokeLinecap="round"
@@ -1097,7 +1686,11 @@ export function TronSpaceNavigator({
                         points={activeRoutePoints}
                         fill="none"
                         stroke={
-                          routeOrigin === 'elevator' ? '#ff4da6' : '#00f0ff'
+                          isCustomOrigin
+                            ? '#34d399'
+                            : originNode.id === elevatorNodeId
+                              ? '#ff4da6'
+                              : '#00f0ff'
                         }
                         strokeWidth="3.2"
                         strokeLinecap="round"
@@ -1114,6 +1707,48 @@ export function TronSpaceNavigator({
                       </polyline>
                     </g>
                   )}
+
+                  {/* Glowing Green "YOU ARE HERE" Beacon on Current Origin Point */}
+                  <g
+                    transform={`translate(${activeOriginPt.x}, ${activeOriginPt.y})`}
+                    className="pointer-events-none"
+                  >
+                    <circle
+                      r="21"
+                      fill="none"
+                      stroke="#34d399"
+                      strokeWidth="1.8"
+                      strokeDasharray="4 3"
+                    >
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="360"
+                        to="0"
+                        dur="5s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                    <g transform="translate(0, -24)">
+                      <rect
+                        x="-24"
+                        y="-9"
+                        width="48"
+                        height="14"
+                        rx="4"
+                        fill="#059669"
+                        stroke="#a7f3d0"
+                        strokeWidth="1"
+                      />
+                      <text
+                        y="1"
+                        textAnchor="middle"
+                        className="fill-white font-mono-tech text-[8px] font-bold uppercase tracking-wider"
+                      >
+                        {isFr ? '● ICI' : '● HERE'}
+                      </text>
+                    </g>
+                  </g>
 
                   {/* Interactive Map Nodes */}
                   {floorNodes.map((node) => {
@@ -1355,7 +1990,10 @@ export function TronSpaceNavigator({
                       <g
                         key={node.id}
                         transform={`translate(${node.x}, ${node.y})`}
-                        onClick={() => handleNodeClick(node)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNodeClick(node);
+                        }}
                         onMouseEnter={() => setHoveredNodeId(node.id)}
                         onMouseLeave={() => setHoveredNodeId(null)}
                         className="cursor-pointer group"
@@ -1546,7 +2184,12 @@ export function TronSpaceNavigator({
                       })`}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleFloorSwitch(activeFloor === '03' ? '04' : '03');
+                        handleFloorSwitch(
+                          activeFloor === '03' ? '04' : '03',
+                          selectedNode.id.endsWith('stairs')
+                            ? 'stairs'
+                            : 'elevators',
+                        );
                       }}
                       className="cursor-pointer group"
                     >
@@ -1577,6 +2220,193 @@ export function TronSpaceNavigator({
                     </g>
                   )}
                 </svg>
+
+                {/* On-Map Floating HUD Popover Card Anchored to Clicked Icon */}
+                {isPopoverOpen &&
+                  (() => {
+                    const leftPct = Math.min(
+                      Math.max((selectedEndPt.x / 1000) * 100, 22),
+                      78,
+                    );
+                    const topPct = (selectedEndPt.y / 700) * 100;
+                    const showAbove = selectedEndPt.y > 370;
+                    const goldBoothMatch =
+                      selectedNode.id === 'l3-sponsor-g1'
+                        ? [
+                            { x: 268, y: 324, name: 'Vooban (Gold Sponsor)' },
+                            { x: 300, y: 324, name: 'oXya (Gold Sponsor)' },
+                            {
+                              x: 301,
+                              y: 361,
+                              name: 'Davidson Canada (Gold Sponsor)',
+                            },
+                            {
+                              x: 194,
+                              y: 213,
+                              name: 'Kanastruk (Gold Sponsor · #321)',
+                            },
+                          ].find(
+                            (b) =>
+                              b.x === selectedEndPt.x &&
+                              b.y === selectedEndPt.y,
+                          )
+                        : undefined;
+
+                    return (
+                      <div
+                        style={{
+                          left: `${leftPct}%`,
+                          top: `${topPct}%`,
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        className={` absolute z-30 w-[250px] sm:w-[295px] -translate-x-1/2 ${
+                          showAbove
+                            ? '-translate-y-[calc(100%+32px)]'
+                            : 'translate-y-[32px]'
+                        } rounded-xl border border-cyan-400/70 bg-[#050d21]/95 p-3 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_22px_rgba(0,240,255,0.28)] backdrop-blur-xl transition-all duration-200`}
+                      >
+                        {/* Header: Badge + Name + Dismiss X */}
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            {selectedNode.numberBadge && (
+                              <span
+                                className={`inline-flex h-6 min-w-6 shrink-0 items-center justify-center rounded-md px-1.5 font-mono-tech text-xs font-bold ${
+                                  selectedNode.category === 'room'
+                                    ? 'bg-google-red text-white'
+                                    : selectedNode.category === 'sponsor' ||
+                                        selectedNode.category === 'coaching'
+                                      ? 'bg-emerald-500 text-black'
+                                      : 'bg-cyan-400 text-black'
+                                }`}
+                              >
+                                {selectedNode.numberBadge}
+                              </span>
+                            )}
+                            <div className="min-w-0">
+                              <div className="font-display text-xs sm:text-sm font-bold text-white leading-tight truncate">
+                                {goldBoothMatch
+                                  ? goldBoothMatch.name
+                                  : selectedNode.name}
+                              </div>
+                              <div className="font-mono-tech text-[10px] text-cyan-300/90 truncate">
+                                {isFr
+                                  ? selectedNode.capacityFr
+                                  : selectedNode.capacityEn}
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setIsPopoverOpen(false)}
+                            aria-label="Close popover"
+                            className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-white/50 hover:bg-white/10 hover:text-white cursor-pointer"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+
+                        {/* Route Status Pill inside Popover */}
+                        <div className="mt-2 flex items-center justify-between gap-1.5 rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5 font-mono-tech text-[10px]">
+                          {isCurrentNodeOrigin ? (
+                            <span className="inline-flex items-center gap-1.5 text-emerald-300 font-bold">
+                              <MapPin className="h-3 w-3 text-emerald-400 shrink-0" />
+                              <span>
+                                {isFr
+                                  ? 'Vous êtes ici — touchez une autre icône pour tracer'
+                                  : 'You are here — tap any other icon to trace route'}
+                              </span>
+                            </span>
+                          ) : (
+                            <>
+                              <span className="inline-flex items-center gap-1 text-white/75 truncate">
+                                <Navigation className="h-3 w-3 text-cyan-400 shrink-0" />
+                                <span className="truncate">
+                                  {isFr ? 'Depuis ' : 'From '}
+                                  <strong className="text-white">
+                                    {originNode.numberBadge
+                                      ? `${originNode.numberBadge} · ${originNode.name}`
+                                      : originNode.name}
+                                  </strong>
+                                </span>
+                              </span>
+                              <span className="shrink-0 rounded bg-cyan-500/20 px-1.5 py-0.5 text-[9.5px] font-bold text-cyan-300">
+                                ~{estimatedWalkSeconds}s
+                              </span>
+                            </>
+                          )}
+                        </div>
+
+                        {/* Action Buttons Row inside Popover */}
+                        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleSetAsCurrentLocation(
+                                selectedNode,
+                                destPointOverride,
+                              )
+                            }
+                            disabled={isCurrentNodeOrigin}
+                            className={`flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-mono-tech text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                              isCurrentNodeOrigin
+                                ? 'border-emerald-400/50 bg-emerald-500/20 text-emerald-200 cursor-default'
+                                : 'border-emerald-400/70 bg-emerald-500/25 text-emerald-200 hover:bg-emerald-400 hover:text-black'
+                            }`}
+                          >
+                            <MapPin className="h-3 w-3 shrink-0" />
+                            <span>
+                              {isCurrentNodeOrigin
+                                ? isFr
+                                  ? 'Position actuelle'
+                                  : 'Current Location'
+                                : isFr
+                                  ? 'Je suis ici (Départ)'
+                                  : "I'm Here (Set Start)"}
+                            </span>
+                          </button>
+
+                          {linkedRoomSchedule && onSelectRoomSchedule && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                onSelectRoomSchedule(linkedRoomSchedule.id)
+                              }
+                              className="inline-flex items-center justify-center gap-1 rounded-lg border border-cyan-400/70 bg-cyan-400/20 px-2.5 py-1.5 font-mono-tech text-[10px] font-bold uppercase tracking-wider text-cyan-200 hover:bg-cyan-400 hover:text-black transition-all cursor-pointer"
+                            >
+                              <DoorOpen className="h-3 w-3 shrink-0" />
+                              <span>{isFr ? 'Horaire ↓' : 'Schedule ↓'}</span>
+                            </button>
+                          )}
+
+                          {isTransitSelected && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleFloorSwitch(
+                                  activeFloor === '03' ? '04' : '03',
+                                  selectedNode.id.endsWith('stairs')
+                                    ? 'stairs'
+                                    : 'elevators',
+                                )
+                              }
+                              className="w-full inline-flex items-center justify-center gap-1.5 rounded-lg border border-fuchsia-400/80 bg-fuchsia-500/30 px-2.5 py-1.5 font-mono-tech text-[10px] font-bold uppercase tracking-wider text-white hover:bg-fuchsia-400 hover:text-black transition-all cursor-pointer"
+                            >
+                              <Layers className="h-3 w-3 shrink-0" />
+                              <span>
+                                {activeFloor === '03'
+                                  ? isFr
+                                    ? '⬆ Monter au Niveau 04 →'
+                                    : '⬆ Go Up to Level 04 →'
+                                  : isFr
+                                    ? '⬇ Descendre au Niveau 03 →'
+                                    : '⬇ Go Down to Level 03 →'}
+                              </span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
               </div>
             </div>
 
@@ -1790,6 +2620,33 @@ export function TronSpaceNavigator({
                     {isFr ? selectedNode.capacityFr : selectedNode.capacityEn}
                   </span>
                 </div>
+              </div>
+
+              {/* 1-Click "I'm Here" Current Location Button in Inspector */}
+              <div className="mt-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleSetAsCurrentLocation(selectedNode, destPointOverride)
+                  }
+                  disabled={isCurrentNodeOrigin}
+                  className={`w-full inline-flex items-center justify-center gap-2 rounded-xl border px-3.5 py-2.5 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                    isCurrentNodeOrigin
+                      ? 'border-emerald-400/50 bg-emerald-500/20 text-emerald-200 cursor-default'
+                      : 'border-emerald-400/70 bg-emerald-500/20 text-emerald-200 hover:bg-emerald-400 hover:text-black'
+                  }`}
+                >
+                  <MapPin className="h-3.5 w-3.5 shrink-0" />
+                  <span>
+                    {isCurrentNodeOrigin
+                      ? isFr
+                        ? '🟢 Vous êtes ici — touchez une autre icône pour tracer'
+                        : '🟢 You Are Here — tap any icon to route'
+                      : isFr
+                        ? '📍 Je suis ici (Définir comme départ)'
+                        : "📍 I'm Here (Set as Current Location)"}
+                  </span>
+                </button>
               </div>
 
               {/* Gold Sponsors Explicit Lineup when G is selected */}
