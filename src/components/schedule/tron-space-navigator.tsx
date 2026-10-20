@@ -1333,10 +1333,6 @@ export function TronSpaceNavigator({
   const selectedEndPt: GridPoint = activeRoute.endPt;
   const activeOriginPt: GridPoint = activeRoute.startPt;
   const activeRoutePoints = activeRoute.points;
-  const estimatedWalkSeconds = Math.max(
-    10,
-    Math.round(activeRoute.distance * 0.14),
-  );
 
   const isCurrentNodeOrigin =
     originNode.id === selectedNode.id &&
@@ -2317,22 +2313,17 @@ export function TronSpaceNavigator({
                               </span>
                             </span>
                           ) : (
-                            <>
-                              <span className="inline-flex items-center gap-1 text-white/75 truncate">
-                                <Navigation className="h-3 w-3 text-cyan-400 shrink-0" />
-                                <span className="truncate">
-                                  {isFr ? 'Depuis ' : 'From '}
-                                  <strong className="text-white">
-                                    {originNode.numberBadge
-                                      ? `${originNode.numberBadge} · ${originNode.name}`
-                                      : originNode.name}
-                                  </strong>
-                                </span>
+                            <span className="inline-flex items-center gap-1 text-white/75 truncate">
+                              <Navigation className="h-3 w-3 text-cyan-400 shrink-0" />
+                              <span className="truncate">
+                                {isFr ? 'Depuis ' : 'From '}
+                                <strong className="text-white">
+                                  {originNode.numberBadge
+                                    ? `${originNode.numberBadge} · ${originNode.name}`
+                                    : originNode.name}
+                                </strong>
                               </span>
-                              <span className="shrink-0 rounded bg-cyan-500/20 px-1.5 py-0.5 text-[9.5px] font-bold text-cyan-300">
-                                ~{estimatedWalkSeconds}s
-                              </span>
-                            </>
+                            </span>
                           )}
                         </div>
 
