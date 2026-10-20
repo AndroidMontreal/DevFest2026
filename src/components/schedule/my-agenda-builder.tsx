@@ -30,6 +30,7 @@ import { useState } from 'react';
 import {
   getCategoryBadgeClass,
   getLevelBadgeClass,
+  renderSpeakersWithParens,
   type RoomSessionItem,
   type RoomTrack,
 } from './room-agenda-section';
@@ -1059,7 +1060,9 @@ export function MyAgendaBuilder({
 
                           {primarySession.session.speakers && (
                             <p className="font-mono-tech text-xs uppercase tracking-wider text-cyan-400">
-                              {primarySession.session.speakers}
+                              {renderSpeakersWithParens(
+                                primarySession.session.speakers,
+                              )}
                             </p>
                           )}
 
@@ -1158,7 +1161,9 @@ export function MyAgendaBuilder({
                             />
                             {backup.session.speakers && (
                               <p className="font-mono-tech text-[11px] uppercase text-cyan-300/75">
-                                {backup.session.speakers}
+                                {renderSpeakersWithParens(
+                                  backup.session.speakers,
+                                )}
                               </p>
                             )}
                             {((backup.session.categories &&

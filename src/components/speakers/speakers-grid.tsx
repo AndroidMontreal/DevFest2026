@@ -101,8 +101,85 @@ function getSessionLocation(
   sessionTitle: string,
   sessionType: SessionType,
   isFr: boolean,
+  speakerName?: string,
 ): SessionLocation | null {
-  if (sessionType === 'coaching') return null;
+  if (sessionType === 'coaching') {
+    const s = (speakerName || '').toLowerCase();
+    if (s.includes('bustamante')) {
+      return {
+        tabId: 'coaching',
+        roomCode: '4-7 · 3-3',
+        roomName: 'Should I Stay Or Should I Go & Take On Me',
+        time: '10:30, 11:00, 15:00, 16:15',
+      };
+    }
+    if (s.includes('caron')) {
+      return {
+        tabId: 'coaching',
+        roomCode: '4-2 · 3-3 · 4-7',
+        roomName:
+          'Money For Nothing, Take On Me & Should I Stay Or Should I Go',
+        time: '13:15, 14:30, 15:45, 16:15',
+      };
+    }
+    if (s.includes('chezeaud')) {
+      return {
+        tabId: 'coaching',
+        roomCode: '3-3 · 4-2',
+        roomName: 'Take On Me & Money For Nothing',
+        time: '10:30, 11:00, 13:15, 15:45',
+      };
+    }
+    if (s.includes('giraud')) {
+      return {
+        tabId: 'coaching',
+        roomCode: '3-3 · 4-2',
+        roomName: 'Take On Me & Money For Nothing',
+        time: '13:45, 15:00',
+      };
+    }
+    if (s.includes('maréchaux') || s.includes('marechaux')) {
+      return {
+        tabId: '4-3',
+        roomCode: '4-3',
+        roomName: 'Working For The Weekend',
+        time: '13:15, 13:45, 15:45, 16:15',
+      };
+    }
+    if (s.includes('park')) {
+      return {
+        tabId: '4-3',
+        roomCode: '4-3',
+        roomName: 'Working For The Weekend',
+        time: '10:30, 11:00, 14:30, 15:00',
+      };
+    }
+    if (s.includes('pecore')) {
+      return {
+        tabId: '4-7',
+        roomCode: '4-7',
+        roomName: 'Should I Stay Or Should I Go',
+        time: '13:15, 13:45, 14:30, 15:00',
+      };
+    }
+    if (s.includes('senen') || s.includes('gonzalez')) {
+      return {
+        tabId: '4-2',
+        roomCode: '4-2',
+        roomName: 'Money For Nothing',
+        time: '13:45, 14:30, 15:45, 16:15',
+      };
+    }
+    if (s.includes('véronneau') || s.includes('veronneau')) {
+      return {
+        tabId: 'coaching',
+        roomCode: '4-2 · 3-3',
+        roomName: 'Money For Nothing & Take On Me',
+        time: '10:30, 11:00',
+      };
+    }
+    return null;
+  }
 
   const t = sessionTitle.toLowerCase();
 
@@ -446,7 +523,9 @@ function renderLocatePin(location: SessionLocation | null, isFr: boolean) {
   const href =
     location.tabId === 'map'
       ? '/schedule?room=map'
-      : `/schedule?room=${location.tabId}#room-${location.tabId}`;
+      : location.tabId === 'coaching'
+        ? '/schedule?room=coaching#coaching-block'
+        : `/schedule?room=${location.tabId}#room-${location.tabId}`;
 
   return (
     <Link
@@ -609,6 +688,7 @@ function renderTopicSections(
   topic: string,
   format?: string,
   isFr: boolean = false,
+  speakerName?: string,
 ) {
   const topicLines = topic
     .split('\n')
@@ -633,6 +713,7 @@ function renderTopicSections(
             session.title,
             session.type,
             isFr,
+            speakerName,
           );
 
           return (
@@ -663,7 +744,12 @@ function renderTopicSections(
   }
 
   const session = parseSessionDetails(format, topic);
-  const location = getSessionLocation(session.title, session.type, isFr);
+  const location = getSessionLocation(
+    session.title,
+    session.type,
+    isFr,
+    speakerName,
+  );
 
   return (
     <div className="space-y-1.5 mt-4 pt-3 border-t border-white/5">
@@ -986,7 +1072,12 @@ export function SpeakersGrid({
                     </div>
 
                     {/* Topic Rendering with Blue Talk, Red Workshop, Orange Panel, Amber Lightning, Yellow Keynote & Green Coaching icons */}
-                    {renderTopicSections(speaker.topic, speaker.format, isFr)}
+                    {renderTopicSections(
+                      speaker.topic,
+                      speaker.format,
+                      isFr,
+                      speaker.name,
+                    )}
                   </div>
                 </div>
 
