@@ -203,6 +203,7 @@ export function RoomAgendaSection({
       (roomParam === 'main' ||
         roomParam === 'my-agenda' ||
         roomParam === 'all' ||
+        roomParam === 'coaching' ||
         roomParam === 'map' ||
         copy.rooms.some((r) => r.id === roomParam))
     ) {
@@ -289,6 +290,15 @@ export function RoomAgendaSection({
     },
   ];
 
+  const conferenceRooms = useMemo(
+    () => copy.rooms.filter((r) => r.accent !== 'green'),
+    [copy.rooms],
+  );
+  const coachingRooms = useMemo(
+    () => copy.rooms.filter((r) => r.accent === 'green'),
+    [copy.rooms],
+  );
+
   const visibleRooms = useMemo(() => {
     const isSpecificRoomTab = copy.rooms.some((r) => r.id === selectedTab);
 
@@ -301,14 +311,19 @@ export function RoomAgendaSection({
         return [];
       }
       if (selectedTab === 'all') {
-        return copy.rooms;
+        return [...conferenceRooms, ...coachingRooms];
+      }
+      if (selectedTab === 'coaching') {
+        return coachingRooms;
       }
       return copy.rooms.filter((room) => room.id === selectedTab);
     }
 
     const baseRooms = isSpecificRoomTab
       ? copy.rooms.filter((room) => room.id === selectedTab)
-      : copy.rooms;
+      : selectedTab === 'coaching'
+        ? coachingRooms
+        : [...conferenceRooms, ...coachingRooms];
 
     const query = searchQuery.trim().toLowerCase();
 
@@ -385,7 +400,24 @@ export function RoomAgendaSection({
         };
       })
       .filter((room) => room.sessions.length > 0);
-  }, [copy.rooms, isFiltering, searchQuery, selectedCategory, selectedTab]);
+  }, [
+    coachingRooms,
+    conferenceRooms,
+    copy.rooms,
+    isFiltering,
+    searchQuery,
+    selectedCategory,
+    selectedTab,
+  ]);
+
+  const visibleConferenceRooms = useMemo(
+    () => visibleRooms.filter((r) => r.accent !== 'green'),
+    [visibleRooms],
+  );
+  const visibleCoachingRooms = useMemo(
+    () => visibleRooms.filter((r) => r.accent === 'green'),
+    [visibleRooms],
+  );
 
   const totalMatchingSessions = useMemo(
     () =>
@@ -423,7 +455,7 @@ export function RoomAgendaSection({
           </div>
         </div>
 
-        {/* Navigation Pills: Main Agenda + All Rooms + Each Room + TRON Space Navigator */}
+        {/* Navigation Pills: Main Agenda + All Rooms + Conference/Workshop Rooms + TRON Space Navigator */}
         <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2.5">
           <div className="grid grid-cols-2 sm:contents gap-2">
             <button
@@ -459,8 +491,8 @@ export function RoomAgendaSection({
             </button>
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 sm:contents -mx-1 px-1">
-            {copy.rooms.map((room) => {
+          <div className="flex flex-wrap items-center gap-2 sm:contents">
+            {conferenceRooms.map((room) => {
               const isActive = selectedTab === room.id;
               const roomSavedCount = savedFlat.filter(
                 (s) => s.roomId === room.id,
@@ -470,9 +502,7 @@ export function RoomAgendaSection({
                   ? 'border-google-yellow bg-google-yellow/20 text-google-yellow shadow-[0_0_15px_rgba(251,188,4,0.25)]'
                   : room.accent === 'red'
                     ? 'border-rose-400 bg-rose-500/20 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.25)]'
-                    : room.accent === 'green'
-                      ? 'border-emerald-400 bg-emerald-500/20 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.25)]'
-                      : 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]';
+                    : 'border-cyan-400 bg-cyan-400/15 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]';
               return (
                 <button
                   key={room.id}
@@ -481,9 +511,7 @@ export function RoomAgendaSection({
                   className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 sm:py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                     isActive
                       ? activeClass
-                      : room.accent === 'green'
-                        ? 'border-emerald-500/25 bg-emerald-500/[0.06] text-emerald-200/80 hover:border-emerald-400/55 hover:text-emerald-100'
-                        : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
+                      : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/30 hover:text-white'
                   }`}
                 >
                   <DoorOpen className="h-3.5 w-3.5 shrink-0" />
@@ -523,6 +551,73 @@ export function RoomAgendaSection({
           </div>
         </div>
       </div>
+
+      {/* Dedicated Career Coaching Rooms Block (in its own block right below Conference Rooms) */}
+      {coachingRooms.length > 0 && (
+        <div className="-mt-6 flex flex-col gap-3.5 rounded-2xl border border-emerald-500/30 bg-[#061217]/90 px-5 py-4 md:px-6 md:py-5 shadow-[0_0_30px_rgba(16,185,129,0.06)] backdrop-blur-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4 text-emerald-400 shrink-0" />
+              <span className="font-mono-tech text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">
+                {isFr
+                  ? 'Salles de Mentorat Carrière (1:1)'
+                  : 'Career Coaching Rooms (1:1)'}
+              </span>
+            </div>
+            <span className="font-mono-tech text-[11px] text-emerald-200/65">
+              {isFr
+                ? 'Sessions individuelles de 30 min · Niveaux 03 & 04'
+                : '30-Minute 1:1 Mentoring Sessions · Levels 03 & 04'}
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setSelectedTab('coaching')}
+              className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                selectedTab === 'coaching'
+                  ? 'border-emerald-300 bg-emerald-500/25 text-white shadow-[0_0_16px_rgba(16,185,129,0.35)]'
+                  : 'border-emerald-400/40 bg-emerald-500/15 text-emerald-200 hover:border-emerald-300 hover:text-white'
+              }`}
+            >
+              <Layers className="h-3.5 w-3.5 shrink-0 text-emerald-300" />
+              <span className="font-bold">
+                {isFr ? 'Toutes les salles 1:1' : 'All Coaching Rooms'}
+              </span>
+            </button>
+
+            {coachingRooms.map((room) => {
+              const isActive = selectedTab === room.id;
+              const roomSavedCount = savedFlat.filter(
+                (s) => s.roomId === room.id,
+              ).length;
+              return (
+                <button
+                  key={room.id}
+                  type="button"
+                  onClick={() => setSelectedTab(room.id)}
+                  className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                    isActive
+                      ? 'border-emerald-400 bg-emerald-500/25 text-emerald-200 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
+                      : 'border-emerald-500/25 bg-emerald-500/[0.06] text-emerald-200/80 hover:border-emerald-400/60 hover:text-emerald-100'
+                  }`}
+                >
+                  <DoorOpen className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                  <span className="font-bold">{room.worldCode}</span>
+                  <span className="opacity-40">·</span>
+                  <span>{room.name}</span>
+                  {roomSavedCount > 0 && (
+                    <span className="ml-0.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full bg-emerald-400/90 px-1 font-mono-tech text-[9px] font-bold text-black">
+                      {roomSavedCount}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Dedicated My Agenda Row / Bar right below Navigate by Room (outside the room cluster) */}
       <div className="-mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-cyan-500/25 bg-[#070b16]/90 px-5 py-4 shadow-[0_0_30px_rgba(0,240,255,0.06)] backdrop-blur-2xl">
@@ -747,9 +842,9 @@ export function RoomAgendaSection({
         )}
 
       {/* Room Cards */}
-      {visibleRooms.length > 0 && (
-        <div className="space-y-12">
-          {visibleRooms.map((room) => {
+      {visibleRooms.length > 0 &&
+        (() => {
+          const renderRoomCard = (room: RoomTrack) => {
             const songCredits =
               getRoomSongCredits(room.id) || getRoomSongCredits(room.name);
             return (
@@ -1219,9 +1314,50 @@ export function RoomAgendaSection({
                 </div>
               </section>
             );
-          })}
-        </div>
-      )}
+          };
+
+          return (
+            <div className="space-y-12">
+              {visibleConferenceRooms.length > 0 && (
+                <div className="space-y-12">
+                  {visibleConferenceRooms.map(renderRoomCard)}
+                </div>
+              )}
+
+              {visibleCoachingRooms.length > 0 && (
+                <div className="relative overflow-hidden rounded-2xl border border-emerald-500/35 bg-[#051015]/90 p-5 sm:p-6 md:p-8 shadow-[0_0_50px_rgba(16,185,129,0.08)] space-y-8">
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-emerald-500/20 pb-5">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4 text-emerald-400" />
+                        <span className="font-mono-tech text-[11px] uppercase tracking-[0.25em] text-emerald-400">
+                          {isFr
+                            ? 'BLOC MENTORAT CARRIÈRE · NIVEAUX 03 & 04'
+                            : 'CAREER COACHING BLOCK · LEVELS 03 & 04'}
+                        </span>
+                      </div>
+                      <h3 className="mt-1.5 font-display text-2xl sm:text-3xl font-bold uppercase tracking-tight text-white">
+                        {isFr
+                          ? 'Salles de Mentorat Carrière (1:1)'
+                          : 'Career Coaching Rooms (1:1)'}
+                      </h3>
+                      <p className="mt-0.5 font-mono-tech text-xs tracking-wider text-emerald-200/70 uppercase">
+                        {isFr
+                          ? '4 salles dédiées (3-3, 4-2, 4-3, 4-7) · Créneaux de 30 minutes (10:30 – 16:40)'
+                          : '4 Dedicated Pods (3-3, 4-2, 4-3, 4-7) · 30-Minute Sessions (10:30 – 16:40)'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-8">
+                    {visibleCoachingRooms.map(renderRoomCard)}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })()}
     </div>
   );
 }

@@ -1601,8 +1601,8 @@ export function TronSpaceNavigator({
         </div>
       </div>
 
-      {/* Category Filter Bar (Single-row horizontal scroll on mobile) */}
-      <div className="mb-3.5 sm:mb-4 flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap -mx-1 px-1">
+      {/* Category Filter Bar (Wraps cleanly with no horizontal scrollbar) */}
+      <div className="mb-3.5 sm:mb-4 flex flex-wrap items-center gap-1.5">
         {[
           { id: 'all', labelEn: 'All Zones', labelFr: 'Toutes les zones' },
           {
@@ -1651,8 +1651,8 @@ export function TronSpaceNavigator({
         ))}
       </div>
 
-      {/* Quick-Tap Room & Booth Strip (Especially handy on mobile thumbs to switch targets while viewing the map) */}
-      <div className="mb-3.5 flex items-center gap-1.5 overflow-x-auto pb-1.5 -mx-1 px-1">
+      {/* Quick-Tap Room & Booth Grid — Fixed 2-line layout on desktop, zero left/right scrolling */}
+      <div className="mb-3.5 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-1.5">
         {allCurrentFloorNodes.map((node) => {
           const isSelected = selectedNode.id === node.id;
           return (
@@ -1660,14 +1660,14 @@ export function TronSpaceNavigator({
               key={`quick-pill-${node.id}`}
               type="button"
               onClick={() => handleNodeClick(node)}
-              className={`shrink-0 inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-mono-tech text-[11px] transition-all cursor-pointer ${
+              className={`min-w-0 inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-mono-tech text-[11px] transition-all cursor-pointer ${
                 isSelected
                   ? 'border-cyan-400 bg-cyan-400/20 text-white shadow-[0_0_12px_rgba(0,240,255,0.25)]'
                   : 'border-white/10 bg-[#081022]/90 text-white/65 hover:border-cyan-400/40 hover:text-white'
               }`}
             >
               <span
-                className={`inline-flex h-4 min-w-4 items-center justify-center rounded px-1 text-[10px] font-bold ${
+                className={`inline-flex h-4 min-w-4 shrink-0 items-center justify-center rounded px-1 text-[10px] font-bold ${
                   node.category === 'room'
                     ? 'bg-google-red text-white'
                     : node.category === 'sponsor' ||
@@ -1678,9 +1678,7 @@ export function TronSpaceNavigator({
               >
                 {node.numberBadge}
               </span>
-              <span className="max-w-[130px] sm:max-w-[160px] truncate">
-                {node.name}
-              </span>
+              <span className="truncate">{node.name}</span>
             </button>
           );
         })}
