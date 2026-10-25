@@ -161,6 +161,38 @@ export function RoomAgendaSection({
   const [mapFocusRequest, setMapFocusRequest] =
     useState<TronMapFocusRequest | null>(null);
 
+  const scrollToTabContent = (tabId: string) => {
+    setTimeout(() => {
+      const targetId = copy.rooms.some((r) => r.id === tabId)
+        ? `room-${tabId}`
+        : tabId === 'coaching'
+          ? 'coaching-block'
+          : tabId === 'all'
+            ? 'rooms-results-anchor'
+            : tabId === 'main'
+              ? 'main-agenda-anchor'
+              : tabId === 'my-agenda'
+                ? 'my-agenda-anchor'
+                : tabId === 'map'
+                  ? 'tron-space-navigator'
+                  : null;
+      if (!targetId) return;
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 60);
+  };
+
+  const selectTabAndScroll = (tabId: string, clearFilters = false) => {
+    if (clearFilters) {
+      setSearchQuery('');
+      setSelectedCategory('all');
+    }
+    setSelectedTab(tabId);
+    scrollToTabContent(tabId);
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const roomParam = params.get('room');
@@ -226,9 +258,22 @@ export function RoomAgendaSection({
         copy.rooms.some((r) => r.id === roomParam))
     ) {
       setSelectedTab(roomParam);
+      scrollToTabContent(roomParam);
     } else if (planParam) {
       setSelectedTab('my-agenda');
+      scrollToTabContent('my-agenda');
     }
+
+    const handleResetTop = () => {
+      setSearchQuery('');
+      setSelectedCategory('all');
+      setSelectedTab('main');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    window.addEventListener('devfest:reset-schedule-top', handleResetTop);
+    return () =>
+      window.removeEventListener('devfest:reset-schedule-top', handleResetTop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [copy.rooms]);
 
   const persistAgenda = (
@@ -478,11 +523,7 @@ export function RoomAgendaSection({
           <div className="grid grid-cols-2 sm:contents gap-2">
             <button
               type="button"
-              onClick={() => {
-                setSearchQuery('');
-                setSelectedCategory('all');
-                setSelectedTab('main');
-              }}
+              onClick={() => selectTabAndScroll('main', true)}
               className={`inline-flex items-center justify-center sm:justify-start gap-2 rounded-lg border px-3 sm:px-4 py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                 selectedTab === 'main' && !isFiltering
                   ? 'border-emerald-400 bg-emerald-500/20 text-emerald-200 shadow-[0_0_18px_rgba(16,185,129,0.35)]'
@@ -497,7 +538,7 @@ export function RoomAgendaSection({
 
             <button
               type="button"
-              onClick={() => setSelectedTab('all')}
+              onClick={() => selectTabAndScroll('all')}
               className={`inline-flex items-center justify-center sm:justify-start gap-2 rounded-lg border px-3 sm:px-4 py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                 selectedTab === 'all'
                   ? 'border-orange-400 bg-orange-500/20 text-orange-200 shadow-[0_0_18px_rgba(249,115,22,0.35)]'
@@ -525,7 +566,7 @@ export function RoomAgendaSection({
                 <button
                   key={room.id}
                   type="button"
-                  onClick={() => setSelectedTab(room.id)}
+                  onClick={() => selectTabAndScroll(room.id)}
                   className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 sm:py-2.5 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                     isActive
                       ? activeClass
@@ -570,7 +611,7 @@ export function RoomAgendaSection({
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
-              onClick={() => setSelectedTab('coaching')}
+              onClick={() => selectTabAndScroll('coaching')}
               className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                 selectedTab === 'coaching'
                   ? 'border-emerald-300 bg-emerald-500/25 text-white shadow-[0_0_16px_rgba(16,185,129,0.35)]'
@@ -592,7 +633,7 @@ export function RoomAgendaSection({
                 <button
                   key={room.id}
                   type="button"
-                  onClick={() => setSelectedTab(room.id)}
+                  onClick={() => selectTabAndScroll(room.id)}
                   className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                     isActive
                       ? 'border-emerald-400 bg-emerald-500/25 text-emerald-200 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
@@ -636,11 +677,7 @@ export function RoomAgendaSection({
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
-            onClick={() => {
-              setSearchQuery('');
-              setSelectedCategory('all');
-              setSelectedTab('map');
-            }}
+            onClick={() => selectTabAndScroll('map', true)}
             className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
               selectedTab === 'map' && !isFiltering
                 ? 'border-fuchsia-300 bg-fuchsia-500/25 text-white shadow-[0_0_18px_rgba(217,70,239,0.4)]'
@@ -659,9 +696,7 @@ export function RoomAgendaSection({
           <button
             type="button"
             onClick={() => {
-              setSearchQuery('');
-              setSelectedCategory('all');
-              setSelectedTab('map');
+              selectTabAndScroll('map', true);
               handleFocusMapRoute({
                 floor: '03',
                 destinationNodeId: 'l3-room-1',
@@ -682,9 +717,7 @@ export function RoomAgendaSection({
           <button
             type="button"
             onClick={() => {
-              setSearchQuery('');
-              setSelectedCategory('all');
-              setSelectedTab('map');
+              selectTabAndScroll('map', true);
               handleFocusMapRoute({
                 floor: '04',
                 destinationNodeId: 'l4-room-6',
@@ -709,11 +742,7 @@ export function RoomAgendaSection({
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => {
-              setSearchQuery('');
-              setSelectedCategory('all');
-              setSelectedTab('my-agenda');
-            }}
+            onClick={() => selectTabAndScroll('my-agenda', true)}
             className={`inline-flex items-center justify-center sm:justify-start gap-2.5 rounded-lg border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
               selectedTab === 'my-agenda' && !isFiltering
                 ? 'border-cyan-300 bg-cyan-400/25 text-white shadow-[0_0_20px_rgba(0,240,255,0.45)]'
@@ -894,23 +923,27 @@ export function RoomAgendaSection({
 
       {/* Main Agenda (TL;DR) when 'main' is selected and not actively filtering */}
       {selectedTab === 'main' && !isFiltering && (
-        <OverallDayAgenda copy={tldrCopy} />
+        <div id="main-agenda-anchor" className="scroll-mt-28">
+          <OverallDayAgenda copy={tldrCopy} />
+        </div>
       )}
 
       {/* My Custom Agenda Builder when 'my-agenda' is selected and not actively filtering */}
       {selectedTab === 'my-agenda' && !isFiltering && (
-        <MyAgendaBuilder
-          rooms={copy.rooms}
-          savedIds={savedIds}
-          primaryOverrides={primaryOverrides}
-          onToggleSession={handleToggleSession}
-          onSetPrimaryForSlot={handleSetPrimaryForSlot}
-          onLoadPreset={handleLoadPreset}
-          onClearAll={handleClearAll}
-          onFocusMapRoute={handleFocusMapRoute}
-          onBrowseRoom={(roomId) => setSelectedTab(roomId)}
-          locale={locale}
-        />
+        <div id="my-agenda-anchor" className="scroll-mt-28">
+          <MyAgendaBuilder
+            rooms={copy.rooms}
+            savedIds={savedIds}
+            primaryOverrides={primaryOverrides}
+            onToggleSession={handleToggleSession}
+            onSetPrimaryForSlot={handleSetPrimaryForSlot}
+            onLoadPreset={handleLoadPreset}
+            onClearAll={handleClearAll}
+            onFocusMapRoute={handleFocusMapRoute}
+            onBrowseRoom={(roomId) => selectTabAndScroll(roomId)}
+            locale={locale}
+          />
+        </div>
       )}
 
       {/* TRON Space Navigator on 'map' tab, below Main Agenda, or below My Agenda (when not filtering) */}
@@ -920,7 +953,7 @@ export function RoomAgendaSection({
         !isFiltering && (
           <TronSpaceNavigator
             rooms={copy.rooms}
-            onSelectRoomSchedule={(roomId) => setSelectedTab(roomId)}
+            onSelectRoomSchedule={(roomId) => selectTabAndScroll(roomId)}
             locale={locale}
             focusRequest={mapFocusRequest}
           />
@@ -1367,35 +1400,52 @@ export function RoomAgendaSection({
                               {session.lang}
                             </span>
                           )}
-                          <button
-                            type="button"
-                            onClick={() => handleToggleSession(sessionId)}
-                            className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                              isSaved
-                                ? 'border-cyan-300 bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,240,255,0.4)]'
-                                : 'border-cyan-400/50 bg-cyan-400/10 text-cyan-200 hover:border-cyan-300 hover:bg-cyan-400 hover:text-black'
-                            }`}
-                          >
-                            {isSaved ? (
-                              <>
-                                <BookmarkCheck className="h-3.5 w-3.5" />
-                                <span>{isFr ? 'Sauvé' : 'Saved'}</span>
-                              </>
-                            ) : (
-                              <>
-                                <Bookmark className="h-3.5 w-3.5" />
-                                <span>
-                                  {overlappingOtherSaved.length > 0
-                                    ? isFr
-                                      ? '+ Plan B'
-                                      : '+ Backup'
-                                    : isFr
-                                      ? '+ Agenda'
-                                      : '+ My Agenda'}
-                                </span>
-                              </>
-                            )}
-                          </button>
+                          {thisRange.startMin < 600 ||
+                          thisRange.startMin >= 1020 ||
+                          thisRange.endMin - thisRange.startMin > 180 ? (
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-google-yellow/40 bg-google-yellow/10 px-3.5 py-1.5 font-mono-tech text-xs font-bold uppercase tracking-wider text-google-yellow">
+                              <BookmarkCheck className="h-3.5 w-3.5" />
+                              <span>
+                                {thisRange.endMin - thisRange.startMin > 180
+                                  ? isFr
+                                    ? 'Accès libre'
+                                    : 'All-Day Drop-in'
+                                  : isFr
+                                    ? 'Inclus'
+                                    : 'Core Event'}
+                              </span>
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleToggleSession(sessionId)}
+                              className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                                isSaved
+                                  ? 'border-cyan-300 bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,240,255,0.4)]'
+                                  : 'border-cyan-400/50 bg-cyan-400/10 text-cyan-200 hover:border-cyan-300 hover:bg-cyan-400 hover:text-black'
+                              }`}
+                            >
+                              {isSaved ? (
+                                <>
+                                  <BookmarkCheck className="h-3.5 w-3.5" />
+                                  <span>{isFr ? 'Sauvé' : 'Saved'}</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Bookmark className="h-3.5 w-3.5" />
+                                  <span>
+                                    {overlappingOtherSaved.length > 0
+                                      ? isFr
+                                        ? '+ Plan B'
+                                        : '+ Backup'
+                                      : isFr
+                                        ? '+ Agenda'
+                                        : '+ My Agenda'}
+                                  </span>
+                                </>
+                              )}
+                            </button>
+                          )}
                         </div>
                       </div>
                     );
@@ -1406,7 +1456,7 @@ export function RoomAgendaSection({
           };
 
           return (
-            <div className="space-y-12">
+            <div id="rooms-results-anchor" className="space-y-12 scroll-mt-28">
               {visibleConferenceRooms.length > 0 && (
                 <div className="space-y-12">
                   {visibleConferenceRooms.map(renderRoomCard)}
@@ -1436,8 +1486,8 @@ export function RoomAgendaSection({
                       </h3>
                       <p className="mt-0.5 font-mono-tech text-xs tracking-wider text-emerald-200/70 uppercase">
                         {isFr
-                          ? '4 salles dédiées (3-3, 4-2, 4-3, 4-7) · Créneaux de 30 minutes (10:30 – 16:40)'
-                          : '4 Dedicated Pods (3-3, 4-2, 4-3, 4-7) · 30-Minute Sessions (10:30 – 16:40)'}
+                          ? '4 salles dédiées (3-3, 3-4, 4-2, 4-7) · Créneaux de 30 minutes (10:30 – 16:40)'
+                          : '4 Dedicated Pods (3-3, 3-4, 4-2, 4-7) · 30-Minute Sessions (10:30 – 16:40)'}
                       </p>
                     </div>
                   </div>

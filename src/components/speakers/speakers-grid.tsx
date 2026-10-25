@@ -125,8 +125,8 @@ function getSessionLocation(
     if (s.includes('chezeaud')) {
       return {
         tabId: 'coaching',
-        roomCode: '3-3 · 4-2',
-        roomName: 'Take On Me & Money For Nothing',
+        roomCode: '4-2 · 3-3',
+        roomName: 'Money For Nothing & Take On Me',
         time: '10:30, 11:00, 13:15, 15:45',
       };
     }
@@ -140,17 +140,17 @@ function getSessionLocation(
     }
     if (s.includes('maréchaux') || s.includes('marechaux')) {
       return {
-        tabId: '4-3',
-        roomCode: '4-3',
-        roomName: 'Working For The Weekend',
+        tabId: '3-4',
+        roomCode: '3-4',
+        roomName: 'Call Me',
         time: '13:15, 13:45, 15:45, 16:15',
       };
     }
     if (s.includes('park')) {
       return {
-        tabId: '4-3',
-        roomCode: '4-3',
-        roomName: 'Working For The Weekend',
+        tabId: '3-4',
+        roomCode: '3-4',
+        roomName: 'Call Me',
         time: '10:30, 11:00, 14:30, 15:00',
       };
     }
@@ -172,9 +172,9 @@ function getSessionLocation(
     }
     if (s.includes('véronneau') || s.includes('veronneau')) {
       return {
-        tabId: 'coaching',
-        roomCode: '4-2 · 3-3',
-        roomName: 'Money For Nothing & Take On Me',
+        tabId: '3-3',
+        roomCode: '3-3',
+        roomName: 'Take On Me',
         time: '10:30, 11:00',
       };
     }
@@ -185,7 +185,11 @@ function getSessionLocation(
 
   // Keynotes (World 3-1 · Don't Stop Believin')
   if (sessionType === 'keynote') {
-    if (t.includes('closing') || t.includes('clôture')) {
+    if (
+      t.includes('closing') ||
+      t.includes('clôture') ||
+      (t.includes('gdg') && t.includes('campus'))
+    ) {
       return {
         tabId: '3-1',
         roomCode: '3-1',
@@ -205,6 +209,14 @@ function getSessionLocation(
   }
 
   // World 3-1 · Don't Stop Believin'
+  if (t.includes('gdg') && t.includes('campus')) {
+    return {
+      tabId: '3-1',
+      roomCode: '3-1',
+      roomName: "Don't Stop Believin'",
+      time: '17:00 – 17:15',
+    };
+  }
   if (
     t.includes('montreal tech community') ||
     t.includes('communauté tech montréalaise')
@@ -264,28 +276,20 @@ function getSessionLocation(
   // World 3-2 · Mr. Roboto (Showcase)
   if (t === 'the doomsday course') {
     return {
-      tabId: 'map',
+      tabId: '3-2',
       roomCode: '3-2',
       roomName: 'Mr. Roboto',
       time: isFr ? '10:15 – 16:45 (En continu)' : '10:15 – 16:45 (Drop-in)',
     };
   }
 
-  // World 3-4 · Call Me (Talks & Lightning)
+  // World 4-3 · Working For The Weekend (Talks & Lightning)
   if (t.includes('harness engineering') || t.includes('prompt engineering')) {
     return {
-      tabId: '3-4',
-      roomCode: '3-4',
-      roomName: 'Call Me',
+      tabId: '4-3',
+      roomCode: '4-3',
+      roomName: 'Working For The Weekend',
       time: '10:15 – 11:00',
-    };
-  }
-  if (t.includes('one brain vs. the hive') || t.includes('agents swarm')) {
-    return {
-      tabId: '3-4',
-      roomCode: '3-4',
-      roomName: 'Call Me',
-      time: '11:15 – 12:00',
     };
   }
   if (
@@ -295,42 +299,34 @@ function getSessionLocation(
     t === 'tbc'
   ) {
     return {
-      tabId: '3-4',
-      roomCode: '3-4',
-      roomName: 'Call Me',
+      tabId: '4-3',
+      roomCode: '4-3',
+      roomName: 'Working For The Weekend',
       time: '13:00 – 13:45',
     };
   }
   if (t.includes('six agents') || t.includes('patient record')) {
     return {
-      tabId: '3-4',
-      roomCode: '3-4',
-      roomName: 'Call Me',
+      tabId: '4-3',
+      roomCode: '4-3',
+      roomName: 'Working For The Weekend',
       time: '14:00 – 14:15',
-    };
-  }
-  if (t.includes('google ai studio and databases')) {
-    return {
-      tabId: '3-4',
-      roomCode: '3-4',
-      roomName: 'Call Me',
-      time: '15:00 – 15:45',
-    };
-  }
-  if (t.includes('gdg') && t.includes('campus')) {
-    return {
-      tabId: '3-4',
-      roomCode: '3-4',
-      roomName: 'Call Me',
-      time: '16:00 – 16:15',
     };
   }
   if (t.includes('90%')) {
     return {
-      tabId: '3-4',
-      roomCode: '3-4',
-      roomName: 'Call Me',
-      time: '16:25 – 16:40',
+      tabId: '4-3',
+      roomCode: '4-3',
+      roomName: 'Working For The Weekend',
+      time: '14:25 – 14:40',
+    };
+  }
+  if (t.includes('google ai studio and databases')) {
+    return {
+      tabId: '3-5',
+      roomCode: '3-5',
+      roomName: "Just Can't Get Enough",
+      time: '16:00 – 16:45',
     };
   }
 
@@ -377,10 +373,10 @@ function getSessionLocation(
   }
   if (t.includes('agentic mobile testing') || t.includes('maestro mcp')) {
     return {
-      tabId: '3-5',
-      roomCode: '3-5',
-      roomName: "Just Can't Get Enough",
-      time: '16:00 – 16:45',
+      tabId: '4-3',
+      roomCode: '4-3',
+      roomName: 'Working For The Weekend',
+      time: '11:15 – 12:00',
     };
   }
 

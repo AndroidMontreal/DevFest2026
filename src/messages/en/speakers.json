@@ -18,8 +18,8 @@
       "employer": "GDG on Campus Polytechnique",
       "title": "Lead",
       "gde": false,
-      "topic": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
-      "format": "Lightning panel · 15 min",
+      "topic": "Closing Keynote: Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
+      "format": "Keynote · 15 min",
       "link": "https://www.linkedin.com/in/rebecca-abi-chahine/",
       "image": "/assets/images/speakers/Rebecca_Abi_Chahine.jpg",
       "category": "community"
@@ -46,17 +46,6 @@
       "format": "Talk · 40 min",
       "link": "https://www.linkedin.com/in/alansari-ca/",
       "image": "/assets/images/speakers/Mohammad_Al-Ansari.jpg",
-      "category": "ai"
-    },
-    {
-      "name": "Angie Ariza",
-      "employer": "Plus Company",
-      "title": "AI Tech Lead",
-      "gde": false,
-      "topic": "One Brain vs. The Hive What Actually Happens When AI Agents Swarm",
-      "format": "Talk · 40 min",
-      "link": "https://www.linkedin.com/in/angie-ariza/",
-      "image": "/assets/images/speakers/Angie_Ariza.jpg",
       "category": "ai"
     },
     {
@@ -376,7 +365,7 @@
     {
       "name": "Jihoo Park",
       "employer": "WB Games",
-      "title": "CIA (Core Insights Agency)",
+      "title": "WTM Ambassador",
       "gde": false,
       "topic": "Career coaching 1:1",
       "format": "1:1 coaching · 25 min",
@@ -390,7 +379,7 @@
       "employer": "Women Techmakers Montreal",
       "title": "President",
       "gde": false,
-      "topic": "Panel: Montreal Tech Community: How local tech groups are shaping Montreal’s digital future\nCoaching: Career coaching 1:1\nKeynote: Closing Keynote Kickoff & Community Remarks",
+      "topic": "Panel: Montreal Tech Community: How local tech groups are shaping Montreal’s digital future\nCoaching: Career coaching 1:1\nKeynote: Closing Keynote — Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives (Moderator)",
       "format": "Panel · 40 min\n1:1 coaching · 25 min\nKeynote · 15 min",
       "link": "https://www.linkedin.com/in/stefaniapecore/",
       "image": "/assets/images/speakers/Stefania_Pecore.jpg",
@@ -401,8 +390,8 @@
       "employer": "GDG on Campus Concordia",
       "title": "Lead",
       "gde": false,
-      "topic": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
-      "format": "Lightning panel · 15 min",
+      "topic": "Closing Keynote: Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
+      "format": "Keynote · 15 min",
       "link": "https://www.linkedin.com/in/michael-persico/",
       "image": "/assets/images/speakers/Michael_Persico.jpg",
       "category": "community"
@@ -458,8 +447,8 @@
       "employer": "GDG on Campus McGill",
       "title": "Lead",
       "gde": false,
-      "topic": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
-      "format": "Lightning panel · 15 min",
+      "topic": "Closing Keynote: Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
+      "format": "Keynote · 15 min",
       "link": "https://www.linkedin.com/in/daniel-wei1/",
       "image": "/assets/images/speakers/Daniel_Wei.jpg",
       "category": "community"

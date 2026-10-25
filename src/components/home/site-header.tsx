@@ -134,6 +134,12 @@ export function SiteHeader({
             return (
               <Link
                 key={item.href}
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.dispatchEvent(
+                    new CustomEvent('devfest:reset-schedule-top'),
+                  );
+                }}
                 className={`font-mono-tech text-[11px] 2xl:text-[12px] tracking-[0.14em] 2xl:tracking-[0.18em] whitespace-nowrap ${activeClass} ${colorClass} uppercase transition-colors`}
                 href={item.href}
               >

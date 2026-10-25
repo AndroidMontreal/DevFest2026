@@ -50,9 +50,15 @@
         "badge": "Changement d'étage"
       },
       {
-        "time": "17:00 – 18:30",
+        "time": "17:00 – 17:15",
+        "title": "Keynote de clôture — GDG on Campus",
+        "subtitle": "Closing Keynote — GDG on Campus",
+        "badge": "Scène Principale"
+      },
+      {
+        "time": "17:15 – 18:30",
         "title": "Mot de la fin, tirages et 5 à 7",
-        "subtitle": "Closing keynote, raffles & happy hour",
+        "subtitle": "Wrapping-up, raffles & happy hour",
         "badge": "Réseautage & Prix"
       }
     ],
@@ -77,6 +83,12 @@
           "subtitle": "Chill zone & games",
           "meta": "4-1 · THE DANGER ZONE",
           "color": "blue"
+        },
+        {
+          "title": "Table de badges et 2e cabine photo",
+          "subtitle": "Badge table & 2nd photo booth",
+          "meta": "4e étage juste après 4-2",
+          "color": "cyan"
         }
       ]
     }
@@ -86,7 +98,7 @@
     "section_title": "Naviguer par salle",
     "section_subtitle": "Schedule by Room · Étages 3 et 4",
     "main_agenda_tab": "Horaire général (TL;DR)",
-    "filter_all": "Toutes les salles (10)",
+    "filter_all": "Toutes les salles (12)",
     "search_placeholder": "Rechercher par titre, conférencier, salle, catégorie ou niveau...",
     "filter_all_sessions": "Toutes les sessions",
     "filter_ai": "IA & Agents",
@@ -106,6 +118,17 @@
         "typeSecondary": "Main stage · 100 seats",
         "accent": "yellow",
         "sessions": [
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "09:25 – 10:00",
+            "title": "Mot d'ouverture et Keynote — Montréal à l'ère de l'IA : l'écosystème local",
+            "speakers": "STACY VÉRONNEAU (GDG Cloud Montréal) · ETIENNE CARON (GDG Montréal Android) · JHIN LEE (Flutter Montréal)",
+            "duration": "35 MIN",
+            "lang": "EN/FR",
+            "categories": ["Communauté & Panels", "IA & Agents"],
+            "level": "Tous niveaux"
+          },
           {
             "kind": "session",
             "variant": "yellow",
@@ -177,105 +200,53 @@
             "lang": "EN",
             "categories": ["Cloud & Infra", "IA & Agents"],
             "level": "Débutant"
+          },
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "17:00 – 17:15",
+            "title": "Keynote de clôture — Google Developer Groups (GDG) on Campus : mission, impact et perspectives étudiantes",
+            "speakers": "STEFANIA PECORE (Modératrice · Women Techmakers Montréal) · MICHAEL PERSICO (GDG on Campus Concordia) · REBECCA ABI CHAHINE (GDG on Campus Polytechnique) · DANIEL WEI (GDG on Campus McGill)",
+            "duration": "15 MIN",
+            "lang": "EN/FR",
+            "categories": ["Communauté & Panels"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "17:15 – 18:30",
+            "title": "Mot de la fin, tirages et 5 à 7 (Happy Hour)",
+            "speakers": "ÉQUIPE ORGANISATRICE GDG MONTRÉAL (Scène principale et salon du 3e étage)",
+            "abstract": "Mot de clôture, tirages de prix et 5 à 7 (Happy Hour) avec boissons, bouchées et réseautage communautaire au 3e étage.",
+            "duration": "75 MIN",
+            "lang": "EN/FR",
+            "categories": ["Communauté & Panels"],
+            "level": "Tous niveaux"
           }
         ]
       },
       {
-        "id": "3-4",
-        "worldCode": "3-4",
-        "locationBadgePrimary": "MONDE 3-4 · ÉTAGE 3",
-        "locationBadgeSecondary": "WORLD 3-4 · FLOOR 3",
-        "name": "Call Me",
-        "typePrimary": "Conférences · 20 places",
-        "typeSecondary": "Talks · 20 seats",
+        "id": "3-2",
+        "worldCode": "3-2",
+        "locationBadgePrimary": "MONDE 3-2 · ÉTAGE 3",
+        "locationBadgeSecondary": "WORLD 3-2 · FLOOR 3",
+        "name": "Mr. Roboto",
+        "typePrimary": "Vitrine techno · 5 places (En continu)",
+        "typeSecondary": "Tech Showcase · 5 seats (Drop-in)",
         "accent": "blue",
         "sessions": [
           {
             "kind": "session",
             "variant": "blue",
-            "time": "10:15 – 11:00",
-            "title": "From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP",
-            "speakers": "ECKARATH KHOUNSOMBATH (Ecka Studio)",
-            "duration": "45 MIN",
-            "lang": "EN",
-            "categories": ["IA & Agents", "Cloud & Infra"],
-            "level": "Intermédiaire"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "11:15 – 12:00",
-            "title": "One Brain vs. The Hive What Actually Happens When AI Agents Swarm",
-            "speakers": "ANGIE ARIZA (Plus Company)",
-            "duration": "45 MIN",
-            "lang": "EN",
-            "categories": ["IA & Agents"],
-            "level": "Avancé"
-          },
-          {
-            "kind": "lunch",
-            "time": "12:00 – 13:00",
-            "title": "DÎNER ET TIRAGE",
-            "subtitle": "LUNCH & RAFFLE"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "13:00 – 13:45",
-            "title": "Agents Working Together: Orchestration with ADK and A2A",
-            "speakers": "ARUNESH CHOUDHARY (dialabot.ai)",
-            "duration": "45 MIN",
-            "lang": "EN",
+            "time": "10:15 – 16:45",
+            "title": "The Doomsday Course — Vitrine interactive : robotique, vidéo en direct et coach de code agentique",
+            "speakers": "ETIENNE CARON (Kanastruk) · GDE · JHIN LEE (Unity) · GDE",
+            "abstract": "Vitrine interactive ouverte toute la journée mettant en vedette des robots physiques sur un parcours en direct, de la vidéo en temps réel et un coach de code IA agentique bâti avec Gemini et Flutter.",
+            "duration": "EN CONTINU",
+            "lang": "EN/FR",
             "categories": ["IA & Agents", "AppDev"],
-            "level": "Intermédiaire"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "14:00 – 14:15",
-            "title": "Six Agents, One Patient Record: A Google ADK Retrospective",
-            "speakers": "RADWAN BABA (Info-Tech Research Group)",
-            "duration": "15 MIN",
-            "lang": "EN",
-            "categories": ["IA & Agents"],
-            "level": "Intermédiaire"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "15:00 – 15:45",
-            "title": "Building Applications with Google AI Studio and Databases",
-            "speakers": "GLEB OTOCHKIN (Google)",
-            "duration": "45 MIN",
-            "lang": "EN",
-            "categories": ["AppDev", "IA & Agents", "Cloud & Infra"],
-            "level": "Intermédiaire"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "16:00 – 16:40",
-            "title": "Ronde éclair / Lightning round",
-            "duration": "2×15",
-            "lang": "EN",
-            "categories": ["Communauté & Panels", "IA & Agents"],
-            "level": "Tous niveaux",
-            "subItems": [
-              {
-                "time": "16:00 – 16:15",
-                "title": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
-                "speakers": "Michael Persico (GDG on Campus Concordia), Rebecca Abi Chahine (GDG on Campus McGill), Daniel Wei (GDG on Campus McGill)",
-                "categories": ["Communauté & Panels"],
-                "level": "Tous niveaux"
-              },
-              {
-                "time": "16:25 – 16:40",
-                "title": "The 90% You Don’t See: Shipping AI Inside a Health System",
-                "speakers": "Guryash Singh Dhall (Sainte-Justine Mother and Child University Hospital Center)",
-                "categories": ["IA & Agents"],
-                "level": "Tous niveaux"
-              }
-            ]
+            "level": "Tous niveaux"
           }
         ]
       },
@@ -354,12 +325,127 @@
             "kind": "session",
             "variant": "blue",
             "time": "16:00 – 16:45",
+            "title": "Building Applications with Google AI Studio and Databases",
+            "speakers": "GLEB OTOCHKIN (Google)",
+            "duration": "45 MIN",
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents", "Cloud & Infra"],
+            "level": "Intermédiaire"
+          }
+        ]
+      },
+      {
+        "id": "4-1",
+        "worldCode": "4-1",
+        "locationBadgePrimary": "MONDE 4-1 · ÉTAGE 4",
+        "locationBadgeSecondary": "WORLD 4-1 · FLOOR 4",
+        "name": "The Danger Zone",
+        "typePrimary": "Zone détente et jeux · 25 places (En continu)",
+        "typeSecondary": "Chill Zone & Games · 25 seats (Drop-in)",
+        "accent": "blue",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "08:30 – 16:45",
+            "title": "Zone détente, jeux de société et salon communautaire",
+            "speakers": "SALON COMMUNAUTAIRE GDG MONTRÉAL (Le Café · Aile nord-ouest)",
+            "abstract": "Espace détente ouvert toute la journée au 4e étage pour se reposer, jouer à des jeux et réseauter avec les participants et conférenciers.",
+            "duration": "EN CONTINU",
+            "lang": "EN/FR",
+            "categories": ["Communauté & Panels"],
+            "level": "Tous niveaux"
+          }
+        ]
+      },
+      {
+        "id": "4-3",
+        "worldCode": "4-3",
+        "locationBadgePrimary": "MONDE 4-3 · ÉTAGE 4",
+        "locationBadgeSecondary": "WORLD 4-3 · FLOOR 4",
+        "name": "Working For The Weekend",
+        "typePrimary": "Conférences · 20 places",
+        "typeSecondary": "Talks · 20 seats",
+        "accent": "blue",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "10:15 – 11:00",
+            "title": "From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP",
+            "speakers": "ECKARATH KHOUNSOMBATH (Ecka Studio)",
+            "duration": "45 MIN",
+            "lang": "EN",
+            "categories": ["IA & Agents", "Cloud & Infra"],
+            "level": "Intermédiaire"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "11:15 – 12:00",
             "title": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
             "speakers": "ETHIEL ADIASSA (Ava Finance) · GDE",
             "duration": "45 MIN",
             "lang": "EN/FR",
             "categories": ["AppDev", "IA & Agents"],
             "level": "Intermédiaire"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "13:00 – 13:45",
+            "title": "Agents Working Together: Orchestration with ADK and A2A",
+            "speakers": "ARUNESH CHOUDHARY (dialabot.ai)",
+            "duration": "45 MIN",
+            "lang": "EN",
+            "categories": ["IA & Agents", "AppDev"],
+            "level": "Intermédiaire"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "14:00 – 14:40",
+            "title": "Rondes éclair en santé / Healthcare Lightning Rounds",
+            "duration": "2×15",
+            "lang": "EN",
+            "categories": ["IA & Agents"],
+            "level": "Tous niveaux",
+            "subItems": [
+              {
+                "time": "14:00 – 14:15",
+                "title": "Six Agents, One Patient Record: A Google ADK Retrospective",
+                "speakers": "Radwan Baba (Info-Tech Research Group)",
+                "categories": ["IA & Agents"],
+                "level": "Intermédiaire"
+              },
+              {
+                "time": "14:25 – 14:40",
+                "title": "The 90% You Don’t See: Shipping AI Inside a Health System",
+                "speakers": "Guryash Singh Dhall (Nova Scotia Health Authority)",
+                "categories": ["IA & Agents"],
+                "level": "Tous niveaux"
+              }
+            ]
+          },
+          {
+            "kind": "open",
+            "time": "15:00 – 15:45",
+            "title": "Créneau de conférence ouvert — À confirmer",
+            "subtitle": "Open Talk Slot — TBC",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "open",
+            "time": "16:00 – 16:45",
+            "title": "Créneau de conférence ouvert — À confirmer",
+            "subtitle": "Open Talk Slot — TBC",
+            "duration": "45 MIN"
           }
         ]
       },
@@ -596,8 +682,8 @@
             "kind": "session",
             "variant": "green",
             "time": "10:30 – 10:55",
-            "title": "Mentorat carrière 1:1 — Stratégie IA, leadership en ingénierie et données",
-            "speakers": "ROMAIN CHEZEAUD (Groupe BMR)",
+            "title": "Mentorat carrière 1:1 — Architecture Cloud, infrastructure IA et progression de carrière",
+            "speakers": "STACY VÉRONNEAU (TELUS Digital) · GDE",
             "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
             "duration": "25 MIN",
             "lang": "EN/FR",
@@ -688,6 +774,120 @@
             "time": "16:15 – 16:40",
             "title": "Mentorat carrière 1:1 — Conseil techno, IA d'entreprise et transitions de carrière",
             "speakers": "CESAR BUSTAMANTE (PwC Canada)",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          }
+        ]
+      },
+      {
+        "id": "3-4",
+        "worldCode": "3-4",
+        "locationBadgePrimary": "MENTORAT 3-4 · ÉTAGE 3",
+        "locationBadgeSecondary": "COACHING 3-4 · FLOOR 3",
+        "name": "Call Me",
+        "typePrimary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "typeSecondary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
+            "speakers": "JIHOO PARK (WB Games)",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
+            "speakers": "JIHOO PARK (WB Games)",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "DÎNER ET TIRAGE",
+            "subtitle": "LUNCH & RAFFLE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
+            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
+            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
+            "speakers": "JIHOO PARK (WB Games)",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
+            "speakers": "JIHOO PARK (WB Games)",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
+            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
+            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Carrière & Communauté"],
+            "level": "Tous niveaux"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
+            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
             "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
             "duration": "25 MIN",
             "lang": "EN/FR",
@@ -710,8 +910,8 @@
             "kind": "session",
             "variant": "green",
             "time": "10:30 – 10:55",
-            "title": "Mentorat carrière 1:1 — Architecture Cloud, infrastructure IA et progression de carrière",
-            "speakers": "STACY VÉRONNEAU (TELUS Digital) · GDE",
+            "title": "Mentorat carrière 1:1 — Stratégie IA, leadership en ingénierie et données",
+            "speakers": "ROMAIN CHEZEAUD (Groupe BMR)",
             "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
             "duration": "25 MIN",
             "lang": "EN/FR",
@@ -802,120 +1002,6 @@
             "time": "16:15 – 16:40",
             "title": "Mentorat carrière 1:1 — Ingénierie logicielle et carrière chez Google",
             "speakers": "SEBASTIAN SENEN GONZALEZ (Google)",
-            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
-            "duration": "25 MIN",
-            "lang": "EN/FR",
-            "categories": ["Carrière & Communauté"],
-            "level": "Tous niveaux"
-          }
-        ]
-      },
-      {
-        "id": "4-3",
-        "worldCode": "4-3",
-        "locationBadgePrimary": "MENTORAT 4-3 · ÉTAGE 4",
-        "locationBadgeSecondary": "COACHING 4-3 · FLOOR 4",
-        "name": "Working For The Weekend",
-        "typePrimary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
-        "typeSecondary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
-        "accent": "green",
-        "sessions": [
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "10:30 – 10:55",
-            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
-            "speakers": "JIHOO PARK (WB Games)",
-            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
-            "duration": "25 MIN",
-            "lang": "EN",
-            "categories": ["Carrière & Communauté"],
-            "level": "Tous niveaux"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "11:00 – 11:25",
-            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
-            "speakers": "JIHOO PARK (WB Games)",
-            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
-            "duration": "25 MIN",
-            "lang": "EN",
-            "categories": ["Carrière & Communauté"],
-            "level": "Tous niveaux"
-          },
-          {
-            "kind": "lunch",
-            "time": "12:00 – 13:00",
-            "title": "DÎNER ET TIRAGE",
-            "subtitle": "LUNCH & RAFFLE"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "13:15 – 13:40",
-            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
-            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
-            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
-            "duration": "25 MIN",
-            "lang": "EN/FR",
-            "categories": ["Carrière & Communauté"],
-            "level": "Tous niveaux"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "13:45 – 14:10",
-            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
-            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
-            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
-            "duration": "25 MIN",
-            "lang": "EN/FR",
-            "categories": ["Carrière & Communauté"],
-            "level": "Tous niveaux"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "14:30 – 14:55",
-            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
-            "speakers": "JIHOO PARK (WB Games)",
-            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
-            "duration": "25 MIN",
-            "lang": "EN",
-            "categories": ["Carrière & Communauté"],
-            "level": "Tous niveaux"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "15:00 – 15:25",
-            "title": "Mentorat carrière 1:1 — Développement de jeux vidéo, ingénierie et carrière",
-            "speakers": "JIHOO PARK (WB Games)",
-            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
-            "duration": "25 MIN",
-            "lang": "EN",
-            "categories": ["Carrière & Communauté"],
-            "level": "Tous niveaux"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "15:45 – 16:10",
-            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
-            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
-            "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
-            "duration": "25 MIN",
-            "lang": "EN/FR",
-            "categories": ["Carrière & Communauté"],
-            "level": "Tous niveaux"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "16:15 – 16:40",
-            "title": "Mentorat carrière 1:1 — Architecture d'entreprise, Cloud et leadership technologique",
-            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
             "abstract": "Session privée de mentorat et coaching de carrière 1:1 de 25 minutes (réservation confirmée à l'avance requise).",
             "duration": "25 MIN",
             "lang": "EN/FR",
