@@ -339,7 +339,7 @@ function getSessionLocation(
       time: '10:15 – 11:00',
     };
   }
-  if (t.includes('flight mode ai')) {
+  if (t.includes('attention attention everywhere')) {
     return {
       tabId: '3-5',
       roomCode: '3-5',
@@ -347,7 +347,7 @@ function getSessionLocation(
       time: '11:15 – 12:00',
     };
   }
-  if (t.includes('off the edge')) {
+  if (t.includes('gold team')) {
     return {
       tabId: '3-5',
       roomCode: '3-5',
@@ -363,7 +363,7 @@ function getSessionLocation(
       time: '14:00 – 14:45',
     };
   }
-  if (t.includes('under the hood of gemini enterprise')) {
+  if (t.includes('edge ai on mobile')) {
     return {
       tabId: '3-5',
       roomCode: '3-5',
@@ -371,7 +371,7 @@ function getSessionLocation(
       time: '15:00 – 15:45',
     };
   }
-  if (t.includes('agentic mobile testing') || t.includes('maestro mcp')) {
+  if (t.includes('webmcp')) {
     return {
       tabId: '4-3',
       roomCode: '4-3',
@@ -389,7 +389,7 @@ function getSessionLocation(
       time: '10:15 – 11:00',
     };
   }
-  if (t.includes('gold team')) {
+  if (t.includes('off the edge')) {
     return {
       tabId: '4-4',
       roomCode: '4-4',
@@ -413,7 +413,7 @@ function getSessionLocation(
       time: '14:00 – 14:45',
     };
   }
-  if (t.includes('edge ai on mobile')) {
+  if (t.includes('under the hood of gemini enterprise')) {
     return {
       tabId: '4-4',
       roomCode: '4-4',
@@ -431,7 +431,7 @@ function getSessionLocation(
   }
 
   // World 4-5 · Never Gonna Give You Up
-  if (t.includes('webmcp')) {
+  if (t.includes('agentic mobile testing') || t.includes('maestro mcp')) {
     return {
       tabId: '4-5',
       roomCode: '4-5',
@@ -439,7 +439,7 @@ function getSessionLocation(
       time: '10:15 – 11:00',
     };
   }
-  if (t.includes('attention attention everywhere')) {
+  if (t.includes('flight mode ai')) {
     return {
       tabId: '4-5',
       roomCode: '4-5',
