@@ -123,7 +123,7 @@
             "variant": "yellow",
             "time": "09:25 – 10:00",
             "title": "Mot d'ouverture et Keynote — Montréal à l'ère de l'IA : l'écosystème local",
-            "speakers": "STACY VÉRONNEAU (GDG Cloud Montréal) · ETIENNE CARON (GDG Montréal Android) · JHIN LEE (Flutter Montréal)",
+            "speakers": "STACY VÉRONNEAU (TELUS Digital) · GDE",
             "duration": "35 MIN",
             "lang": "EN/FR",
             "categories": ["Communauté & Panels", "IA & Agents"],
@@ -217,7 +217,7 @@
             "variant": "yellow",
             "time": "17:15 – 18:30",
             "title": "Mot de la fin, tirages et 5 à 7 (Happy Hour)",
-            "speakers": "ÉQUIPE ORGANISATRICE GDG MONTRÉAL (Scène principale et salon du 3e étage)",
+            "speakers": "STACY VÉRONNEAU (TELUS Digital) · GDE",
             "abstract": "Mot de clôture, tirages de prix et 5 à 7 (Happy Hour) avec boissons, bouchées et réseautage communautaire au 3e étage.",
             "duration": "75 MIN",
             "lang": "EN/FR",
@@ -256,8 +256,8 @@
         "locationBadgePrimary": "MONDE 3-5 · ÉTAGE 3",
         "locationBadgeSecondary": "WORLD 3-5 · FLOOR 3",
         "name": "Just Can’t Get Enough",
-        "typePrimary": "Conférences · 25 places",
-        "typeSecondary": "Talks · 25 seats",
+        "typePrimary": "Conférences · 30 places",
+        "typeSecondary": "Talks · 30 seats",
         "accent": "blue",
         "sessions": [
           {
@@ -275,11 +275,11 @@
             "kind": "session",
             "variant": "blue",
             "time": "11:15 – 12:00",
-            "title": "Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart",
-            "speakers": "JHIN LEE (Unity) · GDE",
+            "title": "Attention Attention Everywhere",
+            "speakers": "DEV J. SHAH (TribalScale)",
             "duration": "45 MIN",
             "lang": "EN",
-            "categories": ["AppDev", "IA & Agents"],
+            "categories": ["IA & Agents"],
             "level": "Intermédiaire"
           },
           {
@@ -292,12 +292,12 @@
             "kind": "session",
             "variant": "blue",
             "time": "13:00 – 13:45",
-            "title": "Off the Edge: Grading Google AI Edge and Gemini Against a Practitioner’s Eye",
-            "speakers": "BORIS-WILFRIED NYASSE (Oloodi) · GDE",
+            "title": "Beyond Red, Blue and Purple: Meet the Gold Team",
+            "speakers": "FAUSTIN BOUCHARD (Universal Intelligence Architecture)",
             "duration": "45 MIN",
             "lang": "EN",
-            "categories": ["IA & Agents", "AppDev"],
-            "level": "Intermédiaire"
+            "categories": ["IA & Agents", "Cloud & Infra"],
+            "level": "Tous niveaux"
           },
           {
             "kind": "session",
@@ -314,12 +314,12 @@
             "kind": "session",
             "variant": "blue",
             "time": "15:00 – 15:45",
-            "title": "Under the Hood of Gemini Enterprise: No-Code Agents, and Workflow Automation",
-            "speakers": "FRANÇOIS LÉGARÉ (Bell) · GDE",
+            "title": "Edge AI on Mobile: Practical Approaches and Challenges",
+            "speakers": "MATHIEU FILLION (WePoint)",
             "duration": "45 MIN",
-            "lang": "EN/FR",
-            "categories": ["IA & Agents", "Cloud & Infra"],
-            "level": "Intermédiaire"
+            "lang": "EN",
+            "categories": ["AppDev", "IA & Agents"],
+            "level": "Débutant"
           },
           {
             "kind": "session",
@@ -383,10 +383,10 @@
             "kind": "session",
             "variant": "blue",
             "time": "11:15 – 12:00",
-            "title": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
-            "speakers": "ETHIEL ADIASSA (Ava Finance) · GDE",
+            "title": "The Web Could be Agentic: A first dive into Google's WebMCP Proposal",
+            "speakers": "LESTER BOTELLO (WePoint)",
             "duration": "45 MIN",
-            "lang": "EN/FR",
+            "lang": "EN",
             "categories": ["AppDev", "IA & Agents"],
             "level": "Intermédiaire"
           },
@@ -474,12 +474,12 @@
             "kind": "session",
             "variant": "blue",
             "time": "11:15 – 12:00",
-            "title": "Beyond Red, Blue and Purple: Meet the Gold Team",
-            "speakers": "FAUSTIN BOUCHARD (Universal Intelligence Architecture)",
+            "title": "Off the Edge: Grading Google AI Edge and Gemini Against a Practitioner’s Eye",
+            "speakers": "BORIS-WILFRIED NYASSE (Oloodi) · GDE",
             "duration": "45 MIN",
             "lang": "EN",
-            "categories": ["IA & Agents", "Cloud & Infra"],
-            "level": "Tous niveaux"
+            "categories": ["IA & Agents", "AppDev"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "lunch",
@@ -513,12 +513,12 @@
             "kind": "session",
             "variant": "blue",
             "time": "15:00 – 15:45",
-            "title": "Edge AI on Mobile: Practical Approaches and Challenges",
-            "speakers": "MATHIEU FILLION (WePoint)",
+            "title": "Under the Hood of Gemini Enterprise: No-Code Agents, and Workflow Automation",
+            "speakers": "FRANÇOIS LÉGARÉ (Bell) · GDE",
             "duration": "45 MIN",
-            "lang": "EN",
-            "categories": ["AppDev", "IA & Agents"],
-            "level": "Débutant"
+            "lang": "EN/FR",
+            "categories": ["IA & Agents", "Cloud & Infra"],
+            "level": "Intermédiaire"
           },
           {
             "kind": "session",
@@ -547,10 +547,10 @@
             "kind": "session",
             "variant": "blue",
             "time": "10:15 – 11:00",
-            "title": "The Web Could be Agentic: A first dive into Google's WebMCP Proposal",
-            "speakers": "LESTER BOTELLO (WePoint)",
+            "title": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
+            "speakers": "ETHIEL ADIASSA (Ava Finance) · GDE",
             "duration": "45 MIN",
-            "lang": "EN",
+            "lang": "EN/FR",
             "categories": ["AppDev", "IA & Agents"],
             "level": "Intermédiaire"
           },
@@ -558,11 +558,11 @@
             "kind": "session",
             "variant": "blue",
             "time": "11:15 – 12:00",
-            "title": "Attention Attention Everywhere",
-            "speakers": "DEV J. SHAH (TribalScale)",
+            "title": "Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart",
+            "speakers": "JHIN LEE (Unity) · GDE",
             "duration": "45 MIN",
             "lang": "EN",
-            "categories": ["IA & Agents"],
+            "categories": ["AppDev", "IA & Agents"],
             "level": "Intermédiaire"
           },
           {
