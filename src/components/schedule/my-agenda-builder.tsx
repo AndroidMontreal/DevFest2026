@@ -71,11 +71,13 @@ const ROOM_TO_MAP_NODE: Record<
   { floor: '03' | '04'; nodeId: string; seats: number }
 > = {
   '3-1': { floor: '03', nodeId: 'l3-room-1', seats: 100 },
+  '3-2': { floor: '03', nodeId: 'l3-room-2', seats: 5 },
   '3-3': { floor: '03', nodeId: 'l3-room-3', seats: 2 },
-  '3-4': { floor: '03', nodeId: 'l3-room-4', seats: 20 },
+  '3-4': { floor: '03', nodeId: 'l3-room-4', seats: 2 },
   '3-5': { floor: '03', nodeId: 'l3-room-5', seats: 25 },
+  '4-1': { floor: '04', nodeId: 'l4-room-1', seats: 25 },
   '4-2': { floor: '04', nodeId: 'l4-room-2', seats: 2 },
-  '4-3': { floor: '04', nodeId: 'l4-room-3', seats: 2 },
+  '4-3': { floor: '04', nodeId: 'l4-room-3', seats: 20 },
   '4-4': { floor: '04', nodeId: 'l4-room-4', seats: 40 },
   '4-5': { floor: '04', nodeId: 'l4-room-5', seats: 40 },
   '4-6': { floor: '04', nodeId: 'l4-room-6', seats: 100 },
@@ -119,6 +121,8 @@ export function flattenRoomSessions(rooms: RoomTrack[]): FlatSession[] {
     for (const session of room.sessions) {
       if (session.kind === 'lunch') continue;
       const { startMin, endMin } = parseTimeRangeToMinutes(session.time);
+      if (startMin < 600 || startMin >= 1020 || endMin - startMin > 180)
+        continue; // Keynotes, 5 à 7 & all-day drop-in showcases are rendered outside breakout slots
       result.push({
         id: makeSessionId(room.id, session.time),
         roomId: room.id,
@@ -1385,9 +1389,14 @@ export function MyAgendaBuilder({
                     </div>
                     <h4 className="mt-1 font-display text-base sm:text-lg font-bold text-white">
                       {isFr
-                        ? 'Mot de la fin, Tirages & 5 à 7 (Closing Keynote & Happy Hour)'
-                        : 'Closing Keynote, Raffles & 5 à 7 Networking'}
+                        ? 'Keynote de clôture (GDG on Campus · 17:00 – 17:15), Tirages & 5 à 7'
+                        : 'Closing Keynote (GDG on Campus · 17:00 – 17:15), Raffles & 5 à 7'}
                     </h4>
+                    <p className="mt-0.5 font-mono-tech text-[11px] uppercase tracking-wider text-cyan-300/90">
+                      {isFr
+                        ? 'Modératrice : Stefania Pecore · Panélistes : Michael Persico, Rebecca Abi Chahine, Daniel Wei'
+                        : 'Moderator: Stefania Pecore · Panelists: Michael Persico, Rebecca Abi Chahine, Daniel Wei'}
+                    </p>
                   </div>
                 </div>
 

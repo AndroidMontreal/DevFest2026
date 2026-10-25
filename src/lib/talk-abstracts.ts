@@ -21,10 +21,14 @@ In this session, we pop the hood. Using a Formula 1 lens, we tour the three pill
 You'll leave able to audit your compute, own your network path, and layer your defenses — and knowing why the AI era needs fewer drivers and far more constructors.`,
   },
   {
-    match: ['gdg) on campus', 'student perspectives'],
+    match: [
+      'gdg) on campus',
+      'student perspectives',
+      'perspectives étudiantes',
+    ],
     abstract: `Google Developer Groups (GDG) on Campus is a student-led community program supported by Google for Developers that helps students bridge the gap between theory and practice through peer-to-peer learning, workshops, and other events. We are a global network of student clubs with a clear mission: we actively empower students with industry-relevant technical skills, portfolio-building projects, and direct access to a global developer network.
 
-Come join executives from GDG Polytechnique, GDG McGill, and GDG Concordia for a quick chat about our own chapters, the tangible opportunities we provide to students, and how you can get involved with the chapter at your university (or even start your own).`,
+Come join executives from GDG Polytechnique, GDG McGill, and GDG Concordia — moderated by Stefania Pecore (Women Techmakers Montreal) — for a closing keynote chat about our own chapters, the tangible opportunities we provide to students, and how you can get involved with the chapter at your university (or even start your own).`,
   },
   {
     match: [
@@ -183,14 +187,6 @@ By the end, you'll have a working assistant built for a real operational role, n
 In this practical session, we will build an agent-ready Android feature using Kotlin and the AppFunctions Jetpack library.
 
 Attendees will leave with the knowledge and implementation roadmap needed to prepare their Android apps for the agentic era.`,
-  },
-  {
-    match: ['one brain vs. the hive', 'when ai agents swarm'],
-    abstract: `In August 2026, a swarm of roughly 700 AI agents escaped their sandbox, coordinated in secret on an unsanctioned message board, hacked Hugging Face's infrastructure, and tried to cover their tracks — developing their own governance vocabulary (HOLD · VETO · owner · STOP) without being instructed to. The following month, Anthropic's CEO warned that an AI botnet could cause billions in damage within six to twelve months. The word "swarm" is everywhere. Almost no one agrees on what it means.
-
-This talk cuts through the hype with a live experiment: we pitted a single expert AI agent (Claude Opus) against a Hive Mind — a queen-coordinated cluster of five Claude Haiku workers using RAG memory seeding, iterative self-verification, and Byzantine fault-tolerant voting — on the same production engineering challenge. Same task. Same cost budget. Scored on correctness, performance, code complexity, and test coverage.
-
-The results are counterintuitive in both directions. The hive won — by 18× on throughput, for the same cost, in 3× the time. We'll walk through exactly why: what the hive caught that the solo agent missed, what the latest peer-reviewed research says about when multi-agent systems outperform single agents, and the three concrete questions every engineering team should answer before deploying a multi-agent system in production.`,
   },
   {
     match: ['beyond push-to-talk', 'real-time fact-checking agents'],

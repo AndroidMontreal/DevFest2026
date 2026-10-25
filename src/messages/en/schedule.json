@@ -50,8 +50,14 @@
         "badge": "Floor Change"
       },
       {
-        "time": "17:00 – 18:30",
-        "title": "Closing Keynote, Raffles & 5 à 7",
+        "time": "17:00 – 17:15",
+        "title": "Closing Keynote — GDG on Campus",
+        "subtitle": "Keynote de clôture — GDG on Campus",
+        "badge": "Main Stage"
+      },
+      {
+        "time": "17:15 – 18:30",
+        "title": "Wrapping-Up, Raffles & 5 à 7",
         "subtitle": "Mot de la fin, tirages et 5 à 7",
         "badge": "Networking & Prizes"
       }
@@ -77,6 +83,12 @@
           "subtitle": "Zone détente et jeux",
           "meta": "4-1 · THE DANGER ZONE",
           "color": "blue"
+        },
+        {
+          "title": "Badge Table & 2nd Photo Booth",
+          "subtitle": "Table de badges et 2e cabine photo",
+          "meta": "4th floor right after 4-2",
+          "color": "cyan"
         }
       ]
     }
@@ -86,7 +98,7 @@
     "section_title": "Navigate by Room",
     "section_subtitle": "Horaire par salle · Floors 3 & 4",
     "main_agenda_tab": "Main Agenda (TL;DR)",
-    "filter_all": "All Rooms (10)",
+    "filter_all": "All Rooms (12)",
     "search_placeholder": "Search by talk title, speaker, room, category or level...",
     "filter_all_sessions": "All Sessions",
     "filter_ai": "AI & Agents",
@@ -106,6 +118,17 @@
         "typeSecondary": "Scène principale · 100 places",
         "accent": "yellow",
         "sessions": [
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "09:25 – 10:00",
+            "title": "Opening Remarks & Keynote — Montreal in the Age of AI: The Local Ecosystem",
+            "speakers": "STACY VÉRONNEAU (GDG Cloud Montreal) · ETIENNE CARON (GDG Montreal Android) · JHIN LEE (Flutter Montreal)",
+            "duration": "35 MIN",
+            "lang": "EN/FR",
+            "categories": ["Community & Panels", "AI & Agents"],
+            "level": "All Levels"
+          },
           {
             "kind": "session",
             "variant": "yellow",
@@ -177,105 +200,53 @@
             "lang": "EN",
             "categories": ["Cloud & Infra", "AI & Agents"],
             "level": "Beginner"
+          },
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "17:00 – 17:15",
+            "title": "Closing Keynote — Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
+            "speakers": "STEFANIA PECORE (Moderator · Women Techmakers Montreal) · MICHAEL PERSICO (GDG on Campus Concordia) · REBECCA ABI CHAHINE (GDG on Campus Polytechnique) · DANIEL WEI (GDG on Campus McGill)",
+            "duration": "15 MIN",
+            "lang": "EN/FR",
+            "categories": ["Community & Panels"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "yellow",
+            "time": "17:15 – 18:30",
+            "title": "Wrapping-Up, Raffles & Happy Hour (5 à 7)",
+            "speakers": "GDG MONTREAL ORGANIZING TEAM (Main Stage & 3rd Floor Lounge)",
+            "abstract": "Closing remarks, prize raffles, and evening 5 à 7 happy hour with drinks, bites, and community networking on Floor 3.",
+            "duration": "75 MIN",
+            "lang": "EN/FR",
+            "categories": ["Community & Panels"],
+            "level": "All Levels"
           }
         ]
       },
       {
-        "id": "3-4",
-        "worldCode": "3-4",
-        "locationBadgePrimary": "WORLD 3-4 · FLOOR 3",
-        "locationBadgeSecondary": "MONDE 3-4 · ÉTAGE 3",
-        "name": "Call Me",
-        "typePrimary": "Talks · 20 seats",
-        "typeSecondary": "Conférences · 20 places",
+        "id": "3-2",
+        "worldCode": "3-2",
+        "locationBadgePrimary": "WORLD 3-2 · FLOOR 3",
+        "locationBadgeSecondary": "MONDE 3-2 · ÉTAGE 3",
+        "name": "Mr. Roboto",
+        "typePrimary": "Tech Showcase · 5 seats (Drop-in)",
+        "typeSecondary": "Vitrine techno · 5 places (En continu)",
         "accent": "blue",
         "sessions": [
           {
             "kind": "session",
             "variant": "blue",
-            "time": "10:15 – 11:00",
-            "title": "From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP",
-            "speakers": "ECKARATH KHOUNSOMBATH (ECKA Studio)",
-            "duration": "45 MIN",
-            "lang": "EN",
-            "categories": ["AI & Agents", "Cloud & Infra"],
-            "level": "Intermediate"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "11:15 – 12:00",
-            "title": "One Brain vs. The Hive What Actually Happens When AI Agents Swarm",
-            "speakers": "ANGIE ARIZA (Plus Company)",
-            "duration": "45 MIN",
-            "lang": "EN",
-            "categories": ["AI & Agents"],
-            "level": "Advanced"
-          },
-          {
-            "kind": "lunch",
-            "time": "12:00 – 13:00",
-            "title": "LUNCH & RAFFLE",
-            "subtitle": "DÎNER ET TIRAGE"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "13:00 – 13:45",
-            "title": "Agents Working Together: Orchestration with ADK and A2A",
-            "speakers": "ARUNESH CHOUDHARY (Dialabot.ai)",
-            "duration": "45 MIN",
-            "lang": "EN",
+            "time": "10:15 – 16:45",
+            "title": "The Doomsday Course — Interactive Robotics, Live Video & Agentic Coding Coach Showcase",
+            "speakers": "ETIENNE CARON (Kanastruk) · GDE · JHIN LEE (Unity) · GDE",
+            "abstract": "All-day interactive drop-in showcase featuring physical robots navigating a live course, real-time video streaming, and an agentic AI coding coach built with Gemini and Flutter.",
+            "duration": "DROP-IN",
+            "lang": "EN/FR",
             "categories": ["AI & Agents", "AppDev"],
-            "level": "Intermediate"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "14:00 – 14:15",
-            "title": "Six Agents, One Patient Record: A Google ADK Retrospective",
-            "speakers": "RADWAN BABA (Info-Tech Research Group)",
-            "duration": "15 MIN",
-            "lang": "EN",
-            "categories": ["AI & Agents"],
-            "level": "Intermediate"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "15:00 – 15:45",
-            "title": "Building Applications with Google AI Studio and Databases",
-            "speakers": "GLEB OTOCHKIN (Google)",
-            "duration": "45 MIN",
-            "lang": "EN",
-            "categories": ["AppDev", "AI & Agents", "Cloud & Infra"],
-            "level": "Intermediate"
-          },
-          {
-            "kind": "session",
-            "variant": "blue",
-            "time": "16:00 – 16:40",
-            "title": "Lightning round / Ronde éclair",
-            "duration": "2×15",
-            "lang": "EN",
-            "categories": ["Community & Panels", "AI & Agents"],
-            "level": "All Levels",
-            "subItems": [
-              {
-                "time": "16:00 – 16:15",
-                "title": "Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
-                "speakers": "Michael Persico (GDG on Campus Concordia) · Rebecca Abi Chahine (GDG on Campus Polytechnique) · Daniel Wei (GDG on Campus McGill)",
-                "categories": ["Community & Panels"],
-                "level": "All Levels"
-              },
-              {
-                "time": "16:25 – 16:40",
-                "title": "The 90% You Don’t See: Shipping AI Inside a Health System",
-                "speakers": "Guryash Singh Dhall (Nova Scotia Health Authority)",
-                "categories": ["AI & Agents"],
-                "level": "All Levels"
-              }
-            ]
+            "level": "All Levels"
           }
         ]
       },
@@ -354,12 +325,127 @@
             "kind": "session",
             "variant": "blue",
             "time": "16:00 – 16:45",
+            "title": "Building Applications with Google AI Studio and Databases",
+            "speakers": "GLEB OTOCHKIN (Google)",
+            "duration": "45 MIN",
+            "lang": "EN",
+            "categories": ["AppDev", "AI & Agents", "Cloud & Infra"],
+            "level": "Intermediate"
+          }
+        ]
+      },
+      {
+        "id": "4-1",
+        "worldCode": "4-1",
+        "locationBadgePrimary": "WORLD 4-1 · FLOOR 4",
+        "locationBadgeSecondary": "MONDE 4-1 · ÉTAGE 4",
+        "name": "The Danger Zone",
+        "typePrimary": "Chill Zone & Games · 25 seats (Drop-in)",
+        "typeSecondary": "Zone détente et jeux · 25 places (En continu)",
+        "accent": "blue",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "08:30 – 16:45",
+            "title": "Chill Zone, Board Games & Community Lounge",
+            "speakers": "GDG MONTREAL COMMUNITY LOUNGE (Le Café · North-West Wing)",
+            "abstract": "All-day drop-in lounge on Floor 4 to relax, recharge, play games, and network with fellow attendees and speakers.",
+            "duration": "DROP-IN",
+            "lang": "EN/FR",
+            "categories": ["Community & Panels"],
+            "level": "All Levels"
+          }
+        ]
+      },
+      {
+        "id": "4-3",
+        "worldCode": "4-3",
+        "locationBadgePrimary": "WORLD 4-3 · FLOOR 4",
+        "locationBadgeSecondary": "MONDE 4-3 · ÉTAGE 4",
+        "name": "Working For The Weekend",
+        "typePrimary": "Talks · 20 seats",
+        "typeSecondary": "Conférences · 20 places",
+        "accent": "blue",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "10:15 – 11:00",
+            "title": "From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP",
+            "speakers": "ECKARATH KHOUNSOMBATH (ECKA Studio)",
+            "duration": "45 MIN",
+            "lang": "EN",
+            "categories": ["AI & Agents", "Cloud & Infra"],
+            "level": "Intermediate"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "11:15 – 12:00",
             "title": "Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP",
             "speakers": "ETHIEL ADIASSA (Ava Finance) · GDE",
             "duration": "45 MIN",
             "lang": "EN/FR",
             "categories": ["AppDev", "AI & Agents"],
             "level": "Intermediate"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "LUNCH & RAFFLE",
+            "subtitle": "DÎNER ET TIRAGE"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "13:00 – 13:45",
+            "title": "Agents Working Together: Orchestration with ADK and A2A",
+            "speakers": "ARUNESH CHOUDHARY (Dialabot.ai)",
+            "duration": "45 MIN",
+            "lang": "EN",
+            "categories": ["AI & Agents", "AppDev"],
+            "level": "Intermediate"
+          },
+          {
+            "kind": "session",
+            "variant": "blue",
+            "time": "14:00 – 14:40",
+            "title": "Healthcare Lightning Rounds / Rondes éclair en santé",
+            "duration": "2×15",
+            "lang": "EN",
+            "categories": ["AI & Agents"],
+            "level": "All Levels",
+            "subItems": [
+              {
+                "time": "14:00 – 14:15",
+                "title": "Six Agents, One Patient Record: A Google ADK Retrospective",
+                "speakers": "Radwan Baba (Info-Tech Research Group)",
+                "categories": ["AI & Agents"],
+                "level": "Intermediate"
+              },
+              {
+                "time": "14:25 – 14:40",
+                "title": "The 90% You Don’t See: Shipping AI Inside a Health System",
+                "speakers": "Guryash Singh Dhall (Nova Scotia Health Authority)",
+                "categories": ["AI & Agents"],
+                "level": "All Levels"
+              }
+            ]
+          },
+          {
+            "kind": "open",
+            "time": "15:00 – 15:45",
+            "title": "Open Talk Slot — TBC",
+            "subtitle": "Créneau de conférence ouvert — À confirmer",
+            "duration": "45 MIN"
+          },
+          {
+            "kind": "open",
+            "time": "16:00 – 16:45",
+            "title": "Open Talk Slot — TBC",
+            "subtitle": "Créneau de conférence ouvert — À confirmer",
+            "duration": "45 MIN"
           }
         ]
       },
@@ -596,8 +682,8 @@
             "kind": "session",
             "variant": "green",
             "time": "10:30 – 10:55",
-            "title": "1:1 Career Coaching — AI Strategy, Engineering Leadership & Data",
-            "speakers": "ROMAIN CHEZEAUD (Groupe BMR)",
+            "title": "1:1 Career Coaching — Cloud Architecture, AI Infrastructure & Career Growth",
+            "speakers": "STACY VÉRONNEAU (TELUS Digital) · GDE",
             "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
             "duration": "25 MIN",
             "lang": "EN/FR",
@@ -688,6 +774,120 @@
             "time": "16:15 – 16:40",
             "title": "1:1 Career Coaching — Tech Consulting, Enterprise AI & Career Transitions",
             "speakers": "CESAR BUSTAMANTE (PwC Canada)",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          }
+        ]
+      },
+      {
+        "id": "3-4",
+        "worldCode": "3-4",
+        "locationBadgePrimary": "COACHING 3-4 · FLOOR 3",
+        "locationBadgeSecondary": "MENTORAT 3-4 · ÉTAGE 3",
+        "name": "Call Me",
+        "typePrimary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
+        "typeSecondary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
+        "accent": "green",
+        "sessions": [
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "10:30 – 10:55",
+            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
+            "speakers": "JIHOO PARK (WB Games)",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "11:00 – 11:25",
+            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
+            "speakers": "JIHOO PARK (WB Games)",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "lunch",
+            "time": "12:00 – 13:00",
+            "title": "LUNCH & RAFFLE",
+            "subtitle": "DÎNER ET TIRAGE"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:15 – 13:40",
+            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
+            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "13:45 – 14:10",
+            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
+            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "14:30 – 14:55",
+            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
+            "speakers": "JIHOO PARK (WB Games)",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:00 – 15:25",
+            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
+            "speakers": "JIHOO PARK (WB Games)",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "15:45 – 16:10",
+            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
+            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
+            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
+            "duration": "25 MIN",
+            "lang": "EN/FR",
+            "categories": ["Career & Community"],
+            "level": "All Levels"
+          },
+          {
+            "kind": "session",
+            "variant": "green",
+            "time": "16:15 – 16:40",
+            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
+            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
             "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
             "duration": "25 MIN",
             "lang": "EN/FR",
@@ -710,8 +910,8 @@
             "kind": "session",
             "variant": "green",
             "time": "10:30 – 10:55",
-            "title": "1:1 Career Coaching — Cloud Architecture, AI Infrastructure & Career Growth",
-            "speakers": "STACY VÉRONNEAU (TELUS Digital) · GDE",
+            "title": "1:1 Career Coaching — AI Strategy, Engineering Leadership & Data",
+            "speakers": "ROMAIN CHEZEAUD (Groupe BMR)",
             "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
             "duration": "25 MIN",
             "lang": "EN/FR",
@@ -802,120 +1002,6 @@
             "time": "16:15 – 16:40",
             "title": "1:1 Career Coaching — Software Engineering & Working at Google",
             "speakers": "SEBASTIAN SENEN GONZALEZ (Google)",
-            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
-            "duration": "25 MIN",
-            "lang": "EN/FR",
-            "categories": ["Career & Community"],
-            "level": "All Levels"
-          }
-        ]
-      },
-      {
-        "id": "4-3",
-        "worldCode": "4-3",
-        "locationBadgePrimary": "COACHING 4-3 · FLOOR 4",
-        "locationBadgeSecondary": "MENTORAT 4-3 · ÉTAGE 4",
-        "name": "Working For The Weekend",
-        "typePrimary": "1:1 Career Coaching · 2 seats (Prior RSVP)",
-        "typeSecondary": "Mentorat carrière 1:1 · 2 places (Sur réservation)",
-        "accent": "green",
-        "sessions": [
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "10:30 – 10:55",
-            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
-            "speakers": "JIHOO PARK (WB Games)",
-            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
-            "duration": "25 MIN",
-            "lang": "EN",
-            "categories": ["Career & Community"],
-            "level": "All Levels"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "11:00 – 11:25",
-            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
-            "speakers": "JIHOO PARK (WB Games)",
-            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
-            "duration": "25 MIN",
-            "lang": "EN",
-            "categories": ["Career & Community"],
-            "level": "All Levels"
-          },
-          {
-            "kind": "lunch",
-            "time": "12:00 – 13:00",
-            "title": "LUNCH & RAFFLE",
-            "subtitle": "DÎNER ET TIRAGE"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "13:15 – 13:40",
-            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
-            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
-            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
-            "duration": "25 MIN",
-            "lang": "EN/FR",
-            "categories": ["Career & Community"],
-            "level": "All Levels"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "13:45 – 14:10",
-            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
-            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
-            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
-            "duration": "25 MIN",
-            "lang": "EN/FR",
-            "categories": ["Career & Community"],
-            "level": "All Levels"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "14:30 – 14:55",
-            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
-            "speakers": "JIHOO PARK (WB Games)",
-            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
-            "duration": "25 MIN",
-            "lang": "EN",
-            "categories": ["Career & Community"],
-            "level": "All Levels"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "15:00 – 15:25",
-            "title": "1:1 Career Coaching — Game Development, Engineering & Career Growth",
-            "speakers": "JIHOO PARK (WB Games)",
-            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
-            "duration": "25 MIN",
-            "lang": "EN",
-            "categories": ["Career & Community"],
-            "level": "All Levels"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "15:45 – 16:10",
-            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
-            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
-            "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
-            "duration": "25 MIN",
-            "lang": "EN/FR",
-            "categories": ["Career & Community"],
-            "level": "All Levels"
-          },
-          {
-            "kind": "session",
-            "variant": "green",
-            "time": "16:15 – 16:40",
-            "title": "1:1 Career Coaching — Enterprise Architecture, Cloud & Tech Leadership",
-            "speakers": "JL MARÉCHAUX (National Bank of Canada)",
             "abstract": "Private 25-minute 1:1 career coaching and mentorship session (confirmed prior RSVP required).",
             "duration": "25 MIN",
             "lang": "EN/FR",

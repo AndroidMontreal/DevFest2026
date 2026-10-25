@@ -74,7 +74,13 @@ export function MobileMenu({
             return (
               <Link
                 key={item.href}
-                onClick={toggleMenu}
+                onClick={() => {
+                  toggleMenu();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.dispatchEvent(
+                    new CustomEvent('devfest:reset-schedule-top'),
+                  );
+                }}
                 className={`font-mono-tech text-lg sm:text-xl tracking-[0.2em] uppercase transition-colors ${activeClass}`}
                 href={item.href}
               >

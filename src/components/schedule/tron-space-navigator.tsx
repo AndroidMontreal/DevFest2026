@@ -84,6 +84,7 @@ const MAP_NODES: MapNode[] = [
     floor: '03',
     numberBadge: '2',
     code: 'WORLD 3-2',
+    roomScheduleId: '3-2',
     name: 'Mr. Roboto',
     subtitleEn: 'Tech Showcase & Drop-in Demos (The Doomsday Course)',
     subtitleFr: 'Vitrine techno et démos en continu (The Doomsday Course)',
@@ -120,20 +121,20 @@ const MAP_NODES: MapNode[] = [
     id: 'l3-room-4',
     floor: '03',
     numberBadge: '4',
-    code: 'WORLD 3-4',
+    code: 'COACHING 3-4',
     roomScheduleId: '3-4',
     name: 'Call Me',
-    subtitleEn: 'Talks & Lightning Round',
-    subtitleFr: 'Conférences et ronde éclair',
+    subtitleEn: '1:1 Career Coaching Pod',
+    subtitleFr: 'Salle de mentorat carrière 1:1',
     zone: 'Room #302 · Central Bridge',
-    capacityEn: '20 seats',
-    capacityFr: '20 places',
-    category: 'room',
+    capacityEn: '2 seats (1:1 sessions · 10:30–16:40)',
+    capacityFr: '2 places (Sessions 1:1 · 10:30–16:40)',
+    category: 'coaching',
     x: 440,
     y: 363,
     routeFromElevator: '551,345 512,345 512,342 440,342 440,363',
     routeFromStairs: '147,190 184,190 184,342 440,342 440,363',
-    color: 'red',
+    color: 'green',
   },
   {
     id: 'l3-room-5',
@@ -311,12 +312,13 @@ const MAP_NODES: MapNode[] = [
     floor: '04',
     numberBadge: '1',
     code: 'WORLD 4-1',
+    roomScheduleId: '4-1',
     name: 'The Danger Zone',
-    subtitleEn: 'Chill Zone, Games & Badge Station (B)',
-    subtitleFr: 'Zone détente, jeux et station de badges (B)',
+    subtitleEn: 'Chill Zone & Games',
+    subtitleFr: 'Zone détente et jeux',
     zone: 'Le Café · North-West Wing',
-    capacityEn: '25 seats · All-Day Lounge & Badge Station',
-    capacityFr: '25 places · Zone détente et station de badges',
+    capacityEn: '25 seats · All-Day Lounge',
+    capacityFr: '25 places · Zone détente toute la journée',
     category: 'activity',
     x: 140,
     y: 77,
@@ -325,32 +327,14 @@ const MAP_NODES: MapNode[] = [
     color: 'blue',
   },
   {
-    id: 'l4-badge',
-    floor: '04',
-    numberBadge: 'B',
-    code: 'BADGE STATION (B)',
-    name: 'Badge Station',
-    subtitleEn: 'Custom Badge Perks & Swag Station',
-    subtitleFr: 'Station de personnalisation de badges',
-    zone: 'Le Café · Next to The Danger Zone',
-    capacityEn: 'All Day',
-    capacityFr: 'Toute la journée',
-    category: 'registration',
-    x: 164,
-    y: 59,
-    routeFromElevator: '530,330 496,330 496,336 208,336 208,140 164,140 164,59',
-    routeFromStairs: '137,190 137,140 164,140 164,59',
-    color: 'cyan',
-  },
-  {
     id: 'l4-room-2',
     floor: '04',
     numberBadge: '2',
     code: 'COACHING 4-2',
     roomScheduleId: '4-2',
     name: 'Money For Nothing',
-    subtitleEn: '1:1 Career Coaching Pod & Photo Booth (#417)',
-    subtitleFr: 'Salle de mentorat carrière 1:1 et cabine photo (#417)',
+    subtitleEn: '1:1 Career Coaching Pod',
+    subtitleFr: 'Salle de mentorat carrière 1:1',
     zone: 'Room #418 · North-West Corridor',
     capacityEn: '2 seats (1:1 sessions · 10:30–16:40)',
     capacityFr: '2 places (Sessions 1:1 · 10:30–16:40)',
@@ -362,14 +346,33 @@ const MAP_NODES: MapNode[] = [
     color: 'green',
   },
   {
+    id: 'l4-badge',
+    floor: '04',
+    numberBadge: 'B',
+    code: 'BADGE STATION (B)',
+    name: 'Badge Station',
+    subtitleEn: 'Custom Badge Perks & Swag Station (with 2nd Photo Booth)',
+    subtitleFr:
+      'Station de personnalisation de badges (avec la 2e cabine photo)',
+    zone: '4th floor right after 4-2',
+    capacityEn: 'Open All Day',
+    capacityFr: 'Ouvert toute la journée',
+    category: 'registration',
+    x: 221,
+    y: 250,
+    routeFromElevator: '530,330 496,330 496,336 208,336 208,250 221,250',
+    routeFromStairs: '137,190 137,146 208,146 208,250 221,250',
+    color: 'cyan',
+  },
+  {
     id: 'l4-photo',
     floor: '04',
     numberBadge: '📷',
     code: 'PHOTO BOOTH 4F',
     name: 'Photo Booth (Level 04)',
-    subtitleEn: '4th Floor Community Photo Station',
-    subtitleFr: 'Cabine photo communautaire du 4e étage',
-    zone: 'Room #417 · Near Stairs',
+    subtitleEn: '4th Floor Community Photo Station & Badge Table (#417)',
+    subtitleFr: '2e cabine photo communautaire et table de badges (#417)',
+    zone: '4th floor right after 4-2',
     capacityEn: 'Open All Day',
     capacityFr: 'Ouvert toute la journée',
     category: 'activity',
@@ -383,22 +386,22 @@ const MAP_NODES: MapNode[] = [
     id: 'l4-room-3',
     floor: '04',
     numberBadge: '3',
-    code: 'COACHING 4-3',
+    code: 'WORLD 4-3',
     roomScheduleId: '4-3',
     name: 'Working For The Weekend',
-    subtitleEn: '1:1 Career Coaching Pod',
-    subtitleFr: 'Salle de mentorat carrière 1:1',
+    subtitleEn: 'Talks & Healthcare Lightning Rounds',
+    subtitleFr: 'Conférences et rondes éclair en santé',
     zone: 'Room #415 · South-West Corridor',
-    capacityEn: '2 seats (1:1 sessions · 10:30–16:40)',
-    capacityFr: '2 places (Sessions 1:1 · 10:30–16:40)',
-    category: 'coaching',
+    capacityEn: '20 seats',
+    capacityFr: '20 places',
+    category: 'room',
     x: 221,
     y: 495,
     routeFromElevator:
       '530,330 496,330 496,336 273,336 273,522 221,522 221,495',
     routeFromStairs:
       '137,190 137,146 208,146 208,336 273,336 273,522 221,522 221,495',
-    color: 'green',
+    color: 'red',
   },
   {
     id: 'l4-room-4',
@@ -807,6 +810,10 @@ const LEVEL_04_EDGES: Array<[[number, number], [number, number]]> = [
   ],
   [
     [208, 198],
+    [208, 250],
+  ],
+  [
+    [208, 250],
     [208, 336],
   ],
 
@@ -850,6 +857,10 @@ const LEVEL_04_EDGES: Array<[[number, number], [number, number]]> = [
   [
     [213, 198],
     [208, 198],
+  ],
+  [
+    [221, 250],
+    [208, 250],
   ],
 
   // South-West vertical spine (x = 273)
@@ -2199,10 +2210,22 @@ export function TronSpaceNavigator({
                           />
                         ) : isRectBooth ? (
                           <rect
-                            x={node.id === 'l3-reg' ? -33 : -14}
-                            y="-8"
-                            width={node.id === 'l3-reg' ? 66 : 28}
-                            height="16"
+                            x={
+                              node.id === 'l3-reg'
+                                ? -33
+                                : node.id === 'l4-badge'
+                                  ? -8
+                                  : -14
+                            }
+                            y={node.id === 'l4-badge' ? -17 : -8}
+                            width={
+                              node.id === 'l3-reg'
+                                ? 66
+                                : node.id === 'l4-badge'
+                                  ? 16
+                                  : 28
+                            }
+                            height={node.id === 'l4-badge' ? 34 : 16}
                             rx="3"
                             fill={palette.fill}
                             stroke={
@@ -2748,7 +2771,9 @@ export function TronSpaceNavigator({
                     {isFr ? 'Zone :' : 'Zone:'}
                   </span>
                   <span className="text-cyan-300 text-right">
-                    {selectedNode.zone}
+                    {selectedNode.zone === '4th floor right after 4-2' && isFr
+                      ? '4e étage juste après 4-2'
+                      : selectedNode.zone}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-2 border-t border-white/5 pt-2">

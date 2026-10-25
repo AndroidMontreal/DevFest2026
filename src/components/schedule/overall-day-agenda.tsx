@@ -60,6 +60,8 @@ const getTimelineIcon = (index: number) => {
     case 5:
       return <Footprints className="h-4 w-4 text-google-red" />;
     case 6:
+      return <Mic className="h-4 w-4 text-google-blue" />;
+    case 7:
       return <PartyPopper className="h-4 w-4 text-google-yellow" />;
     default:
       return <Clock className="h-4 w-4 text-white/60" />;
