@@ -15,7 +15,7 @@
   "items": [
     {
       "name": "Rebecca Abi Chahine",
-      "employer": "GDG on Campus Polytechnique",
+      "employer": "GDG on Campus - Polytechnique",
       "title": "Lead",
       "gde": false,
       "topic": "Closing Keynote: Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
@@ -185,6 +185,17 @@
       "link": "https://www.linkedin.com/in/guryashSingh/",
       "image": "/assets/images/speakers/Guryash_Singh_Dhall.jpg",
       "category": "ai"
+    },
+    {
+      "name": "Oumaima El Khayiri",
+      "employer": "GDG on Campus - École de Technologie Supérieure",
+      "title": "Lead",
+      "gde": false,
+      "topic": "Closing Keynote: Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
+      "format": "Keynote · 15 min",
+      "link": "https://www.linkedin.com/in/oumaima-elkhayiri/",
+      "image": "/assets/images/speakers/Oumaima_El_Khayiri.jpg",
+      "category": "community"
     },
     {
       "name": "Mathieu Fillion",
@@ -387,7 +398,7 @@
     },
     {
       "name": "Michael Persico",
-      "employer": "GDG on Campus Concordia",
+      "employer": "GDG on Campus - Concordia",
       "title": "Lead",
       "gde": false,
       "topic": "Closing Keynote: Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
@@ -444,7 +455,7 @@
     },
     {
       "name": "Daniel Wei",
-      "employer": "GDG on Campus McGill",
+      "employer": "GDG on Campus - McGill",
       "title": "Lead",
       "gde": false,
       "topic": "Closing Keynote: Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives",
