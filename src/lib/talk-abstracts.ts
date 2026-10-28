@@ -28,7 +28,7 @@ You'll leave able to audit your compute, own your network path, and layer your d
     ],
     abstract: `Google Developer Groups (GDG) on Campus is a student-led community program supported by Google for Developers that helps students bridge the gap between theory and practice through peer-to-peer learning, workshops, and other events. We are a global network of student clubs with a clear mission: we actively empower students with industry-relevant technical skills, portfolio-building projects, and direct access to a global developer network.
 
-Come join executives from GDG Polytechnique, GDG McGill, and GDG Concordia — moderated by Stefania Pecore (Women Techmakers Montreal) — for a closing keynote chat about our own chapters, the tangible opportunities we provide to students, and how you can get involved with the chapter at your university (or even start your own).`,
+Come join executives from GDG Polytechnique, GDG McGill, GDG Concordia, and GDG ÉTS — moderated by Stefania Pecore (Women Techmakers Montreal) — for a closing keynote chat about our own chapters, the tangible opportunities we provide to students, and how you can get involved with the chapter at your university (or even start your own).`,
   },
   {
     match: [
