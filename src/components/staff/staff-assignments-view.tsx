@@ -16,6 +16,7 @@ type RawRow = [
 ];
 
 interface ShiftItem {
+  roomLocation: string;
   time: string;
   session: string;
   speaker: string;
@@ -878,9 +879,12 @@ const STAFF_NAMES = [
 const CAL_LOCATION = 'Espace Ax.c, 800 Rue du Square-Victoria, Montréal, QC';
 
 const ROOM_NAME_FR: Record<string, string> = {
+  '4-1 · The Danger Zone': '4-1 · The Danger Zone (Zone détente)',
   '4-6 · Hip To Be Square (workshops)': '4-6 · Hip To Be Square (ateliers)',
   '4-1 · Chill Zone, Photo booth & badge table (4th floor)':
     '4-1 · Zone détente, cabine photo et table des badges (4e étage)',
+  'Photo booth & badge table (4th floor)':
+    'Cabine photo et table des badges (4e étage · après 4-2)',
   'Sega Genesis & Photo Booth (3rd floor)':
     'Sega Genesis et cabine photo (3e étage)',
   'Registration & welcome (3rd floor)': 'Inscription et accueil (3e étage)',
@@ -920,6 +924,45 @@ const NOTES_FR: Record<string, string> = {
 function localizeRoomName(name: string, locale: Locale): string {
   if (locale === 'en') return name;
   return ROOM_NAME_FR[name] || name;
+}
+
+function displayFloor(f: string, locale: Locale): string {
+  if (locale === 'fr') {
+    const mapFr: Record<string, string> = {
+      '3': '3e étage',
+      '4': '4e étage',
+      All: 'Tous les étages',
+    };
+    return mapFr[f] || f;
+  }
+  const mapEn: Record<string, string> = {
+    '3': '3rd floor',
+    '4': '4th floor',
+    All: 'All floors',
+  };
+  return mapEn[f] || f;
+}
+
+function localizeItemLocation(it: ShiftItem, locale: Locale): string {
+  if (it.session === 'Close 4th floor rooms') {
+    return locale === 'fr'
+      ? 'Toutes les salles du 4e étage (4-1 à 4-7)'
+      : 'All 4th floor rooms (4-1 to 4-7)';
+  }
+  if (it.roomLocation === 'Floating org helper') {
+    return locale === 'fr'
+      ? 'Toutes les salles (3e et 4e étages)'
+      : 'All rooms (3rd & 4th floors)';
+  }
+  const base = localizeRoomName(it.roomLocation, locale);
+  if (
+    base.toLowerCase().includes('floor') ||
+    base.toLowerCase().includes('étage')
+  ) {
+    return base;
+  }
+  const floorLabel = displayFloor(it.floor, locale);
+  return floorLabel ? `${base} (${floorLabel})` : base;
 }
 
 function localizeTime(time: string, locale: Locale): string {
@@ -977,23 +1020,6 @@ function floorOf(f: string): string {
   return f === '3' ? '3' : f === '4' ? '4' : 'other';
 }
 
-function displayFloor(f: string, locale: Locale): string {
-  if (locale === 'fr') {
-    const mapFr: Record<string, string> = {
-      '3': '3e étage',
-      '4': '4e étage',
-      All: 'Tous les étages',
-    };
-    return mapFr[f] || f;
-  }
-  const mapEn: Record<string, string> = {
-    '3': '3rd floor',
-    '4': '4th floor',
-    All: 'All floors',
-  };
-  return mapEn[f] || f;
-}
-
 function parseRange(t: string): [[number, number], [number, number]] | null {
   const m = /^(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})$/.exec(t);
   if (m)
@@ -1019,7 +1045,6 @@ function utcStamp(h: number, mi: number): string {
 
 function buildEventFields(
   it: ShiftItem,
-  roomName: string,
   selectedStaff: string,
   locale: Locale,
 ): CalendarEventFields | null {
@@ -1030,7 +1055,7 @@ function buildEventFields(
   const prefix = activeStaff
     ? `[DevFest Staff · ${activeStaff}] `
     : '[DevFest Staff] ';
-  const locRoom = localizeRoomName(roomName, locale);
+  const locRoom = localizeItemLocation(it, locale);
   const locSession =
     localizeSession(it.session, locale) ||
     (locale === 'fr' ? 'Quart' : 'Shift');
@@ -1039,6 +1064,7 @@ function buildEventFields(
   const locStaff = localizeStaff(it.staff, locale);
   const locNotes = localizeNotes(it.notes, locale);
   const details = [
+    `${locale === 'fr' ? 'Lieu' : 'Location'}: ${locRoom}`,
     locSpeaker &&
       `${locale === 'fr' ? 'Conférencier(s)' : 'Speaker'}: ${locSpeaker}`,
     locStaff && `${locale === 'fr' ? 'Équipe' : 'Staff'}: ${locStaff}`,
@@ -1164,6 +1190,7 @@ export function StaffAssignmentsView({
         list.push(byName[name]);
       }
       byName[name].items.push({
+        roomLocation: r[0],
         time: r[3],
         session: r[4],
         speaker: r[5],
@@ -1207,6 +1234,9 @@ export function StaffAssignmentsView({
         const hay = [
           room.name,
           localizeRoomName(room.name, 'fr'),
+          it.roomLocation,
+          localizeItemLocation(it, 'en'),
+          localizeItemLocation(it, 'fr'),
           it.time,
           localizeTime(it.time, 'fr'),
           it.session,
@@ -1232,9 +1262,9 @@ export function StaffAssignmentsView({
 
   const visibleEvents = useMemo(() => {
     const events: CalendarEventFields[] = [];
-    filteredRooms.forEach(({ room, items }) => {
+    filteredRooms.forEach(({ items }) => {
       items.forEach((it) => {
-        const ev = buildEventFields(it, room.name, selectedStaff, locale);
+        const ev = buildEventFields(it, selectedStaff, locale);
         if (ev) events.push(ev);
       });
     });
@@ -1433,6 +1463,8 @@ export function StaffAssignmentsView({
           white-space: nowrap;
         }
         .staff-session { font-weight: 600; }
+        .staff-loc { color: var(--text); font-size: 13.5px; }
+        .loc-lbl { color: var(--green); font-weight: 700; }
         .staff-speaker { color: var(--text); font-size: 14px; }
         .staff-line { font-size: 13px; color: var(--text); }
         .staff-val { color: var(--red); font-weight: 700; }
@@ -1614,12 +1646,7 @@ export function StaffAssignmentsView({
                 </div>
 
                 {items.map((it, itemIdx) => {
-                  const ev = buildEventFields(
-                    it,
-                    room.name,
-                    selectedStaff,
-                    locale,
-                  );
+                  const ev = buildEventFields(it, selectedStaff, locale);
                   return (
                     <div
                       key={`${room.name}-${it.time}-${itemIdx}`}
@@ -1634,6 +1661,13 @@ export function StaffAssignmentsView({
                             {localizeSession(it.session, locale)}
                           </span>
                         )}
+                      </div>
+
+                      <div className="staff-loc">
+                        <strong className="loc-lbl">
+                          {isFr ? 'Lieu : ' : 'Location: '}
+                        </strong>
+                        {localizeItemLocation(it, locale)}
                       </div>
 
                       {it.speaker && (
