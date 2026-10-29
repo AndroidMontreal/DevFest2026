@@ -173,6 +173,8 @@
     white-space: nowrap;
   }
   .session { font-weight: 600; }
+  .loc { color: var(--text); font-size: 13.5px; }
+  .loc-lbl { color: var(--green); font-weight: 700; }
   .speaker { color: var(--text); font-size: 14px; }
   .staff { font-size: 13px; color: var(--text); }
   .staff-val { color: var(--red); font-weight: 700; }
@@ -309,8 +311,10 @@ const ROWS = [
 ];
 
 const ROOM_NAME_FR = {
+  "4-1 · The Danger Zone": "4-1 · The Danger Zone (Zone détente)",
   "4-6 · Hip To Be Square (workshops)": "4-6 · Hip To Be Square (ateliers)",
   "4-1 · Chill Zone, Photo booth & badge table (4th floor)": "4-1 · Zone détente, cabine photo et table des badges (4e étage)",
+  "Photo booth & badge table (4th floor)": "Cabine photo et table des badges (4e étage · après 4-2)",
   "Sega Genesis & Photo Booth (3rd floor)": "Sega Genesis et cabine photo (3e étage)",
   "Registration & welcome (3rd floor)": "Inscription et accueil (3e étage)",
   "Floating org helper": "Aide-organisateur volant"
@@ -342,6 +346,22 @@ const NOTES_FR = {
 let locale = "en";
 
 function localizeRoomName(n) { return locale === "fr" ? (ROOM_NAME_FR[n] || n) : n; }
+function displayFloor(f) {
+  if (locale === "fr") return ({ "3": "3e étage", "4": "4e étage", "All": "Tous les étages" })[f] || f;
+  return ({ "3": "3rd floor", "4": "4th floor", "All": "All floors" })[f] || f;
+}
+function localizeItemLocation(it) {
+  if (it.session === "Close 4th floor rooms") {
+    return locale === "fr" ? "Toutes les salles du 4e étage (4-1 à 4-7)" : "All 4th floor rooms (4-1 to 4-7)";
+  }
+  if (it.roomLocation === "Floating org helper") {
+    return locale === "fr" ? "Toutes les salles (3e et 4e étages)" : "All rooms (3rd & 4th floors)";
+  }
+  const base = localizeRoomName(it.roomLocation);
+  if (base.toLowerCase().includes("floor") || base.toLowerCase().includes("étage")) return base;
+  const fl = displayFloor(it.floor);
+  return fl ? base + " (" + fl + ")" : base;
+}
 function localizeTime(t) { return (locale === "fr" && /^After\s+18:30$/i.test(t.trim())) ? "Après 18h30" : t; }
 function localizeSession(s) { return locale === "fr" ? (SESSION_FR[s] || s.replace(/\(workshop\)/gi, "(atelier)")) : s; }
 function localizeSpeaker(sp) {
@@ -384,7 +404,7 @@ for (const r of ROWS) {
     byName[name] = { name, floor: floorCode, seats: r[2], items: [] };
     rooms.push(byName[name]);
   }
-  byName[name].items.push({ time: r[3], session: r[4], speaker: r[5], staff: r[6], notes: r[7], floor: r[1] });
+  byName[name].items.push({ roomLocation: r[0], time: r[3], session: r[4], speaker: r[5], staff: r[6], notes: r[7], floor: r[1] });
 }
 
 function startMin(t) {
@@ -455,10 +475,6 @@ function rebuildControls() {
     : "Built from the Room Assignments tab of the planning sheet. Times are local (Montréal).";
 }
 
-function displayFloor(f) {
-  if (locale === "fr") return ({ "3": "3e étage", "4": "4e étage", "All": "Tous les étages" })[f] || f;
-  return ({ "3": "3rd floor", "4": "4th floor", "All": "All floors" })[f] || f;
-}
 function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
@@ -480,14 +496,15 @@ function utcStamp(h, mi) {
   return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
 }
 const CAL_LOCATION = "Espace Ax.c, 800 Rue du Square-Victoria, Montréal, QC";
-function eventFields(it, roomName) {
+function eventFields(it) {
   const r = parseRange(it.time);
   if (!r) return null;
   const activeStaff = staffSelect.value !== "all" ? staffSelect.value.toUpperCase() : "";
   const prefix = activeStaff ? "[DevFest Staff · " + activeStaff + "] " : "[DevFest Staff] ";
-  const locRoom = localizeRoomName(roomName);
+  const locRoom = localizeItemLocation(it);
   const title = prefix + (localizeSession(it.session) || (locale === "fr" ? "Quart" : "Shift")) + " — " + locRoom;
   const details = [
+    (locale === "fr" ? "Lieu: " : "Location: ") + locRoom,
     it.speaker && ((locale === "fr" ? "Conférencier(s): " : "Speaker: ") + localizeSpeaker(it.speaker)),
     it.staff && ((locale === "fr" ? "Équipe: " : "Staff: ") + localizeStaff(it.staff)),
     localizeNotes(it.notes)
@@ -508,8 +525,8 @@ function googleHref(f) {
     "&details=" + encodeURIComponent(f.details) +
     "&ctz=America/Montreal";
 }
-function calButtons(it, roomName) {
-  const f = eventFields(it, roomName);
+function calButtons(it) {
+  const f = eventFields(it);
   if (!f) return "";
   return '<div class="cal">' +
     '<a class="cal-btn cal-google" target="_blank" rel="noopener" href="' + esc(googleHref(f)) + '">+ Google</a>' +
@@ -577,13 +594,13 @@ function render() {
       if (activeFloor !== "all" && floorOf(room.floor) !== activeFloor && floorOf(it.floor) !== activeFloor) return false;
       if (!matchesStaff(it.staff, pickStaff)) return false;
       if (!q) return true;
-      const hay = [room.name, localizeRoomName(room.name), it.time, localizeTime(it.time), it.session, localizeSession(it.session), it.speaker, it.staff, localizeStaff(it.staff), it.notes, localizeNotes(it.notes)].join(" ").toLowerCase();
+      const hay = [room.name, localizeRoomName(room.name), it.roomLocation, localizeItemLocation(it), it.time, localizeTime(it.time), it.session, localizeSession(it.session), it.speaker, it.staff, localizeStaff(it.staff), it.notes, localizeNotes(it.notes)].join(" ").toLowerCase();
       return hay.includes(q);
     });
     if (!items.length) return;
 
     items.forEach(it => {
-      const ev = eventFields(it, room.name);
+      const ev = eventFields(it);
       if (ev) currentVisibleEvents.push(ev);
     });
 
@@ -597,10 +614,11 @@ function render() {
         '<div class="item">' +
           '<div class="row1"><span class="time">' + esc(localizeTime(it.time)) + '</span>' +
           (it.session ? '<span class="session">' + esc(localizeSession(it.session)) + '</span>' : '') + '</div>' +
+          '<div class="loc"><strong class="loc-lbl">' + (locale === "fr" ? "Lieu : " : "Location: ") + '</strong>' + esc(localizeItemLocation(it)) + '</div>' +
           (it.speaker ? '<div class="speaker"><strong class="spk-lbl">' + (locale === "fr" ? "Conférenciers : " : "Speakers: ") + '</strong>' + esc(localizeSpeaker(it.speaker)) + '</div>' : '') +
           (it.staff ? '<div class="staff"><span class="staff-val">' + (locale === "fr" ? "Équipe : " : "Staff: ") + '</span>' + staffHtml(it.staff) + '</div>' : '') +
           (it.notes ? '<div class="notes">' + esc(localizeNotes(it.notes)) + '</div>' : '') +
-          calButtons(it, room.name) +
+          calButtons(it) +
         '</div>'
       ).join("");
     grid.appendChild(sec);
