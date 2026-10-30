@@ -743,6 +743,27 @@ const ROWS: RawRow[] = [
   ],
 
   [
+    'Downstairs entrance & wayfinding',
+    'Downstairs',
+    '',
+    '08:15 - 09:00',
+    'Guide attendees to 3rd floor registration',
+    '',
+    'SAMUEL (organizer), DANIEL TO',
+    'Senior + junior pair downstairs to welcome & direct people upstairs',
+  ],
+  [
+    'Downstairs entrance & wayfinding',
+    'Downstairs',
+    '',
+    '09:00 - 10:00',
+    'Guide attendees to 3rd floor registration',
+    '',
+    'LENZ (organizer), KHASHAYAR',
+    'Senior + junior pair downstairs to welcome & direct people upstairs',
+  ],
+
+  [
     'Registration & welcome',
     'Entrance',
     '',
@@ -867,6 +888,7 @@ const LOCATIONS_EN: Record<string, string> = {
   'Hip To Be Square (workshops)': '4-6 · Hip To Be Square (4th floor)',
   'Sega Genesis & Photo Booth (3rd floor)':
     'Sega Genesis & Photo Booth (3rd floor)',
+  'Downstairs entrance & wayfinding': 'Downstairs · Building entrance / lobby',
   'Registration & welcome': 'Entrance · Registration & welcome',
   'All rooms': 'Regroup at 3rd floor registration',
 };
@@ -881,6 +903,8 @@ const LOCATIONS_FR: Record<string, string> = {
   'Hip To Be Square (workshops)': '4-6 · Hip To Be Square (4e étage)',
   'Sega Genesis & Photo Booth (3rd floor)':
     'Sega Genesis et cabine photo (3e étage)',
+  'Downstairs entrance & wayfinding':
+    "En bas · Entrée de l'édifice / hall d'accueil",
   'Registration & welcome': 'Entrée · Inscription et accueil',
   'All rooms': "Regroupement à l'inscription au 3e étage",
 };
@@ -892,6 +916,8 @@ const ROOM_NAME_FR: Record<string, string> = {
   'Hip To Be Square (workshops)': 'Hip To Be Square (ateliers)',
   'Sega Genesis & Photo Booth (3rd floor)':
     'Sega Genesis et cabine photo (3e étage)',
+  'Downstairs entrance & wayfinding':
+    'Entrée et orientation (rez-de-chaussée / en bas)',
   'Registration & welcome': 'Inscription et accueil',
   'Floating org helper': 'Aide-organisateur volant',
   '4th floor rooms': 'Salles du 4e étage',
@@ -907,6 +933,8 @@ const SESSION_FR: Record<string, string> = {
   'Open Talk Slot — TBC': 'Créneau de conférence ouvert — À confirmer',
   'Photo booth & badge table': 'Cabine photo et table des badges',
   'Sega Genesis & Photo Booth': 'Sega Genesis et cabine photo',
+  'Guide attendees to 3rd floor registration':
+    "Guider les participants vers l'inscription au 3e étage",
   'Registration & breakfast': 'Inscription et déjeuner',
   Registration: 'Inscription',
   'Registration (until 13:00)': "Inscription (jusqu'à 13h00)",
@@ -925,6 +953,8 @@ const NOTES_FR: Record<string, string> = {
   '3rd floor wrap-up after 18:30': 'Rangement du 3e étage après 18h30',
   'Right after last talk at 14:40':
     'Juste après la dernière conférence à 14h40',
+  'Senior + junior pair downstairs to welcome & direct people upstairs':
+    'Duo senior + junior en bas pour accueillir et diriger les participants vers le 3e étage',
   'NADIA is practicing for her own DevFest a week later':
     'NADIA pratique pour son propre DevFest la semaine suivante',
   'NADIA is registration only': "NADIA est affectée uniquement à l'inscription",
