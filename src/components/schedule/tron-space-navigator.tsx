@@ -161,16 +161,36 @@ const MAP_NODES: MapNode[] = [
     numberBadge: 'R',
     code: 'CHECK-IN (R)',
     name: 'Registration / Enregistrement',
-    subtitleEn: 'Main Event Check-in & Welcome Desk',
-    subtitleFr: 'Accueil des participants et enregistrement principal',
+    subtitleEn: 'Main Event Check-in, Welcome Desk & Bingo Card Validation',
+    subtitleFr:
+      'Accueil des participants, enregistrement principal et validation Bingo',
     zone: 'Central Bridge Corridor',
     capacityEn: 'All Attendees · Opens 08:30',
     capacityFr: 'Tous les participants · Ouverture à 08:30',
     category: 'registration',
-    x: 379,
-    y: 341,
-    routeFromElevator: '551,345 512,345 512,342 379,341',
-    routeFromStairs: '147,190 184,190 184,342 379,341',
+    x: 388,
+    y: 332,
+    routeFromElevator: '551,345 512,345 512,342 388,342 388,332',
+    routeFromStairs: '147,190 184,190 184,342 388,342 388,332',
+    color: 'cyan',
+  },
+  {
+    id: 'l3-bingo',
+    floor: '03',
+    numberBadge: 'BINGO',
+    code: 'BINGO VALIDATION 3F',
+    name: 'Bingo Card Validation',
+    subtitleEn: '3rd Floor Bingo Card Validation Area (at Registration)',
+    subtitleFr:
+      'Zone de validation des cartes Bingo du 3e étage (à l’enregistrement)',
+    zone: 'Registration Desk · Central Bridge',
+    capacityEn: 'Bingo Card Validation & Raffle Entry',
+    capacityFr: 'Validation des cartes Bingo et tirage',
+    category: 'registration',
+    x: 344,
+    y: 332,
+    routeFromElevator: '551,345 512,345 512,342 344,342 344,332',
+    routeFromStairs: '147,190 184,190 184,342 344,342 344,332',
     color: 'cyan',
   },
   {
@@ -362,6 +382,25 @@ const MAP_NODES: MapNode[] = [
     y: 250,
     routeFromElevator: '530,330 496,330 496,336 208,336 208,250 221,250',
     routeFromStairs: '137,190 137,146 208,146 208,250 221,250',
+    color: 'cyan',
+  },
+  {
+    id: 'l4-bingo',
+    floor: '04',
+    numberBadge: 'BINGO',
+    code: 'BINGO VALIDATION 4F',
+    name: 'Bingo Card Validation',
+    subtitleEn: '4th Floor Bingo Card Validation Station (Central Corridor)',
+    subtitleFr:
+      'Zone de validation des cartes Bingo du 4e étage (corridor central)',
+    zone: 'Central Corridor · Near Room #403',
+    capacityEn: 'Bingo Card Validation & Raffle Entry',
+    capacityFr: 'Validation des cartes Bingo et tirage',
+    category: 'registration',
+    x: 286,
+    y: 341,
+    routeFromElevator: '530,330 496,330 496,336 286,336 286,341',
+    routeFromStairs: '137,190 137,146 208,146 208,336 286,336 286,341',
     color: 'cyan',
   },
   {
@@ -616,10 +655,18 @@ const LEVEL_03_EDGES: Array<[[number, number], [number, number]]> = [
   ],
   [
     [322, 342],
+    [344, 342],
+  ],
+  [
+    [344, 342],
     [379, 342],
   ],
   [
     [379, 342],
+    [388, 342],
+  ],
+  [
+    [388, 342],
     [439, 342],
   ],
   [
@@ -727,8 +774,16 @@ const LEVEL_03_EDGES: Array<[[number, number], [number, number]]> = [
     [439, 342],
   ],
   [
+    [344, 332],
+    [344, 342],
+  ],
+  [
     [379, 341],
     [379, 342],
+  ],
+  [
+    [388, 332],
+    [388, 342],
   ],
   [
     [232, 361],
@@ -792,11 +847,19 @@ const LEVEL_04_EDGES: Array<[[number, number], [number, number]]> = [
   ],
   [
     [273, 336],
+    [286, 336],
+  ],
+  [
+    [286, 336],
     [341, 336],
   ],
   [
     [341, 336],
     [496, 336],
+  ],
+  [
+    [286, 341],
+    [286, 336],
   ],
 
   // North-West vertical spine (x = 208)
@@ -1190,7 +1253,9 @@ export function TronSpaceNavigator({
       MAP_NODES.filter(
         (n) =>
           n.floor === activeFloor &&
-          (selectedCategory === 'all' || n.category === selectedCategory),
+          (selectedCategory === 'all' ||
+            n.category === selectedCategory ||
+            (selectedCategory === 'sponsor' && n.category === 'registration')),
       ),
     [activeFloor, selectedCategory],
   );
@@ -1990,6 +2055,10 @@ export function TronSpaceNavigator({
                       );
                     }
 
+                    // Special Case: Bingo Card Validation (l3-bingo / l4-bingo) renders as a 3x3 BINGO grid icon
+                    const isBingoNode =
+                      node.id === 'l3-bingo' || node.id === 'l4-bingo';
+
                     // Special Case: Marquee Sponsor (M), Registration (R), Badge Station (B) render as rectangular booths
                     const isRectBooth =
                       node.id === 'l3-sponsor-m' ||
@@ -2011,9 +2080,9 @@ export function TronSpaceNavigator({
                         {/* Generous Invisible Touch Hit Target for Mobile Fingers */}
                         {isRectBooth ? (
                           <rect
-                            x={node.id === 'l3-reg' ? -40 : -24}
+                            x={node.id === 'l3-reg' ? -28 : -24}
                             y="-20"
-                            width={node.id === 'l3-reg' ? 80 : 48}
+                            width={node.id === 'l3-reg' ? 56 : 48}
                             height="40"
                             fill="transparent"
                           />
@@ -2051,7 +2120,7 @@ export function TronSpaceNavigator({
                           </>
                         )}
 
-                        {/* Marker Shape: Red Diamond for Rooms (1-7), Rect Booth for M/R/B, or Circle for Amenities */}
+                        {/* Marker Shape: Red Diamond for Rooms (1-7), BINGO Square, Rect Booth for M/R/B, or Circle for Amenities */}
                         {isRoomDiamond ? (
                           <polygon
                             points="0,-15 15,0 0,15 -15,0"
@@ -2064,11 +2133,53 @@ export function TronSpaceNavigator({
                             }
                             filter="url(#tron-red-glow)"
                           />
+                        ) : isBingoNode ? (
+                          <g filter="url(#tron-cyan-glow)">
+                            <rect
+                              x="-12"
+                              y="-12"
+                              width="24"
+                              height="24"
+                              rx="3"
+                              fill="#050b1a"
+                              stroke={
+                                isSelected || isHovered ? '#00f0ff' : '#ffffff'
+                              }
+                              strokeWidth={
+                                isSelected || isHovered ? '2.2' : '1.5'
+                              }
+                            />
+                            <text
+                              y="-4.5"
+                              textAnchor="middle"
+                              className="fill-white font-mono-tech text-[5.2px] font-bold tracking-tight pointer-events-none"
+                            >
+                              BINGO
+                            </text>
+                            {[-5.5, 0, 5.5].map((gx) =>
+                              [-1, 3.5, 8].map((gy) => (
+                                <rect
+                                  key={`${gx}-${gy}`}
+                                  x={gx - 1.8}
+                                  y={gy - 1.5}
+                                  width="3.6"
+                                  height="3"
+                                  rx="0.5"
+                                  fill={
+                                    gx === 0 && gy === 3.5
+                                      ? '#00f0ff'
+                                      : '#ffffff'
+                                  }
+                                  className="pointer-events-none"
+                                />
+                              )),
+                            )}
+                          </g>
                         ) : isRectBooth ? (
                           <rect
                             x={
                               node.id === 'l3-reg'
-                                ? -33
+                                ? -26
                                 : node.id === 'l4-badge'
                                   ? -8
                                   : -14
@@ -2076,7 +2187,7 @@ export function TronSpaceNavigator({
                             y={node.id === 'l4-badge' ? -17 : -8}
                             width={
                               node.id === 'l3-reg'
-                                ? 66
+                                ? 52
                                 : node.id === 'l4-badge'
                                   ? 16
                                   : 28
@@ -2111,13 +2222,15 @@ export function TronSpaceNavigator({
                         )}
 
                         {/* Node Badge Number / Symbol */}
-                        <text
-                          y="3.8"
-                          textAnchor="middle"
-                          className="fill-white font-mono-tech text-[10.5px] font-bold pointer-events-none"
-                        >
-                          {node.numberBadge}
-                        </text>
+                        {!isBingoNode && (
+                          <text
+                            y="3.8"
+                            textAnchor="middle"
+                            className="fill-white font-mono-tech text-[10.5px] font-bold pointer-events-none"
+                          >
+                            {node.numberBadge}
+                          </text>
+                        )}
                       </g>
                     );
                   })}
@@ -2451,6 +2564,28 @@ export function TronSpaceNavigator({
                         : 'Badge Station (B)'}
                   </span>
                 </span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleNodeClick(
+                      MAP_NODES.find(
+                        (n) =>
+                          n.id ===
+                          (activeFloor === '03' ? 'l3-bingo' : 'l4-bingo'),
+                      )!,
+                    )
+                  }
+                  className="inline-flex items-center gap-1.5 hover:text-cyan-300 transition-colors cursor-pointer text-left"
+                >
+                  <span className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-[2px] border border-white bg-[#050b1a] text-[6px] font-bold leading-none text-cyan-300">
+                    B
+                  </span>
+                  <span>
+                    {isFr
+                      ? 'Validation des cartes Bingo (BINGO)'
+                      : 'Bingo Card Validation (BINGO)'}
+                  </span>
+                </button>
                 {activeFloor === '03' && (
                   <button
                     type="button"
