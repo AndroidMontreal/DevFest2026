@@ -16,13 +16,13 @@ type RawRow = [
 ];
 
 interface ShiftItem {
-  roomLocation: string;
+  roomName: string;
+  roomFloor: string;
   time: string;
   session: string;
   speaker: string;
   staff: string;
   notes: string;
-  floor: string;
 }
 
 interface RoomGroup {
@@ -42,7 +42,7 @@ interface CalendarEventFields {
 
 const ROWS: RawRow[] = [
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '07:00 - 08:30',
@@ -52,7 +52,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '09:25 - 10:00',
@@ -62,77 +62,77 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '10:15 - 11:00',
     "Panel – Montreal Tech Community: How local tech groups are shaping Montreal's digital future",
     'JL Maréchaux, Pierre-Alexandre Lacerte, Stefania Pecore, Raphaelle Giraud',
-    'KHASHAYAR (support), BILLY (main recorder), ALI (OBS support)',
+    'KHASHAYAR (support), BILLY (main recorder)',
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '11:15 - 12:00',
     "Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova",
     'Ludovic Dessemon',
-    'KHASHAYAR (support), BILLY (main recorder), ALI (OBS support)',
+    'KHASHAYAR (support), BILLY (main recorder)',
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '13:00 - 13:45',
     'From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases',
     'Gleb Otochkin',
-    'JESSY (support), BILLY (main recorder), ALI (OBS support)',
+    'JESSY (support), BILLY (main recorder)',
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '14:00 - 14:45',
     'So... You want to work at Google?',
     'Olivier Bourgeois',
-    'JESSY (support), BILLY (main recorder), ALI (OBS support)',
+    'JESSY (support), BILLY (main recorder)',
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '15:00 - 15:45',
     'Google Workspace MCPs with Antigravity',
     'Mohammad Al-Ansari',
-    'DANIEL TO (support), BILLY (main recorder), ALI (OBS support)',
+    'DANIEL TO (support), BILLY (main recorder)',
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '16:00 - 16:45',
     "AI Isn't Magic: The Infrastructure That Actually Wins the Race",
     'Stacy Véronneau',
-    'DANIEL TO (support), BILLY (main recorder), ALI (OBS support)',
+    'DANIEL TO (support), BILLY (main recorder)',
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '17:00 - 17:15',
     'Closing Keynote — Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives',
-    'Stefania Pecore, Michael Persico, Rebecca Abi Chahine, Daniel Wei, Oumaima El Khayiri',
+    'Stefania Pecore, Michael Persico, Rebecca Abi Chahine, Daniel Wei, Oumaima El khayiri',
     '',
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     '17:15 - 18:30',
@@ -142,7 +142,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '3-1 · Don’t Stop Believin’',
+    'Don’t Stop Believin’',
     '3',
     '100',
     'After 18:30',
@@ -153,7 +153,7 @@ const ROWS: RawRow[] = [
   ],
 
   [
-    '3-5 · Just Can’t Get Enough',
+    'Just Can’t Get Enough',
     '3',
     '30',
     '07:00 - 08:30',
@@ -163,67 +163,67 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '3-5 · Just Can’t Get Enough',
+    'Just Can’t Get Enough',
     '3',
     '30',
     '10:15 - 11:00',
     'Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach',
     'Etienne Caron',
-    'SAJAD (support)',
+    'SAJAD (support), MICHAEL (OBS operator), REBECCA (OBS operator)',
     '',
   ],
   [
-    '3-5 · Just Can’t Get Enough',
+    'Just Can’t Get Enough',
     '3',
     '30',
     '11:15 - 12:00',
     'Attention Attention Everywhere',
     'Dev J. Shah',
-    'SAJAD (support)',
+    'SAJAD (support), MICHAEL (OBS operator)',
     '',
   ],
   [
-    '3-5 · Just Can’t Get Enough',
+    'Just Can’t Get Enough',
     '3',
     '30',
     '13:00 - 13:45',
     'Beyond Red, Blue and Purple: Meet the Gold Team',
     'Faustin Bouchard',
-    'WANLIN (support)',
+    'WANLIN (support), MICHAEL (OBS operator)',
     '',
   ],
   [
-    '3-5 · Just Can’t Get Enough',
+    'Just Can’t Get Enough',
     '3',
     '30',
     '14:00 - 14:45',
     'Beyond Push-to-Talk: Real-Time Fact-Checking Agents with Gemini Live API and Google Search Grounding',
     'Aisha Yaseen',
-    'WANLIN (support)',
+    'WANLIN (support), MICHAEL (OBS operator)',
     '',
   ],
   [
-    '3-5 · Just Can’t Get Enough',
+    'Just Can’t Get Enough',
     '3',
     '30',
     '15:00 - 15:45',
     'Edge AI on Mobile: Practical Approaches and Challenges',
     'Mathieu Fillion',
-    'SAJAD (support)',
+    'SAJAD (support), OUMAIMA (OBS operator)',
     '',
   ],
   [
-    '3-5 · Just Can’t Get Enough',
+    'Just Can’t Get Enough',
     '3',
     '30',
     '16:00 - 16:45',
     'Building Applications with Google AI Studio and Databases',
     'Gleb Otochkin',
-    'SAJAD (support)',
+    'SAJAD (support), OUMAIMA (OBS operator)',
     '',
   ],
   [
-    '3-5 · Just Can’t Get Enough',
+    'Just Can’t Get Enough',
     '3',
     '30',
     'After 18:30',
@@ -233,18 +233,9 @@ const ROWS: RawRow[] = [
     '3rd floor wrap-up after 18:30',
   ],
 
+  ['Mr. Roboto', '3', '5', '07:00 - 08:30', 'Setup', '', 'Kanastruk team', ''],
   [
-    '3-2 · Mr. Roboto',
-    '3',
-    '5',
-    '07:00 - 08:30',
-    'Setup',
-    '',
-    'Kanastruk team',
-    '',
-  ],
-  [
-    '3-2 · Mr. Roboto',
+    'Mr. Roboto',
     '3',
     '5',
     '10:15 - 12:00',
@@ -254,7 +245,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '3-2 · Mr. Roboto',
+    'Mr. Roboto',
     '3',
     '5',
     '13:00 - 14:00',
@@ -264,7 +255,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '3-2 · Mr. Roboto',
+    'Mr. Roboto',
     '3',
     '5',
     '14:00 - 16:45',
@@ -274,7 +265,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '3-2 · Mr. Roboto',
+    'Mr. Roboto',
     '3',
     '5',
     'After 18:30',
@@ -285,7 +276,7 @@ const ROWS: RawRow[] = [
   ],
 
   [
-    '4-1 · The Danger Zone',
+    'The Danger Zone (4-1)',
     '4',
     '25',
     '07:00 - 08:30',
@@ -295,7 +286,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-1 · The Danger Zone',
+    'The Danger Zone (4-1)',
     '4',
     '25',
     '08:30 - 10:00',
@@ -305,7 +296,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-1 · The Danger Zone',
+    'The Danger Zone (4-1)',
     '4',
     '25',
     '10:00 - 12:00',
@@ -315,7 +306,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-1 · The Danger Zone',
+    'The Danger Zone (4-1)',
     '4',
     '25',
     '13:00 - 16:45',
@@ -325,7 +316,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-1 · The Danger Zone',
+    'The Danger Zone (4-1)',
     '4',
     '25',
     '16:45 - 17:00',
@@ -336,7 +327,7 @@ const ROWS: RawRow[] = [
   ],
 
   [
-    '4-3 · Working For The Weekend',
+    'Working For The Weekend',
     '4',
     '20',
     '07:00 - 08:30',
@@ -346,57 +337,57 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-3 · Working For The Weekend',
+    'Working For The Weekend',
     '4',
     '20',
     '10:15 - 11:00',
     'From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP',
     'Eckarath Khounsombath',
-    'SARA',
+    'SARA (support), DANIEL WEI (OBS operator, out 11:00 to 15:00)',
     '',
   ],
   [
-    '4-3 · Working For The Weekend',
+    'Working For The Weekend',
     '4',
     '20',
     '11:15 - 12:00',
     "The Web Could be Agentic: A first dive into Google's WebMCP Proposal",
     'Lester Botello',
-    'SARA',
+    'SARA (support), REBECCA (OBS operator)',
     '',
   ],
   [
-    '4-3 · Working For The Weekend',
+    'Working For The Weekend',
     '4',
     '20',
     '13:00 - 13:45',
     'Agents Working Together: Orchestration with ADK and A2A',
     'Arunesh Choudhary',
-    'SOUAD',
+    'SOUAD (support), REBECCA (OBS operator)',
     '',
   ],
   [
-    '4-3 · Working For The Weekend',
+    'Working For The Weekend',
     '4',
     '20',
     '14:00 - 14:15',
     'Lightning: Six Agents, One Patient Record: A Google ADK Retrospective',
     'Radwan Baba',
-    'SOUAD',
+    'SOUAD (support), REBECCA (OBS operator)',
     '',
   ],
   [
-    '4-3 · Working For The Weekend',
+    'Working For The Weekend',
     '4',
     '20',
     '14:25 - 14:40',
     "Lightning: The 90% You Don't See: Shipping AI Inside a Health System",
     'Guryash Singh Dhall',
-    'BRIJ-PAUL',
+    'BRIJ-PAUL (support), REBECCA (OBS operator)',
     '',
   ],
   [
-    '4-3 · Working For The Weekend',
+    'Working For The Weekend',
     '4',
     '20',
     '14:40 - 15:00',
@@ -406,7 +397,7 @@ const ROWS: RawRow[] = [
     'Right after last talk at 14:40',
   ],
   [
-    '4-3 · Working For The Weekend',
+    'Working For The Weekend',
     '4',
     '20',
     '15:00 - 15:45',
@@ -416,7 +407,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-3 · Working For The Weekend',
+    'Working For The Weekend',
     '4',
     '20',
     '16:00 - 16:45',
@@ -427,7 +418,7 @@ const ROWS: RawRow[] = [
   ],
 
   [
-    '4-4 · Under Pressure',
+    'Under Pressure',
     '4',
     '40',
     '07:00 - 08:30',
@@ -437,7 +428,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-4 · Under Pressure',
+    'Under Pressure',
     '4',
     '40',
     '10:15 - 11:00',
@@ -447,7 +438,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-4 · Under Pressure',
+    'Under Pressure',
     '4',
     '40',
     '11:15 - 12:00',
@@ -457,7 +448,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-4 · Under Pressure',
+    'Under Pressure',
     '4',
     '40',
     '13:00 - 13:45',
@@ -467,7 +458,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-4 · Under Pressure',
+    'Under Pressure',
     '4',
     '40',
     '14:00 - 14:45',
@@ -477,7 +468,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-4 · Under Pressure',
+    'Under Pressure',
     '4',
     '40',
     '15:00 - 15:45',
@@ -487,7 +478,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-4 · Under Pressure',
+    'Under Pressure',
     '4',
     '40',
     '16:00 - 16:45',
@@ -497,7 +488,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-4 · Under Pressure',
+    'Under Pressure',
     '4',
     '40',
     '16:45 - 17:00',
@@ -508,7 +499,7 @@ const ROWS: RawRow[] = [
   ],
 
   [
-    '4-6 · Hip To Be Square (workshops)',
+    'Hip To Be Square (workshops)',
     '4',
     '100',
     '07:00 - 08:30',
@@ -518,7 +509,7 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-6 · Hip To Be Square (workshops)',
+    'Hip To Be Square (workshops)',
     '4',
     '100',
     '10:15 - 11:45',
@@ -528,27 +519,27 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-6 · Hip To Be Square (workshops)',
+    'Hip To Be Square (workshops)',
     '4',
     '100',
     '13:15 - 14:45',
     'Build a Personal Productivity Assistant on Cloud Run (workshop)',
     'Rishab Kumar',
-    'LUNE (support), WILSON (support), YANIS (support)',
+    'LUNE (support), WILSON (support), YANIS (support), OUMAIMA (workshop attendee)',
     '',
   ],
   [
-    '4-6 · Hip To Be Square (workshops)',
+    'Hip To Be Square (workshops)',
     '4',
     '100',
     '15:00 - 16:30',
     'Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script (workshop)',
     'Cyprien Tankeu',
-    'LUNE (support), WILSON (support), YANIS (support until 16:00)',
+    'LUNE (support), WILSON (support), YANIS (support until 16:00), DANIEL WEI (workshop attendee)',
     '',
   ],
   [
-    '4-6 · Hip To Be Square (workshops)',
+    'Hip To Be Square (workshops)',
     '4',
     '100',
     '16:45 - 17:00',
@@ -559,7 +550,7 @@ const ROWS: RawRow[] = [
   ],
 
   [
-    '4-5 · Never Gonna Give You Up',
+    'Never Gonna Give You Up',
     '4',
     '40',
     '07:00 - 08:30',
@@ -569,67 +560,67 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    '4-5 · Never Gonna Give You Up',
+    'Never Gonna Give You Up',
     '4',
     '40',
     '10:15 - 11:00',
     'Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP',
     'Ethiel Adiassa',
-    'YANIS (support), LUNE (recording)',
+    'ALI (OBS operator), YANIS (support), LUNE (sidekick)',
     '',
   ],
   [
-    '4-5 · Never Gonna Give You Up',
+    'Never Gonna Give You Up',
     '4',
     '40',
     '11:15 - 12:00',
     'Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart',
     'Jhin Lee',
-    'YANIS (support), LUNE (recording)',
+    'ALI (OBS operator), YANIS (support), LUNE (sidekick)',
     '',
   ],
   [
-    '4-5 · Never Gonna Give You Up',
+    'Never Gonna Give You Up',
     '4',
     '40',
     '13:00 - 13:45',
     "Ouvrir la boîte noire : L'interprétabilité mécaniste des LLMs",
     'David Cardozo',
-    'JERWIN (support), ANDY (recording)',
+    'ALI (OBS operator), JERWIN (support), ANDY (sidekick)',
     '',
   ],
   [
-    '4-5 · Never Gonna Give You Up',
+    'Never Gonna Give You Up',
     '4',
     '40',
     '14:00 - 14:45',
     'Android AppFunctions: Exposing Your App to AI Agents',
     'Nav Singh',
-    'JERWIN (support), ANDY (recording)',
+    'ALI (OBS operator), JERWIN (support), ANDY (sidekick)',
     '',
   ],
   [
-    '4-5 · Never Gonna Give You Up',
+    'Never Gonna Give You Up',
     '4',
     '40',
     '15:00 - 15:45',
     'From Vibe-Coded to Trusted: One Agent Through Build, Scale, Govern and Optimize on Gemini Enterprise Agent Platform',
     'Jonathan Zhuo',
-    'NAV (support), JESSY (recording)',
+    'ALI (OBS operator), NAV (support), JESSY (sidekick)',
     '',
   ],
   [
-    '4-5 · Never Gonna Give You Up',
+    'Never Gonna Give You Up',
     '4',
     '40',
     '16:00 - 16:45',
     'Make Your AI Agent Think Fast and Slow: System One Decisions in Google ADK',
     'Thomas Chong',
-    'JERWIN (support), JESSY (recording)',
+    'ALI (OBS operator), JERWIN (support), JESSY (sidekick)',
     '',
   ],
   [
-    '4-5 · Never Gonna Give You Up',
+    'Never Gonna Give You Up',
     '4',
     '40',
     '16:45 - 17:00',
@@ -640,51 +631,51 @@ const ROWS: RawRow[] = [
   ],
 
   [
-    'Photo booth & badge table (4th floor)',
-    '4',
+    'Photo booth & badge table (downstairs)',
+    'Downstairs',
     '',
     '10:00 - 12:00',
-    'Photo booth & badge table (after 4-2)',
+    'Photo booth & badge table',
     '',
     'WILSON',
     '',
   ],
   [
-    'Photo booth & badge table (4th floor)',
-    '4',
+    'Photo booth & badge table (downstairs)',
+    'Downstairs',
     '',
     '13:00 - 14:00',
-    'Photo booth & badge table (after 4-2)',
+    'Photo booth & badge table',
     '',
     'KHASHAYAR',
     '',
   ],
   [
-    'Photo booth & badge table (4th floor)',
-    '4',
+    'Photo booth & badge table (downstairs)',
+    'Downstairs',
     '',
     '14:00 - 15:00',
-    'Photo booth & badge table (after 4-2)',
+    'Photo booth & badge table',
     '',
     'SAJAD',
     '',
   ],
   [
-    'Photo booth & badge table (4th floor)',
-    '4',
+    'Photo booth & badge table (downstairs)',
+    'Downstairs',
     '',
     '15:00 - 16:00',
-    'Photo booth & badge table (after 4-2)',
+    'Photo booth & badge table',
     '',
     'SOUAD',
     '',
   ],
   [
-    'Photo booth & badge table (4th floor)',
-    '4',
+    'Photo booth & badge table (downstairs)',
+    'Downstairs',
     '',
     '16:00 - 16:45',
-    'Photo booth & badge table (after 4-2)',
+    'Photo booth & badge table',
     '',
     'ANDY',
     '',
@@ -752,8 +743,8 @@ const ROWS: RawRow[] = [
   ],
 
   [
-    'Registration & welcome (3rd floor)',
-    '3',
+    'Registration & welcome',
+    'Entrance',
     '',
     '08:30 - 09:25',
     'Registration & breakfast',
@@ -762,8 +753,8 @@ const ROWS: RawRow[] = [
     'NADIA is practicing for her own DevFest a week later',
   ],
   [
-    'Registration & welcome (3rd floor)',
-    '3',
+    'Registration & welcome',
+    'Entrance',
     '',
     '09:25 - 10:00',
     'Registration',
@@ -772,8 +763,8 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    'Registration & welcome (3rd floor)',
-    '3',
+    'Registration & welcome',
+    'Entrance',
     '',
     '10:00 - 11:00',
     'Registration',
@@ -782,8 +773,8 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    'Registration & welcome (3rd floor)',
-    '3',
+    'Registration & welcome',
+    'Entrance',
     '',
     '11:00 - 12:00',
     'Registration',
@@ -792,8 +783,8 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    'Registration & welcome (3rd floor)',
-    '3',
+    'Registration & welcome',
+    'Entrance',
     '',
     '12:00 - 13:00',
     'Registration (until 13:00)',
@@ -802,8 +793,8 @@ const ROWS: RawRow[] = [
     '',
   ],
   [
-    'Registration & welcome (3rd floor)',
-    '3',
+    'Registration & welcome',
+    'Entrance',
     '',
     '14:00 - 15:00',
     'Registration',
@@ -812,8 +803,8 @@ const ROWS: RawRow[] = [
     'NADIA is registration only',
   ],
   [
-    'Registration & welcome (3rd floor)',
-    '3',
+    'Registration & welcome',
+    'Entrance',
     '',
     '14:00 - 16:00',
     'Registration & sponsors',
@@ -829,76 +820,92 @@ const ROWS: RawRow[] = [
     '10:00 - 16:45',
     'Floating org helper (quarterback)',
     '',
-    'SAMUEL',
+    'SAMUEL, LENZ',
     'Helps across rooms all day',
   ],
   [
-    'Floating org helper',
+    '4th floor rooms',
     '4',
     '',
     '16:45 - 17:00',
     'Close 4th floor rooms',
     '',
-    'LENZ (organizer), SAMUEL',
-    'Help close out the 4th floor',
+    'LENZ (organizer)',
+    'Organizer task from the Organizers tab',
   ],
-];
-
-const STAFF_NAMES = [
-  'ALI',
-  'ANDY',
-  'ARUNESH',
-  'BILLY',
-  'BRIJ-PAUL',
-  'DANIEL TO',
-  'DANIEL WEI',
-  'FLORIAN',
-  'JERWIN',
-  'JESSY',
-  'JHIN',
-  'JIHOO',
-  'KHASHAYAR',
-  'Kanastruk team',
-  'LENZ',
-  'LUNE',
-  'MIMOH',
-  'NADIA',
-  'NAV',
-  'OUMAIMA',
-  'REBECCA',
-  'SAJAD',
-  'SAMUEL',
-  'SARA',
-  'SOUAD',
-  'STEFANIA',
-  'WANLIN',
-  'WILSON',
-  'YANIS',
+  [
+    'Lunch raffle',
+    'All',
+    '',
+    '12:00 - 13:00',
+    'Raffle caller, 4th floor',
+    '',
+    'ANDY',
+    'About 20 minutes',
+  ],
+  [
+    'Lunch raffle',
+    'All',
+    '',
+    '12:00 - 13:00',
+    'Raffle caller, 3rd floor',
+    '',
+    'WANLIN',
+    'About 20 minutes',
+  ],
 ];
 
 const CAL_LOCATION = 'Espace Ax.c, 800 Rue du Square-Victoria, Montréal, QC';
 
-const ROOM_NAME_FR: Record<string, string> = {
-  '4-1 · The Danger Zone': '4-1 · The Danger Zone (Zone détente)',
-  '4-6 · Hip To Be Square (workshops)': '4-6 · Hip To Be Square (ateliers)',
-  '4-1 · Chill Zone, Photo booth & badge table (4th floor)':
-    '4-1 · Zone détente, cabine photo et table des badges (4e étage)',
-  'Photo booth & badge table (4th floor)':
-    'Cabine photo et table des badges (4e étage · après 4-2)',
+const LOCATIONS_EN: Record<string, string> = {
+  'Don’t Stop Believin’': '3-1 · Don’t Stop Believin’ (3rd floor)',
+  'Mr. Roboto': '3-2 · Mr. Roboto (3rd floor)',
+  'Just Can’t Get Enough': '3-5 · Just Can’t Get Enough (3rd floor)',
+  'Working For The Weekend': '4-3 · Working For The Weekend (4th floor)',
+  'Under Pressure': '4-4 · Under Pressure (4th floor)',
+  'Never Gonna Give You Up': '4-5 · Never Gonna Give You Up (4th floor)',
+  'Hip To Be Square (workshops)': '4-6 · Hip To Be Square (4th floor)',
+  'Sega Genesis & Photo Booth (3rd floor)':
+    'Sega Genesis & Photo Booth (3rd floor)',
+  'Registration & welcome': 'Entrance · Registration & welcome',
+  'All rooms': 'Regroup at 3rd floor registration',
+};
+
+const LOCATIONS_FR: Record<string, string> = {
+  'Don’t Stop Believin’': '3-1 · Don’t Stop Believin’ (3e étage)',
+  'Mr. Roboto': '3-2 · Mr. Roboto (3e étage)',
+  'Just Can’t Get Enough': '3-5 · Just Can’t Get Enough (3e étage)',
+  'Working For The Weekend': '4-3 · Working For The Weekend (4e étage)',
+  'Under Pressure': '4-4 · Under Pressure (4e étage)',
+  'Never Gonna Give You Up': '4-5 · Never Gonna Give You Up (4e étage)',
+  'Hip To Be Square (workshops)': '4-6 · Hip To Be Square (4e étage)',
   'Sega Genesis & Photo Booth (3rd floor)':
     'Sega Genesis et cabine photo (3e étage)',
-  'Registration & welcome (3rd floor)': 'Inscription et accueil (3e étage)',
+  'Registration & welcome': 'Entrée · Inscription et accueil',
+  'All rooms': "Regroupement à l'inscription au 3e étage",
+};
+
+const ROOM_NAME_FR: Record<string, string> = {
+  'All rooms': 'Toutes les salles',
+  'Chill Zone, Photo booth & badge table (upstairs)':
+    'Zone détente, cabine photo et table des badges (en haut)',
+  'Hip To Be Square (workshops)': 'Hip To Be Square (ateliers)',
+  'Sega Genesis & Photo Booth (3rd floor)':
+    'Sega Genesis et cabine photo (3e étage)',
+  'Registration & welcome': 'Inscription et accueil',
   'Floating org helper': 'Aide-organisateur volant',
+  '4th floor rooms': 'Salles du 4e étage',
+  'Lunch raffle': 'Tirage du midi',
 };
 
 const SESSION_FR: Record<string, string> = {
   Setup: 'Installation et préparation',
   'Wrap-up': 'Rangement et clôture',
+  'Wrap-up (3rd floor)': 'Rangement et clôture (3e étage)',
   'Chill Zone, Board Games & Community Lounge':
     'Zone détente, jeux de société et salon communautaire',
   'Open Talk Slot — TBC': 'Créneau de conférence ouvert — À confirmer',
-  'Photo booth & badge table (after 4-2)':
-    'Cabine photo et table des badges (après 4-2)',
+  'Photo booth & badge table': 'Cabine photo et table des badges',
   'Sega Genesis & Photo Booth': 'Sega Genesis et cabine photo',
   'Registration & breakfast': 'Inscription et déjeuner',
   Registration: 'Inscription',
@@ -906,9 +913,15 @@ const SESSION_FR: Record<string, string> = {
   'Registration & sponsors': 'Inscription et commanditaires',
   'Floating org helper (quarterback)': 'Aide-organisateur volant (quarterback)',
   'Close 4th floor rooms': 'Fermeture des salles du 4e étage',
+  'Raffle caller, 4th floor': 'Animation du tirage, 4e étage',
+  'Raffle caller, 3rd floor': 'Animation du tirage, 3e étage',
 };
 
 const NOTES_FR: Record<string, string> = {
+  'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.':
+    'Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk.',
+  'Last staff in each 3rd floor room. We will regroup and dispatch tasks.':
+    'Dernier bénévole dans chaque salle du 3e étage. Nous nous regrouperons pour répartir les tâches.',
   '3rd floor wrap-up after 18:30': 'Rangement du 3e étage après 18h30',
   'Right after last talk at 14:40':
     'Juste après la dernière conférence à 14h40',
@@ -918,7 +931,9 @@ const NOTES_FR: Record<string, string> = {
   'Close to registration after his 13:00-14:00 photo booth shift':
     "Près de l'inscription après son quart de 13h00 à 14h00 à la cabine photo",
   'Helps across rooms all day': 'Aide dans toutes les salles toute la journée',
-  'Help close out the 4th floor': 'Aider à fermer le 4e étage',
+  'Organizer task from the Organizers tab':
+    "Tâche d'organisateur issue de l'onglet Organizers",
+  'About 20 minutes': 'Environ 20 minutes',
 };
 
 function localizeRoomName(name: string, locale: Locale): string {
@@ -930,39 +945,30 @@ function displayFloor(f: string, locale: Locale): string {
   if (locale === 'fr') {
     const mapFr: Record<string, string> = {
       '3': '3e étage',
+      '3rd floor': '3e étage',
       '4': '4e étage',
-      All: 'Tous les étages',
+      '4th floor': '4e étage',
+      All: 'Tous',
+      Entrance: 'Entrée',
+      Downstairs: 'En bas',
     };
     return mapFr[f] || f;
   }
   const mapEn: Record<string, string> = {
     '3': '3rd floor',
     '4': '4th floor',
-    All: 'All floors',
   };
   return mapEn[f] || f;
 }
 
 function localizeItemLocation(it: ShiftItem, locale: Locale): string {
-  if (it.session === 'Close 4th floor rooms') {
-    return locale === 'fr'
-      ? 'Toutes les salles du 4e étage (4-1 à 4-7)'
-      : 'All 4th floor rooms (4-1 to 4-7)';
+  const dict = locale === 'fr' ? LOCATIONS_FR : LOCATIONS_EN;
+  if (dict[it.roomName]) return dict[it.roomName];
+  const base = localizeRoomName(it.roomName, locale);
+  if (it.roomFloor && it.roomFloor !== 'All') {
+    return `${base} (${displayFloor(it.roomFloor, locale)})`;
   }
-  if (it.roomLocation === 'Floating org helper') {
-    return locale === 'fr'
-      ? 'Toutes les salles (3e et 4e étages)'
-      : 'All rooms (3rd & 4th floors)';
-  }
-  const base = localizeRoomName(it.roomLocation, locale);
-  if (
-    base.toLowerCase().includes('floor') ||
-    base.toLowerCase().includes('étage')
-  ) {
-    return base;
-  }
-  const floorLabel = displayFloor(it.floor, locale);
-  return floorLabel ? `${base} (${floorLabel})` : base;
+  return base;
 }
 
 function localizeTime(time: string, locale: Locale): string {
@@ -997,7 +1003,14 @@ function localizeStaff(staff: string, locale: Locale): string {
     .replace(/\(support until 16:00\)/gi, "(soutien jusqu'à 16h00)")
     .replace(/\(support\)/gi, '(soutien)')
     .replace(/\(main recorder\)/gi, '(enregistrement principal)')
+    .replace(
+      /\(OBS operator,\s*out 11:00 to 15:00\)/gi,
+      '(opérateur OBS, absent de 11h00 à 15h00)',
+    )
+    .replace(/\(OBS operator\)/gi, '(opérateur OBS)')
     .replace(/\(OBS support\)/gi, '(soutien OBS)')
+    .replace(/\(sidekick\)/gi, '(acolyte)')
+    .replace(/\(workshop attendee\)/gi, "(participant à l'atelier)")
     .replace(/\(recording\)/gi, '(enregistrement)')
     .replace(/\(lead\)/gi, '(responsable)')
     .replace(/\(last staff in room\)/gi, '(dernier bénévole en salle)')
@@ -1017,8 +1030,20 @@ function startMin(t: string): number {
 }
 
 function floorOf(f: string): string {
-  return f === '3' ? '3' : f === '4' ? '4' : 'other';
+  if (f === '3' || f === '3rd floor') return '3';
+  if (f === '4' || f === '4th floor') return '4';
+  return 'other';
 }
+
+function parseStaffNames(s: string): string[] {
+  if (!s) return [];
+  return s
+    .split(',')
+    .map((p) => p.replace(/\(.*?\)/g, '').trim())
+    .filter(Boolean);
+}
+
+const SKIP_NAME = /^(all staff|not staffed|tbd|open)/i;
 
 function parseRange(t: string): [[number, number], [number, number]] | null {
   const m = /^(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})$/.exec(t);
@@ -1052,19 +1077,16 @@ function buildEventFields(
   if (!r) return null;
   const activeStaff =
     selectedStaff !== 'all' ? selectedStaff.toUpperCase() : '';
-  const prefix = activeStaff
-    ? `[DevFest Staff · ${activeStaff}] `
-    : '[DevFest Staff] ';
-  const locRoom = localizeItemLocation(it, locale);
+  const prefix = activeStaff ? `[DevFest Staff · ${activeStaff}] ` : '';
+  const locRoomName = localizeRoomName(it.roomName, locale);
   const locSession =
     localizeSession(it.session, locale) ||
     (locale === 'fr' ? 'Quart' : 'Shift');
-  const title = `${prefix}${locSession} — ${locRoom}`;
+  const title = `${prefix}${locSession} — ${locRoomName}`;
   const locSpeaker = localizeSpeaker(it.speaker, locale);
   const locStaff = localizeStaff(it.staff, locale);
   const locNotes = localizeNotes(it.notes, locale);
   const details = [
-    `${locale === 'fr' ? 'Lieu' : 'Location'}: ${locRoom}`,
     locSpeaker &&
       `${locale === 'fr' ? 'Conférencier(s)' : 'Speaker'}: ${locSpeaker}`,
     locStaff && `${locale === 'fr' ? 'Équipe' : 'Staff'}: ${locStaff}`,
@@ -1076,7 +1098,7 @@ function buildEventFields(
     title,
     start: utcStamp(r[0][0], r[0][1]),
     end: utcStamp(r[1][0], r[1][1]),
-    location: `${CAL_LOCATION} · ${locRoom}`,
+    location: `${CAL_LOCATION} · ${locRoomName}`,
     details,
   };
 }
@@ -1152,10 +1174,9 @@ function downloadIcs(
 function matchesStaff(staffStr: string, selectedStaff: string): boolean {
   if (selectedStaff === 'all') return true;
   if (!staffStr) return false;
-  const lower = staffStr.toLowerCase();
-  if (lower.includes('all staff')) return true;
-  const escaped = selectedStaff.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`(^|[^a-z])${escaped}([^a-z]|$)`, 'i').test(lower);
+  if (/all staff/i.test(staffStr)) return true;
+  const names = parseStaffNames(staffStr).map((n) => n.toUpperCase());
+  return names.includes(selectedStaff.toUpperCase());
 }
 
 export function StaffAssignmentsView({
@@ -1164,7 +1185,6 @@ export function StaffAssignmentsView({
   initialLocale?: Locale;
 }) {
   const [locale, setLocale] = useState<Locale>(initialLocale);
-  const [search, setSearch] = useState('');
   const [selectedStaff, setSelectedStaff] = useState('all');
   const [selectedRoomIdx, setSelectedRoomIdx] = useState('all');
   const [activeFloor, setActiveFloor] = useState('all');
@@ -1176,42 +1196,90 @@ export function StaffAssignmentsView({
     const byName: Record<string, RoomGroup> = {};
     for (const r of ROWS) {
       const name =
-        r[0].includes('Danger Zone') || r[0].includes('Photo booth & badge')
-          ? '4-1 · Chill Zone, Photo booth & badge table (4th floor)'
+        r[0].includes('Danger Zone') || r[0].includes('Photo booth')
+          ? 'Chill Zone, Photo booth & badge table (upstairs)'
           : r[0];
+      const floor = name.includes('Sega')
+        ? '3rd floor'
+        : name.includes('Danger Zone')
+          ? '4th floor'
+          : name.includes('Photo booth')
+            ? '4th floor'
+            : r[1];
       if (!byName[name]) {
-        const floorCode =
-          name.includes('Sega') || name.includes('Registration')
-            ? '3'
-            : name.includes('Danger Zone') || name.includes('Photo booth')
-              ? '4'
-              : r[1];
-        byName[name] = { name, floor: floorCode, seats: r[2], items: [] };
+        byName[name] = { name, floor, seats: r[2], items: [] };
         list.push(byName[name]);
       }
       byName[name].items.push({
-        roomLocation: r[0],
+        roomName: name,
+        roomFloor: floor,
         time: r[3],
         session: r[4],
         speaker: r[5],
         staff: r[6],
         notes: r[7],
-        floor:
-          name.includes('Sega') || name.includes('Registration')
-            ? '3'
-            : name.includes('Danger Zone') || name.includes('Photo booth')
-              ? '4'
-              : r[1],
       });
     }
     list.forEach((room) =>
       room.items.sort((a, b) => startMin(a.time) - startMin(b.time)),
     );
+
+    const allRoomsItems: ShiftItem[] = [
+      {
+        roomName: 'All rooms',
+        roomFloor: 'All',
+        time: '07:00 - 08:30',
+        session: 'Setup',
+        speaker: '',
+        staff: 'All staff (dispatched on site)',
+        notes:
+          'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.',
+      },
+      {
+        roomName: 'All rooms',
+        roomFloor: 'All',
+        time: 'After 18:30',
+        session: 'Wrap-up (3rd floor)',
+        speaker: '',
+        staff: 'All staff (dispatched on site)',
+        notes:
+          'Last staff in each 3rd floor room. We will regroup and dispatch tasks.',
+      },
+    ];
+
+    list.forEach((room) => {
+      room.items = room.items.filter(
+        (it) =>
+          !(
+            (it.time === '07:00 - 08:30' && it.session === 'Setup') ||
+            it.time === 'After 18:30'
+          ),
+      );
+    });
+
+    list.unshift({
+      name: 'All rooms',
+      floor: 'All',
+      seats: '',
+      items: allRoomsItems,
+    });
+
     return list;
   }, []);
 
+  const staffNamesList = useMemo<string[]>(() => {
+    const peopleSet = new Set<string>();
+    rooms.forEach((r) =>
+      r.items.forEach((it) =>
+        parseStaffNames(it.staff).forEach((n) => {
+          if (!SKIP_NAME.test(n)) peopleSet.add(n.toUpperCase());
+        }),
+      ),
+    );
+    return [...peopleSet].sort();
+  }, [rooms]);
+
   const filteredRooms = useMemo(() => {
-    const q = search.trim().toLowerCase();
     const result: Array<{
       room: RoomGroup;
       idx: number;
@@ -1225,31 +1293,11 @@ export function StaffAssignmentsView({
         if (
           activeFloor !== 'all' &&
           floorOf(room.floor) !== activeFloor &&
-          floorOf(it.floor) !== activeFloor
+          floorOf(it.roomFloor) !== activeFloor
         ) {
           return false;
         }
-        if (!matchesStaff(it.staff, selectedStaff)) return false;
-        if (!q) return true;
-        const hay = [
-          room.name,
-          localizeRoomName(room.name, 'fr'),
-          it.roomLocation,
-          localizeItemLocation(it, 'en'),
-          localizeItemLocation(it, 'fr'),
-          it.time,
-          localizeTime(it.time, 'fr'),
-          it.session,
-          localizeSession(it.session, 'fr'),
-          it.speaker,
-          it.staff,
-          localizeStaff(it.staff, 'fr'),
-          it.notes,
-          localizeNotes(it.notes, 'fr'),
-        ]
-          .join(' ')
-          .toLowerCase();
-        return hay.includes(q);
+        return matchesStaff(it.staff, selectedStaff);
       });
 
       if (items.length > 0) {
@@ -1258,18 +1306,30 @@ export function StaffAssignmentsView({
     });
 
     return result;
-  }, [rooms, search, selectedStaff, selectedRoomIdx, activeFloor]);
+  }, [rooms, selectedStaff, selectedRoomIdx, activeFloor]);
+
+  const personScheduleItems = useMemo<ShiftItem[]>(() => {
+    if (selectedStaff === 'all') return [];
+    const list: ShiftItem[] = [];
+    filteredRooms.forEach(({ items }) => {
+      items.forEach((it) => list.push(it));
+    });
+    list.sort((a, b) => startMin(a.time) - startMin(b.time));
+    return list;
+  }, [filteredRooms, selectedStaff]);
 
   const visibleEvents = useMemo(() => {
     const events: CalendarEventFields[] = [];
-    filteredRooms.forEach(({ items }) => {
-      items.forEach((it) => {
-        const ev = buildEventFields(it, selectedStaff, locale);
-        if (ev) events.push(ev);
-      });
+    const sourceItems =
+      selectedStaff !== 'all'
+        ? personScheduleItems
+        : filteredRooms.flatMap(({ items }) => items);
+    sourceItems.forEach((it) => {
+      const ev = buildEventFields(it, selectedStaff, locale);
+      if (ev) events.push(ev);
     });
     return events;
-  }, [filteredRooms, selectedStaff, locale]);
+  }, [filteredRooms, personScheduleItems, selectedStaff, locale]);
 
   return (
     <div className="staff-page-root">
@@ -1355,7 +1415,7 @@ export function StaffAssignmentsView({
           color: #fff;
         }
         .staff-controls { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-        .staff-controls input, .staff-controls select {
+        .staff-controls select {
           font: inherit;
           padding: 9px 12px;
           border-radius: 10px;
@@ -1363,9 +1423,8 @@ export function StaffAssignmentsView({
           background: var(--bg);
           color: var(--text);
           min-width: 0;
+          flex: 1 1 200px;
         }
-        .staff-controls input { flex: 1 1 180px; }
-        .staff-controls select { flex: 1 1 180px; }
         .staff-bar-row {
           display: flex;
           align-items: center;
@@ -1462,8 +1521,14 @@ export function StaffAssignmentsView({
           border-radius: 999px;
           white-space: nowrap;
         }
+        .staff-role {
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: .04em;
+          color: var(--muted);
+        }
         .staff-session { font-weight: 600; }
-        .staff-loc { color: var(--text); font-size: 13.5px; }
+        .staff-loc { color: var(--text); font-size: 13px; }
         .loc-lbl { color: var(--green); font-weight: 700; }
         .staff-speaker { color: var(--text); font-size: 14px; }
         .staff-line { font-size: 13px; color: var(--text); }
@@ -1498,13 +1563,13 @@ export function StaffAssignmentsView({
           <div>
             <h1>
               {isFr
-                ? 'DevFest Montréal 2026 · Affectations par salle (Équipe)'
-                : 'DevFest Montréal 2026 · Staff & Room Assignments'}
+                ? 'DevFest Montréal 2026 · Affectations des salles'
+                : 'DevFest Montréal 2026 · Room Assignments'}
             </h1>
             <div className="sub">
               {isFr
-                ? 'Vendredi 6 novembre 2026 · Espace Ax.c (800 Square-Victoria) · Vue chronologique par salle'
-                : 'Friday 6 November 2026 · Espace Ax.c (800 Square-Victoria) · Chronological view by room'}
+                ? 'Vendredi 6 novembre 2026 · Espace Ax.c · Liste du staff'
+                : 'Friday 6 November 2026 · Espace Ax.c · Staff list'}
             </div>
           </div>
 
@@ -1533,17 +1598,6 @@ export function StaffAssignmentsView({
         </div>
 
         <div className="staff-controls">
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={
-              isFr
-                ? 'Rechercher un conférencier, une session ou un bénévole'
-                : 'Search speaker, session or staff'
-            }
-            aria-label={isFr ? 'Rechercher' : 'Search'}
-          />
           <select
             value={selectedStaff}
             onChange={(e) => setSelectedStaff(e.target.value)}
@@ -1552,13 +1606,13 @@ export function StaffAssignmentsView({
             }
           >
             <option value="all">
-              {isFr ? "Tous les membres de l'équipe" : 'All staff members'}
+              {isFr
+                ? 'Choisir une personne… (Tous les membres)'
+                : 'Choose a person… (All staff members)'}
             </option>
-            {STAFF_NAMES.map((name) => (
-              <option key={name} value={name.toLowerCase()}>
-                {isFr
-                  ? `Équipe : ${name === 'Kanastruk team' ? 'Équipe Kanastruk' : name}`
-                  : `Staff: ${name}`}
+            {staffNamesList.map((name) => (
+              <option key={name} value={name}>
+                {isFr && name === 'KANASTRUK TEAM' ? 'ÉQUIPE KANASTRUK' : name}
               </option>
             ))}
           </select>
@@ -1624,10 +1678,110 @@ export function StaffAssignmentsView({
       </header>
 
       <main className="staff-main staff-safe">
-        {filteredRooms.length === 0 ? (
+        {selectedStaff !== 'all' ? (
+          <section className="staff-room blue">
+            <div className="staff-room-head">
+              <h2>
+                {isFr && selectedStaff === 'KANASTRUK TEAM'
+                  ? 'ÉQUIPE KANASTRUK'
+                  : selectedStaff}
+              </h2>
+              <div className="meta">
+                {personScheduleItems.length} {isFr ? 'éléments' : 'items'}
+              </div>
+            </div>
+            {personScheduleItems.length === 0 ? (
+              <div className="staff-empty">
+                {isFr ? 'Aucun élément.' : 'No items.'}
+              </div>
+            ) : (
+              personScheduleItems.map((it, itemIdx) => {
+                const ev = buildEventFields(it, selectedStaff, locale);
+                return (
+                  <div
+                    key={`${it.roomName}-${it.time}-${itemIdx}`}
+                    className="staff-item"
+                  >
+                    <div className="row1">
+                      <span className="staff-time">
+                        {localizeTime(it.time, locale)}
+                      </span>
+                      <span className="staff-session">
+                        {localizeRoomName(it.roomName, locale)}
+                      </span>
+                    </div>
+
+                    {it.session && (
+                      <div className="staff-role">
+                        {localizeSession(it.session, locale)}
+                      </div>
+                    )}
+
+                    <div className="staff-loc">
+                      <strong className="loc-lbl">
+                        {isFr ? 'Lieu : ' : 'Location: '}
+                      </strong>
+                      {localizeItemLocation(it, locale)}
+                    </div>
+
+                    {it.speaker && (
+                      <div className="staff-speaker">
+                        <strong className="spk-lbl">
+                          {isFr ? 'Conférencier(s) : ' : 'Speaker(s): '}
+                        </strong>
+                        {localizeSpeaker(it.speaker, locale)}
+                      </div>
+                    )}
+
+                    {it.staff && (
+                      <div className="staff-line">
+                        <span className="staff-val">
+                          {isFr ? 'Équipe : ' : 'Staff: '}
+                        </span>
+                        {it.staff === 'Not staffed' ? (
+                          <span className="unstaffed">
+                            {isFr ? 'Sans bénévole' : 'Not staffed'}
+                          </span>
+                        ) : (
+                          localizeStaff(it.staff, locale)
+                        )}
+                      </div>
+                    )}
+
+                    {it.notes && (
+                      <div className="staff-notes">
+                        {localizeNotes(it.notes, locale)}
+                      </div>
+                    )}
+
+                    {ev && (
+                      <div className="staff-cal">
+                        <a
+                          className="staff-cal-btn staff-cal-google"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={googleHref(ev)}
+                        >
+                          + Google
+                        </a>
+                        <button
+                          type="button"
+                          className="staff-cal-btn"
+                          onClick={() => downloadIcs(ev, ev.title)}
+                        >
+                          + Apple / .ics
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            )}
+          </section>
+        ) : filteredRooms.length === 0 ? (
           <div className="staff-empty">
             {isFr
-              ? 'Aucun résultat pour cette recherche.'
+              ? 'Aucun résultat pour ce filtre.'
               : 'Nothing matches that filter.'}
           </div>
         ) : (
@@ -1673,7 +1827,7 @@ export function StaffAssignmentsView({
                       {it.speaker && (
                         <div className="staff-speaker">
                           <strong className="spk-lbl">
-                            {isFr ? 'Conférenciers : ' : 'Speakers: '}
+                            {isFr ? 'Conférencier(s) : ' : 'Speaker(s): '}
                           </strong>
                           {localizeSpeaker(it.speaker, locale)}
                         </div>
