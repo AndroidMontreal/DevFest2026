@@ -453,7 +453,7 @@ function staffNames(s) {
   if (!s) return [];
   return s.replace(/\(.*?\)/g, "").split(",").map(p => p.trim()).filter(Boolean);
 }
-const SKIP_NAME = /^(all staff|not staffed|tbd|open)/i;
+const SKIP_NAME = /^(all staff|not staffed|tbd|open|kanastruk team)/i;
 const peopleSet = new Set();
 rooms.forEach(r => r.items.forEach(it => staffNames(it.staff).forEach(n => {
   if (!SKIP_NAME.test(n)) peopleSet.add(n.toUpperCase());

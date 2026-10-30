@@ -1044,7 +1044,7 @@ function parseStaffNames(s: string): string[] {
     .filter(Boolean);
 }
 
-const SKIP_NAME = /^(all staff|not staffed|tbd|open)/i;
+const SKIP_NAME = /^(all staff|not staffed|tbd|open|kanastruk team)/i;
 
 function parseRange(t: string): [[number, number], [number, number]] | null {
   const m = /^(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})$/.exec(t);
