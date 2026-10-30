@@ -1038,8 +1038,9 @@ function floorOf(f: string): string {
 function parseStaffNames(s: string): string[] {
   if (!s) return [];
   return s
+    .replace(/\(.*?\)/g, '')
     .split(',')
-    .map((p) => p.replace(/\(.*?\)/g, '').trim())
+    .map((p) => p.trim())
     .filter(Boolean);
 }
 
