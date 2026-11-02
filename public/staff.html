@@ -366,7 +366,7 @@ const ROWS = [
 ["Working For The Weekend","4","20","15:00 - 15:45","Open Talk Slot — TBC","Open","Not staffed",""],
 ["Working For The Weekend","4","20","16:00 - 16:45","Open Talk Slot — TBC","Open","Not staffed",""],
 
-["Under Pressure","4","40","07:00 - 08:30","AV setup for Under Pressure","","SAMUEL (AV setup)",""],
+["Under Pressure","4","40","07:00 - 08:30","Setup","","All staff (dispatched on site)",""],
 ["Under Pressure","4","40","10:15 - 11:00","Building Real-Time RAG Systems with Gemini & the Multimodal Live API","Olayinka Peter Oluwafemi","FLORIAN (lead OBS), OUMAIMA (OBS support)","Jhin is on talk in 4-5"],
 ["Under Pressure","4","40","11:15 - 12:00","Off the Edge: Grading Google AI Edge and Gemini Against a Practitioner's Eye","Boris-Wilfried Nyasse","FLORIAN (lead OBS), OUMAIMA (OBS support)","Jhin is on talk in 4-5"],
 ["Under Pressure","4","40","12:00 - 13:00","Lunch break","","FLORIAN (lunch)",""],
@@ -487,7 +487,7 @@ const SESSION_FR = {
   "Raffle caller, 3rd floor": "Animation du tirage, 3e étage"
 };
 const NOTES_FR = {
-  "We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel.": "Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk. Installation AV Under Pressure : Samuel.",
+  "We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.": "Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk.",
   "Last staff in each 3rd floor room. We will regroup and dispatch tasks.": "Dernier bénévole dans chaque salle du 3e étage. Nous nous regrouperons pour répartir les tâches.",
   "3rd floor wrap-up after 18:30": "Rangement du 3e étage après 18h30",
   "Right after last talk at 14:40": "Juste après la dernière conférence à 14h40",
@@ -569,7 +569,7 @@ function startMin(t) {
 }
 rooms.forEach(room => room.items.sort((a, b) => startMin(a.time) - startMin(b.time)));
 const allRoomsItems = [
-  { time: "07:00 - 08:30", session: "Setup", speaker: "", staff: "All staff (dispatched on site)", notes: "We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel." },
+  { time: "07:00 - 08:30", session: "Setup", speaker: "", staff: "All staff (dispatched on site)", notes: "We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team." },
   { time: "After 18:30", session: "Wrap-up (3rd floor)", speaker: "", staff: "All staff (dispatched on site)", notes: "Last staff in each 3rd floor room. We will regroup and dispatch tasks." }
 ];
 rooms.forEach(room => {
