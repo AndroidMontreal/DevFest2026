@@ -91,7 +91,7 @@ const ROWS: RawRow[] = [
     '13:00 - 13:45',
     'From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases',
     'Gleb Otochkin',
-    'SAJAD (support), BILLY (main OBS operator)',
+    'DANIEL TO (support), BILLY (main OBS operator)',
     'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)',
   ],
   [
@@ -312,7 +312,7 @@ const ROWS: RawRow[] = [
     'The Danger Zone (4-1)',
     '4',
     '25',
-    '13:00 - 16:45',
+    '13:00 - 15:00',
     '4th-floor station (Danger Zone, bingo, photo booth, badge)',
     'GDG Montreal Community Lounge',
     'SARA (station volunteer)',
@@ -322,10 +322,20 @@ const ROWS: RawRow[] = [
     'The Danger Zone (4-1)',
     '4',
     '25',
+    '15:00 - 16:45',
+    '4th-floor station (Danger Zone, bingo, photo booth, badge)',
+    'GDG Montreal Community Lounge',
+    'BRIJ-PAUL (station volunteer), SARA (station volunteer)',
+    'Brij-Paul relieves/pairs with Sara',
+  ],
+  [
+    'The Danger Zone (4-1)',
+    '4',
+    '25',
     '16:45 - 17:00',
     'Wrap-up',
     '',
-    'SARA (last staff in room)',
+    'BRIJ-PAUL, SARA (last staff in room)',
     '',
   ],
 
@@ -599,7 +609,7 @@ const ROWS: RawRow[] = [
     '11:15 - 12:00',
     'Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart',
     'Jhin Lee',
-    'ALI (OBS operator), YANIS (support), LUNE (sidekick), JHIN (speaker)',
+    'ALI (OBS operator), YANIS (support), WILSON (sidekick), JHIN (speaker)',
     'Yanis out in PM',
   ],
   [
@@ -701,7 +711,7 @@ const ROWS: RawRow[] = [
     '10:00 - 11:00',
     'Registration',
     '',
-    'MIMOH (organizer), BRIJ-PAUL',
+    'MIMOH (organizer), SOUAD',
     '',
   ],
   [
@@ -711,7 +721,7 @@ const ROWS: RawRow[] = [
     '11:00 - 12:00',
     'Registration',
     '',
-    'BRIJ-PAUL, NADIA, DANIEL TO',
+    'NADIA, DANIEL TO',
     '',
   ],
   [
@@ -962,6 +972,7 @@ const NOTES_FR: Record<string, string> = {
   'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)':
     'Le soutien garde aussi un œil sur la cabine photo et le Sega Genesis du 3e étage (sans bénévole dédié)',
   'Yanis out in PM': "Yanis absent l'après-midi",
+  'Brij-Paul relieves/pairs with Sara': 'Brij-Paul relève ou accompagne Sara',
 };
 
 function localizeRoomName(name: string, locale: Locale): string {
@@ -1577,6 +1588,19 @@ export function StaffAssignmentsView({
         }
         .staff-header h1 { font-size: 18px; margin: 0 0 2px; font-weight: 700; }
         .staff-header .sub { color: var(--muted); font-size: 13px; }
+        .staff-header .rev {
+          color: var(--muted);
+          font-size: 11.5px;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+          margin-top: 2px;
+        }
+        .staff-top-right {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 4px;
+          flex-shrink: 0;
+        }
         .staff-lang-toggle {
           display: inline-flex;
           border: 1px solid var(--border);
@@ -1890,29 +1914,37 @@ export function StaffAssignmentsView({
                 ? 'Vendredi 6 novembre 2026 · Espace Ax.c · Liste du staff'
                 : 'Friday 6 November 2026 · Espace Ax.c · Staff list'}
             </div>
+            <div className="rev">
+              {isFr
+                ? 'Révision v2026.11.02-r8 · 2026-11-02 12:57:00 EST (America/Montreal)'
+                : 'Revision v2026.11.02-r8 · 2026-11-02 12:57:00 EST (America/Montreal)'}
+            </div>
           </div>
 
-          <div
-            className="staff-lang-toggle"
-            role="group"
-            aria-label="Language switcher"
-          >
-            <button
-              type="button"
-              className="staff-lang-btn"
-              aria-pressed={locale === 'en'}
-              onClick={() => setLocale('en')}
+          <div className="staff-top-right">
+            <div
+              className="staff-lang-toggle"
+              role="group"
+              aria-label="Language switcher"
             >
-              EN
-            </button>
-            <button
-              type="button"
-              className="staff-lang-btn"
-              aria-pressed={locale === 'fr'}
-              onClick={() => setLocale('fr')}
-            >
-              FR
-            </button>
+              <button
+                type="button"
+                className="staff-lang-btn"
+                aria-pressed={locale === 'en'}
+                onClick={() => setLocale('en')}
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                className="staff-lang-btn"
+                aria-pressed={locale === 'fr'}
+                onClick={() => setLocale('fr')}
+              >
+                FR
+              </button>
+            </div>
+            <div className="rev">v2026.11.02-r8 · 2026-11-02 12:57:00 EST</div>
           </div>
         </div>
 
