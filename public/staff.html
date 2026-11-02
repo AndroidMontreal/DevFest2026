@@ -245,6 +245,48 @@
   .cal-btn { font: inherit; font-size: 12px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg); color: var(--text); text-decoration: none; cursor: pointer; }
   .cal-google { color: var(--blue); border-color: var(--blue); }
   .cal-apple { color: var(--text); }
+  .staff-person-list { display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
+  .staff-person-chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: var(--pill);
+    border: 1px solid var(--border);
+    font-size: 12.5px;
+  }
+  .staff-person-name {
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-weight: 700;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+  }
+  .staff-person-name:hover { color: var(--blue); text-decoration: underline; }
+  .staff-person-label { font-weight: 600; color: var(--text); }
+  .staff-person-cal { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .staff-mini-cal-btn {
+    font: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .staff-mini-cal-btn.google { color: var(--blue); border-color: var(--blue); }
+  .staff-mini-cal-btn.all-ics { color: var(--green); border-color: var(--green); }
+  .staff-mini-cal-btn:hover { filter: brightness(0.95); }
   .hidden { display: none !important; }
   .empty { padding: 30px 16px; text-align: center; color: var(--muted); grid-column: 1 / -1; }
   footer { color: var(--muted); font-size: 12px; text-align: center; padding: 10px 0 max(16px, env(safe-area-inset-bottom)); }
@@ -612,10 +654,29 @@ function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function staffHtml(s) {
+function staffHtml(it, roomName) {
+  const s = it.staff;
   if (!s) return "";
   if (s === "Not staffed") return '<span class="unstaffed">' + (locale === "fr" ? "Sans bénévole" : "Not staffed") + '</span>';
-  return esc(localizeStaff(s));
+  const segments = s.split(/,(?![^(]*\))/).map(p => p.trim()).filter(Boolean);
+  return '<div class="staff-person-list">' + segments.map(raw => {
+    const baseName = raw.replace(/\(.*?\)/g, "").trim().toUpperCase();
+    const isIndividual = Boolean(baseName) && !SKIP_NAME.test(baseName);
+    const ev = eventFields(it, roomName, isIndividual ? baseName : undefined);
+    const nameEl = isIndividual
+      ? '<button type="button" class="staff-person-name" data-filter-staff="' + esc(baseName) + '" title="' + esc(locale === "fr" ? "Filtrer par " + baseName : "Filter schedule by " + baseName) + '">👤 ' + esc(localizeStaff(raw)) + '</button>'
+      : '<span class="staff-person-label">' + esc(localizeStaff(raw)) + '</span>';
+    const calEl = ev
+      ? '<div class="staff-person-cal">' +
+          '<a class="staff-mini-cal-btn google" target="_blank" rel="noopener" href="' + esc(googleHref(ev)) + '">+ Google</a>' +
+          '<button type="button" class="staff-mini-cal-btn cal-apple" data-title="' + esc(ev.title) + '" data-start="' + ev.start + '" data-end="' + ev.end + '" data-location="' + esc(ev.location) + '" data-details="' + esc(ev.details) + '">+ .ics</button>' +
+          (isIndividual
+            ? '<button type="button" class="staff-mini-cal-btn all-ics" data-all-ics="' + esc(baseName) + '">' + (locale === "fr" ? "📅 Tous ses quarts" : "📅 All shifts") + '</button>'
+            : '') +
+        '</div>'
+      : '';
+    return '<div class="staff-person-chip">' + nameEl + calEl + '</div>';
+  }).join("") + '</div>';
 }
 
 function parseRange(t) {
@@ -629,10 +690,10 @@ function utcStamp(h, mi) {
   return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
 }
 const CAL_LOCATION = "Espace Ax.c, 800 Rue du Square-Victoria, Montréal, QC";
-function eventFields(it, roomName) {
+function eventFields(it, roomName, staffOverride) {
   const r = parseRange(it.time);
   if (!r) return null;
-  const activeStaff = staffSelect.value !== "all" ? staffSelect.value.toUpperCase() : "";
+  const activeStaff = staffOverride ? staffOverride.toUpperCase() : (staffSelect.value !== "all" ? staffSelect.value.toUpperCase() : "");
   const prefix = activeStaff ? "[DevFest Staff · " + activeStaff + "] " : "";
   const locRoom = localizeRoomName(roomName);
   const title = prefix + (localizeSession(it.session) || (locale === "fr" ? "Quart" : "Shift")) + " — " + locRoom;
@@ -648,6 +709,22 @@ function eventFields(it, roomName) {
     location: CAL_LOCATION + " · " + locRoom,
     details
   };
+}
+function downloadAllForStaff(staffName) {
+  const upper = staffName.toUpperCase();
+  const list = [];
+  rooms.forEach(room => {
+    room.items.forEach(it => {
+      if (matchesStaff(it.staff, upper)) list.push({ room, it });
+    });
+  });
+  list.sort((a, b) => startMin(a.it.time) - startMin(b.it.time));
+  const events = [];
+  list.forEach(({ room, it }) => {
+    const ev = eventFields(it, room.name, upper);
+    if (ev) events.push(ev);
+  });
+  if (events.length) downloadIcs(events, "DevFest-2026-Shifts-" + upper);
 }
 function googleHref(f) {
   return "https://calendar.google.com/calendar/render?action=TEMPLATE" +
@@ -767,7 +844,7 @@ function render() {
                   (it.speaker ? '<div class="notes">' + (locale === "fr" ? "Conf. : " : "Speaker: ") + esc(localizeSpeaker(it.speaker)) + '</div>' : '') +
                   (it.notes ? '<div class="notes">' + esc(localizeNotes(it.notes)) + '</div>' : '') +
                 '</td>' +
-                '<td>' + (it.staff ? staffHtml(it.staff) : '<span class="notes">—</span>') + '</td>' +
+                '<td>' + (it.staff ? staffHtml(it, room.name) : '<span class="notes">—</span>') + '</td>' +
               '</tr>'
             ).join("") +
           '</tbody>' +
@@ -799,9 +876,9 @@ function render() {
           (it.session ? '<div class="role">' + esc(localizeSession(it.session)) + '</div>' : '') +
           '<div class="loc"><strong class="loc-lbl">' + (locale === "fr" ? "Lieu : " : "Location: ") + '</strong>' + esc(localizeItemLocation(room)) + '</div>' +
           (it.speaker ? '<div class="speaker"><strong class="spk-lbl">' + (locale === "fr" ? "Conférencier(s) : " : "Speaker(s): ") + '</strong>' + esc(localizeSpeaker(it.speaker)) + '</div>' : '') +
-          (it.staff ? '<div class="staff"><span class="staff-val">' + (locale === "fr" ? "Équipe : " : "Staff: ") + '</span>' + staffHtml(it.staff) + '</div>' : '') +
+          (it.staff ? '<div class="staff"><span class="staff-val">' + (locale === "fr" ? "Équipe : " : "Staff: ") + '</span>' + staffHtml(it, room.name) + '</div>' : '') +
           (it.notes ? '<div class="notes">' + esc(localizeNotes(it.notes)) + '</div>' : '') +
-          calButtons(it, room.name) +
+          ((!it.staff || it.staff === "Not staffed") ? calButtons(it, room.name) : '') +
         '</div>'
       ).join("") : '<div class="empty">' + (locale === "fr" ? "Aucun élément." : "No items.") + '</div>');
     grid.appendChild(sec);
@@ -824,9 +901,9 @@ function render() {
             (it.session ? '<span class="session">' + esc(localizeSession(it.session)) + '</span>' : '') + '</div>' +
             '<div class="loc"><strong class="loc-lbl">' + (locale === "fr" ? "Lieu : " : "Location: ") + '</strong>' + esc(localizeItemLocation(room)) + '</div>' +
             (it.speaker ? '<div class="speaker"><strong class="spk-lbl">' + (locale === "fr" ? "Conférencier(s) : " : "Speaker(s): ") + '</strong>' + esc(localizeSpeaker(it.speaker)) + '</div>' : '') +
-            (it.staff ? '<div class="staff"><span class="staff-val">' + (locale === "fr" ? "Équipe : " : "Staff: ") + '</span>' + staffHtml(it.staff) + '</div>' : '') +
+            (it.staff ? '<div class="staff"><span class="staff-val">' + (locale === "fr" ? "Équipe : " : "Staff: ") + '</span>' + staffHtml(it, room.name) + '</div>' : '') +
             (it.notes ? '<div class="notes">' + esc(localizeNotes(it.notes)) + '</div>' : '') +
-            calButtons(it, room.name) +
+            ((!it.staff || it.staff === "Not staffed") ? calButtons(it, room.name) : '') +
           '</div>'
         ).join("");
       grid.appendChild(sec);
@@ -866,6 +943,17 @@ document.querySelectorAll(".lang-btn").forEach(btn => {
 });
 
 grid.addEventListener("click", (e) => {
+  const filterBtn = e.target.closest && e.target.closest("[data-filter-staff]");
+  if (filterBtn) {
+    staffSelect.value = filterBtn.dataset.filterStaff;
+    render();
+    return;
+  }
+  const allIcsBtn = e.target.closest && e.target.closest("[data-all-ics]");
+  if (allIcsBtn) {
+    downloadAllForStaff(allIcsBtn.dataset.allIcs);
+    return;
+  }
   const b = e.target.closest && e.target.closest(".cal-apple");
   if (!b) return;
   downloadIcs({

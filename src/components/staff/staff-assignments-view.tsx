@@ -1435,6 +1435,126 @@ export function StaffAssignmentsView({
     return events;
   }, [filteredRooms, personScheduleItems, selectedStaff, locale]);
 
+  const downloadAllForStaff = (staffName: string) => {
+    const upper = staffName.toUpperCase();
+    const allMatching: ShiftItem[] = [];
+    rooms.forEach((r) => {
+      r.items.forEach((it) => {
+        if (matchesStaff(it.staff, upper)) {
+          allMatching.push(it);
+        }
+      });
+    });
+    allMatching.sort((a, b) => startMin(a.time) - startMin(b.time));
+    const events: CalendarEventFields[] = [];
+    allMatching.forEach((it) => {
+      const ev = buildEventFields(it, upper, locale);
+      if (ev) events.push(ev);
+    });
+    if (events.length > 0) {
+      downloadIcs(events, `DevFest-2026-Shifts-${upper}`);
+    }
+  };
+
+  const renderStaffBadges = (it: ShiftItem) => {
+    if (!it.staff) return null;
+    if (it.staff === 'Not staffed') {
+      return (
+        <span className="unstaffed">
+          {isFr ? 'Sans bénévole' : 'Not staffed'}
+        </span>
+      );
+    }
+
+    const segments = it.staff
+      .split(/,(?![^(]*\))/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    return (
+      <div className="staff-person-list">
+        {segments.map((raw, segIdx) => {
+          const baseName = raw
+            .replace(/\(.*?\)/g, '')
+            .trim()
+            .toUpperCase();
+          const isIndividual = Boolean(baseName) && !SKIP_NAME.test(baseName);
+          const ev = buildEventFields(
+            it,
+            isIndividual ? baseName : selectedStaff,
+            locale,
+          );
+          return (
+            <div key={`${raw}-${segIdx}`} className="staff-person-chip">
+              {isIndividual ? (
+                <button
+                  type="button"
+                  className="staff-person-name"
+                  onClick={() => setSelectedStaff(baseName)}
+                  title={
+                    isFr
+                      ? `Filtrer par ${baseName}`
+                      : `Filter schedule by ${baseName}`
+                  }
+                >
+                  👤 {localizeStaff(raw, locale)}
+                </button>
+              ) : (
+                <span className="staff-person-label">
+                  {localizeStaff(raw, locale)}
+                </span>
+              )}
+
+              {ev && (
+                <div className="staff-person-cal">
+                  <a
+                    className="staff-mini-cal-btn google"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={googleHref(ev)}
+                    title={
+                      isFr
+                        ? 'Ajouter ce quart à Google Agenda'
+                        : 'Add this shift to Google Calendar'
+                    }
+                  >
+                    + Google
+                  </a>
+                  <button
+                    type="button"
+                    className="staff-mini-cal-btn"
+                    onClick={() => downloadIcs(ev, ev.title)}
+                    title={
+                      isFr
+                        ? 'Télécharger ce quart (.ics / Apple)'
+                        : 'Download this shift (.ics / Apple)'
+                    }
+                  >
+                    + .ics
+                  </button>
+                  {isIndividual && (
+                    <button
+                      type="button"
+                      className="staff-mini-cal-btn all-ics"
+                      onClick={() => downloadAllForStaff(baseName)}
+                      title={
+                        isFr
+                          ? `Télécharger tous les quarts de ${baseName} (.ics)`
+                          : `Download all shifts for ${baseName} (.ics)`
+                      }
+                    >
+                      {isFr ? '📅 Tous ses quarts' : '📅 All shifts'}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="staff-page-root">
       <style>{`
@@ -1675,6 +1795,72 @@ export function StaffAssignmentsView({
           cursor: pointer;
         }
         .staff-cal-google { color: var(--blue); border-color: var(--blue); }
+        .staff-person-list {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          margin-top: 4px;
+        }
+        .staff-person-chip {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+          flex-wrap: wrap;
+          padding: 4px 8px;
+          border-radius: 8px;
+          background: var(--pill);
+          border: 1px solid var(--border);
+          font-size: 12.5px;
+        }
+        .staff-person-name {
+          border: none;
+          background: transparent;
+          color: var(--text);
+          font: inherit;
+          font-weight: 700;
+          padding: 0;
+          cursor: pointer;
+          text-align: left;
+        }
+        .staff-person-name:hover {
+          color: var(--blue);
+          text-decoration: underline;
+        }
+        .staff-person-label {
+          font-weight: 600;
+          color: var(--text);
+        }
+        .staff-person-cal {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          flex-wrap: wrap;
+        }
+        .staff-mini-cal-btn {
+          font: inherit;
+          font-size: 11px;
+          font-weight: 600;
+          padding: 2px 7px;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--text);
+          text-decoration: none;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+        .staff-mini-cal-btn.google {
+          color: var(--blue);
+          border-color: var(--blue);
+        }
+        .staff-mini-cal-btn.all-ics {
+          color: var(--green);
+          border-color: var(--green);
+        }
+        .staff-mini-cal-btn:hover {
+          filter: brightness(0.95);
+        }
         .staff-empty { padding: 30px 16px; text-align: center; color: var(--muted); grid-column: 1 / -1; }
         .staff-table-wrap {
           background: var(--surface);
@@ -1933,15 +2119,7 @@ export function StaffAssignmentsView({
                         </td>
                         <td>
                           {it.staff ? (
-                            it.staff === 'Not staffed' ? (
-                              <span className="unstaffed">
-                                {isFr ? 'Sans bénévole' : 'Not staffed'}
-                              </span>
-                            ) : (
-                              <span className="staff-line">
-                                {localizeStaff(it.staff, locale)}
-                              </span>
-                            )
+                            renderStaffBadges(it)
                           ) : (
                             <span className="staff-notes">—</span>
                           )}
@@ -2009,13 +2187,7 @@ export function StaffAssignmentsView({
                         <span className="staff-val">
                           {isFr ? 'Équipe : ' : 'Staff: '}
                         </span>
-                        {it.staff === 'Not staffed' ? (
-                          <span className="unstaffed">
-                            {isFr ? 'Sans bénévole' : 'Not staffed'}
-                          </span>
-                        ) : (
-                          localizeStaff(it.staff, locale)
-                        )}
+                        {renderStaffBadges(it)}
                       </div>
                     )}
 
@@ -2025,7 +2197,7 @@ export function StaffAssignmentsView({
                       </div>
                     )}
 
-                    {ev && (
+                    {!it.staff && ev && (
                       <div className="staff-cal">
                         <a
                           className="staff-cal-btn staff-cal-google"
@@ -2109,13 +2281,7 @@ export function StaffAssignmentsView({
                           <span className="staff-val">
                             {isFr ? 'Équipe : ' : 'Staff: '}
                           </span>
-                          {it.staff === 'Not staffed' ? (
-                            <span className="unstaffed">
-                              {isFr ? 'Sans bénévole' : 'Not staffed'}
-                            </span>
-                          ) : (
-                            localizeStaff(it.staff, locale)
-                          )}
+                          {renderStaffBadges(it)}
                         </div>
                       )}
 
@@ -2125,7 +2291,7 @@ export function StaffAssignmentsView({
                         </div>
                       )}
 
-                      {ev && (
+                      {(!it.staff || it.staff === 'Not staffed') && ev && (
                         <div className="staff-cal">
                           <a
                             className="staff-cal-btn staff-cal-google"
