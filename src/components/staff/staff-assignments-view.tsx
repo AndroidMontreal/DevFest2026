@@ -813,8 +813,8 @@ const ROWS: RawRow[] = [
     '10:00 - 16:45',
     'Floating org helper (quarterback)',
     '',
-    'SAMUEL, LENZ',
-    'Helps across rooms all day',
+    'SAMUEL, LENZ, RAPHAËLLE (unavailable: panel 10:15–11:00; coaching 13:00–14:00 & 15:00–16:00), STACY (unavailable: keynote/MC 09:25–10:00; coaching 10:00–12:00; lunch MC 12:00–13:00; talk 16:00–16:45; closing MC 16:45+)',
+    'Helps across rooms all day. Raphaëlle unavailable during panel (10:15–11:00) & coaching (13:00–14:00, 15:00–16:00). Stacy unavailable during keynote/MC (09:25–10:00), coaching (10:00–12:00), lunch MC (12:00–13:00), talk (16:00–16:45) & closing MC (16:45+).',
   ],
   [
     '4th floor rooms',
@@ -964,6 +964,8 @@ const NOTES_FR: Record<string, string> = {
     'NADIA pratique pour son propre DevFest la semaine suivante',
   'NADIA is registration only': "NADIA est affectée uniquement à l'inscription",
   'Helps across rooms all day': 'Aide dans toutes les salles toute la journée',
+  'Helps across rooms all day. Raphaëlle unavailable during panel (10:15–11:00) & coaching (13:00–14:00, 15:00–16:00). Stacy unavailable during keynote/MC (09:25–10:00), coaching (10:00–12:00), lunch MC (12:00–13:00), talk (16:00–16:45) & closing MC (16:45+).':
+    'Aide dans toutes les salles toute la journée. Raphaëlle non disponible pendant le panel (10h15–11h00) et le mentorat (13h00–14h00, 15h00–16h00). Stacy non disponible pendant la keynote/animation (09h25–10h00), le mentorat (10h00–12h00), l’animation du midi (12h00–13h00), sa conférence (16h00–16h45) et l’animation de clôture (16h45+).',
   'Organizer task from the Organizers tab':
     "Tâche d'organisateur issue de l'onglet Organizers",
   'Direct attendees downstairs for 17:00 closing keynote':
@@ -1058,6 +1060,14 @@ function localizeStaff(staff: string, locale: Locale): string {
     .replace(
       /\(OBS operator,\s*out 11:00 to 15:00\)/gi,
       '(opérateur OBS, absent de 11h00 à 15h00)',
+    )
+    .replace(
+      /\(unavailable: panel 10:15–11:00; coaching 13:00–14:00 & 15:00–16:00\)/gi,
+      '(non dispo : panel 10h15–11h00; mentorat 13h00–14h00 et 15h00–16h00)',
+    )
+    .replace(
+      /\(unavailable: keynote\/MC 09:25–10:00; coaching 10:00–12:00; lunch MC 12:00–13:00; talk 16:00–16:45; closing MC 16:45\+\)/gi,
+      '(non dispo : keynote/MC 09h25–10h00; mentorat 10h00–12h00; MC midi 12h00–13h00; conférence 16h00–16h45; MC clôture 16h45+)',
     )
     .replace(/\(OBS operator\)/gi, '(opérateur OBS)')
     .replace(/\(lead OBS\)/gi, '(responsable OBS)')
@@ -1909,8 +1919,8 @@ export function StaffAssignmentsView({
             </div>
             <div className="rev">
               {isFr
-                ? 'Révision v2026.11.02-r10 · 2026-11-02 13:16:30 EST (America/Montreal)'
-                : 'Revision v2026.11.02-r10 · 2026-11-02 13:16:30 EST (America/Montreal)'}
+                ? 'Révision v2026.11.02-r11 · 2026-11-02 13:23:00 EST (America/Montreal)'
+                : 'Revision v2026.11.02-r11 · 2026-11-02 13:23:00 EST (America/Montreal)'}
             </div>
           </div>
 
