@@ -435,9 +435,9 @@ const ROWS: RawRow[] = [
     '4',
     '40',
     '07:00 - 08:30',
-    'Setup',
+    'AV setup for Under Pressure',
     '',
-    'All staff (dispatched on site)',
+    'SAMUEL (AV setup)',
     '',
   ],
   [
@@ -940,8 +940,8 @@ const SESSION_FR: Record<string, string> = {
 };
 
 const NOTES_FR: Record<string, string> = {
-  'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.':
-    'Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk.',
+  'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel.':
+    'Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk. Installation AV Under Pressure : Samuel.',
   'Last staff in each 3rd floor room. We will regroup and dispatch tasks.':
     'Dernier bénévole dans chaque salle du 3e étage. Nous nous regrouperons pour répartir les tâches.',
   '3rd floor wrap-up after 18:30': 'Rangement du 3e étage après 18h30',
@@ -1283,7 +1283,7 @@ export function StaffAssignmentsView({
         speaker: '',
         staff: 'All staff (dispatched on site)',
         notes:
-          'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.',
+          'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel.',
       },
       {
         roomName: SETUP_WRAP_GROUP_NAME,
