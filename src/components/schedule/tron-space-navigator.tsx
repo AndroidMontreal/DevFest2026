@@ -390,17 +390,18 @@ const MAP_NODES: MapNode[] = [
     numberBadge: 'BINGO',
     code: 'BINGO VALIDATION 4F',
     name: 'Bingo Card Validation',
-    subtitleEn: '4th Floor Bingo Card Validation Station (Central Corridor)',
+    subtitleEn:
+      '4th Floor Bingo Card Validation Station (Right Below Badge Station)',
     subtitleFr:
-      'Zone de validation des cartes Bingo du 4e étage (corridor central)',
-    zone: 'Central Corridor · Near Room #403',
+      'Zone de validation des cartes Bingo du 4e étage (juste sous la station de badges)',
+    zone: 'North-West Corridor · Right Below Badge Station (B)',
     capacityEn: 'Bingo Card Validation & Raffle Entry',
     capacityFr: 'Validation des cartes Bingo et tirage',
     category: 'registration',
-    x: 286,
-    y: 341,
-    routeFromElevator: '530,330 496,330 496,336 286,336 286,341',
-    routeFromStairs: '137,190 137,146 208,146 208,336 286,336 286,341',
+    x: 218,
+    y: 295,
+    routeFromElevator: '530,330 496,330 496,336 208,336 208,295 218,295',
+    routeFromStairs: '137,190 137,146 208,146 208,295 218,295',
     color: 'cyan',
   },
   {
@@ -847,19 +848,11 @@ const LEVEL_04_EDGES: Array<[[number, number], [number, number]]> = [
   ],
   [
     [273, 336],
-    [286, 336],
-  ],
-  [
-    [286, 336],
     [341, 336],
   ],
   [
     [341, 336],
     [496, 336],
-  ],
-  [
-    [286, 341],
-    [286, 336],
   ],
 
   // North-West vertical spine (x = 208)
@@ -877,7 +870,15 @@ const LEVEL_04_EDGES: Array<[[number, number], [number, number]]> = [
   ],
   [
     [208, 250],
+    [208, 295],
+  ],
+  [
+    [208, 295],
     [208, 336],
+  ],
+  [
+    [218, 295],
+    [208, 295],
   ],
 
   // North-West Stairs & Cafe connectors
