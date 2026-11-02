@@ -72,7 +72,7 @@ const ROWS: RawRow[] = [
     "Panel – Montreal Tech Community: How local tech groups are shaping Montreal's digital future",
     'JL Maréchaux, Pierre-Alexandre Lacerte, Stefania Pecore, Raphaelle Giraud',
     'KHASHAYAR (support), BILLY (main OBS operator), STEFANIA (panelist), RAPHAËLLE (panelist)',
-    '',
+    'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)',
   ],
   [
     'Don’t Stop Believin’',
@@ -82,7 +82,7 @@ const ROWS: RawRow[] = [
     "Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova",
     'Ludovic Dessemon',
     'KHASHAYAR (support), BILLY (main OBS operator)',
-    '',
+    'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)',
   ],
   [
     'Don’t Stop Believin’',
@@ -92,7 +92,7 @@ const ROWS: RawRow[] = [
     'From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases',
     'Gleb Otochkin',
     'SAJAD (support), BILLY (main OBS operator)',
-    '',
+    'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)',
   ],
   [
     'Don’t Stop Believin’',
@@ -102,7 +102,7 @@ const ROWS: RawRow[] = [
     'So... You want to work at Google?',
     'Olivier Bourgeois',
     'ARUNESH (support), BILLY (main OBS operator)',
-    '',
+    'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)',
   ],
   [
     'Don’t Stop Believin’',
@@ -112,7 +112,7 @@ const ROWS: RawRow[] = [
     'Google Workspace MCPs with Antigravity',
     'Mohammad Al-Ansari',
     'DANIEL TO (support), BILLY (main OBS operator)',
-    '',
+    'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)',
   ],
   [
     'Don’t Stop Believin’',
@@ -122,7 +122,7 @@ const ROWS: RawRow[] = [
     "AI Isn't Magic: The Infrastructure That Actually Wins the Race",
     'Stacy Véronneau',
     'DANIEL TO (support), BILLY (main OBS operator), STACY (speaker)',
-    '',
+    'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)',
   ],
   [
     'Don’t Stop Believin’',
@@ -548,7 +548,7 @@ const ROWS: RawRow[] = [
     '13:15 - 14:45',
     'Build a Personal Productivity Assistant on Cloud Run (workshop)',
     'Rishab Kumar',
-    'LUNE (support), WILSON (support), YANIS (support), OUMAIMA (workshop attendee)',
+    'LUNE (support), WILSON (support), OUMAIMA (workshop attendee)',
     '',
   ],
   [
@@ -590,7 +590,7 @@ const ROWS: RawRow[] = [
     'Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP',
     'Ethiel Adiassa',
     'ALI (OBS operator), YANIS (support), LUNE (sidekick)',
-    '',
+    'Yanis out in PM',
   ],
   [
     'Never Gonna Give You Up',
@@ -600,7 +600,7 @@ const ROWS: RawRow[] = [
     'Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart',
     'Jhin Lee',
     'ALI (OBS operator), YANIS (support), LUNE (sidekick), JHIN (speaker)',
-    '',
+    'Yanis out in PM',
   ],
   [
     'Never Gonna Give You Up',
@@ -629,7 +629,7 @@ const ROWS: RawRow[] = [
     '15:00 - 15:45',
     'From Vibe-Coded to Trusted: One Agent Through Build, Scale, Govern and Optimize on Gemini Enterprise Agent Platform',
     'Jonathan Zhuo',
-    'ALI (OBS operator), NAV (support), YANIS (sidekick)',
+    'ALI (OBS operator), NAV (support), WANLIN (sidekick)',
     '',
   ],
   [
@@ -639,7 +639,7 @@ const ROWS: RawRow[] = [
     '16:00 - 16:45',
     'Make Your AI Agent Think Fast and Slow: System One Decisions in Google ADK',
     'Thomas Chong',
-    'ALI (OBS operator), JERWIN (support), YANIS (sidekick)',
+    'ALI (OBS operator), JERWIN (support), WANLIN (sidekick)',
     '',
   ],
   [
@@ -651,47 +651,6 @@ const ROWS: RawRow[] = [
     '',
     'JERWIN (last staff in room)',
     '',
-  ],
-
-  [
-    'Sega Genesis & Photo Booth (3rd floor)',
-    '3',
-    '',
-    '10:00 - 12:00',
-    'Sega Genesis & Photo Booth',
-    '',
-    'WANLIN',
-    '',
-  ],
-  [
-    'Sega Genesis & Photo Booth (3rd floor)',
-    '3',
-    '',
-    '13:00 - 15:00',
-    'Sega Genesis & Photo Booth',
-    '',
-    'DANIEL TO',
-    '',
-  ],
-  [
-    'Sega Genesis & Photo Booth (3rd floor)',
-    '3',
-    '',
-    '15:00 - 16:45',
-    'Sega Genesis & Photo Booth',
-    '',
-    'BRIJ-PAUL',
-    '',
-  ],
-  [
-    'Sega Genesis & Photo Booth (3rd floor)',
-    '3',
-    '',
-    'After 18:30',
-    'Wrap-up',
-    '',
-    'All staff (dispatched on site)',
-    '3rd floor wrap-up after 18:30',
   ],
 
   [
@@ -1000,6 +959,9 @@ const NOTES_FR: Record<string, string> = {
   'Direct attendees downstairs for 17:00 closing keynote':
     'Diriger les participants vers le 3e étage pour la conférence de clôture à 17h00',
   'About 20 minutes': 'Environ 20 minutes',
+  'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)':
+    'Le soutien garde aussi un œil sur la cabine photo et le Sega Genesis du 3e étage (sans bénévole dédié)',
+  'Yanis out in PM': "Yanis absent l'après-midi",
 };
 
 function localizeRoomName(name: string, locale: Locale): string {
