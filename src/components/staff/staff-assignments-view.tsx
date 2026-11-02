@@ -58,7 +58,7 @@ const ROWS: RawRow[] = [
     '09:25 - 10:00',
     'Opening Remarks & Keynote — Montreal in the Age of AI: The Local Ecosystem',
     'Stacy Véronneau',
-    '',
+    'STACY (speaker), ARUNESH (opening keynote), BILLY (OBS operator)',
     '',
   ],
   [
@@ -68,7 +68,7 @@ const ROWS: RawRow[] = [
     '10:15 - 11:00',
     "Panel – Montreal Tech Community: How local tech groups are shaping Montreal's digital future",
     'JL Maréchaux, Pierre-Alexandre Lacerte, Stefania Pecore, Raphaelle Giraud',
-    'KHASHAYAR (support), BILLY (main recorder)',
+    'KHASHAYAR (support), BILLY (main OBS operator), STEFANIA (panelist), RAPHAËLLE (panelist)',
     '',
   ],
   [
@@ -78,7 +78,7 @@ const ROWS: RawRow[] = [
     '11:15 - 12:00',
     "Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova",
     'Ludovic Dessemon',
-    'KHASHAYAR (support), BILLY (main recorder)',
+    'KHASHAYAR (support), BILLY (main OBS operator)',
     '',
   ],
   [
@@ -88,7 +88,7 @@ const ROWS: RawRow[] = [
     '13:00 - 13:45',
     'From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases',
     'Gleb Otochkin',
-    'JESSY (support), BILLY (main recorder)',
+    'SAJAD (support), BILLY (main OBS operator)',
     '',
   ],
   [
@@ -98,7 +98,7 @@ const ROWS: RawRow[] = [
     '14:00 - 14:45',
     'So... You want to work at Google?',
     'Olivier Bourgeois',
-    'JESSY (support), BILLY (main recorder)',
+    'ARUNESH (support), BILLY (main OBS operator)',
     '',
   ],
   [
@@ -108,7 +108,7 @@ const ROWS: RawRow[] = [
     '15:00 - 15:45',
     'Google Workspace MCPs with Antigravity',
     'Mohammad Al-Ansari',
-    'DANIEL TO (support), BILLY (main recorder)',
+    'DANIEL TO (support), BILLY (main OBS operator)',
     '',
   ],
   [
@@ -118,7 +118,7 @@ const ROWS: RawRow[] = [
     '16:00 - 16:45',
     "AI Isn't Magic: The Infrastructure That Actually Wins the Race",
     'Stacy Véronneau',
-    'DANIEL TO (support), BILLY (main recorder)',
+    'DANIEL TO (support), BILLY (main OBS operator), STACY (speaker)',
     '',
   ],
   [
@@ -128,7 +128,7 @@ const ROWS: RawRow[] = [
     '17:00 - 17:15',
     'Closing Keynote — Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives',
     'Stefania Pecore, Michael Persico, Rebecca Abi Chahine, Daniel Wei, Oumaima El khayiri',
-    '',
+    'STEFANIA (closing talk), MICHAEL (closing lightning talk), REBECCA (closing talk), DANIEL WEI (closing talk), OUMAIMA (closing talk), STACY (MC)',
     '',
   ],
   [
@@ -138,7 +138,7 @@ const ROWS: RawRow[] = [
     '17:15 - 18:30',
     'Wrapping-Up, Raffles & Happy Hour (5 à 7)',
     'Stacy Véronneau',
-    '',
+    'STACY (MC)',
     '',
   ],
   [
@@ -169,7 +169,7 @@ const ROWS: RawRow[] = [
     '10:15 - 11:00',
     'Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach',
     'Etienne Caron',
-    'SAJAD (support), MICHAEL (OBS operator), REBECCA (OBS operator)',
+    'SAJAD (support), MICHAEL (OBS operator), REBECCA (OBS operator), ETIENNE (speaker)',
     '',
   ],
   [
@@ -238,7 +238,7 @@ const ROWS: RawRow[] = [
     'Mr. Roboto',
     '3',
     '5',
-    '10:15 - 12:00',
+    '10:15 - 11:00',
     'The Doomsday Course (Interactive Robotics, Live Video & Agentic Coding Coach Showcase)',
     'Etienne Caron',
     'Kanastruk team (support)',
@@ -248,17 +248,17 @@ const ROWS: RawRow[] = [
     'Mr. Roboto',
     '3',
     '5',
-    '13:00 - 14:00',
+    '11:00 - 12:00',
     'The Doomsday Course (Interactive Robotics, Live Video & Agentic Coding Coach Showcase)',
     'Etienne Caron',
-    'Kanastruk team (support)',
+    'Kanastruk team (support), STEFANIA (showcase)',
     '',
   ],
   [
     'Mr. Roboto',
     '3',
     '5',
-    '14:00 - 16:45',
+    '13:00 - 16:45',
     'The Doomsday Course (Interactive Robotics, Live Video & Agentic Coding Coach Showcase)',
     'Etienne Caron',
     'Kanastruk team (support)',
@@ -300,9 +300,9 @@ const ROWS: RawRow[] = [
     '4',
     '25',
     '10:00 - 12:00',
-    'Chill Zone, Board Games & Community Lounge',
+    '4th-floor station (Danger Zone, bingo, photo booth, badge)',
     'GDG Montreal Community Lounge',
-    'ANDY (support)',
+    'ARUNESH (station volunteer)',
     '',
   ],
   [
@@ -310,9 +310,9 @@ const ROWS: RawRow[] = [
     '4',
     '25',
     '13:00 - 16:45',
-    'Chill Zone, Board Games & Community Lounge',
+    '4th-floor station (Danger Zone, bingo, photo booth, badge)',
     'GDG Montreal Community Lounge',
-    'SARA (support)',
+    'SARA (station volunteer)',
     '',
   ],
   [
@@ -360,10 +360,20 @@ const ROWS: RawRow[] = [
     'Working For The Weekend',
     '4',
     '20',
+    '12:00 - 13:00',
+    'Lunch break',
+    '',
+    'REBECCA (lunch)',
+    '',
+  ],
+  [
+    'Working For The Weekend',
+    '4',
+    '20',
     '13:00 - 13:45',
     'Agents Working Together: Orchestration with ADK and A2A',
     'Arunesh Choudhary',
-    'SOUAD (support), REBECCA (OBS operator)',
+    'SOUAD (support), REBECCA (OBS operator), ARUNESH (speaker)',
     '',
   ],
   [
@@ -383,7 +393,7 @@ const ROWS: RawRow[] = [
     '14:25 - 14:40',
     "Lightning: The 90% You Don't See: Shipping AI Inside a Health System",
     'Guryash Singh Dhall',
-    'BRIJ-PAUL (support), REBECCA (OBS operator)',
+    'SOUAD (support), BRIJ-PAUL (support), REBECCA (OBS operator)',
     '',
   ],
   [
@@ -422,9 +432,9 @@ const ROWS: RawRow[] = [
     '4',
     '40',
     '07:00 - 08:30',
-    'Setup',
+    'AV setup for Under Pressure',
     '',
-    'All staff (dispatched on site)',
+    'SAMUEL (AV setup)',
     '',
   ],
   [
@@ -434,8 +444,8 @@ const ROWS: RawRow[] = [
     '10:15 - 11:00',
     'Building Real-Time RAG Systems with Gemini & the Multimodal Live API',
     'Olayinka Peter Oluwafemi',
-    'FLORIAN (lead), TBD (OBS support). Jhin is on talk',
-    '',
+    'FLORIAN (lead OBS), OUMAIMA (OBS support)',
+    'Jhin is on talk in 4-5',
   ],
   [
     'Under Pressure',
@@ -444,7 +454,17 @@ const ROWS: RawRow[] = [
     '11:15 - 12:00',
     "Off the Edge: Grading Google AI Edge and Gemini Against a Practitioner's Eye",
     'Boris-Wilfried Nyasse',
-    'FLORIAN (lead), TBD (OBS support). Jhin is on talk',
+    'FLORIAN (lead OBS), OUMAIMA (OBS support)',
+    'Jhin is on talk in 4-5',
+  ],
+  [
+    'Under Pressure',
+    '4',
+    '40',
+    '12:00 - 13:00',
+    'Lunch break',
+    '',
+    'FLORIAN (lunch)',
     '',
   ],
   [
@@ -454,7 +474,7 @@ const ROWS: RawRow[] = [
     '13:00 - 13:45',
     'Gemini Live: Architecting, building and pricing conversational experiences',
     'Felipe Lujan',
-    'FLORIAN (lead), JHIN (OBS support)',
+    'FLORIAN (lead OBS), JHIN (OBS support)',
     '',
   ],
   [
@@ -464,7 +484,7 @@ const ROWS: RawRow[] = [
     '14:00 - 14:45',
     'From Black Belts to Small Language Models: My Taekwondo AI Journey',
     'Kevin Moore',
-    'FLORIAN (lead), JHIN (OBS support)',
+    'FLORIAN (lead OBS), JHIN (OBS support)',
     '',
   ],
   [
@@ -474,7 +494,7 @@ const ROWS: RawRow[] = [
     '15:00 - 15:45',
     'Under the Hood of Gemini Enterprise: No-Code Agents, and Workflow Automation',
     'François Légaré',
-    'FLORIAN (lead), JHIN (OBS support)',
+    'FLORIAN (lead OBS), JHIN (OBS support)',
     '',
   ],
   [
@@ -484,7 +504,7 @@ const ROWS: RawRow[] = [
     '16:00 - 16:45',
     'Terminal to Stadium: Building an AI Sports PA Announcer with Gemini',
     'Angelo Italiano',
-    'FLORIAN (lead), JHIN (OBS support)',
+    'FLORIAN (lead OBS), JHIN (OBS support)',
     '',
   ],
   [
@@ -535,7 +555,7 @@ const ROWS: RawRow[] = [
     '15:00 - 16:30',
     'Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script (workshop)',
     'Cyprien Tankeu',
-    'LUNE (support), WILSON (support), YANIS (support until 16:00), DANIEL WEI (workshop attendee)',
+    'LUNE (support), WILSON (support), DANIEL WEI (workshop attendee)',
     '',
   ],
   [
@@ -576,7 +596,7 @@ const ROWS: RawRow[] = [
     '11:15 - 12:00',
     'Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart',
     'Jhin Lee',
-    'ALI (OBS operator), YANIS (support), LUNE (sidekick)',
+    'ALI (OBS operator), YANIS (support), LUNE (sidekick), JHIN (speaker)',
     '',
   ],
   [
@@ -596,7 +616,7 @@ const ROWS: RawRow[] = [
     '14:00 - 14:45',
     'Android AppFunctions: Exposing Your App to AI Agents',
     'Nav Singh',
-    'ALI (OBS operator), JERWIN (support), ANDY (sidekick)',
+    'ALI (OBS operator), JERWIN (support), ANDY (sidekick), NAV (speaker)',
     '',
   ],
   [
@@ -606,7 +626,7 @@ const ROWS: RawRow[] = [
     '15:00 - 15:45',
     'From Vibe-Coded to Trusted: One Agent Through Build, Scale, Govern and Optimize on Gemini Enterprise Agent Platform',
     'Jonathan Zhuo',
-    'ALI (OBS operator), NAV (support), JESSY (sidekick)',
+    'ALI (OBS operator), NAV (support), YANIS (sidekick)',
     '',
   ],
   [
@@ -616,7 +636,7 @@ const ROWS: RawRow[] = [
     '16:00 - 16:45',
     'Make Your AI Agent Think Fast and Slow: System One Decisions in Google ADK',
     'Thomas Chong',
-    'ALI (OBS operator), JERWIN (support), JESSY (sidekick)',
+    'ALI (OBS operator), JERWIN (support), YANIS (sidekick)',
     '',
   ],
   [
@@ -631,74 +651,13 @@ const ROWS: RawRow[] = [
   ],
 
   [
-    'Photo booth & badge table (downstairs)',
-    'Downstairs',
+    'Sega Genesis & Photo Booth (3rd floor)',
+    '3',
     '',
     '10:00 - 12:00',
-    'Photo booth & badge table',
-    '',
-    'WILSON',
-    '',
-  ],
-  [
-    'Photo booth & badge table (downstairs)',
-    'Downstairs',
-    '',
-    '13:00 - 14:00',
-    'Photo booth & badge table',
-    '',
-    'KHASHAYAR',
-    '',
-  ],
-  [
-    'Photo booth & badge table (downstairs)',
-    'Downstairs',
-    '',
-    '14:00 - 15:00',
-    'Photo booth & badge table',
-    '',
-    'SAJAD',
-    '',
-  ],
-  [
-    'Photo booth & badge table (downstairs)',
-    'Downstairs',
-    '',
-    '15:00 - 16:00',
-    'Photo booth & badge table',
-    '',
-    'SOUAD',
-    '',
-  ],
-  [
-    'Photo booth & badge table (downstairs)',
-    'Downstairs',
-    '',
-    '16:00 - 16:45',
-    'Photo booth & badge table',
-    '',
-    'ANDY',
-    '',
-  ],
-
-  [
-    'Sega Genesis & Photo Booth (3rd floor)',
-    '3',
-    '',
-    '10:00 - 11:00',
     'Sega Genesis & Photo Booth',
     '',
-    'JESSY',
-    '',
-  ],
-  [
-    'Sega Genesis & Photo Booth (3rd floor)',
-    '3',
-    '',
-    '11:00 - 12:00',
-    'Sega Genesis & Photo Booth',
-    '',
-    'JESSY',
+    'WANLIN',
     '',
   ],
   [
@@ -715,17 +674,7 @@ const ROWS: RawRow[] = [
     'Sega Genesis & Photo Booth (3rd floor)',
     '3',
     '',
-    '15:00 - 16:00',
-    'Sega Genesis & Photo Booth',
-    '',
-    'BRIJ-PAUL',
-    '',
-  ],
-  [
-    'Sega Genesis & Photo Booth (3rd floor)',
-    '3',
-    '',
-    '16:00 - 16:45',
+    '15:00 - 16:45',
     'Sega Genesis & Photo Booth',
     '',
     'BRIJ-PAUL',
@@ -746,18 +695,18 @@ const ROWS: RawRow[] = [
     'Downstairs entrance & wayfinding',
     'Downstairs',
     '',
-    '08:15 - 09:00',
-    'Guide attendees to 3rd floor registration',
+    '08:15 - 09:15',
+    'Lobby crowd control & guide attendees to 3rd floor registration',
     '',
-    'SAMUEL (organizer), DANIEL TO',
+    'MICHAEL (organizer), WILSON',
     'Senior + junior pair downstairs to welcome & direct people upstairs',
   ],
   [
     'Downstairs entrance & wayfinding',
     'Downstairs',
     '',
-    '09:00 - 10:00',
-    'Guide attendees to 3rd floor registration',
+    '09:15 - 10:00',
+    'Lobby crowd control & guide attendees to 3rd floor registration',
     '',
     'LENZ (organizer), KHASHAYAR',
     'Senior + junior pair downstairs to welcome & direct people upstairs',
@@ -770,7 +719,7 @@ const ROWS: RawRow[] = [
     '08:30 - 09:25',
     'Registration & breakfast',
     '',
-    'ARUNESH, FLORIAN, STEFANIA, DANIEL WEI, REBECCA (organizers), WANLIN, SAJAD, LUNE, BRIJ-PAUL, SOUAD, ANDY, NADIA',
+    'ARUNESH, FLORIAN, STEFANIA, DANIEL WEI (organizers), WANLIN, SAJAD, BRIJ-PAUL, SOUAD, ANDY, NADIA',
     'NADIA is practicing for her own DevFest a week later',
   ],
   [
@@ -790,7 +739,7 @@ const ROWS: RawRow[] = [
     '10:00 - 11:00',
     'Registration',
     '',
-    'MIMOH (organizer), BRIJ-PAUL, OUMAIMA',
+    'MIMOH (organizer), BRIJ-PAUL',
     '',
   ],
   [
@@ -800,7 +749,7 @@ const ROWS: RawRow[] = [
     '11:00 - 12:00',
     'Registration',
     '',
-    'BRIJ-PAUL, NADIA, DANIEL TO, OUMAIMA',
+    'BRIJ-PAUL, NADIA, DANIEL TO',
     '',
   ],
   [
@@ -831,7 +780,58 @@ const ROWS: RawRow[] = [
     'Registration & sponsors',
     '',
     'KHASHAYAR',
-    'Close to registration after his 13:00-14:00 photo booth shift',
+    '',
+  ],
+  [
+    'Registration & welcome',
+    'Entrance',
+    '',
+    '16:00 - 16:45',
+    'Registration & bingo card validation',
+    '',
+    'SOUAD',
+    '',
+  ],
+
+  [
+    '1:1 Coaching (3-3 & 3-4)',
+    '3',
+    '4',
+    '10:00 - 12:00',
+    '1:1 Career Coaching',
+    '',
+    'JIHOO (coach), STACY (coach)',
+    '',
+  ],
+  [
+    '1:1 Coaching (3-3 & 3-4)',
+    '3',
+    '4',
+    '13:00 - 14:00',
+    '1:1 Career Coaching',
+    '',
+    'RAPHAËLLE (coach), ETIENNE (coach), STEFANIA (coach)',
+    '',
+  ],
+  [
+    '1:1 Coaching (3-3 & 3-4)',
+    '3',
+    '4',
+    '14:00 - 15:00',
+    '1:1 Career Coaching',
+    '',
+    'JIHOO (coach), ETIENNE (coach), STEFANIA (coach)',
+    '',
+  ],
+  [
+    '1:1 Coaching (3-3 & 3-4)',
+    '3',
+    '4',
+    '15:00 - 16:00',
+    '1:1 Career Coaching',
+    '',
+    'RAPHAËLLE (coach), JIHOO (coach), ETIENNE (coach), STEFANIA (coach)',
+    '',
   ],
 
   [
@@ -851,8 +851,28 @@ const ROWS: RawRow[] = [
     '16:45 - 17:00',
     'Close 4th floor rooms',
     '',
-    'LENZ (organizer)',
+    'FLORIAN (organizer), LENZ (organizer)',
     'Organizer task from the Organizers tab',
+  ],
+  [
+    '4th floor rooms',
+    '4',
+    '',
+    '16:45 - 17:00',
+    'Move to 3rd floor for closing',
+    '',
+    'ARUNESH, SAMUEL, RAPHAËLLE, JIHOO, MIMOH, ETIENNE, STACY (MC)',
+    'Direct attendees downstairs for 17:00 closing keynote',
+  ],
+  [
+    'Lunch raffle',
+    'All',
+    '',
+    '12:00 - 13:00',
+    'Lunch MC & Raffle',
+    '',
+    'STACY (MC)',
+    '',
   ],
   [
     'Lunch raffle',
@@ -881,6 +901,7 @@ const CAL_LOCATION = 'Espace Ax.c, 800 Rue du Square-Victoria, Montréal, QC';
 const LOCATIONS_EN: Record<string, string> = {
   'Don’t Stop Believin’': '3-1 · Don’t Stop Believin’ (3rd floor)',
   'Mr. Roboto': '3-2 · Mr. Roboto (3rd floor)',
+  '1:1 Coaching (3-3 & 3-4)': '3-3 Take On Me & 3-4 Call Me (3rd floor)',
   'Just Can’t Get Enough': '3-5 · Just Can’t Get Enough (3rd floor)',
   'Working For The Weekend': '4-3 · Working For The Weekend (4th floor)',
   'Under Pressure': '4-4 · Under Pressure (4th floor)',
@@ -889,13 +910,14 @@ const LOCATIONS_EN: Record<string, string> = {
   'Sega Genesis & Photo Booth (3rd floor)':
     'Sega Genesis & Photo Booth (3rd floor)',
   'Downstairs entrance & wayfinding': 'Downstairs · Building entrance / lobby',
-  'Registration & welcome': 'Entrance · Registration & welcome',
+  'Registration & welcome': '3rd floor · Registration & welcome',
   'All rooms': 'Regroup at 3rd floor registration',
 };
 
 const LOCATIONS_FR: Record<string, string> = {
   'Don’t Stop Believin’': '3-1 · Don’t Stop Believin’ (3e étage)',
   'Mr. Roboto': '3-2 · Mr. Roboto (3e étage)',
+  '1:1 Coaching (3-3 & 3-4)': '3-3 Take On Me et 3-4 Call Me (3e étage)',
   'Just Can’t Get Enough': '3-5 · Just Can’t Get Enough (3e étage)',
   'Working For The Weekend': '4-3 · Working For The Weekend (4e étage)',
   'Under Pressure': '4-4 · Under Pressure (4e étage)',
@@ -905,20 +927,21 @@ const LOCATIONS_FR: Record<string, string> = {
     'Sega Genesis et cabine photo (3e étage)',
   'Downstairs entrance & wayfinding':
     "En bas · Entrée de l'édifice / hall d'accueil",
-  'Registration & welcome': 'Entrée · Inscription et accueil',
+  'Registration & welcome': '3e étage · Inscription et accueil',
   'All rooms': "Regroupement à l'inscription au 3e étage",
 };
 
 const ROOM_NAME_FR: Record<string, string> = {
   'All rooms': 'Toutes les salles',
   'Chill Zone, Photo booth & badge table (upstairs)':
-    'Zone détente, cabine photo et table des badges (en haut)',
+    'Station 4e étage (Danger Zone, bingo, cabine photo, badges)',
   'Hip To Be Square (workshops)': 'Hip To Be Square (ateliers)',
   'Sega Genesis & Photo Booth (3rd floor)':
     'Sega Genesis et cabine photo (3e étage)',
   'Downstairs entrance & wayfinding':
     'Entrée et orientation (rez-de-chaussée / en bas)',
   'Registration & welcome': 'Inscription et accueil',
+  '1:1 Coaching (3-3 & 3-4)': 'Mentorat 1:1 (3-3 et 3-4)',
   'Floating org helper': 'Aide-organisateur volant',
   '4th floor rooms': 'Salles du 4e étage',
   'Lunch raffle': 'Tirage du midi',
@@ -926,43 +949,53 @@ const ROOM_NAME_FR: Record<string, string> = {
 
 const SESSION_FR: Record<string, string> = {
   Setup: 'Installation et préparation',
+  'AV setup for Under Pressure': 'Installation AV pour Under Pressure',
   'Wrap-up': 'Rangement et clôture',
   'Wrap-up (3rd floor)': 'Rangement et clôture (3e étage)',
   'Chill Zone, Board Games & Community Lounge':
     'Zone détente, jeux de société et salon communautaire',
+  '4th-floor station (Danger Zone, bingo, photo booth, badge)':
+    'Station 4e étage (Danger Zone, bingo, cabine photo, badges)',
   'Open Talk Slot — TBC': 'Créneau de conférence ouvert — À confirmer',
+  'Lunch break': 'Pause dîner',
   'Photo booth & badge table': 'Cabine photo et table des badges',
   'Sega Genesis & Photo Booth': 'Sega Genesis et cabine photo',
-  'Guide attendees to 3rd floor registration':
-    "Guider les participants vers l'inscription au 3e étage",
+  'Lobby crowd control & guide attendees to 3rd floor registration':
+    "Accueil dans le hall et orientation vers l'inscription au 3e étage",
   'Registration & breakfast': 'Inscription et déjeuner',
   Registration: 'Inscription',
   'Registration (until 13:00)': "Inscription (jusqu'à 13h00)",
   'Registration & sponsors': 'Inscription et commanditaires',
+  'Registration & bingo card validation':
+    'Inscription et validation des cartes de bingo',
+  '1:1 Career Coaching': 'Mentorat carrière 1:1',
   'Floating org helper (quarterback)': 'Aide-organisateur volant (quarterback)',
   'Close 4th floor rooms': 'Fermeture des salles du 4e étage',
+  'Move to 3rd floor for closing': 'Descente au 3e étage pour la clôture',
+  'Lunch MC & Raffle': 'Animation du midi et tirage',
   'Raffle caller, 4th floor': 'Animation du tirage, 4e étage',
   'Raffle caller, 3rd floor': 'Animation du tirage, 3e étage',
 };
 
 const NOTES_FR: Record<string, string> = {
-  'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.':
-    'Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk.',
+  'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel.':
+    'Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk. Installation AV Under Pressure : Samuel.',
   'Last staff in each 3rd floor room. We will regroup and dispatch tasks.':
     'Dernier bénévole dans chaque salle du 3e étage. Nous nous regrouperons pour répartir les tâches.',
   '3rd floor wrap-up after 18:30': 'Rangement du 3e étage après 18h30',
   'Right after last talk at 14:40':
     'Juste après la dernière conférence à 14h40',
+  'Jhin is on talk in 4-5': 'Jhin est en conférence dans la salle 4-5',
   'Senior + junior pair downstairs to welcome & direct people upstairs':
     'Duo senior + junior en bas pour accueillir et diriger les participants vers le 3e étage',
   'NADIA is practicing for her own DevFest a week later':
     'NADIA pratique pour son propre DevFest la semaine suivante',
   'NADIA is registration only': "NADIA est affectée uniquement à l'inscription",
-  'Close to registration after his 13:00-14:00 photo booth shift':
-    "Près de l'inscription après son quart de 13h00 à 14h00 à la cabine photo",
   'Helps across rooms all day': 'Aide dans toutes les salles toute la journée',
   'Organizer task from the Organizers tab':
     "Tâche d'organisateur issue de l'onglet Organizers",
+  'Direct attendees downstairs for 17:00 closing keynote':
+    'Diriger les participants vers le 3e étage pour la conférence de clôture à 17h00',
   'About 20 minutes': 'Environ 20 minutes',
 };
 
@@ -1030,23 +1063,30 @@ function localizeStaff(staff: string, locale: Locale): string {
       "Toute l'équipe (répartie sur place)",
     )
     .replace(/Kanastruk team/gi, 'Équipe Kanastruk')
-    .replace(/\(support until 16:00\)/gi, "(soutien jusqu'à 16h00)")
     .replace(/\(support\)/gi, '(soutien)')
-    .replace(/\(main recorder\)/gi, '(enregistrement principal)')
+    .replace(/\(station volunteer\)/gi, '(bénévole station)')
+    .replace(/\(main OBS operator\)/gi, '(opérateur OBS principal)')
     .replace(
       /\(OBS operator,\s*out 11:00 to 15:00\)/gi,
       '(opérateur OBS, absent de 11h00 à 15h00)',
     )
     .replace(/\(OBS operator\)/gi, '(opérateur OBS)')
+    .replace(/\(lead OBS\)/gi, '(responsable OBS)')
     .replace(/\(OBS support\)/gi, '(soutien OBS)')
+    .replace(/\(AV setup\)/gi, '(installation AV)')
     .replace(/\(sidekick\)/gi, '(acolyte)')
     .replace(/\(workshop attendee\)/gi, "(participant à l'atelier)")
-    .replace(/\(recording\)/gi, '(enregistrement)')
-    .replace(/\(lead\)/gi, '(responsable)')
+    .replace(/\(speaker\)/gi, '(conférencier)')
+    .replace(/\(panelist\)/gi, '(panéliste)')
+    .replace(/\(opening keynote\)/gi, "(keynote d'ouverture)")
+    .replace(/\(closing lightning talk\)/gi, '(allocution éclair de clôture)')
+    .replace(/\(closing talk\)/gi, '(allocution de clôture)')
+    .replace(/\(showcase\)/gi, '(vitrine techno)')
+    .replace(/\(coach\)/gi, '(mentor)')
+    .replace(/\(lunch\)/gi, '(dîner)')
     .replace(/\(last staff in room\)/gi, '(dernier bénévole en salle)')
     .replace(/\(organizers\)/gi, '(organisateurs)')
-    .replace(/\(organizer\)/gi, '(organisateur/trice)')
-    .replace(/Jhin is on talk/gi, 'Jhin est en conférence');
+    .replace(/\(organizer\)/gi, '(organisateur/trice)');
 }
 
 function localizeNotes(notes: string, locale: Locale): string {
@@ -1264,7 +1304,7 @@ export function StaffAssignmentsView({
         speaker: '',
         staff: 'All staff (dispatched on site)',
         notes:
-          'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.',
+          'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel.',
       },
       {
         roomName: 'All rooms',

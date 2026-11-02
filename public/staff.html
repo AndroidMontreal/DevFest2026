@@ -223,19 +223,19 @@
 <script>
 const ROWS = [
 ["Don’t Stop Believin’","3","100","07:00 - 08:30","Setup","","All staff (dispatched on site)",""],
-["Don’t Stop Believin’","3","100","09:25 - 10:00","Opening Remarks & Keynote — Montreal in the Age of AI: The Local Ecosystem","Stacy Véronneau","",""],
-["Don’t Stop Believin’","3","100","10:15 - 11:00","Panel – Montreal Tech Community: How local tech groups are shaping Montreal's digital future","JL Maréchaux, Pierre-Alexandre Lacerte, Stefania Pecore, Raphaelle Giraud","KHASHAYAR (support), BILLY (main recorder)",""],
-["Don’t Stop Believin’","3","100","11:15 - 12:00","Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova","Ludovic Dessemon","KHASHAYAR (support), BILLY (main recorder)",""],
-["Don’t Stop Believin’","3","100","13:00 - 13:45","From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases","Gleb Otochkin","JESSY (support), BILLY (main recorder)",""],
-["Don’t Stop Believin’","3","100","14:00 - 14:45","So... You want to work at Google?","Olivier Bourgeois","JESSY (support), BILLY (main recorder)",""],
-["Don’t Stop Believin’","3","100","15:00 - 15:45","Google Workspace MCPs with Antigravity","Mohammad Al-Ansari","DANIEL TO (support), BILLY (main recorder)",""],
-["Don’t Stop Believin’","3","100","16:00 - 16:45","AI Isn't Magic: The Infrastructure That Actually Wins the Race","Stacy Véronneau","DANIEL TO (support), BILLY (main recorder)",""],
-["Don’t Stop Believin’","3","100","17:00 - 17:15","Closing Keynote — Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives","Stefania Pecore, Michael Persico, Rebecca Abi Chahine, Daniel Wei, Oumaima El khayiri","",""],
-["Don’t Stop Believin’","3","100","17:15 - 18:30","Wrapping-Up, Raffles & Happy Hour (5 à 7)","Stacy Véronneau","",""],
+["Don’t Stop Believin’","3","100","09:25 - 10:00","Opening Remarks & Keynote — Montreal in the Age of AI: The Local Ecosystem","Stacy Véronneau","STACY (speaker), ARUNESH (opening keynote), BILLY (OBS operator)",""],
+["Don’t Stop Believin’","3","100","10:15 - 11:00","Panel – Montreal Tech Community: How local tech groups are shaping Montreal's digital future","JL Maréchaux, Pierre-Alexandre Lacerte, Stefania Pecore, Raphaelle Giraud","KHASHAYAR (support), BILLY (main OBS operator), STEFANIA (panelist), RAPHAËLLE (panelist)",""],
+["Don’t Stop Believin’","3","100","11:15 - 12:00","Bâtir une plateforme agentique d'entreprise avec Google ADK et Gemini : Retour d'expérience sur Nova","Ludovic Dessemon","KHASHAYAR (support), BILLY (main OBS operator)",""],
+["Don’t Stop Believin’","3","100","13:00 - 13:45","From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases","Gleb Otochkin","SAJAD (support), BILLY (main OBS operator)",""],
+["Don’t Stop Believin’","3","100","14:00 - 14:45","So... You want to work at Google?","Olivier Bourgeois","ARUNESH (support), BILLY (main OBS operator)",""],
+["Don’t Stop Believin’","3","100","15:00 - 15:45","Google Workspace MCPs with Antigravity","Mohammad Al-Ansari","DANIEL TO (support), BILLY (main OBS operator)",""],
+["Don’t Stop Believin’","3","100","16:00 - 16:45","AI Isn't Magic: The Infrastructure That Actually Wins the Race","Stacy Véronneau","DANIEL TO (support), BILLY (main OBS operator), STACY (speaker)",""],
+["Don’t Stop Believin’","3","100","17:00 - 17:15","Closing Keynote — Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives","Stefania Pecore, Michael Persico, Rebecca Abi Chahine, Daniel Wei, Oumaima El khayiri","STEFANIA (closing talk), MICHAEL (closing lightning talk), REBECCA (closing talk), DANIEL WEI (closing talk), OUMAIMA (closing talk), STACY (MC)",""],
+["Don’t Stop Believin’","3","100","17:15 - 18:30","Wrapping-Up, Raffles & Happy Hour (5 à 7)","Stacy Véronneau","STACY (MC)",""],
 ["Don’t Stop Believin’","3","100","After 18:30","Wrap-up","","BILLY (last staff in room)","3rd floor wrap-up after 18:30"],
 
 ["Just Can’t Get Enough","3","30","07:00 - 08:30","Setup","","All staff (dispatched on site)",""],
-["Just Can’t Get Enough","3","30","10:15 - 11:00","Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach","Etienne Caron","SAJAD (support), MICHAEL (OBS operator), REBECCA (OBS operator)",""],
+["Just Can’t Get Enough","3","30","10:15 - 11:00","Building the Doomsday Course: Robots, Live Video and an Agentic Coding Coach","Etienne Caron","SAJAD (support), MICHAEL (OBS operator), REBECCA (OBS operator), ETIENNE (speaker)",""],
 ["Just Can’t Get Enough","3","30","11:15 - 12:00","Attention Attention Everywhere","Dev J. Shah","SAJAD (support), MICHAEL (OBS operator)",""],
 ["Just Can’t Get Enough","3","30","13:00 - 13:45","Beyond Red, Blue and Purple: Meet the Gold Team","Faustin Bouchard","WANLIN (support), MICHAEL (OBS operator)",""],
 ["Just Can’t Get Enough","3","30","14:00 - 14:45","Beyond Push-to-Talk: Real-Time Fact-Checking Agents with Gemini Live API and Google Search Grounding","Aisha Yaseen","WANLIN (support), MICHAEL (OBS operator)",""],
@@ -244,77 +244,79 @@ const ROWS = [
 ["Just Can’t Get Enough","3","30","After 18:30","Wrap-up","","SAJAD (last staff in room)","3rd floor wrap-up after 18:30"],
 
 ["Mr. Roboto","3","5","07:00 - 08:30","Setup","","Kanastruk team",""],
-["Mr. Roboto","3","5","10:15 - 12:00","The Doomsday Course (Interactive Robotics, Live Video & Agentic Coding Coach Showcase)","Etienne Caron","Kanastruk team (support)",""],
-["Mr. Roboto","3","5","13:00 - 14:00","The Doomsday Course (Interactive Robotics, Live Video & Agentic Coding Coach Showcase)","Etienne Caron","Kanastruk team (support)",""],
-["Mr. Roboto","3","5","14:00 - 16:45","The Doomsday Course (Interactive Robotics, Live Video & Agentic Coding Coach Showcase)","Etienne Caron","Kanastruk team (support)",""],
+["Mr. Roboto","3","5","10:15 - 11:00","The Doomsday Course (Interactive Robotics, Live Video & Agentic Coding Coach Showcase)","Etienne Caron","Kanastruk team (support)",""],
+["Mr. Roboto","3","5","11:00 - 12:00","The Doomsday Course (Interactive Robotics, Live Video & Agentic Coding Coach Showcase)","Etienne Caron","Kanastruk team (support), STEFANIA (showcase)",""],
+["Mr. Roboto","3","5","13:00 - 16:45","The Doomsday Course (Interactive Robotics, Live Video & Agentic Coding Coach Showcase)","Etienne Caron","Kanastruk team (support)",""],
 ["Mr. Roboto","3","5","After 18:30","Wrap-up","","Kanastruk team (last staff in room)","3rd floor wrap-up after 18:30"],
 
 ["The Danger Zone (4-1)","4","25","07:00 - 08:30","Setup","","All staff (dispatched on site)",""],
 ["The Danger Zone (4-1)","4","25","08:30 - 10:00","Chill Zone, Board Games & Community Lounge","GDG Montreal Community Lounge","",""],
-["The Danger Zone (4-1)","4","25","10:00 - 12:00","Chill Zone, Board Games & Community Lounge","GDG Montreal Community Lounge","ANDY (support)",""],
-["The Danger Zone (4-1)","4","25","13:00 - 16:45","Chill Zone, Board Games & Community Lounge","GDG Montreal Community Lounge","SARA (support)",""],
+["The Danger Zone (4-1)","4","25","10:00 - 12:00","4th-floor station (Danger Zone, bingo, photo booth, badge)","GDG Montreal Community Lounge","ARUNESH (station volunteer)",""],
+["The Danger Zone (4-1)","4","25","13:00 - 16:45","4th-floor station (Danger Zone, bingo, photo booth, badge)","GDG Montreal Community Lounge","SARA (station volunteer)",""],
 ["The Danger Zone (4-1)","4","25","16:45 - 17:00","Wrap-up","","SARA (last staff in room)",""],
 
 ["Working For The Weekend","4","20","07:00 - 08:30","Setup","","All staff (dispatched on site)",""],
 ["Working For The Weekend","4","20","10:15 - 11:00","From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP","Eckarath Khounsombath","SARA (support), DANIEL WEI (OBS operator, out 11:00 to 15:00)",""],
 ["Working For The Weekend","4","20","11:15 - 12:00","The Web Could be Agentic: A first dive into Google's WebMCP Proposal","Lester Botello","SARA (support), REBECCA (OBS operator)",""],
-["Working For The Weekend","4","20","13:00 - 13:45","Agents Working Together: Orchestration with ADK and A2A","Arunesh Choudhary","SOUAD (support), REBECCA (OBS operator)",""],
+["Working For The Weekend","4","20","12:00 - 13:00","Lunch break","","REBECCA (lunch)",""],
+["Working For The Weekend","4","20","13:00 - 13:45","Agents Working Together: Orchestration with ADK and A2A","Arunesh Choudhary","SOUAD (support), REBECCA (OBS operator), ARUNESH (speaker)",""],
 ["Working For The Weekend","4","20","14:00 - 14:15","Lightning: Six Agents, One Patient Record: A Google ADK Retrospective","Radwan Baba","SOUAD (support), REBECCA (OBS operator)",""],
-["Working For The Weekend","4","20","14:25 - 14:40","Lightning: The 90% You Don't See: Shipping AI Inside a Health System","Guryash Singh Dhall","BRIJ-PAUL (support), REBECCA (OBS operator)",""],
+["Working For The Weekend","4","20","14:25 - 14:40","Lightning: The 90% You Don't See: Shipping AI Inside a Health System","Guryash Singh Dhall","SOUAD (support), BRIJ-PAUL (support), REBECCA (OBS operator)",""],
 ["Working For The Weekend","4","20","14:40 - 15:00","Wrap-up","","BRIJ-PAUL (last staff in room)","Right after last talk at 14:40"],
 ["Working For The Weekend","4","20","15:00 - 15:45","Open Talk Slot — TBC","Open","Not staffed",""],
 ["Working For The Weekend","4","20","16:00 - 16:45","Open Talk Slot — TBC","Open","Not staffed",""],
 
-["Under Pressure","4","40","07:00 - 08:30","Setup","","All staff (dispatched on site)",""],
-["Under Pressure","4","40","10:15 - 11:00","Building Real-Time RAG Systems with Gemini & the Multimodal Live API","Olayinka Peter Oluwafemi","FLORIAN (lead), TBD (OBS support). Jhin is on talk",""],
-["Under Pressure","4","40","11:15 - 12:00","Off the Edge: Grading Google AI Edge and Gemini Against a Practitioner's Eye","Boris-Wilfried Nyasse","FLORIAN (lead), TBD (OBS support). Jhin is on talk",""],
-["Under Pressure","4","40","13:00 - 13:45","Gemini Live: Architecting, building and pricing conversational experiences","Felipe Lujan","FLORIAN (lead), JHIN (OBS support)",""],
-["Under Pressure","4","40","14:00 - 14:45","From Black Belts to Small Language Models: My Taekwondo AI Journey","Kevin Moore","FLORIAN (lead), JHIN (OBS support)",""],
-["Under Pressure","4","40","15:00 - 15:45","Under the Hood of Gemini Enterprise: No-Code Agents, and Workflow Automation","François Légaré","FLORIAN (lead), JHIN (OBS support)",""],
-["Under Pressure","4","40","16:00 - 16:45","Terminal to Stadium: Building an AI Sports PA Announcer with Gemini","Angelo Italiano","FLORIAN (lead), JHIN (OBS support)",""],
+["Under Pressure","4","40","07:00 - 08:30","AV setup for Under Pressure","","SAMUEL (AV setup)",""],
+["Under Pressure","4","40","10:15 - 11:00","Building Real-Time RAG Systems with Gemini & the Multimodal Live API","Olayinka Peter Oluwafemi","FLORIAN (lead OBS), OUMAIMA (OBS support)","Jhin is on talk in 4-5"],
+["Under Pressure","4","40","11:15 - 12:00","Off the Edge: Grading Google AI Edge and Gemini Against a Practitioner's Eye","Boris-Wilfried Nyasse","FLORIAN (lead OBS), OUMAIMA (OBS support)","Jhin is on talk in 4-5"],
+["Under Pressure","4","40","12:00 - 13:00","Lunch break","","FLORIAN (lunch)",""],
+["Under Pressure","4","40","13:00 - 13:45","Gemini Live: Architecting, building and pricing conversational experiences","Felipe Lujan","FLORIAN (lead OBS), JHIN (OBS support)",""],
+["Under Pressure","4","40","14:00 - 14:45","From Black Belts to Small Language Models: My Taekwondo AI Journey","Kevin Moore","FLORIAN (lead OBS), JHIN (OBS support)",""],
+["Under Pressure","4","40","15:00 - 15:45","Under the Hood of Gemini Enterprise: No-Code Agents, and Workflow Automation","François Légaré","FLORIAN (lead OBS), JHIN (OBS support)",""],
+["Under Pressure","4","40","16:00 - 16:45","Terminal to Stadium: Building an AI Sports PA Announcer with Gemini","Angelo Italiano","FLORIAN (lead OBS), JHIN (OBS support)",""],
 ["Under Pressure","4","40","16:45 - 17:00","Wrap-up","","FLORIAN (last staff in room)",""],
 
 ["Hip To Be Square (workshops)","4","100","07:00 - 08:30","Setup","","All staff (dispatched on site)",""],
 ["Hip To Be Square (workshops)","4","100","10:15 - 11:45","AI-driven troubleshooting for Google Cloud infrastructure (workshop)","Olivier Bourgeois","NAV (support), JERWIN (support)",""],
 ["Hip To Be Square (workshops)","4","100","13:15 - 14:45","Build a Personal Productivity Assistant on Cloud Run (workshop)","Rishab Kumar","LUNE (support), WILSON (support), YANIS (support), OUMAIMA (workshop attendee)",""],
-["Hip To Be Square (workshops)","4","100","15:00 - 16:30","Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script (workshop)","Cyprien Tankeu","LUNE (support), WILSON (support), YANIS (support until 16:00), DANIEL WEI (workshop attendee)",""],
+["Hip To Be Square (workshops)","4","100","15:00 - 16:30","Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script (workshop)","Cyprien Tankeu","LUNE (support), WILSON (support), DANIEL WEI (workshop attendee)",""],
 ["Hip To Be Square (workshops)","4","100","16:45 - 17:00","Wrap-up","","LUNE, WILSON (last staff in room)",""],
 
 ["Never Gonna Give You Up","4","40","07:00 - 08:30","Setup","","All staff (dispatched on site)",""],
 ["Never Gonna Give You Up","4","40","10:15 - 11:00","Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP","Ethiel Adiassa","ALI (OBS operator), YANIS (support), LUNE (sidekick)",""],
-["Never Gonna Give You Up","4","40","11:15 - 12:00","Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart","Jhin Lee","ALI (OBS operator), YANIS (support), LUNE (sidekick)",""],
+["Never Gonna Give You Up","4","40","11:15 - 12:00","Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart","Jhin Lee","ALI (OBS operator), YANIS (support), LUNE (sidekick), JHIN (speaker)",""],
 ["Never Gonna Give You Up","4","40","13:00 - 13:45","Ouvrir la boîte noire : L'interprétabilité mécaniste des LLMs","David Cardozo","ALI (OBS operator), JERWIN (support), ANDY (sidekick)",""],
-["Never Gonna Give You Up","4","40","14:00 - 14:45","Android AppFunctions: Exposing Your App to AI Agents","Nav Singh","ALI (OBS operator), JERWIN (support), ANDY (sidekick)",""],
-["Never Gonna Give You Up","4","40","15:00 - 15:45","From Vibe-Coded to Trusted: One Agent Through Build, Scale, Govern and Optimize on Gemini Enterprise Agent Platform","Jonathan Zhuo","ALI (OBS operator), NAV (support), JESSY (sidekick)",""],
-["Never Gonna Give You Up","4","40","16:00 - 16:45","Make Your AI Agent Think Fast and Slow: System One Decisions in Google ADK","Thomas Chong","ALI (OBS operator), JERWIN (support), JESSY (sidekick)",""],
+["Never Gonna Give You Up","4","40","14:00 - 14:45","Android AppFunctions: Exposing Your App to AI Agents","Nav Singh","ALI (OBS operator), JERWIN (support), ANDY (sidekick), NAV (speaker)",""],
+["Never Gonna Give You Up","4","40","15:00 - 15:45","From Vibe-Coded to Trusted: One Agent Through Build, Scale, Govern and Optimize on Gemini Enterprise Agent Platform","Jonathan Zhuo","ALI (OBS operator), NAV (support), YANIS (sidekick)",""],
+["Never Gonna Give You Up","4","40","16:00 - 16:45","Make Your AI Agent Think Fast and Slow: System One Decisions in Google ADK","Thomas Chong","ALI (OBS operator), JERWIN (support), YANIS (sidekick)",""],
 ["Never Gonna Give You Up","4","40","16:45 - 17:00","Wrap-up","","JERWIN (last staff in room)",""],
 
-["Photo booth & badge table (downstairs)","Downstairs","","10:00 - 12:00","Photo booth & badge table","","WILSON",""],
-["Photo booth & badge table (downstairs)","Downstairs","","13:00 - 14:00","Photo booth & badge table","","KHASHAYAR",""],
-["Photo booth & badge table (downstairs)","Downstairs","","14:00 - 15:00","Photo booth & badge table","","SAJAD",""],
-["Photo booth & badge table (downstairs)","Downstairs","","15:00 - 16:00","Photo booth & badge table","","SOUAD",""],
-["Photo booth & badge table (downstairs)","Downstairs","","16:00 - 16:45","Photo booth & badge table","","ANDY",""],
-
-["Sega Genesis & Photo Booth (3rd floor)","3","","10:00 - 11:00","Sega Genesis & Photo Booth","","JESSY",""],
-["Sega Genesis & Photo Booth (3rd floor)","3","","11:00 - 12:00","Sega Genesis & Photo Booth","","JESSY",""],
+["Sega Genesis & Photo Booth (3rd floor)","3","","10:00 - 12:00","Sega Genesis & Photo Booth","","WANLIN",""],
 ["Sega Genesis & Photo Booth (3rd floor)","3","","13:00 - 15:00","Sega Genesis & Photo Booth","","DANIEL TO",""],
-["Sega Genesis & Photo Booth (3rd floor)","3","","15:00 - 16:00","Sega Genesis & Photo Booth","","BRIJ-PAUL",""],
-["Sega Genesis & Photo Booth (3rd floor)","3","","16:00 - 16:45","Sega Genesis & Photo Booth","","BRIJ-PAUL",""],
+["Sega Genesis & Photo Booth (3rd floor)","3","","15:00 - 16:45","Sega Genesis & Photo Booth","","BRIJ-PAUL",""],
 ["Sega Genesis & Photo Booth (3rd floor)","3","","After 18:30","Wrap-up","","All staff (dispatched on site)","3rd floor wrap-up after 18:30"],
 
-["Downstairs entrance & wayfinding","Downstairs","","08:15 - 09:00","Guide attendees to 3rd floor registration","","SAMUEL (organizer), DANIEL TO","Senior + junior pair downstairs to welcome & direct people upstairs"],
-["Downstairs entrance & wayfinding","Downstairs","","09:00 - 10:00","Guide attendees to 3rd floor registration","","LENZ (organizer), KHASHAYAR","Senior + junior pair downstairs to welcome & direct people upstairs"],
+["Downstairs entrance & wayfinding","Downstairs","","08:15 - 09:15","Lobby crowd control & guide attendees to 3rd floor registration","","MICHAEL (organizer), WILSON","Senior + junior pair downstairs to welcome & direct people upstairs"],
+["Downstairs entrance & wayfinding","Downstairs","","09:15 - 10:00","Lobby crowd control & guide attendees to 3rd floor registration","","LENZ (organizer), KHASHAYAR","Senior + junior pair downstairs to welcome & direct people upstairs"],
 
-["Registration & welcome","Entrance","","08:30 - 09:25","Registration & breakfast","","ARUNESH, FLORIAN, STEFANIA, DANIEL WEI, REBECCA (organizers), WANLIN, SAJAD, LUNE, BRIJ-PAUL, SOUAD, ANDY, NADIA","NADIA is practicing for her own DevFest a week later"],
+["Registration & welcome","Entrance","","08:30 - 09:25","Registration & breakfast","","ARUNESH, FLORIAN, STEFANIA, DANIEL WEI (organizers), WANLIN, SAJAD, BRIJ-PAUL, SOUAD, ANDY, NADIA","NADIA is practicing for her own DevFest a week later"],
 ["Registration & welcome","Entrance","","09:25 - 10:00","Registration","","JIHOO (organizer), BRIJ-PAUL, SARA",""],
-["Registration & welcome","Entrance","","10:00 - 11:00","Registration","","MIMOH (organizer), BRIJ-PAUL, OUMAIMA",""],
-["Registration & welcome","Entrance","","11:00 - 12:00","Registration","","BRIJ-PAUL, NADIA, DANIEL TO, OUMAIMA",""],
+["Registration & welcome","Entrance","","10:00 - 11:00","Registration","","MIMOH (organizer), BRIJ-PAUL",""],
+["Registration & welcome","Entrance","","11:00 - 12:00","Registration","","BRIJ-PAUL, NADIA, DANIEL TO",""],
 ["Registration & welcome","Entrance","","12:00 - 13:00","Registration (until 13:00)","","BRIJ-PAUL, NADIA, DANIEL TO",""],
 ["Registration & welcome","Entrance","","14:00 - 15:00","Registration","","MIMOH (organizer), NADIA","NADIA is registration only"],
-["Registration & welcome","Entrance","","14:00 - 16:00","Registration & sponsors","","KHASHAYAR","Close to registration after his 13:00-14:00 photo booth shift"],
+["Registration & welcome","Entrance","","14:00 - 16:00","Registration & sponsors","","KHASHAYAR",""],
+["Registration & welcome","Entrance","","16:00 - 16:45","Registration & bingo card validation","","SOUAD",""],
+
+["1:1 Coaching (3-3 & 3-4)","3","4","10:00 - 12:00","1:1 Career Coaching","","JIHOO (coach), STACY (coach)",""],
+["1:1 Coaching (3-3 & 3-4)","3","4","13:00 - 14:00","1:1 Career Coaching","","RAPHAËLLE (coach), ETIENNE (coach), STEFANIA (coach)",""],
+["1:1 Coaching (3-3 & 3-4)","3","4","14:00 - 15:00","1:1 Career Coaching","","JIHOO (coach), ETIENNE (coach), STEFANIA (coach)",""],
+["1:1 Coaching (3-3 & 3-4)","3","4","15:00 - 16:00","1:1 Career Coaching","","RAPHAËLLE (coach), JIHOO (coach), ETIENNE (coach), STEFANIA (coach)",""],
 
 ["Floating org helper","All","","10:00 - 16:45","Floating org helper (quarterback)","","SAMUEL, LENZ","Helps across rooms all day"],
-["4th floor rooms","4","","16:45 - 17:00","Close 4th floor rooms","","LENZ (organizer)","Organizer task from the Organizers tab"],
+["4th floor rooms","4","","16:45 - 17:00","Close 4th floor rooms","","FLORIAN (organizer), LENZ (organizer)","Organizer task from the Organizers tab"],
+["4th floor rooms","4","","16:45 - 17:00","Move to 3rd floor for closing","","ARUNESH, SAMUEL, RAPHAËLLE, JIHOO, MIMOH, ETIENNE, STACY (MC)","Direct attendees downstairs for 17:00 closing keynote"],
+["Lunch raffle","All","","12:00 - 13:00","Lunch MC & Raffle","","STACY (MC)",""],
 ["Lunch raffle","All","","12:00 - 13:00","Raffle caller, 4th floor","","ANDY","About 20 minutes"],
 ["Lunch raffle","All","","12:00 - 13:00","Raffle caller, 3rd floor","","WANLIN","About 20 minutes"]
 ];
@@ -322,6 +324,7 @@ const ROWS = [
 const LOCATIONS_EN = {
   "Don’t Stop Believin’": "3-1 · Don’t Stop Believin’ (3rd floor)",
   "Mr. Roboto": "3-2 · Mr. Roboto (3rd floor)",
+  "1:1 Coaching (3-3 & 3-4)": "3-3 Take On Me & 3-4 Call Me (3rd floor)",
   "Just Can’t Get Enough": "3-5 · Just Can’t Get Enough (3rd floor)",
   "Working For The Weekend": "4-3 · Working For The Weekend (4th floor)",
   "Under Pressure": "4-4 · Under Pressure (4th floor)",
@@ -329,12 +332,13 @@ const LOCATIONS_EN = {
   "Hip To Be Square (workshops)": "4-6 · Hip To Be Square (4th floor)",
   "Sega Genesis & Photo Booth (3rd floor)": "Sega Genesis & Photo Booth (3rd floor)",
   "Downstairs entrance & wayfinding": "Downstairs · Building entrance / lobby",
-  "Registration & welcome": "Entrance · Registration & welcome",
+  "Registration & welcome": "3rd floor · Registration & welcome",
   "All rooms": "Regroup at 3rd floor registration"
 };
 const LOCATIONS_FR = {
   "Don’t Stop Believin’": "3-1 · Don’t Stop Believin’ (3e étage)",
   "Mr. Roboto": "3-2 · Mr. Roboto (3e étage)",
+  "1:1 Coaching (3-3 & 3-4)": "3-3 Take On Me et 3-4 Call Me (3e étage)",
   "Just Can’t Get Enough": "3-5 · Just Can’t Get Enough (3e étage)",
   "Working For The Weekend": "4-3 · Working For The Weekend (4e étage)",
   "Under Pressure": "4-4 · Under Pressure (4e étage)",
@@ -342,49 +346,58 @@ const LOCATIONS_FR = {
   "Hip To Be Square (workshops)": "4-6 · Hip To Be Square (4e étage)",
   "Sega Genesis & Photo Booth (3rd floor)": "Sega Genesis et cabine photo (3e étage)",
   "Downstairs entrance & wayfinding": "En bas · Entrée de l'édifice / hall d'accueil",
-  "Registration & welcome": "Entrée · Inscription et accueil",
+  "Registration & welcome": "3e étage · Inscription et accueil",
   "All rooms": "Regroupement à l'inscription au 3e étage"
 };
 const ROOM_NAME_FR = {
   "All rooms": "Toutes les salles",
-  "Chill Zone, Photo booth & badge table (upstairs)": "Zone détente, cabine photo et table des badges (en haut)",
+  "Chill Zone, Photo booth & badge table (upstairs)": "Station 4e étage (Danger Zone, bingo, cabine photo, badges)",
   "Hip To Be Square (workshops)": "Hip To Be Square (ateliers)",
   "Sega Genesis & Photo Booth (3rd floor)": "Sega Genesis et cabine photo (3e étage)",
   "Downstairs entrance & wayfinding": "Entrée et orientation (rez-de-chaussée / en bas)",
   "Registration & welcome": "Inscription et accueil",
+  "1:1 Coaching (3-3 & 3-4)": "Mentorat 1:1 (3-3 et 3-4)",
   "Floating org helper": "Aide-organisateur volant",
   "4th floor rooms": "Salles du 4e étage",
   "Lunch raffle": "Tirage du midi"
 };
 const SESSION_FR = {
   "Setup": "Installation et préparation",
+  "AV setup for Under Pressure": "Installation AV pour Under Pressure",
   "Wrap-up": "Rangement et clôture",
   "Wrap-up (3rd floor)": "Rangement et clôture (3e étage)",
   "Chill Zone, Board Games & Community Lounge": "Zone détente, jeux de société et salon communautaire",
+  "4th-floor station (Danger Zone, bingo, photo booth, badge)": "Station 4e étage (Danger Zone, bingo, cabine photo, badges)",
   "Open Talk Slot — TBC": "Créneau de conférence ouvert — À confirmer",
+  "Lunch break": "Pause dîner",
   "Photo booth & badge table": "Cabine photo et table des badges",
   "Sega Genesis & Photo Booth": "Sega Genesis et cabine photo",
-  "Guide attendees to 3rd floor registration": "Guider les participants vers l'inscription au 3e étage",
+  "Lobby crowd control & guide attendees to 3rd floor registration": "Accueil dans le hall et orientation vers l'inscription au 3e étage",
   "Registration & breakfast": "Inscription et déjeuner",
   "Registration": "Inscription",
   "Registration (until 13:00)": "Inscription (jusqu'à 13h00)",
   "Registration & sponsors": "Inscription et commanditaires",
+  "Registration & bingo card validation": "Inscription et validation des cartes de bingo",
+  "1:1 Career Coaching": "Mentorat carrière 1:1",
   "Floating org helper (quarterback)": "Aide-organisateur volant (quarterback)",
   "Close 4th floor rooms": "Fermeture des salles du 4e étage",
+  "Move to 3rd floor for closing": "Descente au 3e étage pour la clôture",
+  "Lunch MC & Raffle": "Animation du midi et tirage",
   "Raffle caller, 4th floor": "Animation du tirage, 4e étage",
   "Raffle caller, 3rd floor": "Animation du tirage, 3e étage"
 };
 const NOTES_FR = {
-  "We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.": "Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk.",
+  "We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel.": "Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk. Installation AV Under Pressure : Samuel.",
   "Last staff in each 3rd floor room. We will regroup and dispatch tasks.": "Dernier bénévole dans chaque salle du 3e étage. Nous nous regrouperons pour répartir les tâches.",
   "3rd floor wrap-up after 18:30": "Rangement du 3e étage après 18h30",
   "Right after last talk at 14:40": "Juste après la dernière conférence à 14h40",
+  "Jhin is on talk in 4-5": "Jhin est en conférence dans la salle 4-5",
   "Senior + junior pair downstairs to welcome & direct people upstairs": "Duo senior + junior en bas pour accueillir et diriger les participants vers le 3e étage",
   "NADIA is practicing for her own DevFest a week later": "NADIA pratique pour son propre DevFest la semaine suivante",
   "NADIA is registration only": "NADIA est affectée uniquement à l'inscription",
-  "Close to registration after his 13:00-14:00 photo booth shift": "Près de l'inscription après son quart de 13h00 à 14h00 à la cabine photo",
   "Helps across rooms all day": "Aide dans toutes les salles toute la journée",
   "Organizer task from the Organizers tab": "Tâche d'organisateur issue de l'onglet Organizers",
+  "Direct attendees downstairs for 17:00 closing keynote": "Diriger les participants vers le 3e étage pour la conférence de clôture à 17h00",
   "About 20 minutes": "Environ 20 minutes"
 };
 
@@ -415,20 +428,27 @@ function localizeStaff(st) {
   return st
     .replace(/All staff \(dispatched on site\)/gi, "Toute l'équipe (répartie sur place)")
     .replace(/Kanastruk team/gi, "Équipe Kanastruk")
-    .replace(/\(support until 16:00\)/gi, "(soutien jusqu'à 16h00)")
     .replace(/\(support\)/gi, "(soutien)")
-    .replace(/\(main recorder\)/gi, "(enregistrement principal)")
+    .replace(/\(station volunteer\)/gi, "(bénévole station)")
+    .replace(/\(main OBS operator\)/gi, "(opérateur OBS principal)")
     .replace(/\(OBS operator,\s*out 11:00 to 15:00\)/gi, "(opérateur OBS, absent de 11h00 à 15h00)")
     .replace(/\(OBS operator\)/gi, "(opérateur OBS)")
+    .replace(/\(lead OBS\)/gi, "(responsable OBS)")
     .replace(/\(OBS support\)/gi, "(soutien OBS)")
+    .replace(/\(AV setup\)/gi, "(installation AV)")
     .replace(/\(sidekick\)/gi, "(acolyte)")
     .replace(/\(workshop attendee\)/gi, "(participant à l'atelier)")
-    .replace(/\(recording\)/gi, "(enregistrement)")
-    .replace(/\(lead\)/gi, "(responsable)")
+    .replace(/\(speaker\)/gi, "(conférencier)")
+    .replace(/\(panelist\)/gi, "(panéliste)")
+    .replace(/\(opening keynote\)/gi, "(keynote d'ouverture)")
+    .replace(/\(closing lightning talk\)/gi, "(allocution éclair de clôture)")
+    .replace(/\(closing talk\)/gi, "(allocution de clôture)")
+    .replace(/\(showcase\)/gi, "(vitrine techno)")
+    .replace(/\(coach\)/gi, "(mentor)")
+    .replace(/\(lunch\)/gi, "(dîner)")
     .replace(/\(last staff in room\)/gi, "(dernier bénévole en salle)")
     .replace(/\(organizers\)/gi, "(organisateurs)")
-    .replace(/\(organizer\)/gi, "(organisateur/trice)")
-    .replace(/Jhin is on talk/gi, "Jhin est en conférence");
+    .replace(/\(organizer\)/gi, "(organisateur/trice)");
 }
 function localizeNotes(no) { return (locale === "fr" && no) ? (NOTES_FR[no] || no) : no; }
 
@@ -449,7 +469,7 @@ function startMin(t) {
 }
 rooms.forEach(room => room.items.sort((a, b) => startMin(a.time) - startMin(b.time)));
 const allRoomsItems = [
-  { time: "07:00 - 08:30", session: "Setup", speaker: "", staff: "All staff (dispatched on site)", notes: "We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team." },
+  { time: "07:00 - 08:30", session: "Setup", speaker: "", staff: "All staff (dispatched on site)", notes: "We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel." },
   { time: "After 18:30", session: "Wrap-up (3rd floor)", speaker: "", staff: "All staff (dispatched on site)", notes: "Last staff in each 3rd floor room. We will regroup and dispatch tasks." }
 ];
 rooms.forEach(room => {
