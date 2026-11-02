@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 
 type Locale = 'en' | 'fr';
+type ViewMode = 'cards' | 'table';
 
 type RawRow = [
   room: string,
@@ -39,6 +40,8 @@ interface CalendarEventFields {
   location: string;
   details: string;
 }
+
+const SETUP_WRAP_GROUP_NAME = 'Setup & Wrap-up (All Staff)';
 
 const ROWS: RawRow[] = [
   [
@@ -911,7 +914,7 @@ const LOCATIONS_EN: Record<string, string> = {
     'Sega Genesis & Photo Booth (3rd floor)',
   'Downstairs entrance & wayfinding': 'Downstairs · Building entrance / lobby',
   'Registration & welcome': '3rd floor · Registration & welcome',
-  'All rooms': 'Regroup at 3rd floor registration',
+  [SETUP_WRAP_GROUP_NAME]: 'Regroup at 3rd floor registration',
 };
 
 const LOCATIONS_FR: Record<string, string> = {
@@ -928,11 +931,11 @@ const LOCATIONS_FR: Record<string, string> = {
   'Downstairs entrance & wayfinding':
     "En bas · Entrée de l'édifice / hall d'accueil",
   'Registration & welcome': '3e étage · Inscription et accueil',
-  'All rooms': "Regroupement à l'inscription au 3e étage",
+  [SETUP_WRAP_GROUP_NAME]: "Regroupement à l'inscription au 3e étage",
 };
 
 const ROOM_NAME_FR: Record<string, string> = {
-  'All rooms': 'Toutes les salles',
+  [SETUP_WRAP_GROUP_NAME]: "Installation et clôture (Toute l'équipe)",
   'Chill Zone, Photo booth & badge table (upstairs)':
     'Station 4e étage (Danger Zone, bingo, cabine photo, badges)',
   'Hip To Be Square (workshops)': 'Hip To Be Square (ateliers)',
@@ -1011,17 +1014,30 @@ function displayFloor(f: string, locale: Locale): string {
       '3rd floor': '3e étage',
       '4': '4e étage',
       '4th floor': '4e étage',
-      All: 'Tous',
-      Entrance: 'Entrée',
-      Downstairs: 'En bas',
+      All: 'Tous les étages',
+      Entrance: '3e étage · Entrée',
+      Downstairs: 'Rez-de-chaussée',
     };
     return mapFr[f] || f;
   }
   const mapEn: Record<string, string> = {
     '3': '3rd floor',
+    '3rd floor': '3rd floor',
     '4': '4th floor',
+    '4th floor': '4th floor',
+    All: 'All floors',
+    Entrance: '3rd floor · Entrance',
+    Downstairs: 'Ground floor / Lobby',
   };
   return mapEn[f] || f;
+}
+
+function floorSortOrder(f: string): number {
+  if (f === 'Downstairs') return 1;
+  if (f === 'Entrance') return 2;
+  if (f === '3' || f === '3rd floor') return 3;
+  if (f === '4' || f === '4th floor') return 4;
+  return 5;
 }
 
 function localizeItemLocation(it: ShiftItem, locale: Locale): string {
@@ -1100,7 +1116,7 @@ function startMin(t: string): number {
 }
 
 function floorOf(f: string): string {
-  if (f === '3' || f === '3rd floor') return '3';
+  if (f === '3' || f === '3rd floor' || f === 'Entrance') return '3';
   if (f === '4' || f === '4th floor') return '4';
   return 'other';
 }
@@ -1256,6 +1272,7 @@ export function StaffAssignmentsView({
   initialLocale?: Locale;
 }) {
   const [locale, setLocale] = useState<Locale>(initialLocale);
+  const [viewMode, setViewMode] = useState<ViewMode>('cards');
   const [selectedStaff, setSelectedStaff] = useState('all');
   const [selectedRoomIdx, setSelectedRoomIdx] = useState('all');
   const [activeFloor, setActiveFloor] = useState('all');
@@ -1297,7 +1314,7 @@ export function StaffAssignmentsView({
 
     const allRoomsItems: ShiftItem[] = [
       {
-        roomName: 'All rooms',
+        roomName: SETUP_WRAP_GROUP_NAME,
         roomFloor: 'All',
         time: '07:00 - 08:30',
         session: 'Setup',
@@ -1307,7 +1324,7 @@ export function StaffAssignmentsView({
           'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel.',
       },
       {
-        roomName: 'All rooms',
+        roomName: SETUP_WRAP_GROUP_NAME,
         roomFloor: 'All',
         time: 'After 18:30',
         session: 'Wrap-up (3rd floor)',
@@ -1329,7 +1346,7 @@ export function StaffAssignmentsView({
     });
 
     list.unshift({
-      name: 'All rooms',
+      name: SETUP_WRAP_GROUP_NAME,
       floor: 'All',
       seats: '',
       items: allRoomsItems,
@@ -1362,6 +1379,7 @@ export function StaffAssignmentsView({
 
       const items = room.items.filter((it) => {
         if (
+          selectedRoomIdx === 'all' &&
           activeFloor !== 'all' &&
           floorOf(room.floor) !== activeFloor &&
           floorOf(it.roomFloor) !== activeFloor
@@ -1388,6 +1406,21 @@ export function StaffAssignmentsView({
     list.sort((a, b) => startMin(a.time) - startMin(b.time));
     return list;
   }, [filteredRooms, selectedStaff]);
+
+  const tableRows = useMemo<ShiftItem[]>(() => {
+    const list: ShiftItem[] = [];
+    filteredRooms.forEach(({ items }) => {
+      items.forEach((it) => list.push(it));
+    });
+    list.sort((a, b) => {
+      const tDiff = startMin(a.time) - startMin(b.time);
+      if (tDiff !== 0) return tDiff;
+      const fDiff = floorSortOrder(a.roomFloor) - floorSortOrder(b.roomFloor);
+      if (fDiff !== 0) return fDiff;
+      return a.roomName.localeCompare(b.roomName);
+    });
+    return list;
+  }, [filteredRooms]);
 
   const visibleEvents = useMemo(() => {
     const events: CalendarEventFields[] = [];
@@ -1504,6 +1537,12 @@ export function StaffAssignmentsView({
           flex-wrap: wrap;
           margin-top: 10px;
         }
+        .staff-actions-right {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
         .staff-tabs {
           display: flex;
           gap: 6px;
@@ -1528,6 +1567,22 @@ export function StaffAssignmentsView({
           border-color: var(--blue);
           color: #fff;
         }
+        .staff-view-btn {
+          border: 1px solid var(--blue);
+          background: var(--blue-bg);
+          color: var(--text);
+          padding: 6px 14px;
+          border-radius: 999px;
+          font: inherit;
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+        .staff-view-btn[aria-pressed="true"] {
+          background: var(--blue);
+          color: #fff;
+        }
         .staff-bulk-cal {
           border: 1px solid var(--green);
           background: rgba(52, 168, 83, 0.14);
@@ -1549,10 +1604,10 @@ export function StaffAssignmentsView({
           grid-template-columns: 1fr;
         }
         @media (min-width: 900px) {
-          .staff-main { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .staff-main:not(.table-mode) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         @media (min-width: 1300px) {
-          .staff-main { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          .staff-main:not(.table-mode) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         }
         .staff-room {
           background: var(--surface);
@@ -1621,6 +1676,51 @@ export function StaffAssignmentsView({
         }
         .staff-cal-google { color: var(--blue); border-color: var(--blue); }
         .staff-empty { padding: 30px 16px; text-align: center; color: var(--muted); grid-column: 1 / -1; }
+        .staff-table-wrap {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          box-shadow: var(--shadow);
+          overflow-x: auto;
+        }
+        .staff-visual-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13.5px;
+          min-width: 720px;
+        }
+        .staff-visual-table th,
+        .staff-visual-table td {
+          padding: 10px 12px;
+          border-bottom: 1px solid var(--border);
+          text-align: left;
+          vertical-align: top;
+        }
+        .staff-visual-table th {
+          background: var(--blue-bg);
+          font-weight: 700;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          white-space: nowrap;
+        }
+        .staff-visual-table tr:last-child td {
+          border-bottom: none;
+        }
+        .staff-visual-table tr:hover td {
+          background: var(--pill);
+        }
+        .floor-badge {
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 999px;
+          font-size: 12px;
+          font-weight: 700;
+          white-space: nowrap;
+          background: var(--pill);
+        }
+        .floor-badge.f3 { background: var(--blue-bg); color: var(--blue); }
+        .floor-badge.f4 { background: var(--peach-bg); color: var(--yellow); }
         .staff-footer {
           color: var(--muted);
           font-size: 12px;
@@ -1683,7 +1783,7 @@ export function StaffAssignmentsView({
             </option>
             {staffNamesList.map((name) => (
               <option key={name} value={name}>
-                {isFr && name === 'KANASTRUK TEAM' ? 'ÉQUIPE KANASTRUK' : name}
+                {name}
               </option>
             ))}
           </select>
@@ -1693,7 +1793,7 @@ export function StaffAssignmentsView({
             aria-label={isFr ? 'Filtrer par salle' : 'Filter by room'}
           >
             <option value="all">
-              {isFr ? 'Toutes les salles' : 'All rooms'}
+              {isFr ? 'Toutes les salles (Vue complète)' : 'All rooms'}
             </option>
             {rooms.map((r, i) => (
               <option key={r.name} value={String(i)}>
@@ -1729,34 +1829,134 @@ export function StaffAssignmentsView({
             ))}
           </div>
 
-          {selectedStaff !== 'all' && visibleEvents.length > 0 && (
+          <div className="staff-actions-right">
             <button
               type="button"
-              className="staff-bulk-cal"
+              className="staff-view-btn"
+              aria-pressed={viewMode === 'table'}
               onClick={() =>
-                downloadIcs(
-                  visibleEvents,
-                  `DevFest-2026-Shifts-${selectedStaff.toUpperCase()}`,
-                )
+                setViewMode((prev) => (prev === 'cards' ? 'table' : 'cards'))
               }
             >
-              {isFr
-                ? `📅 Télécharger les ${visibleEvents.length} quarts de ${selectedStaff.toUpperCase()} (.ics)`
-                : `📅 Download all ${visibleEvents.length} shifts for ${selectedStaff.toUpperCase()} (.ics)`}
+              {viewMode === 'table'
+                ? isFr
+                  ? '🗂️ Vue par cartes'
+                  : '🗂️ Card View'
+                : isFr
+                  ? '📊 Tableau visuel (Qui / Où / Quand)'
+                  : '📊 Visual Table (Who / Where / When)'}
             </button>
-          )}
+
+            {selectedStaff !== 'all' && visibleEvents.length > 0 && (
+              <button
+                type="button"
+                className="staff-bulk-cal"
+                onClick={() =>
+                  downloadIcs(
+                    visibleEvents,
+                    `DevFest-2026-Shifts-${selectedStaff.toUpperCase()}`,
+                  )
+                }
+              >
+                {isFr
+                  ? `📅 Télécharger les ${visibleEvents.length} quarts de ${selectedStaff.toUpperCase()} (.ics)`
+                  : `📅 Download all ${visibleEvents.length} shifts for ${selectedStaff.toUpperCase()} (.ics)`}
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
-      <main className="staff-main staff-safe">
-        {selectedStaff !== 'all' ? (
+      <main
+        className={`staff-main staff-safe ${viewMode === 'table' ? 'table-mode' : ''}`}
+      >
+        {viewMode === 'table' ? (
+          tableRows.length === 0 ? (
+            <div className="staff-empty">
+              {isFr
+                ? 'Aucun résultat pour ce filtre.'
+                : 'Nothing matches that filter.'}
+            </div>
+          ) : (
+            <div className="staff-table-wrap">
+              <table className="staff-visual-table">
+                <thead>
+                  <tr>
+                    <th>{isFr ? 'Heure' : 'Time'}</th>
+                    <th>{isFr ? 'Étage' : 'Floor'}</th>
+                    <th>{isFr ? 'Salle / Lieu' : 'Room / Location'}</th>
+                    <th>{isFr ? 'Session / Tâche' : 'Session / Task'}</th>
+                    <th>
+                      {isFr
+                        ? 'Bénévole(s) / Organisateur(s)'
+                        : 'Volunteer / Staff Name(s)'}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableRows.map((it, idx) => {
+                    const flKey = floorOf(it.roomFloor);
+                    const flBadgeClass =
+                      flKey === '3' ? 'f3' : flKey === '4' ? 'f4' : '';
+                    return (
+                      <tr key={`${it.roomName}-${it.time}-${idx}`}>
+                        <td>
+                          <span className="staff-time">
+                            {localizeTime(it.time, locale)}
+                          </span>
+                        </td>
+                        <td>
+                          <span className={`floor-badge ${flBadgeClass}`}>
+                            {displayFloor(it.roomFloor, locale)}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="staff-loc">
+                            <strong>{localizeItemLocation(it, locale)}</strong>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="staff-session">
+                            {localizeSession(it.session, locale)}
+                          </div>
+                          {it.speaker && (
+                            <div className="staff-notes">
+                              {isFr ? 'Conférencier(s) : ' : 'Speaker(s): '}
+                              {localizeSpeaker(it.speaker, locale)}
+                            </div>
+                          )}
+                          {it.notes && (
+                            <div className="staff-notes">
+                              {localizeNotes(it.notes, locale)}
+                            </div>
+                          )}
+                        </td>
+                        <td>
+                          {it.staff ? (
+                            it.staff === 'Not staffed' ? (
+                              <span className="unstaffed">
+                                {isFr ? 'Sans bénévole' : 'Not staffed'}
+                              </span>
+                            ) : (
+                              <span className="staff-line">
+                                {localizeStaff(it.staff, locale)}
+                              </span>
+                            )
+                          ) : (
+                            <span className="staff-notes">—</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )
+        ) : selectedStaff !== 'all' ? (
           <section className="staff-room blue">
             <div className="staff-room-head">
-              <h2>
-                {isFr && selectedStaff === 'KANASTRUK TEAM'
-                  ? 'ÉQUIPE KANASTRUK'
-                  : selectedStaff}
-              </h2>
+              <h2>{selectedStaff}</h2>
               <div className="meta">
                 {personScheduleItems.length} {isFr ? 'éléments' : 'items'}
               </div>

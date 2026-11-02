@@ -104,6 +104,21 @@
   }
   .tab[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
 
+  .bar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .view-toggle-btn {
+    border: 1px solid var(--blue);
+    background: var(--blue-bg);
+    color: var(--text);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .view-toggle-btn[aria-pressed="true"],
+  .view-toggle-btn:hover { background: var(--blue); color: #fff; }
   .bulk-cal {
     border: 1px solid var(--green);
     background: rgba(52, 168, 83, 0.14);
@@ -117,6 +132,46 @@
     white-space: nowrap;
   }
   .bulk-cal:hover { background: var(--green); color: #fff; }
+
+  .table-wrap {
+    grid-column: 1 / -1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+  .visual-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+  }
+  .visual-table thead th {
+    background: var(--blue-bg);
+    color: var(--text);
+    font-weight: 700;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .visual-table tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .visual-table tbody tr:last-child td { border-bottom: none; }
+  .visual-table tbody tr:nth-child(even) { background: rgba(66, 133, 244, 0.03); }
+  .floor-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--pill);
+    color: var(--text);
+    white-space: nowrap;
+  }
 
   main {
     padding-top: 14px;
@@ -213,7 +268,10 @@
   </div>
   <div class="bar-row">
     <div class="tabs" id="tabs" role="group" aria-label="Floor filter"></div>
-    <button type="button" id="bulkIcsBtn" class="bulk-cal hidden"></button>
+    <div class="bar-actions">
+      <button type="button" id="viewToggleBtn" class="view-toggle-btn" aria-pressed="false"></button>
+      <button type="button" id="bulkIcsBtn" class="bulk-cal hidden"></button>
+    </div>
   </div>
 </header>
 
@@ -333,7 +391,7 @@ const LOCATIONS_EN = {
   "Sega Genesis & Photo Booth (3rd floor)": "Sega Genesis & Photo Booth (3rd floor)",
   "Downstairs entrance & wayfinding": "Downstairs · Building entrance / lobby",
   "Registration & welcome": "3rd floor · Registration & welcome",
-  "All rooms": "Regroup at 3rd floor registration"
+  "Setup & Wrap-up (All Staff)": "Regroup at 3rd floor registration"
 };
 const LOCATIONS_FR = {
   "Don’t Stop Believin’": "3-1 · Don’t Stop Believin’ (3e étage)",
@@ -347,10 +405,10 @@ const LOCATIONS_FR = {
   "Sega Genesis & Photo Booth (3rd floor)": "Sega Genesis et cabine photo (3e étage)",
   "Downstairs entrance & wayfinding": "En bas · Entrée de l'édifice / hall d'accueil",
   "Registration & welcome": "3e étage · Inscription et accueil",
-  "All rooms": "Regroupement à l'inscription au 3e étage"
+  "Setup & Wrap-up (All Staff)": "Regroupement à l'inscription au 3e étage"
 };
 const ROOM_NAME_FR = {
-  "All rooms": "Toutes les salles",
+  "Setup & Wrap-up (All Staff)": "Installation et clôture (Toute l'équipe)",
   "Chill Zone, Photo booth & badge table (upstairs)": "Station 4e étage (Danger Zone, bingo, cabine photo, badges)",
   "Hip To Be Square (workshops)": "Hip To Be Square (ateliers)",
   "Sega Genesis & Photo Booth (3rd floor)": "Sega Genesis et cabine photo (3e étage)",
@@ -475,7 +533,7 @@ const allRoomsItems = [
 rooms.forEach(room => {
   room.items = room.items.filter(it => !((it.time === "07:00 - 08:30" && it.session === "Setup") || it.time === "After 18:30"));
 });
-rooms.unshift({ name: "All rooms", floor: "All", seats: "", items: allRoomsItems });
+rooms.unshift({ name: "Setup & Wrap-up (All Staff)", floor: "All", seats: "", items: allRoomsItems });
 
 function staffNames(s) {
   if (!s) return [];
@@ -488,13 +546,23 @@ rooms.forEach(r => r.items.forEach(it => staffNames(it.staff).forEach(n => {
 })));
 const STAFF_NAMES = [...peopleSet].sort();
 
-const floorOf = (f) => (f === "3" || f === "3rd floor" ? "3" : f === "4" || f === "4th floor" ? "4" : "other");
+const floorOf = (f) => (f === "3" || f === "3rd floor" || f === "Entrance" ? "3" : f === "4" || f === "4th floor" ? "4" : "other");
+const floorSortOrder = (f) => (f === "Downstairs" ? 0 : (f === "3" || f === "3rd floor" || f === "Entrance") ? 1 : (f === "4" || f === "4th floor") ? 2 : 3);
 const grid = document.getElementById("grid");
 const staffSelect = document.getElementById("staffSelect");
 const roomSelect = document.getElementById("roomSelect");
 const tabs = document.getElementById("tabs");
+const viewToggleBtn = document.getElementById("viewToggleBtn");
 const bulkIcsBtn = document.getElementById("bulkIcsBtn");
 let activeFloor = "all";
+let viewMode = "cards";
+
+function updateViewToggleButton() {
+  viewToggleBtn.setAttribute("aria-pressed", viewMode === "table" ? "true" : "false");
+  viewToggleBtn.textContent = viewMode === "table"
+    ? (locale === "fr" ? "🗂️ Vue en cartes" : "🗂️ Card View")
+    : (locale === "fr" ? "📊 Tableau visuel (Qui / Où / Quand)" : "📊 Visual Table (Who / Where / When)");
+}
 
 function rebuildControls() {
   const prevStaff = staffSelect.value || "all";
@@ -526,6 +594,8 @@ function rebuildControls() {
     });
     tabs.appendChild(b);
   });
+
+  updateViewToggleButton();
 
   document.getElementById("pageTitle").textContent = locale === "fr"
     ? "DevFest Montréal 2026 · Affectations des salles"
@@ -647,11 +717,68 @@ function render() {
   grid.innerHTML = "";
   currentVisibleEvents = [];
 
-  if (pickStaff !== "all") {
+  if (viewMode === "table") {
+    const rows = [];
+    rooms.forEach((room, idx) => {
+      if (pick !== "all" && String(idx) !== pick) return;
+      if (pick === "all" && activeFloor !== "all" && floorOf(room.floor) !== activeFloor) return;
+      room.items.forEach(it => {
+        if (pickStaff !== "all" && !matchesStaff(it.staff, pickStaff)) return;
+        rows.push({ room, it });
+      });
+    });
+    rows.sort((a, b) => {
+      const tDiff = startMin(a.it.time) - startMin(b.it.time);
+      if (tDiff !== 0) return tDiff;
+      const fDiff = floorSortOrder(a.room.floor) - floorSortOrder(b.room.floor);
+      if (fDiff !== 0) return fDiff;
+      return a.room.name.localeCompare(b.room.name);
+    });
+    if (pickStaff !== "all") {
+      rows.forEach(({ room, it }) => {
+        const ev = eventFields(it, room.name);
+        if (ev) currentVisibleEvents.push(ev);
+      });
+    }
+    if (!rows.length) {
+      const e = document.createElement("div");
+      e.className = "empty";
+      e.textContent = locale === "fr" ? "Aucun résultat pour ce filtre." : "Nothing matches that filter.";
+      grid.appendChild(e);
+    } else {
+      const wrap = document.createElement("div");
+      wrap.className = "table-wrap";
+      wrap.innerHTML =
+        '<table class="visual-table">' +
+          '<thead><tr>' +
+            '<th>' + (locale === "fr" ? "Heure" : "Time") + '</th>' +
+            '<th>' + (locale === "fr" ? "Étage" : "Floor") + '</th>' +
+            '<th>' + (locale === "fr" ? "Salle / Lieu" : "Room / Location") + '</th>' +
+            '<th>' + (locale === "fr" ? "Session / Tâche" : "Session / Task") + '</th>' +
+            '<th>' + (locale === "fr" ? "Bénévole(s) / Staff" : "Volunteer / Staff Name(s)") + '</th>' +
+          '</tr></thead>' +
+          '<tbody>' +
+            rows.map(({ room, it }) =>
+              '<tr>' +
+                '<td><span class="time">' + esc(localizeTime(it.time)) + '</span></td>' +
+                '<td><span class="floor-pill">' + esc(displayFloor(room.floor)) + '</span></td>' +
+                '<td><div class="session">' + esc(localizeRoomName(room.name)) + '</div><div class="notes">' + esc(localizeItemLocation(room)) + '</div></td>' +
+                '<td><div>' + esc(localizeSession(it.session)) + '</div>' +
+                  (it.speaker ? '<div class="notes">' + (locale === "fr" ? "Conf. : " : "Speaker: ") + esc(localizeSpeaker(it.speaker)) + '</div>' : '') +
+                  (it.notes ? '<div class="notes">' + esc(localizeNotes(it.notes)) + '</div>' : '') +
+                '</td>' +
+                '<td>' + (it.staff ? staffHtml(it.staff) : '<span class="notes">—</span>') + '</td>' +
+              '</tr>'
+            ).join("") +
+          '</tbody>' +
+        '</table>';
+      grid.appendChild(wrap);
+    }
+  } else if (pickStaff !== "all") {
     const list = [];
     rooms.forEach((room, idx) => {
       if (pick !== "all" && String(idx) !== pick) return;
-      if (activeFloor !== "all" && floorOf(room.floor) !== activeFloor) return;
+      if (pick === "all" && activeFloor !== "all" && floorOf(room.floor) !== activeFloor) return;
       room.items.forEach(it => {
         if (matchesStaff(it.staff, pickStaff)) list.push({ room, it });
       });
@@ -682,7 +809,7 @@ function render() {
     let shown = 0;
     rooms.forEach((room, idx) => {
       if (pick !== "all" && String(idx) !== pick) return;
-      if (activeFloor !== "all" && floorOf(room.floor) !== activeFloor) return;
+      if (pick === "all" && activeFloor !== "all" && floorOf(room.floor) !== activeFloor) return;
       const items = room.items;
       if (!items.length) return;
       const colorClass = idx % 2 === 0 ? "blue" : "peach";
@@ -722,6 +849,12 @@ function render() {
     bulkIcsBtn.classList.add("hidden");
   }
 }
+
+viewToggleBtn.addEventListener("click", () => {
+  viewMode = viewMode === "cards" ? "table" : "cards";
+  updateViewToggleButton();
+  render();
+});
 
 document.querySelectorAll(".lang-btn").forEach(btn => {
   btn.addEventListener("click", () => {
