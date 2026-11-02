@@ -1594,13 +1594,6 @@ export function StaffAssignmentsView({
           font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
           margin-top: 2px;
         }
-        .staff-top-right {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 4px;
-          flex-shrink: 0;
-        }
         .staff-lang-toggle {
           display: inline-flex;
           border: 1px solid var(--border);
@@ -1916,35 +1909,32 @@ export function StaffAssignmentsView({
             </div>
             <div className="rev">
               {isFr
-                ? 'Révision v2026.11.02-r9 · 2026-11-02 13:14:30 EST (America/Montreal)'
-                : 'Revision v2026.11.02-r9 · 2026-11-02 13:14:30 EST (America/Montreal)'}
+                ? 'Révision v2026.11.02-r10 · 2026-11-02 13:16:30 EST (America/Montreal)'
+                : 'Revision v2026.11.02-r10 · 2026-11-02 13:16:30 EST (America/Montreal)'}
             </div>
           </div>
 
-          <div className="staff-top-right">
-            <div
-              className="staff-lang-toggle"
-              role="group"
-              aria-label="Language switcher"
+          <div
+            className="staff-lang-toggle"
+            role="group"
+            aria-label="Language switcher"
+          >
+            <button
+              type="button"
+              className="staff-lang-btn"
+              aria-pressed={locale === 'en'}
+              onClick={() => setLocale('en')}
             >
-              <button
-                type="button"
-                className="staff-lang-btn"
-                aria-pressed={locale === 'en'}
-                onClick={() => setLocale('en')}
-              >
-                EN
-              </button>
-              <button
-                type="button"
-                className="staff-lang-btn"
-                aria-pressed={locale === 'fr'}
-                onClick={() => setLocale('fr')}
-              >
-                FR
-              </button>
-            </div>
-            <div className="rev">v2026.11.02-r9 · 2026-11-02 13:14:30 EST</div>
+              EN
+            </button>
+            <button
+              type="button"
+              className="staff-lang-btn"
+              aria-pressed={locale === 'fr'}
+              onClick={() => setLocale('fr')}
+            >
+              FR
+            </button>
           </div>
         </div>
 
