@@ -91,7 +91,7 @@ const ROWS: RawRow[] = [
     '13:00 - 13:45',
     'From Data to Action: Building AI Agents with Google ADK, MCP, and Cloud Databases',
     'Gleb Otochkin',
-    'SAJAD (support), BILLY (main OBS operator)',
+    'DANIEL TO (support), BILLY (main OBS operator)',
     'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)',
   ],
   [
@@ -312,7 +312,7 @@ const ROWS: RawRow[] = [
     'The Danger Zone (4-1)',
     '4',
     '25',
-    '13:00 - 16:45',
+    '13:00 - 15:00',
     '4th-floor station (Danger Zone, bingo, photo booth, badge)',
     'GDG Montreal Community Lounge',
     'SARA (station volunteer)',
@@ -445,9 +445,9 @@ const ROWS: RawRow[] = [
     '4',
     '40',
     '07:00 - 08:30',
-    'AV setup for Under Pressure',
+    'Setup',
     '',
-    'SAMUEL (AV setup)',
+    'All staff (dispatched on site)',
     '',
   ],
   [
@@ -609,7 +609,7 @@ const ROWS: RawRow[] = [
     '11:15 - 12:00',
     'Flight Mode AI: Shipping Reliable Offline AI with Flutter and Dart',
     'Jhin Lee',
-    'ALI (OBS operator), YANIS (support), LUNE (sidekick), JHIN (speaker)',
+    'ALI (OBS operator), YANIS (support), WILSON (sidekick), JHIN (speaker)',
     'Yanis out in PM',
   ],
   [
@@ -711,7 +711,7 @@ const ROWS: RawRow[] = [
     '10:00 - 11:00',
     'Registration',
     '',
-    'MIMOH (organizer), BRIJ-PAUL',
+    'MIMOH (organizer), SOUAD',
     '',
   ],
   [
@@ -721,7 +721,7 @@ const ROWS: RawRow[] = [
     '11:00 - 12:00',
     'Registration',
     '',
-    'BRIJ-PAUL, NADIA, DANIEL TO',
+    'NADIA, DANIEL TO',
     '',
   ],
   [
@@ -950,8 +950,8 @@ const SESSION_FR: Record<string, string> = {
 };
 
 const NOTES_FR: Record<string, string> = {
-  'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel.':
-    'Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk. Installation AV Under Pressure : Samuel.',
+  'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.':
+    'Nous nous regrouperons pour répartir les tâches. Installation de Mr. Roboto : équipe Kanastruk.',
   'Last staff in each 3rd floor room. We will regroup and dispatch tasks.':
     'Dernier bénévole dans chaque salle du 3e étage. Nous nous regrouperons pour répartir les tâches.',
   '3rd floor wrap-up after 18:30': 'Rangement du 3e étage après 18h30',
@@ -972,6 +972,7 @@ const NOTES_FR: Record<string, string> = {
   'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)':
     'Le soutien garde aussi un œil sur la cabine photo et le Sega Genesis du 3e étage (sans bénévole dédié)',
   'Yanis out in PM': "Yanis absent l'après-midi",
+  'Brij-Paul relieves/pairs with Sara': 'Brij-Paul relève ou accompagne Sara',
 };
 
 function localizeRoomName(name: string, locale: Locale): string {
@@ -1293,7 +1294,7 @@ export function StaffAssignmentsView({
         speaker: '',
         staff: 'All staff (dispatched on site)',
         notes:
-          'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team. Under Pressure AV setup: Samuel.',
+          'We will regroup and dispatch tasks. Mr. Roboto setup: Kanastruk team.',
       },
       {
         roomName: SETUP_WRAP_GROUP_NAME,
@@ -1915,8 +1916,8 @@ export function StaffAssignmentsView({
             </div>
             <div className="rev">
               {isFr
-                ? 'Révision v2026.11.02-r8 · 2026-11-02 12:57:00 EST (America/Montreal)'
-                : 'Revision v2026.11.02-r8 · 2026-11-02 12:57:00 EST (America/Montreal)'}
+                ? 'Révision v2026.11.02-r9 · 2026-11-02 13:14:30 EST (America/Montreal)'
+                : 'Revision v2026.11.02-r9 · 2026-11-02 13:14:30 EST (America/Montreal)'}
             </div>
           </div>
 
@@ -1943,7 +1944,7 @@ export function StaffAssignmentsView({
                 FR
               </button>
             </div>
-            <div className="rev">v2026.11.02-r8 · 2026-11-02 12:57:00 EST</div>
+            <div className="rev">v2026.11.02-r9 · 2026-11-02 13:14:30 EST</div>
           </div>
         </div>
 
