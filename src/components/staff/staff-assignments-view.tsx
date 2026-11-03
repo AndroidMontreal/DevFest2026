@@ -306,7 +306,7 @@ const ROWS: RawRow[] = [
     '4th-floor station (Danger Zone, bingo, photo booth, badge)',
     'GDG Montreal Community Lounge',
     'ANDY (station volunteer)',
-    '',
+    'Andy out in PM',
   ],
   [
     'The Danger Zone (4-1)',
@@ -558,7 +558,7 @@ const ROWS: RawRow[] = [
     '13:15 - 14:45',
     'Build a Personal Productivity Assistant on Cloud Run (workshop)',
     'Rishab Kumar',
-    'ANDY (support), WILSON (support), OUMAIMA (workshop attendee)',
+    'WILSON (support), OUMAIMA (workshop attendee)',
     '',
   ],
   [
@@ -568,7 +568,7 @@ const ROWS: RawRow[] = [
     '15:00 - 16:30',
     'Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script (workshop)',
     'Cyprien Tankeu',
-    'ANDY (support), WILSON (support), DANIEL WEI (workshop attendee)',
+    'WILSON (support), DANIEL WEI (workshop attendee)',
     '',
   ],
   [
@@ -853,8 +853,8 @@ const ROWS: RawRow[] = [
     '12:00 - 13:00',
     'Raffle caller, 4th floor',
     '',
-    'ANDY',
-    'About 20 minutes',
+    'SAMUEL (organizer), LENZ (organizer)',
+    'About 20 minutes — coordinate 3rd/4th floor raffle logistics via WhatsApp group',
   ],
   [
     'Lunch raffle',
@@ -971,9 +971,12 @@ const NOTES_FR: Record<string, string> = {
   'Direct attendees downstairs for 17:00 closing keynote':
     'Diriger les participants vers le 3e étage pour la conférence de clôture à 17h00',
   'About 20 minutes': 'Environ 20 minutes',
+  'About 20 minutes — coordinate 3rd/4th floor raffle logistics via WhatsApp group':
+    'Environ 20 minutes — coordonner la logistique du tirage entre les 3e et 4e étages via le groupe WhatsApp',
   'Support also keeps an eye on 3rd-floor Photo Booth & Sega Genesis (staff-free)':
     'Le soutien garde aussi un œil sur la cabine photo et le Sega Genesis du 3e étage (sans bénévole dédié)',
   'Yanis out in PM': "Yanis absent l'après-midi",
+  'Andy out in PM': "Andy absent l'après-midi",
   'Brij-Paul relieves/pairs with Sara': 'Brij-Paul relève ou accompagne Sara',
 };
 
@@ -1923,8 +1926,8 @@ export function StaffAssignmentsView({
             </div>
             <div className="rev">
               {isFr
-                ? 'Révision v2026.11.03-r20 · 2026-11-03 14:13:30 EST (America/Montreal)'
-                : 'Revision v2026.11.03-r20 · 2026-11-03 14:13:30 EST (America/Montreal)'}
+                ? 'Révision v2026.11.03-r21 · 2026-11-03 17:30:30 EST (America/Montreal)'
+                : 'Revision v2026.11.03-r21 · 2026-11-03 17:30:30 EST (America/Montreal)'}
             </div>
           </div>
 
