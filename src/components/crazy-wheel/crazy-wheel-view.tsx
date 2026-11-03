@@ -1356,10 +1356,13 @@ export function CrazyWheelView() {
           --font-body: 'Rajdhani', sans-serif;
           --font-mono: 'Share Tech Mono', monospace;
 
-          position: relative;
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
           width: 100%;
-          min-height: 100vh;
+          height: 100vh;
           overflow-x: hidden;
+          overflow-y: auto;
           background-color: var(--bg-deep);
           color: var(--text-bright);
           font-family: var(--font-body);

@@ -42,6 +42,10 @@ export function SiteHeaderShell({ header, nav }: SiteHeaderShellProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  if (/^\/(en\/|fr\/)?(crazywheel|staff)(\/|$)/i.test(pathname)) {
+    return null;
+  }
+
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
