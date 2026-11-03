@@ -1,12 +1,17 @@
 'use client';
 
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import SocialLinks from './social-links';
 
 export const SiteFooter = () => {
+  const pathname = usePathname();
   const t = useTranslations('Footer');
+
+  if (/^\/(en\/|fr\/)?(crazywheel|staff)(\/|$)/i.test(pathname)) {
+    return null;
+  }
 
   const pastEventsLinks = t.raw('pastEvents.links') as {
     label: string;
