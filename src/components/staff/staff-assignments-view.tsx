@@ -202,7 +202,7 @@ const ROWS: RawRow[] = [
     '14:00 - 14:45',
     'Beyond Push-to-Talk: Real-Time Fact-Checking Agents with Gemini Live API and Google Search Grounding',
     'Aisha Yaseen',
-    'WANLIN (support), MICHAEL (OBS operator)',
+    'SAJAD (support), MICHAEL (OBS operator)',
     '',
   ],
   [
@@ -325,7 +325,7 @@ const ROWS: RawRow[] = [
     '14:00 - 15:00',
     '4th-floor station (Danger Zone, bingo, photo booth, badge)',
     'GDG Montreal Community Lounge',
-    'SAJAD (station volunteer)',
+    'SOUAD (station volunteer)',
     '',
   ],
   [
@@ -406,7 +406,7 @@ const ROWS: RawRow[] = [
     '14:00 - 14:15',
     'Lightning: Six Agents, One Patient Record: A Google ADK Retrospective',
     'Radwan Baba',
-    'SOUAD (support), REBECCA (OBS operator)',
+    'BRIJ-PAUL (support), REBECCA (OBS operator)',
     '',
   ],
   [
@@ -558,7 +558,7 @@ const ROWS: RawRow[] = [
     '13:15 - 14:45',
     'Build a Personal Productivity Assistant on Cloud Run (workshop)',
     'Rishab Kumar',
-    'JACKSON (support), WILSON (support), OUMAIMA (workshop attendee)',
+    'ANDY (support), WILSON (support), OUMAIMA (workshop attendee)',
     '',
   ],
   [
@@ -568,7 +568,7 @@ const ROWS: RawRow[] = [
     '15:00 - 16:30',
     'Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script (workshop)',
     'Cyprien Tankeu',
-    'JACKSON (support), WILSON (support), DANIEL WEI (workshop attendee)',
+    'ANDY (support), WILSON (support), DANIEL WEI (workshop attendee)',
     '',
   ],
   [
@@ -578,7 +578,7 @@ const ROWS: RawRow[] = [
     '16:45 - 17:00',
     'Wrap-up',
     '',
-    'JACKSON, WILSON (last staff in room)',
+    'WILSON (last staff in room)',
     '',
   ],
 
@@ -599,7 +599,7 @@ const ROWS: RawRow[] = [
     '10:15 - 11:00',
     'Agentic Mobile Testing: Automating Flutter E2E Flows with Maestro MCP',
     'Ethiel Adiassa',
-    'ALI (OBS operator), YANIS (support), JACKSON (sidekick)',
+    'ALI (OBS operator), YANIS (support), BRIJ-PAUL (sidekick)',
     'Yanis out in PM',
   ],
   [
@@ -619,7 +619,7 @@ const ROWS: RawRow[] = [
     '13:00 - 13:45',
     "Ouvrir la boîte noire : L'interprétabilité mécaniste des LLMs",
     'David Cardozo',
-    'ALI (OBS operator), JERWIN (support), ANDY (sidekick)',
+    'ALI (OBS operator), JERWIN (support), KHASHAYAR (sidekick)',
     '',
   ],
   [
@@ -629,7 +629,7 @@ const ROWS: RawRow[] = [
     '14:00 - 14:45',
     'Android AppFunctions: Exposing Your App to AI Agents',
     'Nav Singh',
-    'ALI (OBS operator), JERWIN (support), ANDY (sidekick), NAV (speaker)',
+    'ALI (OBS operator), JERWIN (support), SARA (sidekick), NAV (speaker)',
     '',
   ],
   [
@@ -649,7 +649,7 @@ const ROWS: RawRow[] = [
     '16:00 - 16:45',
     'Make Your AI Agent Think Fast and Slow: System One Decisions in Google ADK',
     'Thomas Chong',
-    'ALI (OBS operator), JERWIN (support), WANLIN (sidekick)',
+    'ALI (OBS operator), JERWIN (support), KHASHAYAR (sidekick)',
     '',
   ],
   [
@@ -691,7 +691,7 @@ const ROWS: RawRow[] = [
     '08:30 - 09:25',
     'Registration & breakfast',
     '',
-    'ARUNESH, FLORIAN, STEFANIA, DANIEL WEI (organizers), WANLIN, SAJAD, BRIJ-PAUL, SOUAD, ANDY, NADIA',
+    'ARUNESH, FLORIAN, STEFANIA, DANIEL WEI (organizers), WANLIN, SAJAD, JACKSON, BRIJ-PAUL, SOUAD, ANDY, NADIA',
     'NADIA is practicing for her own DevFest a week later',
   ],
   [
@@ -1343,7 +1343,7 @@ export function StaffAssignmentsView({
   }, []);
 
   const staffNamesList = useMemo<string[]>(() => {
-    const peopleSet = new Set<string>();
+    const peopleSet = new Set<string>(['WANLIN']);
     rooms.forEach((r) =>
       r.items.forEach((it) =>
         parseStaffNames(it.staff).forEach((n) => {
@@ -1923,8 +1923,8 @@ export function StaffAssignmentsView({
             </div>
             <div className="rev">
               {isFr
-                ? 'Révision v2026.11.02-r12 · 2026-11-02 14:30:05 EST (America/Montreal)'
-                : 'Revision v2026.11.02-r12 · 2026-11-02 14:30:05 EST (America/Montreal)'}
+                ? 'Révision v2026.11.03-r17 · 2026-11-03 09:14:25 EST (America/Montreal)'
+                : 'Revision v2026.11.03-r17 · 2026-11-03 09:14:25 EST (America/Montreal)'}
             </div>
           </div>
 
