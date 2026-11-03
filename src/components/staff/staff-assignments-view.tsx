@@ -131,7 +131,7 @@ const ROWS: RawRow[] = [
     '17:00 - 17:15',
     'Closing Keynote — Google Developer Groups (GDG) on Campus: Mission, Impact, and Student Perspectives',
     'Stefania Pecore, Michael Persico, Rebecca Abi Chahine, Daniel Wei, Oumaima El khayiri',
-    'STEFANIA (closing talk - moderator), MICHAEL (panelist), REBECCA (panelist), DANIEL WEI (panelist), OUMAIMA (panelist)',
+    'STEFANIA (Introductions), MICHAEL (panelist), REBECCA (panelist), DANIEL WEI (panelist), OUMAIMA (panelist)',
     '',
   ],
   [
@@ -1923,8 +1923,8 @@ export function StaffAssignmentsView({
             </div>
             <div className="rev">
               {isFr
-                ? 'Révision v2026.11.03-r19 · 2026-11-03 13:49:10 EST (America/Montreal)'
-                : 'Revision v2026.11.03-r19 · 2026-11-03 13:49:10 EST (America/Montreal)'}
+                ? 'Révision v2026.11.03-r20 · 2026-11-03 14:13:30 EST (America/Montreal)'
+                : 'Revision v2026.11.03-r20 · 2026-11-03 14:13:30 EST (America/Montreal)'}
             </div>
           </div>
 
