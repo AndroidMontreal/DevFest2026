@@ -315,7 +315,7 @@ const ROWS: RawRow[] = [
     '13:00 - 14:00',
     '4th-floor station (Danger Zone, bingo, photo booth, badge)',
     'GDG Montreal Community Lounge',
-    'SARA (station volunteer)',
+    'SAJAD (station volunteer)',
     '',
   ],
   [
@@ -345,7 +345,7 @@ const ROWS: RawRow[] = [
     '16:00 - 16:45',
     '4th-floor station (Danger Zone, bingo, photo booth, badge)',
     'GDG Montreal Community Lounge',
-    'SARA (station volunteer)',
+    'BRIJ-PAUL (station volunteer)',
     '',
   ],
   [
@@ -355,7 +355,7 @@ const ROWS: RawRow[] = [
     '16:45 - 17:00',
     'Wrap-up',
     '',
-    'SARA (last staff in room)',
+    'BRIJ-PAUL (last staff in room)',
     '',
   ],
 
@@ -387,7 +387,7 @@ const ROWS: RawRow[] = [
     "The Web Could be Agentic: A first dive into Google's WebMCP Proposal",
     'Lester Botello',
     'SARA (support), REBECCA (OBS operator)',
-    '',
+    'Sara out in PM',
   ],
   [
     'Working For The Weekend',
@@ -629,7 +629,7 @@ const ROWS: RawRow[] = [
     '14:00 - 14:45',
     'Android AppFunctions: Exposing Your App to AI Agents',
     'Nav Singh',
-    'ALI (OBS operator), JERWIN (support), SARA (sidekick), NAV (speaker)',
+    'ALI (OBS operator), JERWIN (support), NAV (speaker)',
     '',
   ],
   [
@@ -977,6 +977,7 @@ const NOTES_FR: Record<string, string> = {
     'Le soutien garde aussi un œil sur la cabine photo et le Sega Genesis du 3e étage (sans bénévole dédié)',
   'Yanis out in PM': "Yanis absent l'après-midi",
   'Andy out in PM': "Andy absent l'après-midi",
+  'Sara out in PM': "Sara absente l'après-midi",
   'Brij-Paul relieves/pairs with Sara': 'Brij-Paul relève ou accompagne Sara',
 };
 
@@ -1928,8 +1929,8 @@ export function StaffAssignmentsView({
             </div>
             <div className="rev">
               {isFr
-                ? 'Révision v2026.11.04-r22 · 2026-11-04 09:17:00 EST (America/Montreal)'
-                : 'Revision v2026.11.04-r22 · 2026-11-04 09:17:00 EST (America/Montreal)'}
+                ? 'Révision v2026.11.04-r23 · 2026-11-04 16:24:30 EST (America/Montreal)'
+                : 'Revision v2026.11.04-r23 · 2026-11-04 16:24:30 EST (America/Montreal)'}
             </div>
           </div>
 
