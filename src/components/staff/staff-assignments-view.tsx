@@ -691,7 +691,7 @@ const ROWS: RawRow[] = [
     '08:30 - 09:25',
     'Registration & breakfast',
     '',
-    'ARUNESH, FLORIAN, STEFANIA, DANIEL WEI (organizers), WANLIN, SAJAD, JACKSON, BRIJ-PAUL, SOUAD, ANDY, NADIA',
+    'ARUNESH, FLORIAN, DANIEL WEI (organizers), WANLIN, SAJAD, JACKSON, BRIJ-PAUL, SOUAD, ANDY, NADIA',
     'NADIA is practicing for her own DevFest a week later',
   ],
   [
@@ -1251,7 +1251,9 @@ function downloadIcs(
 function matchesStaff(staffStr: string, selectedStaff: string): boolean {
   if (selectedStaff === 'all') return true;
   if (!staffStr) return false;
-  if (/all staff/i.test(staffStr)) return true;
+  if (/all staff/i.test(staffStr)) {
+    return selectedStaff.toUpperCase() !== 'STEFANIA';
+  }
   const names = parseStaffNames(staffStr).map((n) => n.toUpperCase());
   return names.includes(selectedStaff.toUpperCase());
 }
@@ -1926,8 +1928,8 @@ export function StaffAssignmentsView({
             </div>
             <div className="rev">
               {isFr
-                ? 'Révision v2026.11.03-r21 · 2026-11-03 17:30:30 EST (America/Montreal)'
-                : 'Revision v2026.11.03-r21 · 2026-11-03 17:30:30 EST (America/Montreal)'}
+                ? 'Révision v2026.11.04-r22 · 2026-11-04 09:17:00 EST (America/Montreal)'
+                : 'Revision v2026.11.04-r22 · 2026-11-04 09:17:00 EST (America/Montreal)'}
             </div>
           </div>
 
