@@ -7,6 +7,8 @@ const DEFAULT_GOOGLE_SHEET_URL =
 
 const ENTRY_GOOGLE_FORM_URL = 'https://forms.gle/uDH1NmnFMeqgkCQ16';
 
+const RAFFLE_RELEASE_VERSION = 'v2026.11.05-r5';
+
 const DEFAULT_SHEET_HEADERS = [
   'Timestamp',
   'Email Address',
@@ -1666,6 +1668,19 @@ export function CrazyRaffleView() {
           color: #04130c;
         }
 
+        .crazy-raffle-root .version-badge {
+          font-family: var(--font-mono);
+          font-size: clamp(0.68rem, 0.78vw, 0.82rem);
+          font-weight: 700;
+          letter-spacing: 0.6px;
+          padding: clamp(5px, 0.6vh, 8px) clamp(8px, 0.75vw, 11px);
+          border-radius: 999px;
+          background: rgba(255, 190, 11, 0.14);
+          border: 1px solid rgba(255, 190, 11, 0.55);
+          color: var(--neon-yellow);
+          white-space: nowrap;
+        }
+
         /* PACKT BOOK TITLE SELECTOR BAR - WRAPS CLEANLY, ZERO HORIZONTAL SCROLL */
         .crazy-raffle-root .book-selector-bar {
           position: relative;
@@ -2153,6 +2168,12 @@ export function CrazyRaffleView() {
           >
             ⚙️ SETUP
           </button>
+          <span
+            className="version-badge"
+            title={`CrazyRaffle Release ${RAFFLE_RELEASE_VERSION}`}
+          >
+            {RAFFLE_RELEASE_VERSION}
+          </span>
         </div>
       </header>
 
@@ -2541,7 +2562,7 @@ export function CrazyRaffleView() {
                     marginLeft: 8,
                   }}
                 >
-                  v2026.11.05-r4
+                  {RAFFLE_RELEASE_VERSION}
                 </span>
               </h2>
               <button
