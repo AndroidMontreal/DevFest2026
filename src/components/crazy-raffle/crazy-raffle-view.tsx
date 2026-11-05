@@ -7,7 +7,7 @@ const DEFAULT_GOOGLE_SHEET_URL =
 
 const ENTRY_GOOGLE_FORM_URL = 'https://forms.gle/uDH1NmnFMeqgkCQ16';
 
-const RAFFLE_RELEASE_VERSION = 'v2026.11.05-r5';
+const RAFFLE_RELEASE_VERSION = 'v2026.11.05-r6';
 
 const DEFAULT_SHEET_HEADERS = [
   'Timestamp',
@@ -2144,14 +2144,6 @@ export function CrazyRaffleView() {
           >
             📥 EXPORT CSV ({lockedWinnersHistory.length})
           </button>
-          <a
-            href={ENTRY_GOOGLE_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="top-btn"
-          >
-            📝 FORM
-          </a>
           <button
             type="button"
             className="top-btn"
@@ -2627,6 +2619,15 @@ export function CrazyRaffleView() {
                 >
                   📂 CSV
                 </button>
+                <a
+                  href={ENTRY_GOOGLE_FORM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="top-btn"
+                  title="Open Raffle Entry Google Form"
+                >
+                  📝 ENTRY FORM
+                </a>
                 <input
                   ref={fileInputRef}
                   type="file"
