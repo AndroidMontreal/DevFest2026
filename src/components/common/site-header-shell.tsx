@@ -42,7 +42,7 @@ export function SiteHeaderShell({ header, nav }: SiteHeaderShellProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  if (/^\/(en\/|fr\/)?(crazywheel|staff)(\/|$)/i.test(pathname)) {
+  if (/^\/(en\/|fr\/)?(crazywheel|crazyraffle|staff)(\/|$)/i.test(pathname)) {
     return null;
   }
 

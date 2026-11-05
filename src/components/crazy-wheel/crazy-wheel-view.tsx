@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
 interface SliceTheme {
@@ -42,25 +43,28 @@ const SYNTH_SLICE_PALETTE: readonly SliceTheme[] = [
   { bg: '#b5179e', border: '#ffbe0b', text: '#ffffff' }, // Retro Berry
 ];
 
-const DEMO_GDG_SHEET_CSV = `Email,Full Name,Pixel Watch 3,Google Cloud Swag Pack,JetBrains All Products Pack,Gemini AI Hoodie
-ada@analytical.org,Ada Lovelace,Yes,Yes,No,Yes
-grace@cobol.navy.mil,Grace Hopper,Yes,No,Yes,Yes
-alan@bletchley.uk,Alan Turing,No,Yes,Yes,Yes
-margaret@apollo.nasa.gov,Margaret Hamilton,Yes,Yes,Yes,No
-katherine@orbital.nasa.gov,Katherine Johnson,Yes,No,No,Yes
-linus@kernel.org,Linus Torvalds,No,Yes,Yes,No
-timbl@w3.org,Tim Berners-Lee,Yes,Yes,No,Yes
-radia@spanningtree.net,Radia Perlman,No,Yes,Yes,Yes
-hedy@freqhop.io,Hedy Lamarr,Yes,No,Yes,Yes
-dmr@bell-labs.com,Dennis Ritchie,Yes,Yes,No,No
-liskov@csail.mit.edu,Barbara Liskov,No,Yes,Yes,Yes
-knuth@tex.stanford.edu,Donald Knuth,No,No,Yes,No
-guido@python.org,Guido van Rossum,Yes,Yes,Yes,Yes
-brendan@js-engine.dev,Brendan Eich,Yes,No,Yes,No
-solomon@containers.dev,Solomon Hykes,No,Yes,No,Yes
-kelsey@serverless.cloud,Kelsey Hightower,Yes,Yes,Yes,Yes
-jeff@deepmind.google,Jeff Dean,Yes,Yes,No,Yes
-feifei@vision.ai,Fei-Fei Li,Yes,No,Yes,Yes`;
+const DEFAULT_GOOGLE_SHEET_URL =
+  'https://docs.google.com/spreadsheets/d/1D04JStTF_TwXjcHKKTKpBaAH5FZNzMHyVyKUebZXU1U/edit?resourcekey=&gid=1616495823#gid=1616495823';
+
+const DEMO_GDG_SHEET_CSV = `Timestamp,Email Address,Nom Complet / Full Name,1 year license for a Jetbrain IDE (6),Kodeco e-book voucher (5),Packt Book - Android Programming for Beginners (2),Packt Book - How to Build Applications with Kotlin (1),Packt Book - Essential Data Structures and Algorithms in Java (1),Packt Book - Flutter for Beginners (3),Packt Book - Enterprise Vibe Coding for Agentic Engineering (2),Packt Book - Distributed AI Systems (2),Packt Book - Flutter Cookbook (3)
+2026-11-06 08:45:00,ada@analytical.org,Ada Lovelace,Yes,Yes,No,Yes,No,Yes,Yes,No,No
+2026-11-06 08:46:10,grace@cobol.navy.mil,Grace Hopper,Yes,No,Yes,No,Yes,No,Yes,Yes,No
+2026-11-06 08:47:22,alan@bletchley.uk,Alan Turing,No,Yes,Yes,Yes,Yes,No,No,Yes,Yes
+2026-11-06 08:48:05,margaret@apollo.nasa.gov,Margaret Hamilton,Yes,Yes,No,No,No,Yes,Yes,No,Yes
+2026-11-06 08:49:12,katherine@orbital.nasa.gov,Katherine Johnson,Yes,No,Yes,No,No,Yes,No,Yes,No
+2026-11-06 08:50:40,linus@kernel.org,Linus Torvalds,Yes,Yes,No,Yes,Yes,No,No,Yes,No
+2026-11-06 08:51:19,timbl@w3.org,Tim Berners-Lee,No,Yes,Yes,No,No,Yes,Yes,No,Yes
+2026-11-06 08:52:03,radia@spanningtree.net,Radia Perlman,Yes,No,No,Yes,Yes,No,Yes,Yes,No
+2026-11-06 08:53:44,hedy@freqhop.io,Hedy Lamarr,Yes,Yes,Yes,No,No,Yes,No,No,Yes
+2026-11-06 08:54:15,dmr@bell-labs.com,Dennis Ritchie,Yes,No,No,Yes,Yes,No,No,Yes,No
+2026-11-06 08:55:28,liskov@csail.mit.edu,Barbara Liskov,No,Yes,Yes,No,Yes,Yes,Yes,No,No
+2026-11-06 08:56:02,knuth@tex.stanford.edu,Donald Knuth,Yes,Yes,No,No,Yes,No,No,Yes,Yes
+2026-11-06 08:57:31,guido@python.org,Guido van Rossum,Yes,Yes,Yes,Yes,No,Yes,Yes,No,Yes
+2026-11-06 08:58:49,brendan@js-engine.dev,Brendan Eich,No,Yes,No,Yes,No,Yes,No,Yes,Yes
+2026-11-06 08:59:11,solomon@containers.dev,Solomon Hykes,Yes,No,Yes,No,No,No,Yes,Yes,No
+2026-11-06 09:00:25,kelsey@serverless.cloud,Kelsey Hightower,Yes,Yes,No,Yes,No,Yes,Yes,Yes,Yes
+2026-11-06 09:01:38,jeff@deepmind.google,Jeff Dean,Yes,No,Yes,No,Yes,No,Yes,Yes,No
+2026-11-06 09:02:50,feifei@vision.ai,Fei-Fei Li,Yes,Yes,No,No,No,Yes,Yes,Yes,Yes`;
 
 class SynthAudioEngine {
   ctx: AudioContext | null = null;
@@ -186,14 +190,22 @@ function extractGoogleSheetInfo(inputUrlOrId: string): SheetInfo | null {
 
   const idMatch = trimmed.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
   const gidMatch = trimmed.match(/[#&?]gid=([0-9]+)/);
-  const gid = gidMatch ? gidMatch[1] : '0';
 
   if (idMatch) {
-    return { sheetId: idMatch[1], gid };
+    const sheetId = idMatch[1];
+    const defaultGid =
+      sheetId === '1D04JStTF_TwXjcHKKTKpBaAH5FZNzMHyVyKUebZXU1U'
+        ? '1616495823'
+        : '0';
+    return { sheetId, gid: gidMatch ? gidMatch[1] : defaultGid };
   }
 
   if (/^[a-zA-Z0-9-_]{20,}$/.test(trimmed)) {
-    return { sheetId: trimmed, gid: '0' };
+    const defaultGid =
+      trimmed === '1D04JStTF_TwXjcHKKTKpBaAH5FZNzMHyVyKUebZXU1U'
+        ? '1616495823'
+        : '0';
+    return { sheetId: trimmed, gid: defaultGid };
   }
 
   return { directUrl: trimmed };
@@ -558,8 +570,8 @@ export function CrazyWheelView() {
     function ingestCSVText(csvText: string, sourceLabel = 'SHEET LOADED') {
       const { headers, records } = parseCSV(csvText);
 
-      if (headers.length === 0 || records.length === 0) {
-        setStatus('ERROR // NO VALID ROWS FOUND IN SHEET', 'error');
+      if (headers.length === 0) {
+        setStatus('ERROR // NO VALID HEADERS FOUND IN SHEET', 'error');
         return;
       }
 
@@ -579,7 +591,7 @@ export function CrazyWheelView() {
 
       const preferredNameHeader =
         headers.find((h) =>
-          /name|attendee|participant|user|speaker|member/i.test(h),
+          /nom|name|attendee|participant|user|speaker|member/i.test(h),
         ) || headers[0];
       dom.nameColumnSelect.value = preferredNameHeader;
       state.nameColumn = preferredNameHeader;
@@ -600,7 +612,7 @@ export function CrazyWheelView() {
       dom.emailColumnSelect.disabled = false;
 
       const detectedEmailHeader = headers.find((h) =>
-        /email|e-mail|mail/i.test(h),
+        /email|e-mail|mail|courriel/i.test(h),
       );
       if (detectedEmailHeader) {
         dom.emailColumnSelect.value = detectedEmailHeader;
@@ -619,7 +631,10 @@ export function CrazyWheelView() {
     }
 
     async function fetchGoogleSheet() {
-      const rawInput = dom.sheetUrlInput.value;
+      const rawInput = dom.sheetUrlInput.value.trim() || DEFAULT_GOOGLE_SHEET_URL;
+      if (!dom.sheetUrlInput.value.trim()) {
+        dom.sheetUrlInput.value = DEFAULT_GOOGLE_SHEET_URL;
+      }
       const info = extractGoogleSheetInfo(rawInput);
 
       if (!info) {
@@ -1182,8 +1197,7 @@ export function CrazyWheelView() {
       if (e.key === 'Enter') void fetchGoogleSheet();
     };
     const onLoadDemo = () => {
-      dom.sheetUrlInput.value =
-        'https://docs.google.com/spreadsheets/d/GDG-DEVFEST-MTL-26-DEMO/edit#gid=0';
+      dom.sheetUrlInput.value = DEFAULT_GOOGLE_SHEET_URL;
       ingestCSVText(DEMO_GDG_SHEET_CSV, 'DEMO DEVFEST MTL SHEET LOADED');
     };
     const onTogglePaste = () => {
@@ -1293,6 +1307,7 @@ export function CrazyWheelView() {
 
     renderWheel();
     renderRosterUI();
+    void fetchGoogleSheet();
 
     return () => {
       if (state.fillRafId) cancelAnimationFrame(state.fillRafId);
@@ -2472,6 +2487,14 @@ export function CrazyWheelView() {
               0
             </span>
           </div>
+          <Link
+            className="icon-btn"
+            href="/CrazyRaffle"
+            style={{ textDecoration: 'none' }}
+            title="Switch to 5s Category Shuffler (/CrazyRaffle)"
+          >
+            🎲 CRAZY RAFFLE
+          </Link>
           <button
             className="icon-btn"
             id="soundToggleBtn"
@@ -2508,6 +2531,7 @@ export function CrazyWheelView() {
                 <input
                   type="text"
                   id="sheetUrlInput"
+                  defaultValue={DEFAULT_GOOGLE_SHEET_URL}
                   placeholder="https://docs.google.com/spreadsheets/d/..."
                   autoComplete="off"
                 />
