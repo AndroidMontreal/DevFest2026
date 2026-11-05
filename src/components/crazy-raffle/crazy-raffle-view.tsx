@@ -7,6 +7,21 @@ const DEFAULT_GOOGLE_SHEET_URL =
 
 const ENTRY_GOOGLE_FORM_URL = 'https://forms.gle/uDH1NmnFMeqgkCQ16';
 
+const DEFAULT_SHEET_HEADERS = [
+  'Timestamp',
+  'Email Address',
+  'Nom Complet / Full Name',
+  '1 year license for a Jetbrain IDE (6)',
+  'Kodeco e-book voucher (5)',
+  'Packt Book - Android Programming for Beginners (2)',
+  'Packt Book - How to Build Applications with Kotlin (1)',
+  'Packt Book - Essential Data Structures and Algorithms in Java (1)',
+  'Packt Book - Flutter for Beginners (3)',
+  'Packt Book - Enterprise Vibe Coding for Agentic Engineering (2)',
+  'Packt Book - Distributed AI Systems (2)',
+  'Packt Book - Flutter Cookbook (3)',
+];
+
 const DEMO_RAFFLE_CSV = `Timestamp,Email Address,Nom Complet / Full Name,1 year license for a Jetbrain IDE (6),Kodeco e-book voucher (5),Packt Book - Android Programming for Beginners (2),Packt Book - How to Build Applications with Kotlin (1),Packt Book - Essential Data Structures and Algorithms in Java (1),Packt Book - Flutter for Beginners (3),Packt Book - Enterprise Vibe Coding for Agentic Engineering (2),Packt Book - Distributed AI Systems (2),Packt Book - Flutter Cookbook (3)
 2026-11-06 08:45:00,ada@analytical.org,Ada Lovelace,Yes,Yes,No,Yes,No,Yes,Yes,No,No
 2026-11-06 08:46:10,grace@cobol.navy.mil,Grace Hopper,Yes,No,Yes,No,Yes,No,Yes,Yes,No
@@ -47,6 +62,7 @@ export interface RaffleParticipant {
 export interface MainCategoryGroup {
   id: string;
   label: string;
+  shortLabel: string;
   icon: string;
   badgeColor: string;
   columns: string[];
@@ -56,6 +72,8 @@ export interface MainCategoryGroup {
 class SynthRaffleAudio {
   ctx: AudioContext | null = null;
   enabled = true;
+  stepCounter = 0;
+  noiseBuffer: AudioBuffer | null = null;
 
   init() {
     if (!this.ctx && typeof window !== 'undefined') {
@@ -71,9 +89,6 @@ class SynthRaffleAudio {
       void this.ctx.resume();
     }
   }
-
-  stepCounter = 0;
-  noiseBuffer: AudioBuffer | null = null;
 
   private getNoiseBuffer(): AudioBuffer | null {
     if (!this.ctx) return null;
@@ -96,18 +111,16 @@ class SynthRaffleAudio {
     const now = this.ctx.currentTime;
     const step = this.stepCounter++;
 
-    // 1980s Outrun 4-chord progression (Am -> F -> C -> G) shifting across the 5s shuffle
     const chordBank = [
-      { bass: 55.0, notes: [220.0, 261.63, 329.63, 440.0, 523.25, 659.25, 880.0] }, // A minor
-      { bass: 43.65, notes: [174.61, 220.0, 261.63, 349.23, 440.0, 523.25, 698.46] }, // F major
-      { bass: 65.41, notes: [261.63, 329.63, 392.0, 523.25, 659.25, 783.99, 1046.5] }, // C major
-      { bass: 49.0, notes: [196.0, 246.94, 293.66, 392.0, 493.88, 587.33, 783.99] }, // G major
+      { bass: 55.0, notes: [220.0, 261.63, 329.63, 440.0, 523.25, 659.25, 880.0] },
+      { bass: 43.65, notes: [174.61, 220.0, 261.63, 349.23, 440.0, 523.25, 698.46] },
+      { bass: 65.41, notes: [261.63, 329.63, 392.0, 523.25, 659.25, 783.99, 1046.5] },
+      { bass: 49.0, notes: [196.0, 246.94, 293.66, 392.0, 493.88, 587.33, 783.99] },
     ];
     const safeProgress = Math.max(0, Math.min(1, progress));
     const chordIdx = Math.max(0, Math.min(3, Math.floor(safeProgress * 4)));
     const chord = chordBank[chordIdx] || chordBank[0];
 
-    // 1. Detuned 80s Polysynth Arpeggio (Saw + Pulse through Resonant Lowpass Filter)
     const arpFreq =
       chord.notes[Math.floor(Math.random() * chord.notes.length)] *
       (Math.random() < 0.22 ? 1.5 : 1);
@@ -120,10 +133,10 @@ class SynthRaffleAudio {
     osc1.type = 'sawtooth';
     osc2.type = 'square';
     osc1.frequency.setValueAtTime(arpFreq, now);
-    osc2.frequency.setValueAtTime(arpFreq * 1.006, now); // Classic 80s chorus detune
+    osc2.frequency.setValueAtTime(arpFreq * 1.006, now);
 
     filter.type = 'lowpass';
-    const cutoff = 650 + progress * 4200 + Math.random() * 600;
+    const cutoff = 650 + safeProgress * 4200 + Math.random() * 600;
     filter.frequency.setValueAtTime(cutoff, now);
     filter.frequency.exponentialRampToValueAtTime(280, now + 0.085);
     filter.Q.setValueAtTime(5.5, now);
@@ -141,7 +154,6 @@ class SynthRaffleAudio {
     osc1.stop(now + 0.09);
     osc2.stop(now + 0.09);
 
-    // 2. Pumping 80s Analog Sub-Bass on even steps
     if (step % 2 === 0) {
       const bassOsc = this.ctx.createOscillator();
       const bassFilter = this.ctx.createBiquadFilter();
@@ -166,44 +178,40 @@ class SynthRaffleAudio {
       bassOsc.stop(now + 0.12);
     }
 
-    // 3. 1980s Simmons Electronic Laser Tom / Gated Snare Accents
-    if (step % 4 === 0) {
-      // Punchy 80s electronic kick/tom pitch drop
+    if (step % 6 === 0) {
       const tomOsc = this.ctx.createOscillator();
       const tomGain = this.ctx.createGain();
-      tomOsc.type = 'triangle';
-      const startPitch = 190 + Math.random() * 140;
+      tomOsc.type = 'sine';
+      const startPitch = 140 + Math.random() * 90;
       tomOsc.frequency.setValueAtTime(startPitch, now);
-      tomOsc.frequency.exponentialRampToValueAtTime(48, now + 0.09);
+      tomOsc.frequency.exponentialRampToValueAtTime(38, now + 0.11);
 
-      tomGain.gain.setValueAtTime(0.18, now);
-      tomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.095);
+      tomGain.gain.setValueAtTime(0.15, now);
+      tomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
 
       tomOsc.connect(tomGain);
       tomGain.connect(this.ctx.destination);
       tomOsc.start(now);
-      tomOsc.stop(now + 0.1);
-    } else if (step % 4 === 2) {
-      // 80s Gated Reverb Snare / Hi-Hat Noise Burst
+      tomOsc.stop(now + 0.12);
+    } else if (step % 6 === 3) {
       const noiseBuf = this.getNoiseBuffer();
       if (noiseBuf) {
         const noiseSrc = this.ctx.createBufferSource();
-        const bandpass = this.ctx.createBiquadFilter();
-        const noiseGain = this.ctx.createGain();
-
         noiseSrc.buffer = noiseBuf;
-        bandpass.type = 'bandpass';
-        bandpass.frequency.setValueAtTime(1800 + Math.random() * 1200, now);
-        bandpass.Q.setValueAtTime(1.2, now);
+        const snareFilter = this.ctx.createBiquadFilter();
+        snareFilter.type = 'bandpass';
+        snareFilter.frequency.setValueAtTime(1100, now);
+        snareFilter.Q.setValueAtTime(0.9, now);
 
-        noiseGain.gain.setValueAtTime(0.09, now);
-        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        const snareGain = this.ctx.createGain();
+        snareGain.gain.setValueAtTime(0.12, now);
+        snareGain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
 
-        noiseSrc.connect(bandpass);
-        bandpass.connect(noiseGain);
-        noiseGain.connect(this.ctx.destination);
+        noiseSrc.connect(snareFilter);
+        snareFilter.connect(snareGain);
+        snareGain.connect(this.ctx.destination);
         noiseSrc.start(now);
-        noiseSrc.stop(now + 0.085);
+        noiseSrc.stop(now + 0.12);
       }
     }
   }
@@ -395,65 +403,28 @@ function cleanPrizeLabel(header: string): string {
   return header.replace(/\s*\(\d+\)\s*$/, '').trim();
 }
 
-function cryptoShuffle<T>(items: T[]): T[] {
-  const arr = [...items];
-  const n = arr.length;
-  if (n <= 1) return arr;
+function shortBookTitle(header: string): string {
+  return header.replace(/^Packt Book\s*-\s*/i, '').trim();
+}
 
-  const randBuf = new Uint32Array(n);
+function cryptoShuffle<T>(arr: readonly T[]): T[] {
+  const copy = [...arr];
+  if (copy.length <= 1) return copy;
+  const randBuf = new Uint32Array(copy.length);
   if (typeof window !== 'undefined' && window.crypto?.getRandomValues) {
     window.crypto.getRandomValues(randBuf);
   } else {
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < copy.length; i++) {
       randBuf[i] = Math.floor(Math.random() * 0xffffffff);
     }
   }
-
-  for (let i = n - 1; i > 0; i--) {
+  for (let i = copy.length - 1; i > 0; i--) {
     const j = randBuf[i] % (i + 1);
-    const tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
+    const tmp = copy[i];
+    copy[i] = copy[j];
+    copy[j] = tmp;
   }
-  return arr;
-}
-
-function assignPacktBooksToShuffledOrder(
-  shuffled: RaffleParticipant[],
-  prizeColumns: string[],
-): RaffleParticipant[] {
-  if (prizeColumns.length <= 1) {
-    const singleLabel = prizeColumns[0] ? cleanPrizeLabel(prizeColumns[0]) : '';
-    return shuffled.map((p) => ({
-      ...p,
-      assignedPrize: singleLabel || p.matchedColumns.map(cleanPrizeLabel).join(' / '),
-    }));
-  }
-
-  // Track remaining copies of each book in this category
-  const remainingInventory: Record<string, number> = {};
-  prizeColumns.forEach((col) => {
-    remainingInventory[col] = parsePrizeCountFromHeader(col);
-  });
-
-  return shuffled.map((p) => {
-    // Find a book this participant selected "Yes" to that still has inventory
-    const availableMatch = p.matchedColumns.find(
-      (col) => (remainingInventory[col] || 0) > 0,
-    );
-    if (availableMatch) {
-      remainingInventory[availableMatch] -= 1;
-      return {
-        ...p,
-        assignedPrize: cleanPrizeLabel(availableMatch),
-      };
-    }
-    // For backup buffer participants (after initial inventory is assigned), show the books they opted into
-    return {
-      ...p,
-      assignedPrize: p.matchedColumns.map(cleanPrizeLabel).join(' · '),
-    };
-  });
+  return copy;
 }
 
 function toCsvField(val: string | undefined): string {
@@ -463,21 +434,6 @@ function toCsvField(val: string | undefined): string {
   }
   return s;
 }
-
-const DEFAULT_SHEET_HEADERS = [
-  'Timestamp',
-  'Email Address',
-  'Nom Complet / Full Name',
-  '1 year license for a Jetbrain IDE (6)',
-  'Kodeco e-book voucher (5)',
-  'Packt Book - Android Programming for Beginners (2)',
-  'Packt Book - How to Build Applications with Kotlin (1)',
-  'Packt Book - Essential Data Structures and Algorithms in Java (1)',
-  'Packt Book - Flutter for Beginners (3)',
-  'Packt Book - Enterprise Vibe Coding for Agentic Engineering (2)',
-  'Packt Book - Distributed AI Systems (2)',
-  'Packt Book - Flutter Cookbook (3)',
-];
 
 export function CrazyRaffleView() {
   const [sheetUrl, setSheetUrl] = useState(DEFAULT_GOOGLE_SHEET_URL);
@@ -492,19 +448,22 @@ export function CrazyRaffleView() {
     'info',
   );
   const [isLoadingSheet, setIsLoadingSheet] = useState(false);
+  const [showSetupModal, setShowSetupModal] = useState(false);
   const [showPasteBox, setShowPasteBox] = useState(false);
   const [rawCsvText, setRawCsvText] = useState('');
 
   // Category & Sub-Prize Selection
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('jetbrains');
-  const [selectedSubColumn, setSelectedSubColumn] = useState<string>('__ALL_IN_CATEGORY__');
+  const [selectedCategoryId, setSelectedCategoryId] =
+    useState<string>('jetbrains');
+  const [selectedSubColumn, setSelectedSubColumn] = useState<string>(
+    '1 year license for a Jetbrain IDE (6)',
+  );
 
   // Winner & Buffer Counts + Shuffle Settings
   const [winnerCount, setWinnerCount] = useState<number>(6);
   const [bufferCount, setBufferCount] = useState<number>(6);
   const [shuffleDurationSec, setShuffleDurationSec] = useState<number>(5);
   const [excludePastWinners, setExcludePastWinners] = useState<boolean>(true);
-  const [deckCollapsed, setDeckCollapsed] = useState<boolean>(false);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
 
   // Shuffling & Results State
@@ -572,7 +531,7 @@ export function CrazyRaffleView() {
     );
   }, [headers, nameColumn, isEmailHeader, isTimestampHeader]);
 
-  // Group prize columns into the 3 main categories (JetBrains, Kodeco, Packt Books) + any custom columns
+  // Group prize columns into the 3 main categories (JetBrains, Kodeco, Packt Books)
   const categories = useMemo<MainCategoryGroup[]>(() => {
     if (prizeColumns.length === 0) return [];
 
@@ -590,6 +549,7 @@ export function CrazyRaffleView() {
       groups.push({
         id: 'jetbrains',
         label: 'JetBrains IDE Licenses',
+        shortLabel: 'JetBrains IDE',
         icon: '💻',
         badgeColor: '#ff007f',
         columns: jetbrainsCols,
@@ -604,6 +564,7 @@ export function CrazyRaffleView() {
       groups.push({
         id: 'kodeco',
         label: 'Kodeco E-Book Vouchers',
+        shortLabel: 'Kodeco Vouchers',
         icon: '📚',
         columns: kodecoCols,
         badgeColor: '#00f0ff',
@@ -618,6 +579,7 @@ export function CrazyRaffleView() {
       groups.push({
         id: 'packt',
         label: 'Packt Books',
+        shortLabel: 'Packt Books',
         icon: '📖',
         badgeColor: '#ffbe0b',
         columns: packtCols,
@@ -632,6 +594,7 @@ export function CrazyRaffleView() {
       groups.push({
         id: `custom-${idx}`,
         label: cleanPrizeLabel(col),
+        shortLabel: cleanPrizeLabel(col),
         icon: '🎁',
         badgeColor: '#00f59b',
         columns: [col],
@@ -649,15 +612,13 @@ export function CrazyRaffleView() {
     );
   }, [categories, selectedCategoryId]);
 
-  const activeTargetColumns = useMemo<string[]>(() => {
-    if (!activeCategory) return [];
-    if (
-      selectedSubColumn !== '__ALL_IN_CATEGORY__' &&
-      activeCategory.columns.includes(selectedSubColumn)
-    ) {
-      return [selectedSubColumn];
+  // Active single prize column (for Packt Books, always one specific book column)
+  const activePrizeColumn = useMemo<string>(() => {
+    if (!activeCategory || activeCategory.columns.length === 0) return '';
+    if (activeCategory.columns.includes(selectedSubColumn)) {
+      return selectedSubColumn;
     }
-    return activeCategory.columns;
+    return activeCategory.columns[0];
   }, [activeCategory, selectedSubColumn]);
 
   const extractRowEmail = useCallback(
@@ -678,9 +639,9 @@ export function CrazyRaffleView() {
     [emailColumn, headers],
   );
 
-  // Eligible participants who answered "Yes" to the selected category/prize
+  // Eligible participants who answered "Yes" to the selected prize column
   const eligibleCandidates = useMemo<RaffleParticipant[]>(() => {
-    if (!nameColumn || rows.length === 0 || activeTargetColumns.length === 0) {
+    if (!nameColumn || rows.length === 0 || !activePrizeColumn) {
       return [];
     }
 
@@ -700,10 +661,7 @@ export function CrazyRaffleView() {
       const rawName = (row[nameColumn] || '').trim();
       if (!rawName) return;
 
-      const matchedCols = activeTargetColumns.filter((col) =>
-        isAffirmativePrizeCell(row[col]),
-      );
-      if (matchedCols.length === 0) return;
+      if (!isAffirmativePrizeCell(row[activePrizeColumn])) return;
 
       const email = extractRowEmail(row);
       const dedupeKey = (email || rawName).toLowerCase();
@@ -723,7 +681,8 @@ export function CrazyRaffleView() {
         id: `cand-${idx}-${rawName}`,
         name: rawName,
         email,
-        matchedColumns: matchedCols,
+        matchedColumns: [activePrizeColumn],
+        assignedPrize: cleanPrizeLabel(activePrizeColumn),
         row,
       });
     });
@@ -732,7 +691,7 @@ export function CrazyRaffleView() {
   }, [
     nameColumn,
     rows,
-    activeTargetColumns,
+    activePrizeColumn,
     extractRowEmail,
     excludePastWinners,
     lockedWinnersHistory,
@@ -742,26 +701,23 @@ export function CrazyRaffleView() {
 
   const handleSelectCategory = (cat: MainCategoryGroup) => {
     if (isShuffling) return;
+    const firstCol = cat.columns[0] || '';
+    const count = firstCol ? parsePrizeCountFromHeader(firstCol) : cat.totalPrizes;
     setSelectedCategoryId(cat.id);
-    setSelectedSubColumn('__ALL_IN_CATEGORY__');
-    setWinnerCount(cat.totalPrizes);
-    setBufferCount(cat.totalPrizes);
+    setSelectedSubColumn(firstCol);
+    setWinnerCount(count);
+    setBufferCount(count);
     setDrawnOrder([]);
     setNoShowIds(new Set());
     audioRef.current?.playCategoryLoad();
   };
 
   const handleSelectSubColumn = (col: string) => {
-    if (isShuffling || !activeCategory) return;
+    if (isShuffling) return;
+    const count = parsePrizeCountFromHeader(col);
     setSelectedSubColumn(col);
-    if (col === '__ALL_IN_CATEGORY__') {
-      setWinnerCount(activeCategory.totalPrizes);
-      setBufferCount(activeCategory.totalPrizes);
-    } else {
-      const count = parsePrizeCountFromHeader(col);
-      setWinnerCount(count);
-      setBufferCount(count);
-    }
+    setWinnerCount(count);
+    setBufferCount(count);
     setDrawnOrder([]);
     setNoShowIds(new Set());
     audioRef.current?.playCategoryLoad();
@@ -791,18 +747,17 @@ export function CrazyRaffleView() {
       );
       setEmailColumn(detectedEmail || '__AUTO__');
 
-      // Set initial category prize count from first detected category
       const firstJetbrains = parsedHeaders.find((h) => /jetbrain/i.test(h));
       if (firstJetbrains) {
         const count = parsePrizeCountFromHeader(firstJetbrains);
         setSelectedCategoryId('jetbrains');
-        setSelectedSubColumn('__ALL_IN_CATEGORY__');
+        setSelectedSubColumn(firstJetbrains);
         setWinnerCount(count);
         setBufferCount(count);
       }
 
       setStatusMsg(
-        `${sourceLabel} // ${records.length} RESPONSES & ${parsedHeaders.length} COLUMNS READY`,
+        `${sourceLabel} // ${records.length} RESPONSES READY`,
       );
       setStatusType('success');
     },
@@ -811,7 +766,8 @@ export function CrazyRaffleView() {
 
   const fetchGoogleSheet = useCallback(
     async (urlOverride?: string) => {
-      const targetUrl = (urlOverride ?? sheetUrl).trim() || DEFAULT_GOOGLE_SHEET_URL;
+      const targetUrl =
+        (urlOverride ?? sheetUrl).trim() || DEFAULT_GOOGLE_SHEET_URL;
       if (!sheetUrl.trim()) {
         setSheetUrl(DEFAULT_GOOGLE_SHEET_URL);
       }
@@ -861,7 +817,7 @@ export function CrazyRaffleView() {
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : String(err);
         setStatusMsg(
-          `LIVE STREAM NOTICE // ${errMsg}. Make sure the sheet is shared as "Anyone with the link can view" or click LOAD DEMO / CSV.`,
+          `LIVE STREAM NOTICE // ${errMsg}. Make sure the sheet is shared as "Anyone with the link can view" or click LOAD DEMO.`,
         );
         setStatusType('error');
       } finally {
@@ -957,7 +913,6 @@ export function CrazyRaffleView() {
       const remaining = Math.max(0, (durationMs - elapsed) / 1000);
       setShuffleRemainingSec(remaining);
 
-      // Every ~85ms during the 5-second shuffle, mix all names on screen & play synth pulse
       if (now - lastSwapTime >= 85) {
         lastSwapTime = now;
         const progress = Math.max(0, Math.min(1, elapsed / durationMs));
@@ -968,21 +923,17 @@ export function CrazyRaffleView() {
       if (elapsed < durationMs) {
         requestAnimationFrame(tick);
       } else {
-        // Final cryptographically random order
-        const finalShuffled = assignPacktBooksToShuffledOrder(
-          cryptoShuffle(eligibleCandidates),
-          activeTargetColumns,
-        );
+        const prizeTitle = cleanPrizeLabel(activePrizeColumn);
+        const finalShuffled = cryptoShuffle(eligibleCandidates).map((p) => ({
+          ...p,
+          assignedPrize: prizeTitle,
+        }));
         setShuffledPool(finalShuffled);
         setDrawnOrder(finalShuffled);
         setIsShuffling(false);
         setShuffleRemainingSec(0);
         audioRef.current?.playWinnerFanfare();
         triggerConfettiBurst();
-        setStatusMsg(
-          `SHUFFLE COMPLETE // TOP ${Math.min(winnerCount, finalShuffled.length)} WINNERS + ${Math.max(0, Math.min(bufferCount, finalShuffled.length - winnerCount))} BACKUP BUFFER READY`,
-        );
-        setStatusType('success');
       }
     };
 
@@ -990,108 +941,80 @@ export function CrazyRaffleView() {
   };
 
   // Compute active primary winners & backup buffer accounting for any No-Shows marked on stage
-  const { primaryWinners, backupBuffer, remainingStandby, noShowList } =
-    useMemo(() => {
-      if (drawnOrder.length === 0) {
-        return {
-          primaryWinners: [] as Array<{
-            participant: RaffleParticipant;
-            drawRank: number;
-            effectiveSlot: number;
-          }>,
-          backupBuffer: [] as Array<{
-            participant: RaffleParticipant;
-            drawRank: number;
-            backupIndex: number;
-          }>,
-          remainingStandby: [] as Array<{
-            participant: RaffleParticipant;
-            drawRank: number;
-          }>,
-          noShowList: [] as Array<{
-            participant: RaffleParticipant;
-            drawRank: number;
-          }>,
-        };
+  const { primaryWinners, backupBuffer, noShowList } = useMemo(() => {
+    if (drawnOrder.length === 0) {
+      return {
+        primaryWinners: [] as Array<{
+          participant: RaffleParticipant;
+          drawRank: number;
+          effectiveSlot: number;
+        }>,
+        backupBuffer: [] as Array<{
+          participant: RaffleParticipant;
+          drawRank: number;
+          backupIndex: number;
+        }>,
+        noShowList: [] as Array<{
+          participant: RaffleParticipant;
+          drawRank: number;
+        }>,
+      };
+    }
+
+    const active: Array<{
+      participant: RaffleParticipant;
+      drawRank: number;
+    }> = [];
+    const noShows: Array<{
+      participant: RaffleParticipant;
+      drawRank: number;
+    }> = [];
+
+    drawnOrder.forEach((p, idx) => {
+      const item = { participant: p, drawRank: idx + 1 };
+      if (noShowIds.has(p.id)) {
+        noShows.push(item);
+      } else {
+        active.push(item);
       }
+    });
 
-      const active: Array<{
-        participant: RaffleParticipant;
-        drawRank: number;
-      }> = [];
-      const noShows: Array<{
-        participant: RaffleParticipant;
-        drawRank: number;
-      }> = [];
+    const primary = active.slice(0, winnerCount).map((item, idx) => ({
+      ...item,
+      effectiveSlot: idx + 1,
+    }));
 
-      drawnOrder.forEach((p, idx) => {
-        const item = { participant: p, drawRank: idx + 1 };
-        if (noShowIds.has(p.id)) {
-          noShows.push(item);
-        } else {
-          active.push(item);
-        }
-      });
-
-      // Re-assign Packt books dynamically among active (non-no-show) participants in rank order
-      const reassignedParticipants = assignPacktBooksToShuffledOrder(
-        active.map((a) => a.participant),
-        activeTargetColumns,
-      );
-
-      const enrichedActive = active.map((a, i) => ({
-        participant: reassignedParticipants[i],
-        drawRank: a.drawRank,
+    const buffer = active
+      .slice(winnerCount, winnerCount + bufferCount)
+      .map((item, idx) => ({
+        ...item,
+        backupIndex: idx + 1,
       }));
 
-      const primary = enrichedActive
-        .slice(0, winnerCount)
-        .map((item, idx) => ({
-          ...item,
-          effectiveSlot: idx + 1,
-        }));
+    return {
+      primaryWinners: primary,
+      backupBuffer: buffer,
+      noShowList: noShows,
+    };
+  }, [drawnOrder, noShowIds, winnerCount, bufferCount]);
 
-      const buffer = enrichedActive
-        .slice(winnerCount, winnerCount + bufferCount)
-        .map((item, idx) => ({
-          ...item,
-          backupIndex: idx + 1,
-        }));
-
-      const standby = enrichedActive.slice(winnerCount + bufferCount);
-
-      return {
-        primaryWinners: primary,
-        backupBuffer: buffer,
-        remainingStandby: standby,
-        noShowList: noShows,
-      };
-    }, [drawnOrder, noShowIds, winnerCount, bufferCount, activeTargetColumns]);
-
-  const getCategoryLabel = useCallback(() => {
-    if (!activeCategory) return 'Raffle';
-    return selectedSubColumn === '__ALL_IN_CATEGORY__'
-      ? activeCategory.label
-      : cleanPrizeLabel(selectedSubColumn);
-  }, [activeCategory, selectedSubColumn]);
+  const currentPrizeLabel = useMemo(() => {
+    if (activePrizeColumn) return cleanPrizeLabel(activePrizeColumn);
+    return activeCategory?.label || 'Raffle Prize';
+  }, [activePrizeColumn, activeCategory]);
 
   const getPrizeForParticipant = useCallback(
     (p: RaffleParticipant): string => {
-      if (p.assignedPrize) return p.assignedPrize;
-      if (selectedSubColumn !== '__ALL_IN_CATEGORY__') {
-        return cleanPrizeLabel(selectedSubColumn);
-      }
-      if (activeCategory && activeCategory.columns.length === 1) {
-        return cleanPrizeLabel(activeCategory.columns[0]);
-      }
-      return activeCategory?.label || 'Raffle Prize';
+      return p.assignedPrize || currentPrizeLabel;
     },
-    [activeCategory, selectedSubColumn],
+    [currentPrizeLabel],
   );
 
   const isWinnerConfirmed = useCallback(
     (p: RaffleParticipant, prizeLabel?: string): boolean => {
-      const targetPrize = (prizeLabel ?? getPrizeForParticipant(p)).toLowerCase();
+      const targetPrize = (
+        prizeLabel ?? getPrizeForParticipant(p)
+      ).toLowerCase();
       const pName = p.name.toLowerCase();
       const pEmail = p.email.toLowerCase();
       return lockedWinnersHistory.some(
@@ -1105,11 +1028,8 @@ export function CrazyRaffleView() {
     [lockedWinnersHistory, getPrizeForParticipant],
   );
 
-  const toggleConfirmWinner = (
-    p: RaffleParticipant,
-    rankSlot: number,
-  ) => {
-    const catLabel = getCategoryLabel();
+  const toggleConfirmWinner = (p: RaffleParticipant, rankSlot: number) => {
+    const catLabel = activeCategory?.label || 'Raffle';
     const prizeLabel = getPrizeForParticipant(p);
     const alreadyConfirmed = isWinnerConfirmed(p, prizeLabel);
 
@@ -1128,10 +1048,6 @@ export function CrazyRaffleView() {
             ),
         ),
       );
-      setStatusMsg(
-        `UNCONFIRMED "${p.name.toUpperCase()}" FOR "${prizeLabel.toUpperCase()}"`,
-      );
-      setStatusType('info');
     } else {
       const key = `${p.id}::${prizeLabel}`;
       setLockedWinnersHistory((prev) => [
@@ -1147,10 +1063,6 @@ export function CrazyRaffleView() {
         },
       ]);
       audioRef.current?.playCategoryLoad();
-      setStatusMsg(
-        `CONFIRMED WINNER // ${p.name.toUpperCase()} → ${prizeLabel.toUpperCase()}`,
-      );
-      setStatusType('success');
     }
   };
 
@@ -1161,7 +1073,6 @@ export function CrazyRaffleView() {
         next.delete(participantId);
       } else {
         next.add(participantId);
-        // If marked as No-Show, ensure they are not left confirmed for this draw
         setLockedWinnersHistory((lockedPrev) =>
           lockedPrev.filter((lw) => lw.participantId !== participantId),
         );
@@ -1172,9 +1083,8 @@ export function CrazyRaffleView() {
 
   const lockCurrentPrimaryWinners = () => {
     if (primaryWinners.length === 0 || !activeCategory) return;
-    const catLabel = getCategoryLabel();
+    const catLabel = activeCategory.label;
 
-    let addedCount = 0;
     setLockedWinnersHistory((prev) => {
       const next = [...prev];
       primaryWinners.forEach((w) => {
@@ -1190,7 +1100,6 @@ export function CrazyRaffleView() {
               (pEmail && lw.email.toLowerCase() === pEmail)),
         );
         if (!exists) {
-          addedCount++;
           next.push({
             key: `${w.participant.id}::${prizeLabel}`,
             participantId: w.participant.id,
@@ -1205,15 +1114,8 @@ export function CrazyRaffleView() {
       return next;
     });
     audioRef.current?.playCategoryLoad();
-    setStatusMsg(
-      addedCount > 0
-        ? `CONFIRMED ${addedCount} NEW WINNER(S) FOR "${catLabel.toUpperCase()}"`
-        : `ALL SHOWN WINNERS FOR "${catLabel.toUpperCase()}" ARE ALREADY CONFIRMED`,
-    );
-    setStatusType('success');
   };
 
-  // Export Confirmed Winners CSV with Name, Prize, Email (plus Category)
   const exportConfirmedWinnersCSV = () => {
     const lines = ['Name,Prize,Email,Category'];
 
@@ -1229,8 +1131,7 @@ export function CrazyRaffleView() {
         );
       });
     } else {
-      // Fallback if user clicks export before clicking confirm: export current primary winners
-      const catLabel = getCategoryLabel();
+      const catLabel = activeCategory?.label || 'Raffle';
       primaryWinners.forEach((w) => {
         lines.push(
           [
@@ -1255,101 +1156,53 @@ export function CrazyRaffleView() {
     URL.revokeObjectURL(url);
   };
 
-  const exportFullLogCSV = () => {
-    const lines = [
-      'Status,Name,Prize,Email,Category,Draw Order,Winner Slot',
-    ];
-    const catLabel = getCategoryLabel();
+  // Dynamic grid sizing for Candidate Pool so all chips fit in 1 screen without scrolling
+  const poolCols = useMemo(() => {
+    const count = displayPool.length;
+    if (count <= 8) return 2;
+    if (count <= 18) return 3;
+    if (count <= 32) return 4;
+    if (count <= 55) return 5;
+    if (count <= 84) return 6;
+    return 7;
+  }, [displayPool.length]);
 
-    lockedWinnersHistory.forEach((lw) => {
-      lines.push(
-        [
-          'CONFIRMED WINNER',
-          toCsvField(lw.name),
-          toCsvField(lw.prize),
-          toCsvField(lw.email),
-          toCsvField(lw.category),
-          String(lw.rank),
-          `#${lw.rank}`,
-        ].join(','),
-      );
-    });
+  const poolChipFontSize = useMemo(() => {
+    const count = displayPool.length;
+    if (count <= 12) return '1.65rem';
+    if (count <= 24) return '1.38rem';
+    if (count <= 45) return '1.16rem';
+    if (count <= 75) return '1.0rem';
+    return '0.88rem';
+  }, [displayPool.length]);
 
-    primaryWinners.forEach((w) => {
-      const confirmed = isWinnerConfirmed(w.participant);
-      lines.push(
-        [
-          confirmed ? 'CURRENT DRAW (CONFIRMED)' : 'CURRENT DRAW (UNCONFIRMED)',
-          toCsvField(w.participant.name),
-          toCsvField(getPrizeForParticipant(w.participant)),
-          toCsvField(w.participant.email),
-          toCsvField(catLabel),
-          String(w.drawRank),
-          `#${w.effectiveSlot}`,
-        ].join(','),
-      );
-    });
-
-    backupBuffer.forEach((b) => {
-      lines.push(
-        [
-          `BACKUP BUFFER #${b.backupIndex}`,
-          toCsvField(b.participant.name),
-          toCsvField(getPrizeForParticipant(b.participant)),
-          toCsvField(b.participant.email),
-          toCsvField(catLabel),
-          String(b.drawRank),
-          `Backup #${b.backupIndex}`,
-        ].join(','),
-      );
-    });
-
-    noShowList.forEach((n) => {
-      lines.push(
-        [
-          'NO-SHOW',
-          toCsvField(n.participant.name),
-          toCsvField(getPrizeForParticipant(n.participant)),
-          toCsvField(n.participant.email),
-          toCsvField(catLabel),
-          String(n.drawRank),
-          'No-Show',
-        ].join(','),
-      );
-    });
-
-    const csvContent = '\uFEFF' + lines.join('\r\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'devfest-mtl-26-crazy-raffle-full-log.csv';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
+  // Dynamic font sizing for Winner / Buffer rows based on count (1 to 6)
+  const maxRowsInResults = Math.max(
+    1,
+    primaryWinners.length,
+    backupBuffer.length,
+  );
+  const winnerNameSize =
+    maxRowsInResults <= 3
+      ? '1.95rem'
+      : maxRowsInResults <= 5
+        ? '1.6rem'
+        : '1.38rem';
 
   return (
     <div className="crazy-raffle-root">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Press+Start+2P&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Press+Start+2P&family=Rajdhani:wght@600;700&family=Share+Tech+Mono&display=swap');
 
         .crazy-raffle-root {
           --bg-deep: #090214;
-          --bg-mid: #16052b;
-          --bg-panel: rgba(18, 6, 38, 0.86);
+          --bg-panel: rgba(16, 5, 34, 0.88);
           --neon-pink: #ff007f;
           --neon-cyan: #00f0ff;
-          --neon-purple: #9d4edd;
           --neon-yellow: #ffbe0b;
           --neon-green: #00f59b;
-          --gdg-blue: #4285F4;
-          --gdg-red: #EA4335;
-          --gdg-yellow: #FBBC04;
-          --gdg-green: #34A853;
           --text-bright: #ffffff;
-          --text-dim: #b8a3d9;
+          --text-dim: #c4b2e3;
           --font-display: 'Orbitron', sans-serif;
           --font-arcade: 'Press Start 2P', monospace;
           --font-body: 'Rajdhani', sans-serif;
@@ -1358,10 +1211,11 @@ export function CrazyRaffleView() {
           position: fixed;
           inset: 0;
           z-index: 9999;
-          width: 100%;
+          width: 100vw;
           height: 100vh;
-          overflow-x: hidden;
-          overflow-y: auto;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
           background-color: var(--bg-deep);
           color: var(--text-bright);
           font-family: var(--font-body);
@@ -1379,47 +1233,29 @@ export function CrazyRaffleView() {
           inset: 0;
           z-index: 0;
           overflow: hidden;
+          pointer-events: none;
           background: linear-gradient(
             180deg,
             #05000c 0%,
-            #130429 35%,
-            #34094e 56%,
-            #701060 66%,
-            #120224 66.5%,
+            #130429 38%,
+            #34094e 58%,
+            #701060 68%,
+            #120224 68.5%,
             #070110 100%
           );
-        }
-
-        .crazy-raffle-root .stars {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 60%;
-          background-image:
-            radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent),
-            radial-gradient(1px 1px at 26% 42%, #00f0ff, transparent),
-            radial-gradient(2px 2px at 48% 12%, #ff99cc, transparent),
-            radial-gradient(1.5px 1.5px at 68% 28%, #fff, transparent),
-            radial-gradient(1px 1px at 82% 16%, #00f0ff, transparent),
-            radial-gradient(2px 2px at 91% 38%, #fff, transparent);
-          opacity: 0.75;
         }
 
         .crazy-raffle-root .synth-sun {
           position: absolute;
           left: 50%;
-          top: 38%;
+          top: 42%;
           transform: translate(-50%, -50%);
-          width: 340px;
-          height: 340px;
+          width: 360px;
+          height: 360px;
           border-radius: 50%;
           background: linear-gradient(180deg, #ffea00 0%, #ff7b00 45%, #ff007f 85%, #900058 100%);
-          box-shadow:
-            0 0 60px rgba(255, 0, 127, 0.75),
-            0 0 130px rgba(255, 145, 0, 0.45);
-          opacity: 0.35;
-          pointer-events: none;
+          box-shadow: 0 0 60px rgba(255, 0, 127, 0.7);
+          opacity: 0.28;
         }
 
         .crazy-raffle-root .perspective-grid {
@@ -1427,10 +1263,10 @@ export function CrazyRaffleView() {
           left: -50%;
           right: -50%;
           bottom: -25%;
-          height: 60%;
+          height: 58%;
           background-image:
-            linear-gradient(to right, rgba(255, 0, 127, 0.45) 2px, transparent 2px),
-            linear-gradient(to bottom, rgba(0, 240, 255, 0.4) 2px, transparent 2px);
+            linear-gradient(to right, rgba(255, 0, 127, 0.42) 2px, transparent 2px),
+            linear-gradient(to bottom, rgba(0, 240, 255, 0.36) 2px, transparent 2px);
           background-size: 64px 42px;
           transform: perspective(360px) rotateX(68deg);
           transform-origin: top center;
@@ -1451,413 +1287,113 @@ export function CrazyRaffleView() {
           z-index: 90;
         }
 
-        /* TOP BAR */
+        /* UNIFIED TOP BAR */
         .crazy-raffle-root .top-bar {
           position: relative;
           z-index: 10;
+          flex: 0 0 auto;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 12px 24px;
-          background: rgba(10, 2, 22, 0.9);
+          padding: 10px 20px;
+          background: rgba(9, 2, 20, 0.94);
           border-bottom: 2px solid var(--neon-cyan);
-          box-shadow: 0 0 24px rgba(0, 240, 255, 0.35);
-          backdrop-filter: blur(10px);
+          box-shadow: 0 0 22px rgba(0, 240, 255, 0.32);
           gap: 12px;
-          flex-wrap: wrap;
+        }
+
+        .crazy-raffle-root .brand-left {
+          display: flex;
+          align-items: center;
+          gap: 14px;
         }
 
         .crazy-raffle-root .brand-title {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-        }
-
-        .crazy-raffle-root .gdg-mini-badge {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 6px 8px;
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(0, 240, 255, 0.5);
-          border-radius: 10px;
-          box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
-        }
-
-        .crazy-raffle-root .sub-eyebrow {
-          display: block;
-          font-family: var(--font-mono);
-          font-size: 0.88rem;
-          letter-spacing: 2.5px;
-          color: var(--neon-cyan);
-        }
-
-        .crazy-raffle-root .brand-title h1 {
           font-family: var(--font-display);
           font-weight: 900;
-          font-size: 1.85rem;
-          letter-spacing: 2.5px;
-          background: linear-gradient(90deg, #ffffff 0%, #00f0ff 45%, #ffbe0b 100%);
+          font-size: 1.35rem;
+          letter-spacing: 2px;
+          background: linear-gradient(90deg, #ffffff 0%, #00f0ff 50%, #ffbe0b 100%);
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
-        }
-
-        .crazy-raffle-root .top-controls {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-
-        .crazy-raffle-root .stat-pill {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 8px 15px;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(184, 163, 217, 0.4);
-          font-family: var(--font-mono);
-        }
-
-        .crazy-raffle-root .stat-pill.neon-cyan {
-          border-color: var(--neon-cyan);
-          box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
-        }
-
-        .crazy-raffle-root .stat-pill.neon-pink {
-          border-color: var(--neon-pink);
-          box-shadow: 0 0 12px rgba(255, 0, 127, 0.3);
-        }
-
-        .crazy-raffle-root .stat-label {
-          font-size: 0.88rem;
-          color: var(--text-dim);
-        }
-
-        .crazy-raffle-root .stat-value {
-          font-size: 1.28rem;
-          font-weight: 800;
-          color: #fff;
-        }
-
-        .crazy-raffle-root .icon-btn {
-          cursor: pointer;
-          padding: 10px 16px;
-          border-radius: 8px;
-          border: 1px solid var(--neon-cyan);
-          background: rgba(0, 240, 255, 0.12);
-          color: var(--neon-cyan);
-          font-family: var(--font-display);
-          font-size: 0.88rem;
-          font-weight: 700;
-          letter-spacing: 1px;
-          text-decoration: none;
-          transition: all 0.18s ease;
-        }
-
-        .crazy-raffle-root .icon-btn:hover {
-          background: var(--neon-cyan);
-          color: #090214;
-          box-shadow: 0 0 15px var(--neon-cyan);
-        }
-
-        /* MAIN LAYOUT */
-        .crazy-raffle-root .main-stage {
-          position: relative;
-          z-index: 5;
-          display: grid;
-          grid-template-columns: 390px 1fr;
-          gap: 22px;
-          padding: 20px 26px;
-          min-height: calc(100vh - 78px);
-          align-items: start;
-        }
-
-        .crazy-raffle-root .main-stage.deck-collapsed {
-          grid-template-columns: 1fr;
-        }
-
-        .crazy-raffle-root .control-deck {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        .crazy-raffle-root .deck-card {
-          background: var(--bg-panel);
-          border: 1px solid rgba(0, 240, 255, 0.38);
-          border-left: 4px solid var(--neon-pink);
-          border-radius: 12px;
-          padding: 16px 18px;
-          box-shadow: 0 8px 28px rgba(0, 0, 0, 0.65);
-          backdrop-filter: blur(12px);
-        }
-
-        .crazy-raffle-root .card-header {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 14px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-          padding-bottom: 10px;
-        }
-
-        .crazy-raffle-root .step-tag {
-          font-family: var(--font-arcade);
-          font-size: 0.78rem;
-          padding: 5px 8px;
-          background: var(--neon-pink);
-          color: #fff;
-          border-radius: 4px;
-        }
-
-        .crazy-raffle-root .card-header h2 {
-          font-family: var(--font-display);
-          font-size: 1.02rem;
-          letter-spacing: 1.5px;
-          color: var(--neon-cyan);
-          flex: 1;
-        }
-
-        .crazy-raffle-root .field-group {
-          margin-bottom: 13px;
-        }
-
-        .crazy-raffle-root .field-group label {
-          display: block;
-          font-family: var(--font-mono);
-          font-size: 0.88rem;
-          letter-spacing: 1px;
-          color: var(--text-dim);
-          margin-bottom: 6px;
-        }
-
-        .crazy-raffle-root .input-row {
-          display: flex;
-          gap: 8px;
-        }
-
-        .crazy-raffle-root input[type="text"],
-        .crazy-raffle-root input[type="number"],
-        .crazy-raffle-root select,
-        .crazy-raffle-root textarea {
-          width: 100%;
-          padding: 10px 12px;
-          border-radius: 6px;
-          border: 1px solid rgba(0, 240, 255, 0.45);
-          background: rgba(7, 1, 18, 0.92);
-          color: #fff;
-          font-family: var(--font-mono);
-          font-size: 0.98rem;
-          outline: none;
-        }
-
-        .crazy-raffle-root .btn {
-          cursor: pointer;
-          border: none;
-          border-radius: 8px;
-          font-family: var(--font-display);
-          font-weight: 700;
-          letter-spacing: 1.2px;
-          transition: all 0.2s ease;
-          text-transform: uppercase;
-        }
-
-        .crazy-raffle-root .btn:disabled {
-          opacity: 0.4;
-          cursor: not-allowed;
-        }
-
-        .crazy-raffle-root .btn-cyan {
-          padding: 10px 18px;
-          font-size: 0.9rem;
-          background: linear-gradient(135deg, #00f0ff 0%, #0077ff 100%);
-          color: #060112;
-          box-shadow: 0 0 14px rgba(0, 240, 255, 0.45);
-        }
-
-        .crazy-raffle-root .btn-outline-sm {
-          flex: 1;
-          padding: 9px 12px;
-          font-size: 0.82rem;
-          background: rgba(255, 255, 255, 0.06);
-          color: var(--neon-cyan);
-          border: 1px solid rgba(0, 240, 255, 0.45);
-        }
-
-        .crazy-raffle-root .quick-actions-row {
-          display: flex;
-          gap: 8px;
-          margin-bottom: 12px;
-        }
-
-        .crazy-raffle-root .status-banner {
-          padding: 9px 12px;
-          border-radius: 6px;
-          background: rgba(0, 240, 255, 0.09);
-          border: 1px solid rgba(0, 240, 255, 0.3);
-          font-family: var(--font-mono);
-          font-size: 0.88rem;
-          color: var(--neon-cyan);
-          line-height: 1.4;
-        }
-
-        .crazy-raffle-root .status-banner.error {
-          background: rgba(234, 67, 53, 0.16);
-          border-color: #ea4335;
-          color: #ff8a80;
-        }
-
-        .crazy-raffle-root .status-banner.success {
-          background: rgba(0, 245, 155, 0.13);
-          border-color: var(--neon-green);
-          color: var(--neon-green);
-        }
-
-        /* STAGE PANEL */
-        .crazy-raffle-root .raffle-stage {
-          display: flex;
-          flex-direction: column;
-          gap: 18px;
-        }
-
-        /* 3 MAIN CATEGORY TABS */
-        .crazy-raffle-root .category-selector-bar {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-          gap: 14px;
-        }
-
-        .crazy-raffle-root .category-tab {
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 18px 22px;
-          border-radius: 14px;
-          background: rgba(18, 6, 38, 0.88);
-          border: 2px solid rgba(0, 240, 255, 0.35);
-          color: #fff;
-          text-align: left;
-          transition: all 0.2s ease;
-          backdrop-filter: blur(10px);
-        }
-
-        .crazy-raffle-root .category-tab:hover:not(:disabled) {
-          transform: translateY(-2px);
-          border-color: var(--neon-cyan);
-          box-shadow: 0 0 22px rgba(0, 240, 255, 0.4);
-        }
-
-        .crazy-raffle-root .category-tab.active {
-          background: linear-gradient(135deg, rgba(255, 0, 127, 0.3) 0%, rgba(0, 240, 255, 0.24) 100%);
-          border-color: var(--neon-cyan);
-          box-shadow:
-            0 0 26px rgba(0, 240, 255, 0.55),
-            inset 0 0 18px rgba(255, 0, 127, 0.25);
-        }
-
-        .crazy-raffle-root .cat-left {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-        }
-
-        .crazy-raffle-root .cat-icon {
-          font-size: 2.2rem;
-        }
-
-        .crazy-raffle-root .cat-title {
-          font-family: var(--font-display);
-          font-size: 1.25rem;
-          font-weight: 800;
-          letter-spacing: 1px;
-        }
-
-        .crazy-raffle-root .cat-sub {
-          font-family: var(--font-mono);
-          font-size: 0.95rem;
-          color: var(--neon-yellow);
-          margin-top: 4px;
-        }
-
-        .crazy-raffle-root .cat-count-badge {
-          font-family: var(--font-mono);
-          font-size: 1.05rem;
-          font-weight: 800;
-          padding: 6px 14px;
-          border-radius: 999px;
-          background: rgba(0, 240, 255, 0.2);
-          border: 1px solid var(--neon-cyan);
-          color: var(--neon-cyan);
           white-space: nowrap;
         }
 
-        /* SUB-PRIZE PILLS (e.g. Individual Packt Books) */
-        .crazy-raffle-root .subprize-bar {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          padding: 14px 18px;
-          border-radius: 12px;
-          background: rgba(18, 6, 38, 0.85);
-          border: 1px solid rgba(255, 190, 11, 0.45);
-        }
-
-        .crazy-raffle-root .subprize-pill {
-          cursor: pointer;
-          padding: 9px 16px;
-          border-radius: 999px;
-          border: 1px solid rgba(255, 255, 255, 0.26);
-          background: rgba(255, 255, 255, 0.06);
-          color: var(--text-bright);
-          font-family: var(--font-mono);
-          font-size: 0.96rem;
-          transition: all 0.15s ease;
-        }
-
-        .crazy-raffle-root .subprize-pill.active {
-          background: var(--neon-yellow);
-          color: #090214;
-          border-color: #fff;
-          font-weight: 800;
-          box-shadow: 0 0 16px rgba(255, 190, 11, 0.7);
-        }
-
-        /* ACTION HERO BAR */
-        .crazy-raffle-root .shuffle-action-bar {
+        /* INLINE 3 CATEGORY TABS */
+        .crazy-raffle-root .cat-pills {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          gap: 18px;
-          flex-wrap: wrap;
-          padding: 20px 24px;
-          border-radius: 16px;
-          background: rgba(18, 6, 38, 0.92);
-          border: 2px solid var(--neon-pink);
-          box-shadow: 0 0 32px rgba(255, 0, 127, 0.32);
+          gap: 10px;
+        }
+
+        .crazy-raffle-root .cat-btn {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          padding: 9px 16px;
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 2px solid rgba(0, 240, 255, 0.32);
+          color: #fff;
+          font-family: var(--font-display);
+          font-size: 0.98rem;
+          font-weight: 800;
+          letter-spacing: 0.8px;
+          transition: all 0.16s ease;
+          white-space: nowrap;
+        }
+
+        .crazy-raffle-root .cat-btn:hover:not(:disabled) {
+          border-color: var(--neon-cyan);
+          box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+        }
+
+        .crazy-raffle-root .cat-btn.active {
+          background: linear-gradient(135deg, rgba(255, 0, 127, 0.38) 0%, rgba(0, 240, 255, 0.28) 100%);
+          border-color: var(--neon-yellow);
+          box-shadow: 0 0 20px rgba(255, 190, 11, 0.5);
+        }
+
+        .crazy-raffle-root .cat-badge {
+          font-family: var(--font-mono);
+          font-size: 0.86rem;
+          padding: 2px 8px;
+          border-radius: 999px;
+          background: rgba(0, 0, 0, 0.45);
+          color: var(--neon-yellow);
+          border: 1px solid rgba(255, 190, 11, 0.5);
+        }
+
+        /* CENTER MEGA SHUFFLE BUTTON */
+        .crazy-raffle-root .center-actions {
+          display: flex;
+          align-items: center;
+          gap: 10px;
         }
 
         .crazy-raffle-root .btn-shuffle-mega {
-          padding: 18px 42px;
-          font-size: 1.42rem;
+          cursor: pointer;
+          padding: 11px 28px;
+          font-family: var(--font-display);
+          font-size: 1.18rem;
           font-weight: 900;
-          letter-spacing: 2.5px;
+          letter-spacing: 2px;
           border-radius: 999px;
           background: linear-gradient(90deg, #ff007f 0%, #ffbe0b 50%, #00f0ff 100%);
           background-size: 200% auto;
           color: #090117;
           border: 2px solid #ffffff;
-          box-shadow:
-            0 0 28px rgba(255, 0, 127, 0.85),
-            0 0 48px rgba(0, 240, 255, 0.5);
+          box-shadow: 0 0 22px rgba(255, 0, 127, 0.8);
           animation: crGradientShift 3s linear infinite;
+          white-space: nowrap;
+          text-transform: uppercase;
         }
 
-        .crazy-raffle-root .btn-shuffle-mega:hover:not(:disabled) {
-          transform: scale(1.03);
+        .crazy-raffle-root .btn-shuffle-mega:disabled {
+          opacity: 0.45;
+          cursor: not-allowed;
         }
 
         @keyframes crGradientShift {
@@ -1865,140 +1401,253 @@ export function CrazyRaffleView() {
           100% { background-position: 200% center; }
         }
 
-        /* SHUFFLE PROGRESS BAR */
-        .crazy-raffle-root .shuffle-progress-wrap {
-          width: 100%;
-          margin-top: 8px;
+        /* RIGHT CONTROLS */
+        .crazy-raffle-root .right-controls {
+          display: flex;
+          align-items: center;
+          gap: 8px;
         }
 
-        .crazy-raffle-root .shuffle-progress-bar {
-          width: 100%;
-          height: 16px;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.12);
+        .crazy-raffle-root .top-btn {
+          cursor: pointer;
+          padding: 9px 14px;
+          border-radius: 8px;
           border: 1px solid var(--neon-cyan);
+          background: rgba(0, 240, 255, 0.12);
+          color: var(--neon-cyan);
+          font-family: var(--font-display);
+          font-size: 0.84rem;
+          font-weight: 800;
+          letter-spacing: 0.8px;
+          text-decoration: none;
+          white-space: nowrap;
+          transition: all 0.15s ease;
+        }
+
+        .crazy-raffle-root .top-btn:hover:not(:disabled) {
+          background: var(--neon-cyan);
+          color: #090214;
+        }
+
+        .crazy-raffle-root .top-btn.green {
+          border-color: var(--neon-green);
+          background: rgba(0, 245, 155, 0.18);
+          color: var(--neon-green);
+        }
+
+        .crazy-raffle-root .top-btn.green:hover:not(:disabled) {
+          background: var(--neon-green);
+          color: #04130c;
+        }
+
+        /* PACKT BOOK TITLE SELECTOR BAR */
+        .crazy-raffle-root .book-selector-bar {
+          position: relative;
+          z-index: 9;
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 20px;
+          background: rgba(15, 4, 32, 0.92);
+          border-bottom: 1px solid rgba(255, 190, 11, 0.45);
+          overflow-x: auto;
+        }
+
+        .crazy-raffle-root .book-pill {
+          cursor: pointer;
+          padding: 7px 14px;
+          border-radius: 999px;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          background: rgba(255, 255, 255, 0.06);
+          color: #fff;
+          font-family: var(--font-mono);
+          font-size: 0.9rem;
+          font-weight: 700;
+          white-space: nowrap;
+          transition: all 0.15s ease;
+        }
+
+        .crazy-raffle-root .book-pill.active {
+          background: var(--neon-yellow);
+          color: #090214;
+          border-color: #fff;
+          box-shadow: 0 0 14px rgba(255, 190, 11, 0.7);
+        }
+
+        /* MAIN STAGE AREA: FITS REMAINING 100VH WITH ZERO SCROLLING */
+        .crazy-raffle-root .stage-body {
+          position: relative;
+          z-index: 5;
+          flex: 1;
+          min-height: 0;
+          padding: 14px 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
           overflow: hidden;
         }
 
-        .crazy-raffle-root .shuffle-progress-fill {
-          height: 100%;
-          background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow), var(--neon-cyan));
-          transition: width 0.08s linear;
-        }
-
-        /* CANDIDATES GRID (PRE-DRAW & DURING 5S SHUFFLE) */
-        .crazy-raffle-root .candidates-pool-card {
-          background: var(--bg-panel);
+        /* PRIZE HEADER BANNER */
+        .crazy-raffle-root .prize-banner {
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px 18px;
+          border-radius: 12px;
+          background: rgba(18, 6, 38, 0.9);
           border: 1px solid rgba(0, 240, 255, 0.4);
-          border-radius: 16px;
-          padding: 22px 24px;
-          backdrop-filter: blur(12px);
+          gap: 16px;
         }
 
-        .crazy-raffle-root .pool-grid {
+        .crazy-raffle-root .prize-banner-title {
+          font-family: var(--font-display);
+          font-size: 1.45rem;
+          font-weight: 900;
+          color: #fff;
+          letter-spacing: 1.2px;
+        }
+
+        .crazy-raffle-root .prize-banner-stats {
+          font-family: var(--font-mono);
+          font-size: 1.12rem;
+          color: var(--neon-cyan);
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        /* CANDIDATE POOL AUTO-FIT GRID */
+        .crazy-raffle-root .pool-container {
+          flex: 1;
+          min-height: 0;
+          background: var(--bg-panel);
+          border: 2px solid rgba(0, 240, 255, 0.4);
+          border-radius: 14px;
+          padding: 14px 16px;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+        }
+
+        .crazy-raffle-root .pool-grid-autofit {
+          flex: 1;
+          min-height: 0;
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-          gap: 14px;
-          margin-top: 16px;
-          max-height: 60vh;
-          overflow-y: auto;
-          padding-right: 6px;
+          gap: 10px;
+          align-content: stretch;
+          overflow: hidden;
         }
 
         .crazy-raffle-root .candidate-chip {
           display: flex;
           align-items: center;
-          gap: 12px;
-          padding: 14px 16px;
+          gap: 10px;
+          padding: 8px 14px;
           border-radius: 10px;
-          background: rgba(255, 255, 255, 0.06);
+          background: rgba(255, 255, 255, 0.07);
           border: 1px solid rgba(0, 240, 255, 0.35);
           border-left: 5px solid var(--neon-cyan);
-          font-size: 1.28rem;
-          font-weight: 700;
-          transition: transform 0.08s ease;
+          font-weight: 800;
+          min-height: 0;
+          overflow: hidden;
         }
 
         .crazy-raffle-root .candidate-chip.shuffling {
           border-color: var(--neon-pink);
           border-left-color: var(--neon-yellow);
-          background: linear-gradient(90deg, rgba(255, 0, 127, 0.25), rgba(0, 240, 255, 0.16));
-          box-shadow: 0 0 16px rgba(255, 0, 127, 0.4);
-          transform: scale(1.02);
+          background: linear-gradient(90deg, rgba(255, 0, 127, 0.3), rgba(0, 240, 255, 0.18));
+          box-shadow: 0 0 14px rgba(255, 0, 127, 0.4);
         }
 
-        .crazy-raffle-root .chip-idx {
-          font-family: var(--font-mono);
-          font-size: 0.95rem;
-          font-weight: 700;
-          color: var(--neon-yellow);
-          min-width: 34px;
-        }
-
-        /* RESULTS: PRIMARY WINNERS + BACKUP BUFFER */
-        .crazy-raffle-root .results-columns {
+        /* WINNERS + BUFFER 2-COLUMN ZERO-SCROLL STAGE */
+        .crazy-raffle-root .results-grid {
+          flex: 1;
+          min-height: 0;
           display: grid;
-          grid-template-columns: 1.2fr 1fr;
-          gap: 20px;
+          grid-template-columns: 1.15fr 1fr;
+          gap: 18px;
+          overflow: hidden;
         }
 
-        .crazy-raffle-root .winners-panel {
-          background: rgba(18, 6, 38, 0.94);
+        .crazy-raffle-root .stage-col {
+          min-height: 0;
+          display: flex;
+          flex-direction: column;
+          border-radius: 16px;
+          padding: 14px 18px;
+          background: rgba(16, 5, 34, 0.94);
+          overflow: hidden;
+        }
+
+        .crazy-raffle-root .stage-col.winners {
           border: 2px solid var(--neon-yellow);
-          border-radius: 16px;
-          padding: 22px 24px;
-          box-shadow: 0 0 34px rgba(255, 190, 11, 0.28);
+          box-shadow: 0 0 28px rgba(255, 190, 11, 0.25);
         }
 
-        .crazy-raffle-root .buffer-panel {
-          background: rgba(18, 6, 38, 0.92);
+        .crazy-raffle-root .stage-col.buffer {
           border: 2px solid var(--neon-cyan);
-          border-radius: 16px;
-          padding: 22px 24px;
-          box-shadow: 0 0 30px rgba(0, 240, 255, 0.22);
+          box-shadow: 0 0 24px rgba(0, 240, 255, 0.2);
         }
 
-        .crazy-raffle-root .winner-row-card {
+        .crazy-raffle-root .col-header {
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-bottom: 10px;
+          margin-bottom: 10px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .crazy-raffle-root .col-title {
+          font-family: var(--font-display);
+          font-size: 1.35rem;
+          font-weight: 900;
+          letter-spacing: 1.5px;
+        }
+
+        .crazy-raffle-root .cards-stack {
+          flex: 1;
+          min-height: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          justify-content: space-evenly;
+          overflow: hidden;
+        }
+
+        .crazy-raffle-root .stage-card {
+          flex: 1;
+          min-height: 0;
+          max-height: 110px;
           display: flex;
           align-items: center;
           justify-content: space-between;
           gap: 14px;
-          padding: 16px 18px;
+          padding: 10px 18px;
           border-radius: 12px;
           background: linear-gradient(90deg, rgba(255, 190, 11, 0.2) 0%, rgba(255, 0, 127, 0.14) 100%);
-          border: 1px solid rgba(255, 190, 11, 0.6);
-          margin-top: 12px;
-          transition: all 0.2s ease;
+          border: 2px solid rgba(255, 190, 11, 0.65);
+          transition: all 0.16s ease;
         }
 
-        .crazy-raffle-root .winner-row-card.confirmed {
-          background: linear-gradient(90deg, rgba(0, 245, 155, 0.24) 0%, rgba(0, 240, 255, 0.16) 100%);
+        .crazy-raffle-root .stage-card.backup {
+          background: rgba(0, 240, 255, 0.1);
+          border: 1px solid rgba(0, 240, 255, 0.5);
+        }
+
+        .crazy-raffle-root .stage-card.confirmed {
+          background: linear-gradient(90deg, rgba(0, 245, 155, 0.28) 0%, rgba(0, 240, 255, 0.18) 100%);
           border: 2px solid var(--neon-green);
-          box-shadow: 0 0 20px rgba(0, 245, 155, 0.35);
+          box-shadow: 0 0 18px rgba(0, 245, 155, 0.35);
         }
 
-        .crazy-raffle-root .buffer-row-card {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 14px;
-          padding: 14px 18px;
-          border-radius: 12px;
-          background: rgba(0, 240, 255, 0.09);
-          border: 1px solid rgba(0, 240, 255, 0.45);
-          margin-top: 10px;
-          transition: all 0.2s ease;
-        }
-
-        .crazy-raffle-root .buffer-row-card.confirmed {
-          background: rgba(0, 245, 155, 0.18);
-          border: 2px solid var(--neon-green);
-        }
-
-        .crazy-raffle-root .rank-badge {
+        .crazy-raffle-root .slot-pill {
           font-family: var(--font-arcade);
-          font-size: 0.92rem;
-          padding: 9px 12px;
+          font-size: 1rem;
+          padding: 10px 14px;
           border-radius: 8px;
           background: var(--neon-yellow);
           color: #090214;
@@ -2006,41 +1655,19 @@ export function CrazyRaffleView() {
           white-space: nowrap;
         }
 
-        .crazy-raffle-root .rank-badge.confirmed {
+        .crazy-raffle-root .slot-pill.confirmed {
           background: var(--neon-green);
           color: #04130c;
         }
 
-        .crazy-raffle-root .rank-badge.backup {
-          background: rgba(0, 240, 255, 0.24);
+        .crazy-raffle-root .slot-pill.backup {
+          font-size: 0.85rem;
+          background: rgba(0, 240, 255, 0.22);
           color: var(--neon-cyan);
           border: 1px solid var(--neon-cyan);
         }
 
-        .crazy-raffle-root .winner-main-name {
-          font-family: var(--font-display);
-          font-size: 1.52rem;
-          font-weight: 800;
-          color: #ffffff;
-          letter-spacing: 0.8px;
-        }
-
-        .crazy-raffle-root .winner-prize-sub {
-          font-family: var(--font-mono);
-          font-size: 1.02rem;
-          font-weight: 700;
-          color: var(--neon-cyan);
-          margin-top: 4px;
-        }
-
-        .crazy-raffle-root .winner-email-sub {
-          font-family: var(--font-mono);
-          font-size: 0.88rem;
-          color: var(--text-dim);
-          margin-top: 3px;
-        }
-
-        .crazy-raffle-root .winner-actions {
+        .crazy-raffle-root .card-actions {
           display: flex;
           align-items: center;
           gap: 10px;
@@ -2049,42 +1676,35 @@ export function CrazyRaffleView() {
 
         .crazy-raffle-root .btn-confirm {
           cursor: pointer;
-          padding: 10px 16px;
+          padding: 10px 18px;
           border-radius: 8px;
-          border: 1px solid var(--neon-green);
+          border: 2px solid var(--neon-green);
           background: rgba(0, 245, 155, 0.18);
           color: var(--neon-green);
           font-family: var(--font-mono);
-          font-size: 0.92rem;
+          font-size: 1rem;
           font-weight: 800;
           white-space: nowrap;
-          transition: all 0.15s ease;
         }
 
-        .crazy-raffle-root .btn-confirm:hover {
-          background: var(--neon-green);
-          color: #04130c;
-          box-shadow: 0 0 14px rgba(0, 245, 155, 0.65);
-        }
-
+        .crazy-raffle-root .btn-confirm:hover,
         .crazy-raffle-root .btn-confirm.active {
           background: var(--neon-green);
           color: #04130c;
-          box-shadow: 0 0 16px rgba(0, 245, 155, 0.8);
+          box-shadow: 0 0 14px rgba(0, 245, 155, 0.7);
         }
 
         .crazy-raffle-root .btn-noshow {
           cursor: pointer;
           padding: 10px 14px;
           border-radius: 8px;
-          border: 1px solid rgba(234, 67, 53, 0.75);
+          border: 1px solid rgba(234, 67, 53, 0.8);
           background: rgba(234, 67, 53, 0.18);
           color: #ff8a80;
           font-family: var(--font-mono);
-          font-size: 0.9rem;
+          font-size: 0.95rem;
           font-weight: 800;
           white-space: nowrap;
-          transition: all 0.15s ease;
         }
 
         .crazy-raffle-root .btn-noshow:hover {
@@ -2092,148 +1712,581 @@ export function CrazyRaffleView() {
           color: #fff;
         }
 
-        @media (max-width: 1120px) {
-          .crazy-raffle-root .main-stage {
-            grid-template-columns: 1fr;
-          }
-          .crazy-raffle-root .results-columns {
-            grid-template-columns: 1fr;
-          }
+        /* SETUP & CONFIRMED WINNERS MODAL OVERLAY */
+        .crazy-raffle-root .modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 80;
+          background: rgba(5, 0, 14, 0.82);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+        }
+
+        .crazy-raffle-root .modal-panel {
+          width: 100%;
+          max-width: 780px;
+          max-height: 88vh;
+          overflow-y: auto;
+          background: #140529;
+          border: 2px solid var(--neon-cyan);
+          border-radius: 16px;
+          padding: 22px 26px;
+          box-shadow: 0 0 40px rgba(0, 240, 255, 0.35);
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
         }
       `}</style>
 
       <div className="synth-sky" aria-hidden="true">
-        <div className="stars" />
         <div className="synth-sun" />
         <div className="perspective-grid" />
       </div>
 
       <canvas ref={confettiCanvasRef} id="confettiCanvas" />
 
-      {/* TOP BAR */}
+      {/* 1. UNIFIED TOP BAR */}
       <header className="top-bar">
-        <div className="brand-title">
-          <div className="gdg-mini-badge" aria-hidden="true">
-            <svg viewBox="0 0 120 68" width="44" height="26">
-              <path d="M36 8 L10 34 L22 46 L48 20 Z" fill="#EA4335" />
-              <path d="M10 34 L36 60 L48 48 L22 22 Z" fill="#4285F4" />
-              <path d="M84 60 L110 34 L98 22 L72 48 Z" fill="#FBBC04" />
-              <path d="M110 34 L84 8 L72 20 L98 46 Z" fill="#34A853" />
-            </svg>
-          </div>
-          <div>
-            <span className="sub-eyebrow">
-              GOOGLE DEVELOPER GROUPS // DevFest MTL &apos;26
-            </span>
-            <h1>CRAZY RAFFLE // CATEGORY SHUFFLER</h1>
+        <div className="brand-left">
+          <span className="brand-title">🎲 CRAZY RAFFLE</span>
+
+          {/* 3 MAIN CATEGORY TABS */}
+          <div className="cat-pills">
+            {categories.map((cat) => {
+              const isActive = activeCategory?.id === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  className={`cat-btn ${isActive ? 'active' : ''}`}
+                  onClick={() => handleSelectCategory(cat)}
+                  disabled={isShuffling}
+                >
+                  <span>{cat.icon}</span>
+                  <span>{cat.shortLabel}</span>
+                  <span className="cat-badge">
+                    {cat.id === 'packt'
+                      ? `${cat.columns.length} BOOKS`
+                      : `${cat.totalPrizes}`}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        <div className="top-controls">
-          <div className="stat-pill">
-            <span className="stat-label">SHEET ROWS</span>
-            <span className="stat-value">{rows.length}</span>
-          </div>
-          <div className="stat-pill neon-cyan">
-            <span className="stat-label">ELIGIBLE (YES)</span>
-            <span className="stat-value">{eligibleCandidates.length}</span>
-          </div>
-          <div className="stat-pill neon-pink">
-            <span className="stat-label">CONFIRMED WINNERS</span>
-            <span className="stat-value">{lockedWinnersHistory.length}</span>
-          </div>
-          {lockedWinnersHistory.length > 0 && (
-            <button
-              className="icon-btn"
-              type="button"
-              onClick={exportConfirmedWinnersCSV}
-              title="Export Confirmed Winners CSV (Name, Prize, Email)"
-              style={{
-                borderColor: 'var(--neon-green)',
-                color: 'var(--neon-green)',
-                background: 'rgba(0, 245, 155, 0.12)',
-              }}
-            >
-              📥 EXPORT WINNERS ({lockedWinnersHistory.length})
-            </button>
+        {/* CENTER SHUFFLE ACTION */}
+        <div className="center-actions">
+          <button
+            type="button"
+            className="btn-shuffle-mega"
+            disabled={isShuffling || eligibleCandidates.length === 0}
+            onClick={startFiveSecondShuffle}
+          >
+            {isShuffling
+              ? `⚡ SHUFFLING... ${shuffleRemainingSec.toFixed(1)}s`
+              : drawnOrder.length > 0
+                ? `🔀 RESHUFFLE (${shuffleDurationSec}s)`
+                : `🎲 SHUFFLE ${eligibleCandidates.length} NAMES (${shuffleDurationSec}s)`}
+          </button>
+
+          {drawnOrder.length > 0 && !isShuffling && (
+            <>
+              <button
+                type="button"
+                className="top-btn green"
+                onClick={lockCurrentPrimaryWinners}
+              >
+                ✅ CONFIRM ALL ({primaryWinners.length})
+              </button>
+              <button
+                type="button"
+                className="top-btn"
+                onClick={() => {
+                  setDrawnOrder([]);
+                  setNoShowIds(new Set());
+                }}
+              >
+                👥 POOL ({eligibleCandidates.length})
+              </button>
+            </>
           )}
+        </div>
+
+        {/* RIGHT CONTROLS */}
+        <div className="right-controls">
+          <button
+            type="button"
+            className="top-btn green"
+            disabled={
+              lockedWinnersHistory.length === 0 && primaryWinners.length === 0
+            }
+            onClick={exportConfirmedWinnersCSV}
+            title="Export Confirmed Winners CSV (Name, Prize, Email)"
+          >
+            📥 EXPORT CSV ({lockedWinnersHistory.length})
+          </button>
           <a
             href={ENTRY_GOOGLE_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="icon-btn"
-            title="Open Raffle Entry Google Form"
+            className="top-btn"
           >
-            📝 ENTRY FORM
+            📝 FORM
           </a>
           <button
-            className="icon-btn"
             type="button"
+            className="top-btn"
             onClick={() => setSoundEnabled((s) => !s)}
+            title="Toggle 1980s Synthwave Audio"
           >
-            <span>{soundEnabled ? '🔊' : '🔇'}</span> SYNTH SFX
+            {soundEnabled ? '🔊' : '🔇'}
           </button>
           <button
-            className="icon-btn"
             type="button"
-            onClick={() => setDeckCollapsed((c) => !c)}
+            className="top-btn"
+            onClick={() => setShowSetupModal(true)}
+            title="Sheet Sync, Demo Data & Confirmed Winners List"
           >
-            🎛️ {deckCollapsed ? 'SHOW DECK' : 'HIDE DECK'}
+            ⚙️ SETUP
           </button>
         </div>
       </header>
 
-      <main
-        className={`main-stage ${deckCollapsed ? 'deck-collapsed' : ''}`}
-      >
-        {/* LEFT CONTROL DECK */}
-        {!deckCollapsed && (
-          <aside className="control-deck">
-            <section className="deck-card">
-              <div className="card-header">
-                <span className="step-tag">01</span>
-                <h2>GOOGLE SHEET SOURCE</h2>
+      {/* 2. PACKT BOOK SELECTOR BAR (INDIVIDUAL BOOKS ONLY, 1-3 COPIES EACH) */}
+      {activeCategory && activeCategory.columns.length > 1 && (
+        <div className="book-selector-bar">
+          {activeCategory.columns.map((col) => {
+            const isSelected = activePrizeColumn === col;
+            const prizeName = cleanPrizeLabel(col).toLowerCase();
+            const confirmedForBook = lockedWinnersHistory.filter(
+              (lw) => lw.prize.toLowerCase() === prizeName,
+            ).length;
+            return (
+              <button
+                key={col}
+                type="button"
+                className={`book-pill ${isSelected ? 'active' : ''}`}
+                onClick={() => handleSelectSubColumn(col)}
+                disabled={isShuffling}
+              >
+                📘 {shortBookTitle(col)}
+                {confirmedForBook > 0 ? ` ✅(${confirmedForBook})` : ''}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* 3. SINGLE-SCREEN ZERO-SCROLL STAGE */}
+      <main className="stage-body">
+        {/* PRIZE STATUS BANNER */}
+        <div className="prize-banner">
+          <div className="prize-banner-title">
+            {activeCategory?.icon} {currentPrizeLabel.toUpperCase()}
+          </div>
+          <div className="prize-banner-stats">
+            <span>
+              ELIGIBLE (YES):{' '}
+              <strong style={{ color: '#fff', fontSize: '1.3rem' }}>
+                {eligibleCandidates.length}
+              </strong>
+            </span>
+            <span>·</span>
+            <span style={{ color: 'var(--neon-yellow)' }}>
+              WINNERS: <strong>{winnerCount}</strong>
+            </span>
+            <span>·</span>
+            <span style={{ color: 'var(--neon-green)' }}>
+              NO-SHOW BUFFER: <strong>{bufferCount}</strong>
+            </span>
+          </div>
+        </div>
+
+        {/* VIEW A: WINNERS + BACKUP BUFFER (SIDE-BY-SIDE, ZERO SCROLL) */}
+        {drawnOrder.length > 0 && !isShuffling ? (
+          <div className="results-grid">
+            {/* LEFT: SELECTED WINNERS */}
+            <section className="stage-col winners">
+              <div className="col-header">
+                <span
+                  className="col-title"
+                  style={{ color: 'var(--neon-yellow)' }}
+                >
+                  🏆 SELECTED WINNERS ({primaryWinners.length})
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.95rem',
+                    color: 'var(--text-dim)',
+                  }}
+                >
+                  ✅ Confirm to lock · ❌ No-Show promotes Backup #1
+                </span>
               </div>
 
-              <div className="field-group">
-                <label htmlFor="raffleSheetUrl">GOOGLE SHEET URL OR ID</label>
-                <div className="input-row">
-                  <input
-                    id="raffleSheetUrl"
-                    type="text"
-                    value={sheetUrl}
-                    onChange={(e) => setSheetUrl(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') void fetchGoogleSheet();
+              <div className="cards-stack">
+                {primaryWinners.map((w) => {
+                  const prizeLabel = getPrizeForParticipant(w.participant);
+                  const confirmed = isWinnerConfirmed(
+                    w.participant,
+                    prizeLabel,
+                  );
+                  return (
+                    <div
+                      key={w.participant.id}
+                      className={`stage-card ${confirmed ? 'confirmed' : ''}`}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 16,
+                          minWidth: 0,
+                        }}
+                      >
+                        <span
+                          className={`slot-pill ${confirmed ? 'confirmed' : ''}`}
+                        >
+                          {confirmed ? '✓' : `#${w.effectiveSlot}`}
+                        </span>
+                        <div
+                          style={{
+                            fontFamily: 'var(--font-display)',
+                            fontSize: winnerNameSize,
+                            fontWeight: 900,
+                            color: '#fff',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {w.participant.name}
+                        </div>
+                      </div>
+
+                      <div className="card-actions">
+                        <button
+                          type="button"
+                          className={`btn-confirm ${confirmed ? 'active' : ''}`}
+                          onClick={() =>
+                            toggleConfirmWinner(w.participant, w.effectiveSlot)
+                          }
+                        >
+                          {confirmed ? '✅ CONFIRMED' : '✅ CONFIRM'}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-noshow"
+                          onClick={() => toggleNoShow(w.participant.id)}
+                        >
+                          NO-SHOW ❌
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* RIGHT: NO-SHOW BACKUP BUFFER */}
+            <section className="stage-col buffer">
+              <div className="col-header">
+                <span
+                  className="col-title"
+                  style={{ color: 'var(--neon-cyan)' }}
+                >
+                  🛡️ NO-SHOW BACKUP BUFFER ({backupBuffer.length})
+                </span>
+                {noShowList.length > 0 && (
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                    {noShowList.map((n) => (
+                      <button
+                        key={n.participant.id}
+                        type="button"
+                        onClick={() => toggleNoShow(n.participant.id)}
+                        title="Click to restore No-Show"
+                        style={{
+                          cursor: 'pointer',
+                          padding: '3px 8px',
+                          borderRadius: 999,
+                          border: '1px solid rgba(234,67,53,0.6)',
+                          background: 'rgba(234,67,53,0.15)',
+                          color: '#ff8a80',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.8rem',
+                          textDecoration: 'line-through',
+                        }}
+                      >
+                        {n.participant.name} ↩
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="cards-stack">
+                {backupBuffer.length === 0 ? (
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '1.1rem',
+                      color: 'var(--text-dim)',
                     }}
-                  />
+                  >
+                    No additional backup candidates in pool.
+                  </div>
+                ) : (
+                  backupBuffer.map((b) => {
+                    const prizeLabel = getPrizeForParticipant(b.participant);
+                    const confirmed = isWinnerConfirmed(
+                      b.participant,
+                      prizeLabel,
+                    );
+                    return (
+                      <div
+                        key={b.participant.id}
+                        className={`stage-card backup ${confirmed ? 'confirmed' : ''}`}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 14,
+                            minWidth: 0,
+                          }}
+                        >
+                          <span className="slot-pill backup">
+                            B#{b.backupIndex}
+                          </span>
+                          <div
+                            style={{
+                              fontFamily: 'var(--font-display)',
+                              fontSize: winnerNameSize,
+                              fontWeight: 800,
+                              color: '#fff',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {b.participant.name}
+                          </div>
+                        </div>
+
+                        <div className="card-actions">
+                          <button
+                            type="button"
+                            className={`btn-confirm ${confirmed ? 'active' : ''}`}
+                            onClick={() =>
+                              toggleConfirmWinner(
+                                b.participant,
+                                winnerCount + b.backupIndex,
+                              )
+                            }
+                          >
+                            {confirmed ? '✅ CONFIRMED' : '✅ CONFIRM'}
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-noshow"
+                            onClick={() => toggleNoShow(b.participant.id)}
+                          >
+                            SKIP ❌
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </section>
+          </div>
+        ) : (
+          /* VIEW B: ON-SCREEN CANDIDATE POOL GRID (AUTO-FITTED, ZERO SCROLL) */
+          <div className="pool-container">
+            {displayPool.length === 0 ? (
+              <div
+                style={{
+                  margin: 'auto',
+                  textAlign: 'center',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: '1.35rem',
+                    color: 'var(--text-dim)',
+                    marginBottom: 18,
+                  }}
+                >
+                  {rows.length === 0
+                    ? `Waiting for responses in Google Sheet (${statusMsg})`
+                    : 'No remaining eligible "Yes" responses for this prize.'}
+                </p>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: 12,
+                    justifyContent: 'center',
+                  }}
+                >
                   <button
-                    className="btn btn-cyan"
                     type="button"
-                    disabled={isLoadingSheet}
+                    className="top-btn"
+                    style={{ fontSize: '1rem', padding: '12px 22px' }}
                     onClick={() => void fetchGoogleSheet()}
                   >
-                    {isLoadingSheet ? '...' : 'SYNC'}
+                    🔄 SYNC GOOGLE SHEET
+                  </button>
+                  <button
+                    type="button"
+                    className="top-btn green"
+                    style={{ fontSize: '1rem', padding: '12px 22px' }}
+                    onClick={() =>
+                      ingestCSVText(DEMO_RAFFLE_CSV, 'DEMO RAFFLE SHEET LOADED')
+                    }
+                  >
+                    ⚡ LOAD DEMO PARTICIPANTS
                   </button>
                 </div>
               </div>
+            ) : (
+              <div
+                className="pool-grid-autofit"
+                style={{
+                  gridTemplateColumns: `repeat(${poolCols}, minmax(0, 1fr))`,
+                }}
+              >
+                {displayPool.map((person, idx) => (
+                  <div
+                    key={person.id}
+                    className={`candidate-chip ${
+                      isShuffling ? 'shuffling' : ''
+                    }`}
+                    style={{ fontSize: poolChipFontSize }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.85em',
+                        color: 'var(--neon-yellow)',
+                        minWidth: 32,
+                      }}
+                    >
+                      #{idx + 1}
+                    </span>
+                    <span
+                      style={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {person.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </main>
 
-              <div className="quick-actions-row">
+      {/* SETUP & CONFIRMED WINNERS MODAL */}
+      {showSetupModal && (
+        <div
+          className="modal-backdrop"
+          onClick={() => setShowSetupModal(false)}
+        >
+          <div
+            className="modal-panel"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottom: '1px solid rgba(0,240,255,0.3)',
+                paddingBottom: 12,
+              }}
+            >
+              <h2
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.3rem',
+                  color: 'var(--neon-cyan)',
+                }}
+              >
+                ⚙️ RAFFLE SETUP &amp; CONFIRMED WINNERS
+              </h2>
+              <button
+                type="button"
+                className="top-btn"
+                onClick={() => setShowSetupModal(false)}
+              >
+                ✕ CLOSE
+              </button>
+            </div>
+
+            {/* GOOGLE SHEET SYNC */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <label
+                htmlFor="raffleSheetUrl"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.9rem',
+                  color: 'var(--text-dim)',
+                }}
+              >
+                GOOGLE SHEET URL (DEFAULT: GID=1616495823)
+              </label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input
+                  id="raffleSheetUrl"
+                  type="text"
+                  value={sheetUrl}
+                  onChange={(e) => setSheetUrl(e.target.value)}
+                  style={{
+                    flex: 1,
+                    padding: '10px 12px',
+                    borderRadius: 8,
+                    border: '1px solid var(--neon-cyan)',
+                    background: '#070112',
+                    color: '#fff',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.95rem',
+                  }}
+                />
                 <button
-                  className="btn btn-outline-sm"
                   type="button"
+                  className="top-btn"
+                  disabled={isLoadingSheet}
+                  onClick={() => void fetchGoogleSheet()}
+                >
+                  {isLoadingSheet ? '...' : '🔄 SYNC'}
+                </button>
+                <button
+                  type="button"
+                  className="top-btn"
                   onClick={() =>
                     ingestCSVText(DEMO_RAFFLE_CSV, 'DEMO RAFFLE SHEET LOADED')
                   }
                 >
-                  ⚡ LOAD DEMO DATA
+                  ⚡ DEMO DATA
                 </button>
                 <button
-                  className="btn btn-outline-sm"
                   type="button"
+                  className="top-btn"
                   onClick={() => setShowPasteBox((v) => !v)}
                 >
-                  📂 CSV / PASTE
+                  📂 CSV
                 </button>
                 <input
                   ref={fileInputRef}
@@ -2256,185 +2309,243 @@ export function CrazyRaffleView() {
               </div>
 
               {showPasteBox && (
-                <div className="field-group">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <textarea
                     rows={4}
                     placeholder="Paste CSV or TSV rows here..."
                     value={rawCsvText}
                     onChange={(e) => setRawCsvText(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: 10,
+                      borderRadius: 8,
+                      border: '1px solid var(--neon-cyan)',
+                      background: '#070112',
+                      color: '#fff',
+                      fontFamily: 'var(--font-mono)',
+                    }}
                   />
-                  <div className="quick-actions-row" style={{ marginTop: 6 }}>
-                    <button
-                      className="btn btn-cyan"
-                      style={{ flex: 1 }}
-                      type="button"
-                      onClick={() => {
-                        if (!rawCsvText.trim()) {
-                          fileInputRef.current?.click();
-                          return;
-                        }
-                        ingestCSVText(rawCsvText, 'PASTED DATA LOADED');
-                        setShowPasteBox(false);
-                      }}
-                    >
-                      PARSE / UPLOAD FILE
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    className="top-btn"
+                    onClick={() => {
+                      if (!rawCsvText.trim()) {
+                        fileInputRef.current?.click();
+                        return;
+                      }
+                      ingestCSVText(rawCsvText, 'PASTED DATA LOADED');
+                      setShowPasteBox(false);
+                    }}
+                  >
+                    PARSE / UPLOAD FILE
+                  </button>
                 </div>
               )}
 
-              <div className={`status-banner ${statusType}`}>{statusMsg}</div>
-            </section>
-
-            {/* STEP 2: WINNERS & NO-SHOW BUFFER CONFIG */}
-            <section className="deck-card">
-              <div className="card-header">
-                <span className="step-tag">02</span>
-                <h2>SHUFFLE &amp; BUFFER TUNING</h2>
-              </div>
-
-              <div className="field-group">
-                <label htmlFor="raffleNameCol">PARTICIPANT NAME COLUMN</label>
-                <select
-                  id="raffleNameCol"
-                  value={nameColumn}
-                  onChange={(e) => setNameColumn(e.target.value)}
-                  disabled={headers.length === 0}
-                >
-                  {headers.length === 0 ? (
-                    <option value="">-- Load sheet first --</option>
-                  ) : (
-                    headers.map((h) => (
-                      <option key={h} value={h}>
-                        {h}
-                      </option>
-                    ))
-                  )}
-                </select>
-              </div>
-
               <div
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: 10,
-                  marginBottom: 12,
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.88rem',
+                  color:
+                    statusType === 'error'
+                      ? '#ff8a80'
+                      : statusType === 'success'
+                        ? 'var(--neon-green)'
+                        : 'var(--neon-cyan)',
                 }}
               >
-                <div className="field-group" style={{ marginBottom: 0 }}>
-                  <label htmlFor="winnerCountInput">PRIZES / WINNERS</label>
-                  <input
-                    id="winnerCountInput"
-                    type="number"
-                    min={1}
-                    max={100}
-                    value={winnerCount}
-                    onChange={(e) => {
-                      const val = Math.max(1, Number(e.target.value) || 1);
-                      setWinnerCount(val);
-                      setBufferCount(val);
-                    }}
-                  />
-                </div>
-                <div className="field-group" style={{ marginBottom: 0 }}>
-                  <label htmlFor="bufferCountInput">NO-SHOW BUFFER</label>
-                  <input
-                    id="bufferCountInput"
-                    type="number"
-                    min={0}
-                    max={100}
-                    value={bufferCount}
-                    onChange={(e) =>
-                      setBufferCount(Math.max(0, Number(e.target.value) || 0))
-                    }
-                  />
-                </div>
+                {statusMsg}
               </div>
+            </div>
 
-              <div className="field-group">
-                <label htmlFor="shuffleSecondsInput">
-                  SHUFFLE DURATION: {shuffleDurationSec} SECONDS
+            {/* TUNING ROW */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gap: 12,
+              }}
+            >
+              <div>
+                <label
+                  htmlFor="winnerCountModal"
+                  style={{
+                    display: 'block',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.85rem',
+                    color: 'var(--text-dim)',
+                    marginBottom: 4,
+                  }}
+                >
+                  PRIZES / WINNERS
                 </label>
                 <input
-                  id="shuffleSecondsInput"
+                  id="winnerCountModal"
+                  type="number"
+                  min={1}
+                  max={50}
+                  value={winnerCount}
+                  onChange={(e) => {
+                    const val = Math.max(1, Number(e.target.value) || 1);
+                    setWinnerCount(val);
+                    setBufferCount(val);
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '8px 10px',
+                    borderRadius: 6,
+                    border: '1px solid var(--neon-cyan)',
+                    background: '#070112',
+                    color: '#fff',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '1rem',
+                  }}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="bufferCountModal"
+                  style={{
+                    display: 'block',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.85rem',
+                    color: 'var(--text-dim)',
+                    marginBottom: 4,
+                  }}
+                >
+                  NO-SHOW BUFFER
+                </label>
+                <input
+                  id="bufferCountModal"
+                  type="number"
+                  min={0}
+                  max={50}
+                  value={bufferCount}
+                  onChange={(e) =>
+                    setBufferCount(Math.max(0, Number(e.target.value) || 0))
+                  }
+                  style={{
+                    width: '100%',
+                    padding: '8px 10px',
+                    borderRadius: 6,
+                    border: '1px solid var(--neon-cyan)',
+                    background: '#070112',
+                    color: '#fff',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '1rem',
+                  }}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="shuffleSecModal"
+                  style={{
+                    display: 'block',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.85rem',
+                    color: 'var(--text-dim)',
+                    marginBottom: 4,
+                  }}
+                >
+                  SHUFFLE SECONDS ({shuffleDurationSec}s)
+                </label>
+                <input
+                  id="shuffleSecModal"
                   type="range"
                   min={2}
                   max={10}
-                  step={1}
                   value={shuffleDurationSec}
                   onChange={(e) =>
                     setShuffleDurationSec(Number(e.target.value) || 5)
                   }
-                  style={{ width: '100%', accentColor: '#ff007f' }}
+                  style={{ width: '100%', marginTop: 10, accentColor: '#ff007f' }}
                 />
               </div>
+            </div>
 
-              <label
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.95rem',
+                color: 'var(--neon-cyan)',
+                cursor: 'pointer',
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={excludePastWinners}
+                onChange={(e) => setExcludePastWinners(e.target.checked)}
+              />
+              Exclude confirmed winners from subsequent prize draws
+            </label>
+
+            {/* CONFIRMED WINNERS LIST */}
+            <div
+              style={{
+                borderTop: '1px solid rgba(255,255,255,0.15)',
+                paddingTop: 14,
+              }}
+            >
+              <div
                 style={{
                   display: 'flex',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
-                  gap: 8,
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.78rem',
-                  color: 'var(--neon-cyan)',
-                  cursor: 'pointer',
-                  marginTop: 6,
+                  marginBottom: 10,
                 }}
               >
-                <input
-                  type="checkbox"
-                  checked={excludePastWinners}
-                  onChange={(e) => setExcludePastWinners(e.target.checked)}
-                />
-                Exclude locked winners from earlier categories
-              </label>
-            </section>
-
-            {/* STEP 3: CONFIRMED WINNERS & EXPORT */}
-            <section className="deck-card">
-              <div className="card-header">
-                <span className="step-tag">03</span>
-                <h2>CONFIRMED WINNERS ({lockedWinnersHistory.length})</h2>
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '1.05rem',
+                    color: 'var(--neon-green)',
+                  }}
+                >
+                  ✅ CONFIRMED WINNERS ({lockedWinnersHistory.length})
+                </h3>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button
+                    type="button"
+                    className="top-btn green"
+                    disabled={lockedWinnersHistory.length === 0}
+                    onClick={exportConfirmedWinnersCSV}
+                  >
+                    📥 EXPORT CSV (Name, Prize, Email)
+                  </button>
+                  {lockedWinnersHistory.length > 0 && (
+                    <button
+                      type="button"
+                      className="top-btn"
+                      onClick={() => setLockedWinnersHistory([])}
+                    >
+                      CLEAR ALL
+                    </button>
+                  )}
+                </div>
               </div>
 
-              <div className="quick-actions-row">
-                <button
-                  className="btn btn-cyan"
-                  style={{ flex: 1, fontSize: '0.73rem' }}
-                  type="button"
-                  disabled={
-                    primaryWinners.length === 0 &&
-                    lockedWinnersHistory.length === 0
-                  }
-                  onClick={exportConfirmedWinnersCSV}
-                  title="Export Confirmed Winners CSV with Name, Prize, and Email"
+              {lockedWinnersHistory.length === 0 ? (
+                <p
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.9rem',
+                    color: 'var(--text-dim)',
+                  }}
                 >
-                  📥 EXPORT WINNERS CSV
-                </button>
-                <button
-                  className="btn btn-outline-sm"
-                  type="button"
-                  disabled={
-                    primaryWinners.length === 0 &&
-                    lockedWinnersHistory.length === 0
-                  }
-                  onClick={exportFullLogCSV}
-                  title="Export full draw log including buffer and no-shows"
-                >
-                  📄 FULL LOG
-                </button>
-              </div>
-
-              {lockedWinnersHistory.length > 0 ? (
+                  No confirmed winners yet. Click <strong>✅ CONFIRM</strong>{' '}
+                  next to winners on stage to lock them in.
+                </p>
+              ) : (
                 <div
                   style={{
-                    marginTop: 10,
-                    maxHeight: 220,
-                    overflowY: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 6,
-                    paddingRight: 4,
+                    maxHeight: 220,
+                    overflowY: 'auto',
                   }}
                 >
                   {lockedWinnersHistory.map((lw) => (
@@ -2442,53 +2553,22 @@ export function CrazyRaffleView() {
                       key={lw.key}
                       style={{
                         display: 'flex',
-                        alignItems: 'center',
                         justifyContent: 'space-between',
-                        gap: 8,
-                        padding: '7px 9px',
-                        borderRadius: 6,
-                        background: 'rgba(0, 245, 155, 0.1)',
-                        border: '1px solid rgba(0, 245, 155, 0.4)',
+                        alignItems: 'center',
+                        padding: '8px 12px',
+                        borderRadius: 8,
+                        background: 'rgba(0,245,155,0.1)',
+                        border: '1px solid rgba(0,245,155,0.4)',
                         fontFamily: 'var(--font-mono)',
-                        fontSize: '0.74rem',
+                        fontSize: '0.9rem',
                       }}
                     >
-                      <div style={{ minWidth: 0 }}>
-                        <div
-                          style={{
-                            color: '#fff',
-                            fontWeight: 700,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          ✅ {lw.name}
-                        </div>
-                        <div
-                          style={{
-                            color: 'var(--neon-cyan)',
-                            fontSize: '0.68rem',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          🎁 {lw.prize}
-                        </div>
-                        {lw.email && (
-                          <div
-                            style={{
-                              color: 'var(--text-dim)',
-                              fontSize: '0.66rem',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            ✉️ {lw.email}
-                          </div>
-                        )}
+                      <div>
+                        <strong style={{ color: '#fff' }}>{lw.name}</strong> ·{' '}
+                        <span style={{ color: 'var(--neon-cyan)' }}>
+                          {lw.prize}
+                        </span>
+                        {lw.email ? ` · ${lw.email}` : ''}
                       </div>
                       <button
                         type="button"
@@ -2497,585 +2577,25 @@ export function CrazyRaffleView() {
                             prev.filter((item) => item.key !== lw.key),
                           )
                         }
-                        title="Remove confirmed winner"
                         style={{
                           cursor: 'pointer',
                           background: 'transparent',
-                          border: '1px solid rgba(234, 67, 53, 0.5)',
+                          border: '1px solid #ea4335',
                           color: '#ff8a80',
                           borderRadius: 4,
-                          padding: '2px 6px',
-                          fontSize: '0.7rem',
+                          padding: '2px 8px',
                         }}
                       >
                         ✕
                       </button>
                     </div>
                   ))}
-                  <button
-                    className="btn btn-outline-sm"
-                    style={{ marginTop: 4 }}
-                    type="button"
-                    onClick={() => setLockedWinnersHistory([])}
-                  >
-                    CLEAR ALL CONFIRMED ({lockedWinnersHistory.length})
-                  </button>
                 </div>
-              ) : (
-                <p
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.74rem',
-                    color: 'var(--text-dim)',
-                    lineHeight: 1.35,
-                  }}
-                >
-                  Click <strong>✅ CONFIRM</strong> next to each winner (or{' '}
-                  <strong>CONFIRM ALL</strong>) to lock them in per prize for
-                  your <strong>Name, Prize, Email</strong> CSV export.
-                </p>
               )}
-            </section>
-          </aside>
-        )}
-
-        {/* RIGHT / CENTER MAIN STAGE */}
-        <section className="raffle-stage">
-          {/* 1. SELECT PRIZE CATEGORY (3 MAIN CATEGORIES) */}
-          <div className="category-selector-bar">
-            {categories.map((cat) => {
-              const isActive = activeCategory?.id === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  className={`category-tab ${isActive ? 'active' : ''}`}
-                  onClick={() => handleSelectCategory(cat)}
-                  disabled={isShuffling}
-                >
-                  <div className="cat-left">
-                    <span className="cat-icon">{cat.icon}</span>
-                    <div>
-                      <div className="cat-title">{cat.label}</div>
-                      <div className="cat-sub">
-                        {cat.totalPrizes} PRIZES · {cat.columns.length}{' '}
-                        {cat.columns.length === 1 ? 'ITEM' : 'TITLES'}
-                      </div>
-                    </div>
-                  </div>
-                  {isActive && (
-                    <span className="cat-count-badge">
-                      {eligibleCandidates.length} YES
-                    </span>
-                  )}
-                </button>
-              );
-            })}
+            </div>
           </div>
-
-          {/* SUB-PRIZE FILTER FOR MULTI-ITEM CATEGORIES (e.g. Packt Books) */}
-          {activeCategory && activeCategory.columns.length > 1 && (
-            <div className="subprize-bar">
-              <button
-                type="button"
-                className={`subprize-pill ${
-                  selectedSubColumn === '__ALL_IN_CATEGORY__' ? 'active' : ''
-                }`}
-                onClick={() => handleSelectSubColumn('__ALL_IN_CATEGORY__')}
-                disabled={isShuffling}
-              >
-                ⚡ All {activeCategory.label} ({activeCategory.totalPrizes}{' '}
-                prizes total)
-              </button>
-              {activeCategory.columns.map((col) => (
-                <button
-                  key={col}
-                  type="button"
-                  className={`subprize-pill ${
-                    selectedSubColumn === col ? 'active' : ''
-                  }`}
-                  onClick={() => handleSelectSubColumn(col)}
-                  disabled={isShuffling}
-                >
-                  📘 {col.replace(/^Packt Book\s*-\s*/i, '')}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* 2. SHUFFLE CTA & STATUS BAR */}
-          <div className="shuffle-action-bar">
-            <div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '1.52rem',
-                  fontWeight: 900,
-                  color: '#fff',
-                  letterSpacing: 1.2,
-                }}
-              >
-                {activeCategory ? (
-                  <>
-                    {activeCategory.icon}{' '}
-                    {selectedSubColumn === '__ALL_IN_CATEGORY__'
-                      ? activeCategory.label.toUpperCase()
-                      : cleanPrizeLabel(selectedSubColumn).toUpperCase()}
-                  </>
-                ) : (
-                  'SELECT A PRIZE CATEGORY'
-                )}
-              </div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '1.08rem',
-                  color: 'var(--neon-cyan)',
-                  marginTop: 6,
-                }}
-              >
-                <strong>{eligibleCandidates.length}</strong> participants
-                selected <strong>YES</strong> · Drawing{' '}
-                <strong style={{ color: 'var(--neon-yellow)' }}>
-                  {winnerCount} winners
-                </strong>{' '}
-                +{' '}
-                <strong style={{ color: 'var(--neon-green)' }}>
-                  {bufferCount} no-show buffer
-                </strong>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-              {drawnOrder.length > 0 && !isShuffling && (
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-cyan"
-                    onClick={lockCurrentPrimaryWinners}
-                    title="Confirm all shown winners into the CSV export list"
-                  >
-                    ✅ CONFIRM ALL SHOWN ({primaryWinners.length})
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-sm"
-                    style={{ padding: '10px 14px' }}
-                    onClick={() => {
-                      setDrawnOrder([]);
-                      setNoShowIds(new Set());
-                    }}
-                  >
-                    👁️ VIEW ALL {eligibleCandidates.length} NAMES
-                  </button>
-                </>
-              )}
-
-              <button
-                type="button"
-                className="btn btn-shuffle-mega"
-                disabled={isShuffling || eligibleCandidates.length === 0}
-                onClick={startFiveSecondShuffle}
-              >
-                {isShuffling
-                  ? `⚡ MIXING NAMES... ${shuffleRemainingSec.toFixed(1)}s`
-                  : drawnOrder.length > 0
-                    ? `🔀 RESHUFFLE (${shuffleDurationSec}s)`
-                    : `🎲 SHUFFLE ${eligibleCandidates.length} NAMES (${shuffleDurationSec}s)`}
-              </button>
-            </div>
-
-            {isShuffling && (
-              <div className="shuffle-progress-wrap">
-                <div className="shuffle-progress-bar">
-                  <div
-                    className="shuffle-progress-fill"
-                    style={{
-                      width: `${Math.min(
-                        100,
-                        ((shuffleDurationSec - shuffleRemainingSec) /
-                          shuffleDurationSec) *
-                          100,
-                      )}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* 3A. WINNERS + BUFFER RESULTS VIEW (WHEN SHUFFLE COMPLETES) */}
-          {drawnOrder.length > 0 && !isShuffling ? (
-            <div className="results-columns">
-              {/* PRIMARY WINNERS */}
-              <div className="winners-panel">
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    borderBottom: '1px solid rgba(255, 190, 11, 0.35)',
-                    paddingBottom: 10,
-                    gap: 10,
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  <div>
-                    <h2
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.45rem',
-                        color: 'var(--neon-yellow)',
-                        letterSpacing: 1.5,
-                      }}
-                    >
-                      🏆 SELECTED WINNERS (TOP {primaryWinners.length})
-                    </h2>
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.95rem',
-                        color: 'var(--text-dim)',
-                        marginTop: 4,
-                      }}
-                    >
-                      Click <strong>✅ CONFIRM</strong> to lock in a winner for
-                      CSV export, or <strong>NO-SHOW ❌</strong> to promote next
-                      from the buffer!
-                    </p>
-                  </div>
-                </div>
-
-                {primaryWinners.map((w) => {
-                  const prizeLabel = getPrizeForParticipant(w.participant);
-                  const confirmed = isWinnerConfirmed(
-                    w.participant,
-                    prizeLabel,
-                  );
-                  return (
-                    <div
-                      key={w.participant.id}
-                      className={`winner-row-card ${confirmed ? 'confirmed' : ''}`}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 12,
-                          minWidth: 0,
-                        }}
-                      >
-                        <span
-                          className={`rank-badge ${confirmed ? 'confirmed' : ''}`}
-                        >
-                          {confirmed ? '✓' : `#${w.effectiveSlot}`}
-                        </span>
-                        <div style={{ minWidth: 0 }}>
-                          <div className="winner-main-name">
-                            {w.participant.name}
-                          </div>
-                          <div className="winner-prize-sub">
-                            🎁 {prizeLabel}
-                          </div>
-                          {w.participant.email && (
-                            <div className="winner-email-sub">
-                              ✉️ {w.participant.email}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="winner-actions">
-                        <button
-                          type="button"
-                          className={`btn-confirm ${confirmed ? 'active' : ''}`}
-                          onClick={() =>
-                            toggleConfirmWinner(w.participant, w.effectiveSlot)
-                          }
-                          title={
-                            confirmed
-                              ? 'Confirmed for export! Click to unconfirm'
-                              : 'Confirm winner and lock in Name, Prize, and Email for export'
-                          }
-                        >
-                          {confirmed ? '✅ CONFIRMED ✓' : '✅ CONFIRM'}
-                        </button>
-                        <button
-                          type="button"
-                          className="btn-noshow"
-                          onClick={() => toggleNoShow(w.participant.id)}
-                          title="Mark as No-Show and promote Backup #1"
-                        >
-                          NO-SHOW ❌
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* NO-SHOW BACKUP BUFFER */}
-              <div className="buffer-panel">
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    borderBottom: '1px solid rgba(0, 240, 255, 0.35)',
-                    paddingBottom: 10,
-                  }}
-                >
-                  <div>
-                    <h2
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.4rem',
-                        color: 'var(--neon-cyan)',
-                        letterSpacing: 1.5,
-                      }}
-                    >
-                      🛡️ NO-SHOW BACKUP BUFFER ({backupBuffer.length})
-                    </h2>
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.95rem',
-                        color: 'var(--text-dim)',
-                        marginTop: 4,
-                      }}
-                    >
-                      Next in line in exact random draw order (#
-                      {winnerCount + 1} – #{winnerCount + backupBuffer.length})
-                    </p>
-                  </div>
-                  {remainingStandby.length > 0 && (
-                    <button
-                      type="button"
-                      className="btn btn-outline-sm"
-                      style={{ flex: '0 0 auto' }}
-                      onClick={() => setBufferCount((b) => b + 5)}
-                    >
-                      +5 MORE ({remainingStandby.length} LEFT)
-                    </button>
-                  )}
-                </div>
-
-                {backupBuffer.length === 0 ? (
-                  <div
-                    style={{
-                      padding: '24px 12px',
-                      textAlign: 'center',
-                      fontFamily: 'var(--font-mono)',
-                      color: 'var(--text-dim)',
-                    }}
-                  >
-                    No additional backup candidates remaining in pool.
-                  </div>
-                ) : (
-                  backupBuffer.map((b) => {
-                    const prizeLabel = getPrizeForParticipant(b.participant);
-                    const confirmed = isWinnerConfirmed(
-                      b.participant,
-                      prizeLabel,
-                    );
-                    return (
-                      <div
-                        key={b.participant.id}
-                        className={`buffer-row-card ${confirmed ? 'confirmed' : ''}`}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 12,
-                            minWidth: 0,
-                          }}
-                        >
-                          <span className="rank-badge backup">
-                            BACKUP #{b.backupIndex}
-                          </span>
-                          <div style={{ minWidth: 0 }}>
-                            <div
-                              style={{
-                                fontFamily: 'var(--font-display)',
-                                fontSize: '1.32rem',
-                                fontWeight: 800,
-                                color: '#fff',
-                              }}
-                            >
-                              {b.participant.name}
-                            </div>
-                            <div className="winner-prize-sub">
-                              🎁 {prizeLabel}
-                            </div>
-                            {b.participant.email && (
-                              <div className="winner-email-sub">
-                                ✉️ {b.participant.email}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="winner-actions">
-                          <button
-                            type="button"
-                            className={`btn-confirm ${confirmed ? 'active' : ''}`}
-                            onClick={() =>
-                              toggleConfirmWinner(
-                                b.participant,
-                                winnerCount + b.backupIndex,
-                              )
-                            }
-                            title="Confirm backup winner directly"
-                          >
-                            {confirmed ? '✅ CONFIRMED ✓' : '✅ CONFIRM'}
-                          </button>
-                          <button
-                            type="button"
-                            className="btn-noshow"
-                            onClick={() => toggleNoShow(b.participant.id)}
-                          >
-                            SKIP ❌
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-
-                {noShowList.length > 0 && (
-                  <div
-                    style={{
-                      marginTop: 16,
-                      paddingTop: 12,
-                      borderTop: '1px dashed rgba(234, 67, 53, 0.45)',
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.75rem',
-                        color: '#ff8a80',
-                        marginBottom: 6,
-                      }}
-                    >
-                      MARKED AS NO-SHOW (CLICK TO RESTORE):
-                    </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                      {noShowList.map((n) => (
-                        <button
-                          key={n.participant.id}
-                          type="button"
-                          onClick={() => toggleNoShow(n.participant.id)}
-                          style={{
-                            cursor: 'pointer',
-                            padding: '4px 10px',
-                            borderRadius: 999,
-                            border: '1px solid rgba(234, 67, 53, 0.6)',
-                            background: 'rgba(234, 67, 53, 0.12)',
-                            color: '#ff8a80',
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.75rem',
-                            textDecoration: 'line-through',
-                          }}
-                        >
-                          {n.participant.name} ↩
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : (
-            /* 3B. ON-SCREEN CANDIDATE POOL GRID (BEFORE & DURING 5-SECOND SHUFFLE) */
-            <div className="candidates-pool-card">
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
-                  paddingBottom: 10,
-                }}
-              >
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '1.38rem',
-                    letterSpacing: 1.5,
-                    color: isShuffling
-                      ? 'var(--neon-yellow)'
-                      : 'var(--neon-cyan)',
-                  }}
-                >
-                  {isShuffling
-                    ? `⚡ SHUFFLING ALL ${displayPool.length} CANDIDATES... (${shuffleRemainingSec.toFixed(1)}s)`
-                    : `👥 ELIGIBLE PARTICIPANTS ON SCREEN (${displayPool.length})`}
-                </h2>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.96rem',
-                    color: 'var(--text-dim)',
-                  }}
-                >
-                  {rows.length === 0
-                    ? 'Waiting for responses in sheet (or click LOAD DEMO DATA to test)'
-                    : 'Filtered by "Yes" on selected prize category'}
-                </span>
-              </div>
-
-              {displayPool.length === 0 ? (
-                <div
-                  style={{
-                    padding: '48px 20px',
-                    textAlign: 'center',
-                    fontFamily: 'var(--font-mono)',
-                    color: 'var(--text-dim)',
-                  }}
-                >
-                  <p style={{ fontSize: '1rem', marginBottom: 12 }}>
-                    No responses in the sheet yet for this category (currently{' '}
-                    {rows.length} rows in Google Sheet).
-                  </p>
-                  <button
-                    type="button"
-                    className="btn btn-cyan"
-                    onClick={() =>
-                      ingestCSVText(DEMO_RAFFLE_CSV, 'DEMO RAFFLE SHEET LOADED')
-                    }
-                  >
-                    ⚡ LOAD DEMO PARTICIPANTS TO TEST SHUFFLER
-                  </button>
-                </div>
-              ) : (
-                <div className="pool-grid">
-                  {displayPool.map((person, idx) => (
-                    <div
-                      key={person.id}
-                      className={`candidate-chip ${
-                        isShuffling ? 'shuffling' : ''
-                      }`}
-                    >
-                      <span className="chip-idx">#{idx + 1}</span>
-                      <span
-                        style={{
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {person.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-      </main>
+        </div>
+      )}
     </div>
   );
 }
