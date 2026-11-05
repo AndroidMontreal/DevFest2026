@@ -1169,11 +1169,11 @@ export function CrazyRaffleView() {
 
   const poolChipFontSize = useMemo(() => {
     const count = displayPool.length;
-    if (count <= 12) return '1.65rem';
-    if (count <= 24) return '1.38rem';
-    if (count <= 45) return '1.16rem';
-    if (count <= 75) return '1.0rem';
-    return '0.88rem';
+    if (count <= 12) return 'clamp(0.95rem, 1.5vw, 1.55rem)';
+    if (count <= 24) return 'clamp(0.88rem, 1.3vw, 1.32rem)';
+    if (count <= 45) return 'clamp(0.82rem, 1.1vw, 1.12rem)';
+    if (count <= 75) return 'clamp(0.75rem, 0.95vw, 0.96rem)';
+    return 'clamp(0.7rem, 0.85vw, 0.86rem)';
   }, [displayPool.length]);
 
   // Dynamic font sizing for Winner / Buffer rows based on count (1 to 6)
@@ -1184,10 +1184,10 @@ export function CrazyRaffleView() {
   );
   const winnerNameSize =
     maxRowsInResults <= 3
-      ? '1.95rem'
+      ? 'clamp(1.05rem, 1.8vw, 1.85rem)'
       : maxRowsInResults <= 5
-        ? '1.6rem'
-        : '1.38rem';
+        ? 'clamp(0.95rem, 1.5vw, 1.55rem)'
+        : 'clamp(0.88rem, 1.3vw, 1.32rem)';
 
   return (
     <div className="crazy-raffle-root">
@@ -1211,8 +1211,10 @@ export function CrazyRaffleView() {
           position: fixed;
           inset: 0;
           z-index: 9999;
-          width: 100vw;
+          width: 100%;
+          max-width: 100vw;
           height: 100vh;
+          height: 100dvh;
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -1250,8 +1252,8 @@ export function CrazyRaffleView() {
           left: 50%;
           top: 42%;
           transform: translate(-50%, -50%);
-          width: 360px;
-          height: 360px;
+          width: min(360px, 45vw);
+          height: min(360px, 45vw);
           border-radius: 50%;
           background: linear-gradient(180deg, #ffea00 0%, #ff7b00 45%, #ff007f 85%, #900058 100%);
           box-shadow: 0 0 60px rgba(255, 0, 127, 0.7);
@@ -1287,32 +1289,39 @@ export function CrazyRaffleView() {
           z-index: 90;
         }
 
-        /* UNIFIED TOP BAR */
+        /* UNIFIED TOP BAR - FLUID ADAPTIVE WITH WRAP, ZERO HORIZONTAL OVERFLOW */
         .crazy-raffle-root .top-bar {
           position: relative;
           z-index: 10;
           flex: 0 0 auto;
+          width: 100%;
+          max-width: 100%;
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
           justify-content: space-between;
-          padding: 10px 20px;
+          padding: clamp(6px, 0.8vh, 10px) clamp(10px, 1.4vw, 20px);
           background: rgba(9, 2, 20, 0.94);
           border-bottom: 2px solid var(--neon-cyan);
           box-shadow: 0 0 22px rgba(0, 240, 255, 0.32);
-          gap: 12px;
+          gap: clamp(6px, 0.8vw, 12px);
+          overflow: hidden;
         }
 
         .crazy-raffle-root .brand-left {
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
-          gap: 14px;
+          gap: clamp(6px, 0.8vw, 12px);
+          min-width: 0;
+          max-width: 100%;
         }
 
         .crazy-raffle-root .brand-title {
           font-family: var(--font-display);
           font-weight: 900;
-          font-size: 1.35rem;
-          letter-spacing: 2px;
+          font-size: clamp(0.95rem, 1.25vw, 1.32rem);
+          letter-spacing: 1.5px;
           background: linear-gradient(90deg, #ffffff 0%, #00f0ff 50%, #ffbe0b 100%);
           -webkit-background-clip: text;
           background-clip: text;
@@ -1323,24 +1332,26 @@ export function CrazyRaffleView() {
         /* INLINE 3 CATEGORY TABS */
         .crazy-raffle-root .cat-pills {
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
-          gap: 10px;
+          gap: clamp(4px, 0.6vw, 8px);
+          min-width: 0;
         }
 
         .crazy-raffle-root .cat-btn {
           cursor: pointer;
           display: flex;
           align-items: center;
-          gap: 9px;
-          padding: 9px 16px;
+          gap: clamp(5px, 0.5vw, 8px);
+          padding: clamp(6px, 0.7vh, 9px) clamp(8px, 0.9vw, 14px);
           border-radius: 10px;
           background: rgba(255, 255, 255, 0.06);
           border: 2px solid rgba(0, 240, 255, 0.32);
           color: #fff;
           font-family: var(--font-display);
-          font-size: 0.98rem;
+          font-size: clamp(0.75rem, 0.9vw, 0.96rem);
           font-weight: 800;
-          letter-spacing: 0.8px;
+          letter-spacing: 0.6px;
           transition: all 0.16s ease;
           white-space: nowrap;
         }
@@ -1358,8 +1369,8 @@ export function CrazyRaffleView() {
 
         .crazy-raffle-root .cat-badge {
           font-family: var(--font-mono);
-          font-size: 0.86rem;
-          padding: 2px 8px;
+          font-size: clamp(0.7rem, 0.8vw, 0.85rem);
+          padding: 2px 7px;
           border-radius: 999px;
           background: rgba(0, 0, 0, 0.45);
           color: var(--neon-yellow);
@@ -1369,17 +1380,19 @@ export function CrazyRaffleView() {
         /* CENTER MEGA SHUFFLE BUTTON */
         .crazy-raffle-root .center-actions {
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
-          gap: 10px;
+          gap: clamp(6px, 0.7vw, 10px);
+          min-width: 0;
         }
 
         .crazy-raffle-root .btn-shuffle-mega {
           cursor: pointer;
-          padding: 11px 28px;
+          padding: clamp(7px, 0.8vh, 11px) clamp(14px, 1.5vw, 24px);
           font-family: var(--font-display);
-          font-size: 1.18rem;
+          font-size: clamp(0.84rem, 1.05vw, 1.14rem);
           font-weight: 900;
-          letter-spacing: 2px;
+          letter-spacing: 1.5px;
           border-radius: 999px;
           background: linear-gradient(90deg, #ff007f 0%, #ffbe0b 50%, #00f0ff 100%);
           background-size: 200% auto;
@@ -1404,21 +1417,23 @@ export function CrazyRaffleView() {
         /* RIGHT CONTROLS */
         .crazy-raffle-root .right-controls {
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
-          gap: 8px;
+          gap: clamp(5px, 0.55vw, 8px);
+          min-width: 0;
         }
 
         .crazy-raffle-root .top-btn {
           cursor: pointer;
-          padding: 9px 14px;
+          padding: clamp(6px, 0.7vh, 9px) clamp(8px, 0.85vw, 13px);
           border-radius: 8px;
           border: 1px solid var(--neon-cyan);
           background: rgba(0, 240, 255, 0.12);
           color: var(--neon-cyan);
           font-family: var(--font-display);
-          font-size: 0.84rem;
+          font-size: clamp(0.72rem, 0.82vw, 0.84rem);
           font-weight: 800;
-          letter-spacing: 0.8px;
+          letter-spacing: 0.6px;
           text-decoration: none;
           white-space: nowrap;
           transition: all 0.15s ease;
@@ -1440,31 +1455,38 @@ export function CrazyRaffleView() {
           color: #04130c;
         }
 
-        /* PACKT BOOK TITLE SELECTOR BAR */
+        /* PACKT BOOK TITLE SELECTOR BAR - WRAPS CLEANLY, ZERO HORIZONTAL SCROLL */
         .crazy-raffle-root .book-selector-bar {
           position: relative;
           z-index: 9;
           flex: 0 0 auto;
+          width: 100%;
+          max-width: 100%;
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
-          gap: 8px;
-          padding: 8px 20px;
+          gap: clamp(5px, 0.6vw, 8px);
+          padding: clamp(6px, 0.7vh, 8px) clamp(10px, 1.4vw, 20px);
           background: rgba(15, 4, 32, 0.92);
           border-bottom: 1px solid rgba(255, 190, 11, 0.45);
-          overflow-x: auto;
+          overflow: hidden;
         }
 
         .crazy-raffle-root .book-pill {
           cursor: pointer;
-          padding: 7px 14px;
+          flex: 1 1 auto;
+          text-align: center;
+          padding: clamp(5px, 0.6vh, 7px) clamp(8px, 0.85vw, 12px);
           border-radius: 999px;
           border: 1px solid rgba(255, 255, 255, 0.25);
           background: rgba(255, 255, 255, 0.06);
           color: #fff;
           font-family: var(--font-mono);
-          font-size: 0.9rem;
+          font-size: clamp(0.74rem, 0.85vw, 0.88rem);
           font-weight: 700;
           white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           transition: all 0.15s ease;
         }
 
@@ -1481,51 +1503,68 @@ export function CrazyRaffleView() {
           z-index: 5;
           flex: 1;
           min-height: 0;
-          padding: 14px 20px;
+          min-width: 0;
+          width: 100%;
+          max-width: 100%;
+          padding: clamp(8px, 1.2vh, 14px) clamp(10px, 1.4vw, 20px);
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: clamp(8px, 1vh, 12px);
           overflow: hidden;
         }
 
         /* PRIZE HEADER BANNER */
         .crazy-raffle-root .prize-banner {
           flex: 0 0 auto;
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
           justify-content: space-between;
-          padding: 10px 18px;
+          padding: clamp(7px, 0.9vh, 10px) clamp(12px, 1.2vw, 18px);
           border-radius: 12px;
           background: rgba(18, 6, 38, 0.9);
           border: 1px solid rgba(0, 240, 255, 0.4);
-          gap: 16px;
+          gap: clamp(8px, 1vw, 16px);
+          overflow: hidden;
         }
 
         .crazy-raffle-root .prize-banner-title {
           font-family: var(--font-display);
-          font-size: 1.45rem;
+          font-size: clamp(0.95rem, 1.35vw, 1.42rem);
           font-weight: 900;
           color: #fff;
-          letter-spacing: 1.2px;
+          letter-spacing: 1px;
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .crazy-raffle-root .prize-banner-stats {
           font-family: var(--font-mono);
-          font-size: 1.12rem;
+          font-size: clamp(0.82rem, 1.02vw, 1.1rem);
           color: var(--neon-cyan);
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
-          gap: 16px;
+          gap: clamp(8px, 1vw, 14px);
+          min-width: 0;
         }
 
         /* CANDIDATE POOL AUTO-FIT GRID */
         .crazy-raffle-root .pool-container {
           flex: 1;
           min-height: 0;
+          min-width: 0;
+          width: 100%;
+          max-width: 100%;
           background: var(--bg-panel);
           border: 2px solid rgba(0, 240, 255, 0.4);
           border-radius: 14px;
-          padding: 14px 16px;
+          padding: clamp(8px, 1.1vh, 14px) clamp(10px, 1.2vw, 16px);
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -1534,8 +1573,10 @@ export function CrazyRaffleView() {
         .crazy-raffle-root .pool-grid-autofit {
           flex: 1;
           min-height: 0;
+          min-width: 0;
+          width: 100%;
           display: grid;
-          gap: 10px;
+          gap: clamp(6px, 0.7vw, 10px);
           align-content: stretch;
           overflow: hidden;
         }
@@ -1543,14 +1584,15 @@ export function CrazyRaffleView() {
         .crazy-raffle-root .candidate-chip {
           display: flex;
           align-items: center;
-          gap: 10px;
-          padding: 8px 14px;
+          gap: clamp(6px, 0.6vw, 10px);
+          padding: clamp(5px, 0.7vh, 8px) clamp(8px, 0.9vw, 14px);
           border-radius: 10px;
           background: rgba(255, 255, 255, 0.07);
           border: 1px solid rgba(0, 240, 255, 0.35);
-          border-left: 5px solid var(--neon-cyan);
+          border-left: 4px solid var(--neon-cyan);
           font-weight: 800;
           min-height: 0;
+          min-width: 0;
           overflow: hidden;
         }
 
@@ -1565,18 +1607,24 @@ export function CrazyRaffleView() {
         .crazy-raffle-root .results-grid {
           flex: 1;
           min-height: 0;
+          min-width: 0;
+          width: 100%;
+          max-width: 100%;
           display: grid;
-          grid-template-columns: 1.15fr 1fr;
-          gap: 18px;
+          grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+          gap: clamp(10px, 1.2vw, 18px);
           overflow: hidden;
         }
 
         .crazy-raffle-root .stage-col {
           min-height: 0;
+          min-width: 0;
+          width: 100%;
+          max-width: 100%;
           display: flex;
           flex-direction: column;
           border-radius: 16px;
-          padding: 14px 18px;
+          padding: clamp(10px, 1.2vh, 14px) clamp(12px, 1.2vw, 18px);
           background: rgba(16, 5, 34, 0.94);
           overflow: hidden;
         }
@@ -1593,27 +1641,35 @@ export function CrazyRaffleView() {
 
         .crazy-raffle-root .col-header {
           flex: 0 0 auto;
+          min-width: 0;
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
           justify-content: space-between;
-          padding-bottom: 10px;
-          margin-bottom: 10px;
+          gap: 8px;
+          padding-bottom: clamp(6px, 0.8vh, 10px);
+          margin-bottom: clamp(6px, 0.8vh, 10px);
           border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+          overflow: hidden;
         }
 
         .crazy-raffle-root .col-title {
           font-family: var(--font-display);
-          font-size: 1.35rem;
+          font-size: clamp(0.92rem, 1.2vw, 1.32rem);
           font-weight: 900;
-          letter-spacing: 1.5px;
+          letter-spacing: 1px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .crazy-raffle-root .cards-stack {
           flex: 1;
           min-height: 0;
+          min-width: 0;
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: clamp(6px, 0.8vh, 10px);
           justify-content: space-evenly;
           overflow: hidden;
         }
@@ -1621,16 +1677,19 @@ export function CrazyRaffleView() {
         .crazy-raffle-root .stage-card {
           flex: 1;
           min-height: 0;
+          min-width: 0;
+          width: 100%;
           max-height: 110px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 14px;
-          padding: 10px 18px;
+          gap: clamp(8px, 0.9vw, 14px);
+          padding: clamp(6px, 0.9vh, 10px) clamp(10px, 1.1vw, 18px);
           border-radius: 12px;
           background: linear-gradient(90deg, rgba(255, 190, 11, 0.2) 0%, rgba(255, 0, 127, 0.14) 100%);
           border: 2px solid rgba(255, 190, 11, 0.65);
           transition: all 0.16s ease;
+          overflow: hidden;
         }
 
         .crazy-raffle-root .stage-card.backup {
@@ -1645,9 +1704,10 @@ export function CrazyRaffleView() {
         }
 
         .crazy-raffle-root .slot-pill {
+          flex-shrink: 0;
           font-family: var(--font-arcade);
-          font-size: 1rem;
-          padding: 10px 14px;
+          font-size: clamp(0.72rem, 0.9vw, 0.98rem);
+          padding: clamp(6px, 0.7vh, 10px) clamp(8px, 0.8vw, 13px);
           border-radius: 8px;
           background: var(--neon-yellow);
           color: #090214;
@@ -1661,7 +1721,7 @@ export function CrazyRaffleView() {
         }
 
         .crazy-raffle-root .slot-pill.backup {
-          font-size: 0.85rem;
+          font-size: clamp(0.68rem, 0.8vw, 0.84rem);
           background: rgba(0, 240, 255, 0.22);
           color: var(--neon-cyan);
           border: 1px solid var(--neon-cyan);
@@ -1670,19 +1730,19 @@ export function CrazyRaffleView() {
         .crazy-raffle-root .card-actions {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: clamp(6px, 0.6vw, 10px);
           flex-shrink: 0;
         }
 
         .crazy-raffle-root .btn-confirm {
           cursor: pointer;
-          padding: 10px 18px;
+          padding: clamp(6px, 0.8vh, 10px) clamp(10px, 1vw, 16px);
           border-radius: 8px;
           border: 2px solid var(--neon-green);
           background: rgba(0, 245, 155, 0.18);
           color: var(--neon-green);
           font-family: var(--font-mono);
-          font-size: 1rem;
+          font-size: clamp(0.78rem, 0.9vw, 0.98rem);
           font-weight: 800;
           white-space: nowrap;
         }
@@ -1696,13 +1756,13 @@ export function CrazyRaffleView() {
 
         .crazy-raffle-root .btn-noshow {
           cursor: pointer;
-          padding: 10px 14px;
+          padding: clamp(6px, 0.8vh, 10px) clamp(8px, 0.85vw, 13px);
           border-radius: 8px;
           border: 1px solid rgba(234, 67, 53, 0.8);
           background: rgba(234, 67, 53, 0.18);
           color: #ff8a80;
           font-family: var(--font-mono);
-          font-size: 0.95rem;
+          font-size: clamp(0.75rem, 0.86vw, 0.94rem);
           font-weight: 800;
           white-space: nowrap;
         }
@@ -1722,22 +1782,29 @@ export function CrazyRaffleView() {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 24px;
+          padding: 16px;
         }
 
         .crazy-raffle-root .modal-panel {
           width: 100%;
-          max-width: 780px;
+          max-width: min(780px, 95vw);
           max-height: 88vh;
           overflow-y: auto;
+          overflow-x: hidden;
           background: #140529;
           border: 2px solid var(--neon-cyan);
           border-radius: 16px;
-          padding: 22px 26px;
+          padding: clamp(14px, 2vh, 22px) clamp(16px, 2vw, 26px);
           box-shadow: 0 0 40px rgba(0, 240, 255, 0.35);
           display: flex;
           flex-direction: column;
-          gap: 18px;
+          gap: 16px;
+        }
+
+        @media (max-width: 980px) {
+          .crazy-raffle-root .results-grid {
+            grid-template-columns: minmax(0, 1fr);
+          }
         }
       `}</style>
 
