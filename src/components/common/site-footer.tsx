@@ -9,7 +9,7 @@ export const SiteFooter = () => {
   const pathname = usePathname();
   const t = useTranslations('Footer');
 
-  if (/^\/(en\/|fr\/)?(crazywheel|staff)(\/|$)/i.test(pathname)) {
+  if (/^\/(en\/|fr\/)?(crazywheel|crazyraffle|staff)(\/|$)/i.test(pathname)) {
     return null;
   }
 
