@@ -2036,6 +2036,14 @@ export function CrazyRaffleView() {
           <div className="cat-pills">
             {categories.map((cat) => {
               const isActive = activeCategory?.id === cat.id;
+              const catPrizeNames = new Set(
+                cat.columns.map((c) => cleanPrizeLabel(c).toLowerCase()),
+              );
+              const confirmedInCat = lockedWinnersHistory.filter((lw) =>
+                catPrizeNames.has(lw.prize.toLowerCase()),
+              ).length;
+              const isCatDone =
+                cat.totalPrizes > 0 && confirmedInCat >= cat.totalPrizes;
               return (
                 <button
                   key={cat.id}
@@ -2050,6 +2058,11 @@ export function CrazyRaffleView() {
                     {cat.id === 'packt'
                       ? `${cat.columns.length} BOOKS`
                       : `${cat.totalPrizes}`}
+                    {isCatDone
+                      ? ' ✅'
+                      : confirmedInCat > 0
+                        ? ` (${confirmedInCat}✓)`
+                        : ''}
                   </span>
                 </button>
               );
@@ -2518,7 +2531,18 @@ export function CrazyRaffleView() {
                   color: 'var(--neon-cyan)',
                 }}
               >
-                ⚙️ RAFFLE SETUP &amp; CONFIRMED WINNERS
+                ⚙️ RAFFLE SETUP &amp; CONFIRMED WINNERS{' '}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.78rem',
+                    color: 'var(--text-dim)',
+                    fontWeight: 600,
+                    marginLeft: 8,
+                  }}
+                >
+                  v2026.11.05-r4
+                </span>
               </h2>
               <button
                 type="button"
