@@ -7,7 +7,7 @@ const DEFAULT_GOOGLE_SHEET_URL =
 
 const ENTRY_GOOGLE_FORM_URL = 'https://forms.gle/uDH1NmnFMeqgkCQ16';
 
-const RAFFLE_RELEASE_VERSION = 'v2026.11.05-r6';
+const RAFFLE_RELEASE_VERSION = 'v2026.11.05-r7';
 
 const DEFAULT_SHEET_HEADERS = [
   'Timestamp',
@@ -450,6 +450,7 @@ function toCsvField(val: string | undefined): string {
 
 export function CrazyRaffleView() {
   const [sheetUrl, setSheetUrl] = useState(DEFAULT_GOOGLE_SHEET_URL);
+  const [formUrl, setFormUrl] = useState(ENTRY_GOOGLE_FORM_URL);
   const [headers, setHeaders] = useState<string[]>(DEFAULT_SHEET_HEADERS);
   const [rows, setRows] = useState<Record<string, string>[]>([]);
   const [nameColumn, setNameColumn] = useState('Nom Complet / Full Name');
@@ -523,6 +524,8 @@ export function CrazyRaffleView() {
           const parsed = JSON.parse(saved) as {
             lockedWinnersHistory?: typeof lockedWinnersHistory;
             drawnStateByPrize?: typeof drawnStateByPrize;
+            formUrl?: string;
+            sheetUrl?: string;
           };
           if (Array.isArray(parsed.lockedWinnersHistory)) {
             setLockedWinnersHistory(parsed.lockedWinnersHistory);
@@ -532,6 +535,12 @@ export function CrazyRaffleView() {
             typeof parsed.drawnStateByPrize === 'object'
           ) {
             setDrawnStateByPrize(parsed.drawnStateByPrize);
+          }
+          if (typeof parsed.formUrl === 'string' && parsed.formUrl.trim()) {
+            setFormUrl(parsed.formUrl.trim());
+          }
+          if (typeof parsed.sheetUrl === 'string' && parsed.sheetUrl.trim()) {
+            setSheetUrl(parsed.sheetUrl.trim());
           }
         }
       } catch {
@@ -552,12 +561,14 @@ export function CrazyRaffleView() {
         JSON.stringify({
           lockedWinnersHistory,
           drawnStateByPrize,
+          formUrl,
+          sheetUrl,
         }),
       );
     } catch {
       // Ignore storage quota errors
     }
-  }, [lockedWinnersHistory, drawnStateByPrize]);
+  }, [lockedWinnersHistory, drawnStateByPrize, formUrl, sheetUrl]);
 
   useEffect(() => {
     audioRef.current = new SynthRaffleAudio();
@@ -2619,15 +2630,6 @@ export function CrazyRaffleView() {
                 >
                   📂 CSV
                 </button>
-                <a
-                  href={ENTRY_GOOGLE_FORM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="top-btn"
-                  title="Open Raffle Entry Google Form"
-                >
-                  📝 ENTRY FORM
-                </a>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -2646,6 +2648,55 @@ export function CrazyRaffleView() {
                     reader.readAsText(file);
                   }}
                 />
+              </div>
+
+              {/* EDITABLE ENTRY FORM URL */}
+              <label
+                htmlFor="raffleFormUrl"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.9rem',
+                  color: 'var(--text-dim)',
+                  marginTop: 6,
+                }}
+              >
+                ENTRY GOOGLE FORM URL (DEFAULT: {ENTRY_GOOGLE_FORM_URL})
+              </label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input
+                  id="raffleFormUrl"
+                  type="text"
+                  value={formUrl}
+                  onChange={(e) => setFormUrl(e.target.value)}
+                  placeholder={ENTRY_GOOGLE_FORM_URL}
+                  style={{
+                    flex: 1,
+                    padding: '10px 12px',
+                    borderRadius: 8,
+                    border: '1px solid var(--neon-cyan)',
+                    background: '#070112',
+                    color: '#fff',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.95rem',
+                  }}
+                />
+                <a
+                  href={formUrl.trim() || ENTRY_GOOGLE_FORM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="top-btn green"
+                  title="Open Raffle Entry Google Form in new tab"
+                >
+                  📝 OPEN FORM
+                </a>
+                <button
+                  type="button"
+                  className="top-btn"
+                  onClick={() => setFormUrl(ENTRY_GOOGLE_FORM_URL)}
+                  title="Reset Entry Form URL to Default"
+                >
+                  ↺ DEFAULT
+                </button>
               </div>
 
               {showPasteBox && (
