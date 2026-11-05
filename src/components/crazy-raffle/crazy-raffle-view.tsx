@@ -387,24 +387,35 @@ function parseCSV(text: string): {
 function isAffirmativePrizeCell(val: string | undefined): boolean {
   const s = (val || '').trim();
   if (!s) return false;
-  return !/^(no|non|no\s*\/\s*non|non\s*\/\s*no|false|0|-|n\/a|none)$/i.test(s);
+  if (/^(no\b|non\b|nope\b|false\b|0$|-\s*$|n\/a$|none$|null$|✗|✘|❌)/i.test(s)) {
+    return false;
+  }
+  return true;
 }
 
 function parsePrizeCountFromHeader(header: string): number {
-  const match = header.match(/\((\d+)\)\s*$/);
-  if (match) {
-    const n = parseInt(match[1], 10);
+  const normalized = header.replace(/\s+/g, ' ').trim();
+  const matches = [...normalized.matchAll(/\((\d+)(?:\s*[^)]*)?\)/g)];
+  if (matches.length > 0) {
+    const last = matches[matches.length - 1];
+    const n = parseInt(last[1], 10);
     if (n > 0) return n;
   }
   return 1;
 }
 
 function cleanPrizeLabel(header: string): string {
-  return header.replace(/\s*\(\d+\)\s*$/, '').trim();
+  return header
+    .replace(/\s+/g, ' ')
+    .replace(/\s*\(\d+(?:\s*[^)]*)?\)\s*$/, '')
+    .trim();
 }
 
 function shortBookTitle(header: string): string {
-  return header.replace(/^Packt Book\s*-\s*/i, '').trim();
+  return header
+    .replace(/\s+/g, ' ')
+    .replace(/^Packt Book\s*-\s*/i, '')
+    .trim();
 }
 
 function cryptoShuffle<T>(arr: readonly T[]): T[] {
@@ -466,12 +477,19 @@ export function CrazyRaffleView() {
   const [excludePastWinners, setExcludePastWinners] = useState<boolean>(true);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
 
-  // Shuffling & Results State
+  // Shuffling & Results State (persisted per-prize in memory + localStorage)
   const [isShuffling, setIsShuffling] = useState<boolean>(false);
   const [shuffleRemainingSec, setShuffleRemainingSec] = useState<number>(0);
   const [shuffledPool, setShuffledPool] = useState<RaffleParticipant[]>([]);
-  const [drawnOrder, setDrawnOrder] = useState<RaffleParticipant[]>([]);
-  const [noShowIds, setNoShowIds] = useState<Set<string>>(new Set());
+  const [drawnStateByPrize, setDrawnStateByPrize] = useState<
+    Record<
+      string,
+      {
+        drawnOrder: RaffleParticipant[];
+        noShowOrder: string[];
+      }
+    >
+  >({});
   const [lockedWinnersHistory, setLockedWinnersHistory] = useState<
     Array<{
       key: string;
@@ -487,7 +505,57 @@ export function CrazyRaffleView() {
   const audioRef = useRef<SynthRaffleAudio | null>(null);
   const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const confettiRafRef = useRef<number | null>(null);
+  const shuffleRafRef = useRef<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const hydratedRef = useRef(false);
+
+  // Hydrate confirmed winners & drawn prize state from localStorage on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        const saved = window.localStorage.getItem(
+          'devfest2026_crazy_raffle_v1',
+        );
+        if (saved) {
+          const parsed = JSON.parse(saved) as {
+            lockedWinnersHistory?: typeof lockedWinnersHistory;
+            drawnStateByPrize?: typeof drawnStateByPrize;
+          };
+          if (Array.isArray(parsed.lockedWinnersHistory)) {
+            setLockedWinnersHistory(parsed.lockedWinnersHistory);
+          }
+          if (
+            parsed.drawnStateByPrize &&
+            typeof parsed.drawnStateByPrize === 'object'
+          ) {
+            setDrawnStateByPrize(parsed.drawnStateByPrize);
+          }
+        }
+      } catch {
+        // Ignore storage errors
+      } finally {
+        hydratedRef.current = true;
+      }
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Persist confirmed winners & drawn prize state to localStorage
+  useEffect(() => {
+    if (!hydratedRef.current) return;
+    try {
+      window.localStorage.setItem(
+        'devfest2026_crazy_raffle_v1',
+        JSON.stringify({
+          lockedWinnersHistory,
+          drawnStateByPrize,
+        }),
+      );
+    } catch {
+      // Ignore storage quota errors
+    }
+  }, [lockedWinnersHistory, drawnStateByPrize]);
 
   useEffect(() => {
     audioRef.current = new SynthRaffleAudio();
@@ -495,6 +563,9 @@ export function CrazyRaffleView() {
       audioRef.current?.dispose();
       if (confettiRafRef.current) {
         cancelAnimationFrame(confettiRafRef.current);
+      }
+      if (shuffleRafRef.current) {
+        cancelAnimationFrame(shuffleRafRef.current);
       }
     };
   }, []);
@@ -621,6 +692,41 @@ export function CrazyRaffleView() {
     return activeCategory.columns[0];
   }, [activeCategory, selectedSubColumn]);
 
+  const currentPrizeLabel = useMemo(() => {
+    if (activePrizeColumn) return cleanPrizeLabel(activePrizeColumn);
+    return activeCategory?.label || 'Raffle Prize';
+  }, [activePrizeColumn, activeCategory]);
+
+  // Drawn state for the currently active prize column
+  const currentDrawnState = useMemo(() => {
+    if (!activePrizeColumn) {
+      return { drawnOrder: [] as RaffleParticipant[], noShowOrder: [] as string[] };
+    }
+    return (
+      drawnStateByPrize[activePrizeColumn] || {
+        drawnOrder: [] as RaffleParticipant[],
+        noShowOrder: [] as string[],
+      }
+    );
+  }, [drawnStateByPrize, activePrizeColumn]);
+
+  const drawnOrder = currentDrawnState.drawnOrder;
+  const noShowOrder = currentDrawnState.noShowOrder;
+
+  const setDrawnOrderForCurrentPrize = useCallback(
+    (nextDrawnOrder: RaffleParticipant[], nextNoShowOrder: string[] = []) => {
+      if (!activePrizeColumn) return;
+      setDrawnStateByPrize((prev) => ({
+        ...prev,
+        [activePrizeColumn]: {
+          drawnOrder: nextDrawnOrder,
+          noShowOrder: nextNoShowOrder,
+        },
+      }));
+    },
+    [activePrizeColumn],
+  );
+
   const extractRowEmail = useCallback(
     (row: Record<string, string>): string => {
       if (emailColumn && emailColumn !== '__AUTO__') {
@@ -640,16 +746,23 @@ export function CrazyRaffleView() {
   );
 
   // Eligible participants who answered "Yes" to the selected prize column
+  // When excludePastWinners is enabled, participants confirmed for OTHER prizes are excluded
+  // so no one wins twice across different categories/books, while keeping the current prize pool stable.
   const eligibleCandidates = useMemo<RaffleParticipant[]>(() => {
     if (!nameColumn || rows.length === 0 || !activePrizeColumn) {
       return [];
     }
 
+    const activePrizeLower = cleanPrizeLabel(activePrizeColumn).toLowerCase();
+    const otherPrizeWinners = lockedWinnersHistory.filter(
+      (w) => w.prize.toLowerCase() !== activePrizeLower,
+    );
+
     const lockedNamesSet = new Set(
-      lockedWinnersHistory.map((w) => w.name.toLowerCase()),
+      otherPrizeWinners.map((w) => w.name.toLowerCase()),
     );
     const lockedEmailsSet = new Set(
-      lockedWinnersHistory
+      otherPrizeWinners
         .map((w) => w.email.toLowerCase())
         .filter(Boolean),
     );
@@ -707,8 +820,6 @@ export function CrazyRaffleView() {
     setSelectedSubColumn(firstCol);
     setWinnerCount(count);
     setBufferCount(count);
-    setDrawnOrder([]);
-    setNoShowIds(new Set());
     audioRef.current?.playCategoryLoad();
   };
 
@@ -718,8 +829,6 @@ export function CrazyRaffleView() {
     setSelectedSubColumn(col);
     setWinnerCount(count);
     setBufferCount(count);
-    setDrawnOrder([]);
-    setNoShowIds(new Set());
     audioRef.current?.playCategoryLoad();
   };
 
@@ -747,14 +856,38 @@ export function CrazyRaffleView() {
       );
       setEmailColumn(detectedEmail || '__AUTO__');
 
-      const firstJetbrains = parsedHeaders.find((h) => /jetbrain/i.test(h));
-      if (firstJetbrains) {
-        const count = parsePrizeCountFromHeader(firstJetbrains);
-        setSelectedCategoryId('jetbrains');
-        setSelectedSubColumn(firstJetbrains);
-        setWinnerCount(count);
-        setBufferCount(count);
-      }
+      setSelectedSubColumn((prevSub) => {
+        if (prevSub && parsedHeaders.includes(prevSub)) {
+          const count = parsePrizeCountFromHeader(prevSub);
+          setWinnerCount(count);
+          setBufferCount(count);
+          return prevSub;
+        }
+        const firstJetbrains = parsedHeaders.find((h) => /jetbrain/i.test(h));
+        const fallbackCol =
+          firstJetbrains ||
+          parsedHeaders.find(
+            (h) =>
+              h !== preferredName &&
+              !/email|e-mail|mail|courriel|timestamp|horodateur|date/i.test(h),
+          ) ||
+          '';
+        if (fallbackCol) {
+          const count = parsePrizeCountFromHeader(fallbackCol);
+          setSelectedCategoryId(
+            /jetbrain/i.test(fallbackCol)
+              ? 'jetbrains'
+              : /kodeco/i.test(fallbackCol)
+                ? 'kodeco'
+                : /packt/i.test(fallbackCol)
+                  ? 'packt'
+                  : 'custom-0',
+          );
+          setWinnerCount(count);
+          setBufferCount(count);
+        }
+        return fallbackCol;
+      });
 
       setStatusMsg(
         `${sourceLabel} // ${records.length} RESPONSES READY`,
@@ -898,11 +1031,25 @@ export function CrazyRaffleView() {
 
   // 5-Second Shuffle & Winner Selection
   const startFiveSecondShuffle = () => {
-    if (isShuffling || eligibleCandidates.length === 0) return;
+    if (isShuffling || eligibleCandidates.length === 0 || !activePrizeColumn) {
+      return;
+    }
 
+    if (shuffleRafRef.current) {
+      cancelAnimationFrame(shuffleRafRef.current);
+      shuffleRafRef.current = null;
+    }
+
+    const targetPrizeCol = activePrizeColumn;
+    const prizeTitle = cleanPrizeLabel(targetPrizeCol);
+    const poolSnapshot = [...eligibleCandidates];
+
+    // If reshuffling a prize that had previously confirmed winners, clear only this prize's old locks
+    setLockedWinnersHistory((prev) =>
+      prev.filter((lw) => lw.prize.toLowerCase() !== prizeTitle.toLowerCase()),
+    );
+    setDrawnOrderForCurrentPrize([], []);
     setIsShuffling(true);
-    setDrawnOrder([]);
-    setNoShowIds(new Set());
 
     const durationMs = Math.max(1, shuffleDurationSec) * 1000;
     const startTime = performance.now();
@@ -916,20 +1063,26 @@ export function CrazyRaffleView() {
       if (now - lastSwapTime >= 85) {
         lastSwapTime = now;
         const progress = Math.max(0, Math.min(1, elapsed / durationMs));
-        setShuffledPool(cryptoShuffle(eligibleCandidates));
+        setShuffledPool(cryptoShuffle(poolSnapshot));
         audioRef.current?.playShufflePulse(progress);
       }
 
       if (elapsed < durationMs) {
-        requestAnimationFrame(tick);
+        shuffleRafRef.current = requestAnimationFrame(tick);
       } else {
-        const prizeTitle = cleanPrizeLabel(activePrizeColumn);
-        const finalShuffled = cryptoShuffle(eligibleCandidates).map((p) => ({
+        shuffleRafRef.current = null;
+        const finalShuffled = cryptoShuffle(poolSnapshot).map((p) => ({
           ...p,
           assignedPrize: prizeTitle,
         }));
         setShuffledPool(finalShuffled);
-        setDrawnOrder(finalShuffled);
+        setDrawnStateByPrize((prev) => ({
+          ...prev,
+          [targetPrizeCol]: {
+            drawnOrder: finalShuffled,
+            noShowOrder: [],
+          },
+        }));
         setIsShuffling(false);
         setShuffleRemainingSec(0);
         audioRef.current?.playWinnerFanfare();
@@ -937,10 +1090,11 @@ export function CrazyRaffleView() {
       }
     };
 
-    requestAnimationFrame(tick);
+    shuffleRafRef.current = requestAnimationFrame(tick);
   };
 
-  // Compute active primary winners & backup buffer accounting for any No-Shows marked on stage
+  // Compute active primary winners & backup buffer with in-place slot promotion on No-Show!
+  // When Winner #k is marked No-Show, Backup #1 steps directly into Slot #k so other rows never jump.
   const { primaryWinners, backupBuffer, noShowList } = useMemo(() => {
     if (drawnOrder.length === 0) {
       return {
@@ -961,47 +1115,81 @@ export function CrazyRaffleView() {
       };
     }
 
-    const active: Array<{
-      participant: RaffleParticipant;
-      drawRank: number;
-    }> = [];
-    const noShows: Array<{
-      participant: RaffleParticipant;
-      drawRank: number;
-    }> = [];
-
+    const rankById = new Map<string, number>();
+    const participantById = new Map<string, RaffleParticipant>();
     drawnOrder.forEach((p, idx) => {
-      const item = { participant: p, drawRank: idx + 1 };
-      if (noShowIds.has(p.id)) {
-        noShows.push(item);
-      } else {
-        active.push(item);
-      }
+      rankById.set(p.id, idx + 1);
+      participantById.set(p.id, p);
     });
 
-    const primary = active.slice(0, winnerCount).map((item, idx) => ({
-      ...item,
-      effectiveSlot: idx + 1,
+    const slots: Array<RaffleParticipant | null> = drawnOrder
+      .slice(0, winnerCount)
+      .map((p) => p);
+    const queue: RaffleParticipant[] = drawnOrder.slice(winnerCount);
+
+    for (const noShowId of noShowOrder) {
+      const slotIdx = slots.findIndex((p) => p?.id === noShowId);
+      if (slotIdx !== -1) {
+        const replacement = queue.shift() ?? null;
+        slots[slotIdx] = replacement;
+      } else {
+        const qIdx = queue.findIndex((p) => p.id === noShowId);
+        if (qIdx !== -1) {
+          queue.splice(qIdx, 1);
+        }
+      }
+    }
+
+    const primary = slots
+      .map((p, idx) =>
+        p
+          ? {
+              participant: p,
+              drawRank: rankById.get(p.id) ?? idx + 1,
+              effectiveSlot: idx + 1,
+            }
+          : null,
+      )
+      .filter(
+        (
+          item,
+        ): item is {
+          participant: RaffleParticipant;
+          drawRank: number;
+          effectiveSlot: number;
+        } => item !== null,
+      );
+
+    const buffer = queue.slice(0, bufferCount).map((p, idx) => ({
+      participant: p,
+      drawRank: rankById.get(p.id) ?? winnerCount + idx + 1,
+      backupIndex: idx + 1,
     }));
 
-    const buffer = active
-      .slice(winnerCount, winnerCount + bufferCount)
-      .map((item, idx) => ({
-        ...item,
-        backupIndex: idx + 1,
-      }));
+    const noShows = noShowOrder
+      .map((id) => {
+        const p = participantById.get(id);
+        if (!p) return null;
+        return {
+          participant: p,
+          drawRank: rankById.get(id) ?? 0,
+        };
+      })
+      .filter(
+        (
+          item,
+        ): item is {
+          participant: RaffleParticipant;
+          drawRank: number;
+        } => item !== null,
+      );
 
     return {
       primaryWinners: primary,
       backupBuffer: buffer,
       noShowList: noShows,
     };
-  }, [drawnOrder, noShowIds, winnerCount, bufferCount]);
-
-  const currentPrizeLabel = useMemo(() => {
-    if (activePrizeColumn) return cleanPrizeLabel(activePrizeColumn);
-    return activeCategory?.label || 'Raffle Prize';
-  }, [activePrizeColumn, activeCategory]);
+  }, [drawnOrder, noShowOrder, winnerCount, bufferCount]);
 
   const getPrizeForParticipant = useCallback(
     (p: RaffleParticipant): string => {
@@ -1067,18 +1255,26 @@ export function CrazyRaffleView() {
   };
 
   const toggleNoShow = (participantId: string) => {
-    setNoShowIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(participantId)) {
-        next.delete(participantId);
-      } else {
-        next.add(participantId);
-        setLockedWinnersHistory((lockedPrev) =>
-          lockedPrev.filter((lw) => lw.participantId !== participantId),
-        );
-      }
-      return next;
-    });
+    if (!activePrizeColumn) return;
+    const isCurrentlyNoShow = noShowOrder.includes(participantId);
+    const nextNoShowOrder = isCurrentlyNoShow
+      ? noShowOrder.filter((id) => id !== participantId)
+      : [...noShowOrder, participantId];
+
+    setDrawnOrderForCurrentPrize(drawnOrder, nextNoShowOrder);
+
+    if (!isCurrentlyNoShow) {
+      const targetPrize = currentPrizeLabel.toLowerCase();
+      setLockedWinnersHistory((lockedPrev) =>
+        lockedPrev.filter(
+          (lw) =>
+            !(
+              lw.participantId === participantId &&
+              lw.prize.toLowerCase() === targetPrize
+            ),
+        ),
+      );
+    }
   };
 
   const lockCurrentPrimaryWinners = () => {
@@ -1115,6 +1311,18 @@ export function CrazyRaffleView() {
     });
     audioRef.current?.playCategoryLoad();
   };
+
+  const allPrimaryConfirmed = useMemo(() => {
+    if (primaryWinners.length === 0) return false;
+    return primaryWinners.every((w) => isWinnerConfirmed(w.participant));
+  }, [primaryWinners, isWinnerConfirmed]);
+
+  const confirmedForCurrentPrizeCount = useMemo(() => {
+    const targetPrize = currentPrizeLabel.toLowerCase();
+    return lockedWinnersHistory.filter(
+      (lw) => lw.prize.toLowerCase() === targetPrize,
+    ).length;
+  }, [lockedWinnersHistory, currentPrizeLabel]);
 
   const exportConfirmedWinnersCSV = () => {
     const lines = ['Name,Prize,Email,Category'];
@@ -1162,9 +1370,11 @@ export function CrazyRaffleView() {
     if (count <= 8) return 2;
     if (count <= 18) return 3;
     if (count <= 32) return 4;
-    if (count <= 55) return 5;
-    if (count <= 84) return 6;
-    return 7;
+    if (count <= 50) return 5;
+    if (count <= 78) return 6;
+    if (count <= 112) return 7;
+    if (count <= 152) return 8;
+    return 9;
   }, [displayPool.length]);
 
   const poolChipFontSize = useMemo(() => {
@@ -1172,8 +1382,9 @@ export function CrazyRaffleView() {
     if (count <= 12) return 'clamp(0.95rem, 1.5vw, 1.55rem)';
     if (count <= 24) return 'clamp(0.88rem, 1.3vw, 1.32rem)';
     if (count <= 45) return 'clamp(0.82rem, 1.1vw, 1.12rem)';
-    if (count <= 75) return 'clamp(0.75rem, 0.95vw, 0.96rem)';
-    return 'clamp(0.7rem, 0.85vw, 0.86rem)';
+    if (count <= 78) return 'clamp(0.75rem, 0.95vw, 0.96rem)';
+    if (count <= 120) return 'clamp(0.68rem, 0.82vw, 0.84rem)';
+    return 'clamp(0.62rem, 0.74vw, 0.76rem)';
   }, [displayPool.length]);
 
   // Dynamic font sizing for Winner / Buffer rows based on count (1 to 6)
@@ -1576,7 +1787,8 @@ export function CrazyRaffleView() {
           min-width: 0;
           width: 100%;
           display: grid;
-          gap: clamp(6px, 0.7vw, 10px);
+          grid-auto-rows: minmax(0, 1fr);
+          gap: clamp(4px, 0.55vw, 9px);
           align-content: stretch;
           overflow: hidden;
         }
@@ -1865,17 +2077,25 @@ export function CrazyRaffleView() {
               <button
                 type="button"
                 className="top-btn green"
+                style={
+                  allPrimaryConfirmed
+                    ? {
+                        background: 'var(--neon-green)',
+                        color: '#04130c',
+                        boxShadow: '0 0 14px rgba(0, 245, 155, 0.6)',
+                      }
+                    : undefined
+                }
                 onClick={lockCurrentPrimaryWinners}
               >
-                ✅ CONFIRM ALL ({primaryWinners.length})
+                {allPrimaryConfirmed
+                  ? `✅ ALL ${primaryWinners.length} CONFIRMED`
+                  : `✅ CONFIRM ALL (${primaryWinners.length})`}
               </button>
               <button
                 type="button"
                 className="top-btn"
-                onClick={() => {
-                  setDrawnOrder([]);
-                  setNoShowIds(new Set());
-                }}
+                onClick={() => setDrawnOrderForCurrentPrize([], [])}
               >
                 👥 POOL ({eligibleCandidates.length})
               </button>
@@ -1969,6 +2189,13 @@ export function CrazyRaffleView() {
             <span>·</span>
             <span style={{ color: 'var(--neon-green)' }}>
               NO-SHOW BUFFER: <strong>{bufferCount}</strong>
+            </span>
+            <span>·</span>
+            <span style={{ color: 'var(--neon-green)' }}>
+              CONFIRMED:{' '}
+              <strong>
+                {confirmedForCurrentPrizeCount}/{winnerCount}
+              </strong>
             </span>
           </div>
         </div>
@@ -2582,13 +2809,17 @@ export function CrazyRaffleView() {
                   >
                     📥 EXPORT CSV (Name, Prize, Email)
                   </button>
-                  {lockedWinnersHistory.length > 0 && (
+                  {(lockedWinnersHistory.length > 0 ||
+                    Object.keys(drawnStateByPrize).length > 0) && (
                     <button
                       type="button"
                       className="top-btn"
-                      onClick={() => setLockedWinnersHistory([])}
+                      onClick={() => {
+                        setLockedWinnersHistory([]);
+                        setDrawnStateByPrize({});
+                      }}
                     >
-                      CLEAR ALL
+                      RESET ALL DRAWS &amp; WINNERS
                     </button>
                   )}
                 </div>
