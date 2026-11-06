@@ -376,7 +376,7 @@ const ROWS: RawRow[] = [
     '10:15 - 11:00',
     'From Prompt Engineering to Harness Engineering: Securing Autonomous AI Agents on GCP',
     'Eckarath Khounsombath',
-    'SARA (support), DANIEL WEI (OBS operator, out 11:00 to 15:00)',
+    'SARA (support), DANIEL WEI (OBS operator, out 11:00 to 16:00)',
     '',
   ],
   [
@@ -568,7 +568,7 @@ const ROWS: RawRow[] = [
     '15:00 - 16:30',
     'Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script (workshop)',
     'Cyprien Tankeu',
-    'WILSON (support), DANIEL WEI (workshop attendee)',
+    'WILSON (support), REBECCA (workshop attendee)',
     '',
   ],
   [
@@ -680,7 +680,7 @@ const ROWS: RawRow[] = [
     '09:15 - 10:00',
     'Lobby crowd control & guide attendees to 3rd floor registration',
     '',
-    'LENZ (organizer), KHASHAYAR',
+    'SAMUEL (organizer), KHASHAYAR',
     'Senior + junior pair downstairs to welcome & direct people upstairs',
   ],
 
@@ -813,7 +813,7 @@ const ROWS: RawRow[] = [
     '10:00 - 16:45',
     'Floating org helper (quarterback)',
     '',
-    'SAMUEL, LENZ, RAPHAËLLE (unavailable: panel 10:15–11:00; coaching 13:00–14:00 & 15:00–16:00), STACY (unavailable: keynote/MC 09:25–10:00; coaching 10:00–12:00; lunch MC 12:00–13:00; talk 16:00–16:45; closing MC 16:45+)',
+    'SAMUEL, RAPHAËLLE (unavailable: panel 10:15–11:00; coaching 13:00–14:00 & 15:00–16:00), STACY (unavailable: keynote/MC 09:25–10:00; coaching 10:00–12:00; lunch MC 12:00–13:00; talk 16:00–16:45; closing MC 16:45+)',
     'Helps across rooms all day. Raphaëlle unavailable during panel (10:15–11:00) & coaching (13:00–14:00, 15:00–16:00). Stacy unavailable during keynote/MC (09:25–10:00), coaching (10:00–12:00), lunch MC (12:00–13:00), talk (16:00–16:45) & closing MC (16:45+).',
   ],
   [
@@ -823,7 +823,7 @@ const ROWS: RawRow[] = [
     '16:45 - 17:00',
     'Close 4th floor rooms',
     '',
-    'FLORIAN (organizer), LENZ (organizer)',
+    'FLORIAN (organizer)',
     'Organizer task from the Organizers tab',
   ],
   [
@@ -853,7 +853,7 @@ const ROWS: RawRow[] = [
     '12:00 - 13:00',
     'Raffle caller, 4th floor',
     '',
-    'SAMUEL (organizer), LENZ (organizer)',
+    'SAMUEL (organizer), MIMOH (organizer)',
     'About 20 minutes — coordinate 3rd/4th floor raffle logistics via WhatsApp group',
   ],
   [
@@ -1062,8 +1062,8 @@ function localizeStaff(staff: string, locale: Locale): string {
     .replace(/\(station volunteer\)/gi, '(bénévole station)')
     .replace(/\(main OBS operator\)/gi, '(opérateur OBS principal)')
     .replace(
-      /\(OBS operator,\s*out 11:00 to 15:00\)/gi,
-      '(opérateur OBS, absent de 11h00 à 15h00)',
+      /\(OBS operator,\s*out 11:00 to 16:00\)/gi,
+      '(opérateur OBS, absent de 11h00 à 16h00)',
     )
     .replace(
       /\(unavailable: panel 10:15–11:00; coaching 13:00–14:00 & 15:00–16:00\)/gi,
@@ -1929,8 +1929,8 @@ export function StaffAssignmentsView({
             </div>
             <div className="rev">
               {isFr
-                ? 'Révision v2026.11.04-r23 · 2026-11-04 16:24:30 EST (America/Montreal)'
-                : 'Revision v2026.11.04-r23 · 2026-11-04 16:24:30 EST (America/Montreal)'}
+                ? 'Révision v2026.11.05-r24 · 2026-11-05 19:37:00 EST (America/Montreal)'
+                : 'Revision v2026.11.05-r24 · 2026-11-05 19:37:00 EST (America/Montreal)'}
             </div>
           </div>
 
