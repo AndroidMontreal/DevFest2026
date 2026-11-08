@@ -5,10 +5,7 @@ import { getRoomSongCredits } from '@/lib/room-song-synth';
 import { getTalkAbstract } from '@/lib/talk-abstracts';
 import {
   AlertTriangle,
-  Bookmark,
-  BookmarkCheck,
   CalendarRange,
-  Compass,
   DoorOpen,
   Headphones,
   Layers,
@@ -22,7 +19,6 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   flattenRoomSessions,
   makeSessionId,
-  MyAgendaBuilder,
   parseTimeRangeToMinutes,
   sessionsOverlap,
 } from './my-agenda-builder';
@@ -30,10 +26,6 @@ import {
   OverallDayAgenda,
   type OverallDayAgendaCopy,
 } from './overall-day-agenda';
-import {
-  TronSpaceNavigator,
-  type TronMapFocusRequest,
-} from './tron-space-navigator';
 
 export type LightningSubItem = {
   time: string;
@@ -155,11 +147,7 @@ export function RoomAgendaSection({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [savedIds, setSavedIds] = useState<string[]>([]);
-  const [primaryOverrides, setPrimaryOverrides] = useState<
-    Record<string, string>
-  >({});
-  const [mapFocusRequest, setMapFocusRequest] =
-    useState<TronMapFocusRequest | null>(null);
+  const [, setPrimaryOverrides] = useState<Record<string, string>>({});
 
   const scrollToTabContent = (tabId: string) => {
     setTimeout(() => {
@@ -276,58 +264,8 @@ export function RoomAgendaSection({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [copy.rooms]);
 
-  const persistAgenda = (
-    nextSavedIds: string[],
-    nextPrimaryOverrides = primaryOverrides,
-  ) => {
-    setSavedIds(nextSavedIds);
-    setPrimaryOverrides(nextPrimaryOverrides);
-    try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          savedIds: nextSavedIds,
-          primaryOverrides: nextPrimaryOverrides,
-        }),
-      );
-    } catch {
-      // ignore storage errors
-    }
-  };
-
-  const handleToggleSession = (sessionId: string) => {
-    const exists = savedIds.includes(sessionId);
-    const next = exists
-      ? savedIds.filter((id) => id !== sessionId)
-      : [...savedIds, sessionId];
-    persistAgenda(next);
-  };
-
-  const handleSetPrimaryForSlot = (slotId: string, sessionId: string) => {
-    const nextOverrides = { ...primaryOverrides, [slotId]: sessionId };
-    persistAgenda(savedIds, nextOverrides);
-  };
-
-  const handleLoadPreset = (sessionIds: string[]) => {
-    persistAgenda(sessionIds, {});
-  };
-
-  const handleClearAll = () => {
-    persistAgenda([], {});
-  };
-
-  const handleFocusMapRoute = (req: Omit<TronMapFocusRequest, 'seq'>) => {
-    setMapFocusRequest({
-      ...req,
-      seq: Date.now(),
-    });
-  };
-
   const allFlat = flattenRoomSessions(copy.rooms);
   const savedFlat = allFlat.filter((s) => savedIds.includes(s.id));
-  const hasAnyConflict = savedFlat.some((s1, i) =>
-    savedFlat.slice(i + 1).some((s2) => sessionsOverlap(s1, s2)),
-  );
 
   const isFiltering =
     searchQuery.trim().length > 0 || selectedCategory !== 'all';
@@ -656,147 +594,6 @@ export function RoomAgendaSection({
         </div>
       )}
 
-      {/* Dedicated Interactive Maps (Space Navigator) Section */}
-      <div className="-mt-6 flex flex-col gap-3.5 rounded-2xl border border-fuchsia-500/30 bg-[#11081a]/90 px-5 py-4 md:px-6 md:py-5 shadow-[0_0_30px_rgba(217,70,239,0.06)] backdrop-blur-2xl">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <Compass className="h-4 w-4 text-fuchsia-400 shrink-0" />
-            <span className="font-mono-tech text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-300">
-              {isFr
-                ? 'Cartes Interactives & Navigateur Spatial'
-                : 'Interactive Floor Maps & Space Navigator'}
-            </span>
-          </div>
-          <span className="font-mono-tech text-[11px] text-fuchsia-200/65">
-            {isFr
-              ? 'Salles, kiosques et commodités · Niveaux 03 & 04'
-              : 'Interactive rooms, booths & amenities · Levels 03 & 04'}
-          </span>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => selectTabAndScroll('map', true)}
-            className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              selectedTab === 'map' && !isFiltering
-                ? 'border-fuchsia-300 bg-fuchsia-500/25 text-white shadow-[0_0_18px_rgba(217,70,239,0.4)]'
-                : 'border-fuchsia-400/45 bg-fuchsia-500/15 text-fuchsia-200 hover:border-fuchsia-300 hover:text-white'
-            }`}
-          >
-            <Compass className="h-3.5 w-3.5 shrink-0 text-fuchsia-300" />
-            <span className="font-bold">
-              {copy.map_tab ||
-                (isFr
-                  ? 'Carte Interactive (3e & 4e)'
-                  : 'Space Navigator (Map)')}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              selectTabAndScroll('map', true);
-              handleFocusMapRoute({
-                floor: '03',
-                destinationNodeId: 'l3-room-1',
-              });
-            }}
-            className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              selectedTab === 'map' && mapFocusRequest?.floor === '03'
-                ? 'border-fuchsia-400 bg-fuchsia-500/25 text-fuchsia-200 shadow-[0_0_15px_rgba(217,70,239,0.3)]'
-                : 'border-fuchsia-500/25 bg-fuchsia-500/[0.06] text-fuchsia-200/80 hover:border-fuchsia-400/60 hover:text-fuchsia-100'
-            }`}
-          >
-            <Layers className="h-3.5 w-3.5 shrink-0 text-fuchsia-400" />
-            <span className="font-bold">
-              {isFr ? 'Niveau 03 (3e étage)' : 'Level 03 (3rd Floor)'}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              selectTabAndScroll('map', true);
-              handleFocusMapRoute({
-                floor: '04',
-                destinationNodeId: 'l4-room-6',
-              });
-            }}
-            className={`shrink-0 inline-flex items-center gap-2 rounded-lg border px-3.5 sm:px-4 py-2 font-mono-tech text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              selectedTab === 'map' && mapFocusRequest?.floor === '04'
-                ? 'border-fuchsia-400 bg-fuchsia-500/25 text-fuchsia-200 shadow-[0_0_15px_rgba(217,70,239,0.3)]'
-                : 'border-fuchsia-500/25 bg-fuchsia-500/[0.06] text-fuchsia-200/80 hover:border-fuchsia-400/60 hover:text-fuchsia-100'
-            }`}
-          >
-            <Layers className="h-3.5 w-3.5 shrink-0 text-fuchsia-400" />
-            <span className="font-bold">
-              {isFr ? 'Niveau 04 (4e étage)' : 'Level 04 (4th Floor)'}
-            </span>
-          </button>
-        </div>
-      </div>
-
-      {/* Dedicated My Agenda Row / Bar right below Navigate by Room (outside the room cluster) */}
-      <div className="-mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-cyan-500/25 bg-[#070b16]/90 px-5 py-4 shadow-[0_0_30px_rgba(0,240,255,0.06)] backdrop-blur-2xl">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => selectTabAndScroll('my-agenda', true)}
-            className={`inline-flex items-center justify-center sm:justify-start gap-2.5 rounded-lg border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              selectedTab === 'my-agenda' && !isFiltering
-                ? 'border-cyan-300 bg-cyan-400/25 text-white shadow-[0_0_20px_rgba(0,240,255,0.45)]'
-                : 'border-cyan-400/45 bg-cyan-500/15 text-cyan-200 shadow-[0_0_14px_rgba(0,240,255,0.18)] hover:border-cyan-300 hover:text-white hover:shadow-[0_0_20px_rgba(0,240,255,0.35)]'
-            }`}
-          >
-            <BookmarkCheck className="h-4 w-4 shrink-0 text-cyan-300" />
-            <span className="truncate font-bold">
-              {copy.my_agenda_tab || (isFr ? 'Mon Agenda' : 'My Agenda')}
-            </span>
-            <span
-              className={`inline-flex items-center justify-center rounded-full px-1.5 py-0.2 font-mono-tech text-[10px] font-bold ${
-                savedFlat.length > 0
-                  ? 'bg-cyan-400 text-black'
-                  : 'bg-google-yellow/90 text-black'
-              }`}
-              title={
-                isFr
-                  ? `4 événements principaux verrouillés + ${savedFlat.length} conférence(s)`
-                  : `4 locked core events + ${savedFlat.length} talk(s)`
-              }
-            >
-              {4 + savedFlat.length}
-            </span>
-            {hasAnyConflict && (
-              <span
-                title={
-                  isFr
-                    ? 'Chevauchement horaire (Principal + Plan B)'
-                    : 'Time overlap (Primary + Backup)'
-                }
-                className="inline-flex items-center"
-              >
-                <AlertTriangle className="h-3.5 w-3.5 text-amber-400 shrink-0" />
-              </span>
-            )}
-          </button>
-
-          <span className="hidden md:inline-block font-mono-tech text-xs text-white/60">
-            {isFr
-              ? 'Créez votre horaire personnalisé, exportez en .ics ou partagez votre lien'
-              : 'Build your custom schedule, export to .ics calendar, or share your link'}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2 font-mono-tech text-[11px] text-cyan-300/80">
-          <span>
-            {isFr
-              ? `${4 + savedFlat.length} élément(s) à votre horaire (4 principaux + ${savedFlat.length} choix)`
-              : `${4 + savedFlat.length} item(s) in your schedule (4 core + ${savedFlat.length} selected)`}
-          </span>
-        </div>
-      </div>
-
       {/* Controls Bar: Search + Category Filters (Matches Speakers Grid) */}
       <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 border-b border-white/10 pb-8">
         {/* Search Input */}
@@ -927,37 +724,6 @@ export function RoomAgendaSection({
           <OverallDayAgenda copy={tldrCopy} />
         </div>
       )}
-
-      {/* My Custom Agenda Builder when 'my-agenda' is selected and not actively filtering */}
-      {selectedTab === 'my-agenda' && !isFiltering && (
-        <div id="my-agenda-anchor" className="scroll-mt-28">
-          <MyAgendaBuilder
-            rooms={copy.rooms}
-            savedIds={savedIds}
-            primaryOverrides={primaryOverrides}
-            onToggleSession={handleToggleSession}
-            onSetPrimaryForSlot={handleSetPrimaryForSlot}
-            onLoadPreset={handleLoadPreset}
-            onClearAll={handleClearAll}
-            onFocusMapRoute={handleFocusMapRoute}
-            onBrowseRoom={(roomId) => selectTabAndScroll(roomId)}
-            locale={locale}
-          />
-        </div>
-      )}
-
-      {/* TRON Space Navigator on 'map' tab, below Main Agenda, or below My Agenda (when not filtering) */}
-      {(selectedTab === 'map' ||
-        selectedTab === 'main' ||
-        selectedTab === 'my-agenda') &&
-        !isFiltering && (
-          <TronSpaceNavigator
-            rooms={copy.rooms}
-            onSelectRoomSchedule={(roomId) => selectTabAndScroll(roomId)}
-            locale={locale}
-            focusRequest={mapFocusRequest}
-          />
-        )}
 
       {/* Room Cards */}
       {visibleRooms.length > 0 &&
@@ -1399,52 +1165,6 @@ export function RoomAgendaSection({
                             <span className="inline-flex min-w-[64px] items-center justify-center rounded-full border border-cyan-200/60 bg-cyan-950/30 px-3.5 py-1.5 font-mono-tech text-xs uppercase tracking-wider text-cyan-100">
                               {session.lang}
                             </span>
-                          )}
-                          {thisRange.startMin < 600 ||
-                          thisRange.startMin >= 1020 ||
-                          thisRange.endMin - thisRange.startMin > 180 ? (
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-google-yellow/40 bg-google-yellow/10 px-3.5 py-1.5 font-mono-tech text-xs font-bold uppercase tracking-wider text-google-yellow">
-                              <BookmarkCheck className="h-3.5 w-3.5" />
-                              <span>
-                                {thisRange.endMin - thisRange.startMin > 180
-                                  ? isFr
-                                    ? 'Accès libre'
-                                    : 'All-Day Drop-in'
-                                  : isFr
-                                    ? 'Inclus'
-                                    : 'Core Event'}
-                              </span>
-                            </span>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => handleToggleSession(sessionId)}
-                              className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono-tech text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                                isSaved
-                                  ? 'border-cyan-300 bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,240,255,0.4)]'
-                                  : 'border-cyan-400/50 bg-cyan-400/10 text-cyan-200 hover:border-cyan-300 hover:bg-cyan-400 hover:text-black'
-                              }`}
-                            >
-                              {isSaved ? (
-                                <>
-                                  <BookmarkCheck className="h-3.5 w-3.5" />
-                                  <span>{isFr ? 'Sauvé' : 'Saved'}</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Bookmark className="h-3.5 w-3.5" />
-                                  <span>
-                                    {overlappingOtherSaved.length > 0
-                                      ? isFr
-                                        ? '+ Plan B'
-                                        : '+ Backup'
-                                      : isFr
-                                        ? '+ Agenda'
-                                        : '+ My Agenda'}
-                                  </span>
-                                </>
-                              )}
-                            </button>
                           )}
                         </div>
                       </div>

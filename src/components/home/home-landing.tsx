@@ -5,10 +5,10 @@ import { SectionHeader } from '../common/section-header';
 import GalleryGrid from '../gallery/gallery-grid';
 import { SponsorsTiers } from '../sponsors/sponsors-tiers';
 import { AboutSection } from './about-section';
-import { FloppyBossAssistant } from './floppy-boss-assistant';
 import { HeroBottomHud } from './hero-bottom-hud';
 import { HeroContent } from './hero-content';
 import { HeroTicker } from './hero-ticker';
+import { MediaRecapSection } from './media-recap-section';
 import type { HomeLandingCopy } from './types';
 
 export type { HomeLandingCopy } from './types';
@@ -50,6 +50,12 @@ export function HomeLanding({ copy }: HomeLandingProps) {
       {/* Laser Divider */}
       <div className="laser-divider" />
 
+      {/* Photo Albums & Videos Sections */}
+      <MediaRecapSection />
+
+      {/* Laser Divider */}
+      <div className="laser-divider" />
+
       {/* About Section */}
       <AboutSection about={copy.about} />
 
@@ -86,9 +92,6 @@ export function HomeLanding({ copy }: HomeLandingProps) {
           ctaLink={copy.sponsors.cta.link}
         />
       </section>
-
-      {/* Floating Clippy-style Floppy Disk Assistant (Home Page Only) */}
-      <FloppyBossAssistant />
     </main>
   );
 }

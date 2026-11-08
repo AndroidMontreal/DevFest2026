@@ -8,6 +8,8 @@
   },
   "navigation": [
     { "label": "Home", "href": "/" },
+    { "label": "Photos", "href": "/#photos" },
+    { "label": "Videos", "href": "/#videos" },
     { "label": "About", "href": "/#about" },
     { "label": "Agendas", "href": "/schedule" },
     { "label": "Speakers", "href": "/speakers" },

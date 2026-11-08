@@ -4,7 +4,6 @@ import {
   isActiveNavItem,
   type HeaderNavItem,
 } from '@/components/common/site-header-shell';
-import { TicketsTriggerButton } from '@/components/common/tickets-modal';
 import { Link } from '@/i18n/navigation';
 import { useEffect } from 'react';
 
@@ -21,7 +20,6 @@ export function MobileMenu({
   currentPathname,
   isOpen,
   toggleMenu,
-  ticketsLabel,
 }: MobileMenuProps) {
   useEffect(() => {
     if (isOpen) {
@@ -76,10 +74,12 @@ export function MobileMenu({
                 key={item.href}
                 onClick={() => {
                   toggleMenu();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                  window.dispatchEvent(
-                    new CustomEvent('devfest:reset-schedule-top'),
-                  );
+                  if (!item.href.includes('#')) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.dispatchEvent(
+                      new CustomEvent('devfest:reset-schedule-top'),
+                    );
+                  }
                 }}
                 className={`font-mono-tech text-lg sm:text-xl tracking-[0.2em] uppercase transition-colors ${activeClass}`}
                 href={item.href}
@@ -89,17 +89,6 @@ export function MobileMenu({
             );
           })}
         </nav>
-
-        {ticketsLabel && (
-          <div className="mt-4 flex w-full max-w-xs justify-center border-t border-white/10 pt-6">
-            <TicketsTriggerButton
-              onClick={toggleMenu}
-              className="inline-flex w-full items-center justify-center border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-6 py-3.5 font-mono-tech text-xs font-bold uppercase tracking-[0.22em] text-google-yellow transition-all duration-300 quad-border-tr shadow-[0_0_20px_rgba(251,188,4,0.2)]"
-            >
-              {ticketsLabel}
-            </TicketsTriggerButton>
-          </div>
-        )}
       </div>
     </div>
   );
