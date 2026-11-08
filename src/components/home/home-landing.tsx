@@ -63,7 +63,7 @@ export function HomeLanding({ copy }: HomeLandingProps) {
       <div className="laser-divider" />
 
       {/* Gallery Section */}
-      <section className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12">
+      <section className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-24 lg:px-12 lg:py-32">
         <SectionHeader
           subheading={copy.gallery.header.subheading}
           headingLine1={copy.gallery.header.heading.line1}
@@ -78,7 +78,7 @@ export function HomeLanding({ copy }: HomeLandingProps) {
       {/* Sponsors Section */}
       <section
         id="sponsors"
-        className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12 scroll-mt-24"
+        className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-24 lg:px-12 lg:py-32 scroll-mt-24"
       >
         <SectionHeader
           subheading={copy.sponsors.header.subheading}

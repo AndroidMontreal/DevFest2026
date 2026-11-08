@@ -22,7 +22,7 @@ export function AboutSection({ about }: AboutSectionProps) {
   return (
     <section
       id="about"
-      className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12 border-b border-white/5 scroll-mt-24"
+      className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-24 lg:px-12 lg:py-32 border-b border-white/5 scroll-mt-24"
     >
       <SectionHeader
         subheading={about.header.subheading}
@@ -35,7 +35,7 @@ export function AboutSection({ about }: AboutSectionProps) {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-12">
         {/* Block 01: What is DevFest? */}
         {devfestBlock && (
-          <div className="group relative overflow-hidden bg-[#0a0a0a]/60 p-8 md:p-10 quad-border-tr transition-all duration-300 lg:col-span-8 flex flex-col justify-between neon-panel-blue">
+          <div className="group relative overflow-hidden bg-[#0c0e14]/90 backdrop-blur-md p-6 sm:p-8 md:col-span-2 md:p-10 quad-border-tr transition-all duration-300 lg:col-span-8 flex flex-col justify-between neon-panel-blue">
             {/* Ambient hover glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-google-blue/0 via-transparent to-google-blue/[0.01] pointer-events-none" />
             <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-google-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -54,7 +54,7 @@ export function AboutSection({ about }: AboutSectionProps) {
                 {devfestBlock.title}
               </h3>
               <div className="w-12 h-[1px] bg-google-blue/30 mb-6 group-hover:w-24 transition-all duration-500" />
-              <p className="font-sans text-sm md:text-base leading-relaxed text-white/70 group-hover:text-white/90 transition-colors">
+              <p className="font-sans text-base leading-relaxed text-white/85 group-hover:text-white transition-colors">
                 {devfestBlock.content}
               </p>
             </div>
@@ -93,7 +93,7 @@ export function AboutSection({ about }: AboutSectionProps) {
 
         {/* Block 04: Who's Behind It? */}
         {gdgBlock && (
-          <div className="group relative overflow-hidden bg-[#0a0a0a]/60 p-8 quad-border-tr transition-all duration-300 lg:col-span-4 flex flex-col justify-between neon-panel-red">
+          <div className="group relative overflow-hidden bg-[#0c0e14]/90 backdrop-blur-md p-6 sm:p-8 quad-border-tr transition-all duration-300 lg:col-span-4 flex flex-col justify-between neon-panel-red">
             <div className="absolute inset-0 bg-gradient-to-br from-google-red/0 via-transparent to-google-red/[0.01] pointer-events-none" />
             <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-google-red/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
@@ -111,7 +111,7 @@ export function AboutSection({ about }: AboutSectionProps) {
                 {gdgBlock.title}
               </h3>
               <div className="w-12 h-[1px] bg-google-red/30 mb-6 group-hover:w-24 transition-all duration-500" />
-              <p className="font-sans text-sm md:text-base leading-relaxed text-white/70 group-hover:text-white/90 transition-colors">
+              <p className="font-sans text-base leading-relaxed text-white/85 group-hover:text-white transition-colors">
                 {gdgBlock.content}
               </p>
             </div>
@@ -120,7 +120,7 @@ export function AboutSection({ about }: AboutSectionProps) {
 
         {/* Block 05: The Venue */}
         {venueBlock && (
-          <div className="group relative overflow-hidden bg-[#0a0a0a]/60 p-8 quad-border-tr transition-all duration-300 lg:col-span-4 flex flex-col justify-between neon-panel-green">
+          <div className="group relative overflow-hidden bg-[#0c0e14]/90 backdrop-blur-md p-6 sm:p-8 quad-border-tr transition-all duration-300 lg:col-span-4 flex flex-col justify-between neon-panel-green">
             <div className="absolute inset-0 bg-gradient-to-br from-google-green/0 via-transparent to-google-green/[0.01] pointer-events-none" />
             <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-google-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
@@ -139,7 +139,7 @@ export function AboutSection({ about }: AboutSectionProps) {
                   {venueBlock.title}
                 </h3>
                 <div className="w-12 h-[1px] bg-google-green/30 mb-6 group-hover:w-24 transition-all duration-500" />
-                <p className="font-sans text-sm md:text-base leading-relaxed text-white/70 group-hover:text-white/90 transition-colors mb-6">
+                <p className="font-sans text-base leading-relaxed text-white/85 group-hover:text-white transition-colors mb-6">
                   {venueBlock.content}
                 </p>
               </div>
