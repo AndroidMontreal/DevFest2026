@@ -33,12 +33,12 @@ export function MediaRecapSection() {
       href: PHOTO_ALBUM_LINKS.photographer,
       icon: Camera,
       accentText: 'text-google-blue',
-      accentBg: 'bg-google-blue/10',
-      accentBorder: 'border-google-blue/25',
+      accentBg: 'bg-google-blue/15',
+      accentBorder: 'border-google-blue/35',
       panelClass: 'neon-panel-blue',
-      lineColor: 'bg-google-blue/30',
+      lineColor: 'bg-google-blue/40',
       btnClass:
-        'border-google-blue bg-google-blue/10 text-google-blue hover:bg-google-blue hover:text-white hover:shadow-[0_0_20px_rgba(66,133,244,0.4)]',
+        'border-google-blue bg-google-blue/15 text-google-blue hover:bg-google-blue hover:text-white hover:shadow-[0_0_20px_rgba(66,133,244,0.4)]',
     },
     {
       id: '02',
@@ -52,13 +52,13 @@ export function MediaRecapSection() {
       href: PHOTO_ALBUM_LINKS.googlePhotos,
       icon: Images,
       accentText: 'text-google-yellow',
-      accentBg: 'bg-google-yellow/10',
-      accentBorder: 'border-google-yellow/25',
+      accentBg: 'bg-google-yellow/15',
+      accentBorder: 'border-google-yellow/35',
       panelClass:
-        'border border-google-yellow/25 hover:border-google-yellow/50',
-      lineColor: 'bg-google-yellow/30',
+        'border border-google-yellow/35 hover:border-google-yellow/60 shadow-[0_0_25px_rgba(251,188,4,0.08)]',
+      lineColor: 'bg-google-yellow/40',
       btnClass:
-        'border-google-yellow bg-google-yellow/10 text-google-yellow hover:bg-google-yellow hover:text-black hover:shadow-[0_0_20px_rgba(251,188,4,0.4)]',
+        'border-google-yellow bg-google-yellow/15 text-google-yellow hover:bg-google-yellow hover:text-black hover:shadow-[0_0_20px_rgba(251,188,4,0.4)]',
     },
     {
       id: '03',
@@ -74,12 +74,12 @@ export function MediaRecapSection() {
       href: PHOTO_ALBUM_LINKS.photoBooth,
       icon: Sparkles,
       accentText: 'text-google-green',
-      accentBg: 'bg-google-green/10',
-      accentBorder: 'border-google-green/25',
+      accentBg: 'bg-google-green/15',
+      accentBorder: 'border-google-green/35',
       panelClass: 'neon-panel-green',
-      lineColor: 'bg-google-green/30',
+      lineColor: 'bg-google-green/40',
       btnClass:
-        'border-google-green bg-google-green/10 text-google-green hover:bg-google-green hover:text-white hover:shadow-[0_0_20px_rgba(52,168,83,0.4)]',
+        'border-google-green bg-google-green/15 text-google-green hover:bg-google-green hover:text-white hover:shadow-[0_0_20px_rgba(52,168,83,0.4)]',
     },
   ];
 
@@ -88,7 +88,7 @@ export function MediaRecapSection() {
       {/* Photo Albums Section */}
       <section
         id="photos"
-        className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12 scroll-mt-24"
+        className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-24 lg:px-12 lg:py-32 scroll-mt-24"
       >
         <SectionHeader
           subheading={
@@ -99,23 +99,23 @@ export function MediaRecapSection() {
           headingLine2ClassName="text-google-yellow"
         />
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-7">
           {photoAlbums.map((album) => {
             const Icon = album.icon;
             return (
               <div
                 key={album.id}
-                className={`group relative overflow-hidden bg-[#0a0a0a]/60 p-8 md:p-10 quad-border-tr transition-all duration-300 flex flex-col justify-between ${album.panelClass}`}
+                className={`group relative overflow-hidden bg-[#0c0e14]/90 backdrop-blur-md p-6 sm:p-8 lg:p-7 xl:p-10 quad-border-tr transition-all duration-300 flex flex-col justify-between ${album.panelClass}`}
               >
                 <div>
-                  <div className="flex items-center justify-between gap-3 mb-6">
-                    <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                    <div className="flex flex-wrap items-center gap-2.5">
                       <span
-                        className={`font-mono-tech text-xs font-bold ${album.accentText} ${album.accentBg} px-2 py-0.5 rounded border ${album.accentBorder}`}
+                        className={`font-mono-tech text-xs font-bold ${album.accentText} ${album.accentBg} px-2.5 py-1 rounded border ${album.accentBorder}`}
                       >
                         [ {album.id} ]
                       </span>
-                      <span className="font-mono-tech text-[10px] tracking-[0.25em] text-white/45 uppercase">
+                      <span className="font-mono-tech text-[11px] tracking-[0.18em] text-white/75 uppercase font-semibold">
                         {album.badge}
                       </span>
                     </div>
@@ -126,7 +126,7 @@ export function MediaRecapSection() {
                     </div>
                   </div>
 
-                  <h3 className="font-display text-2xl md:text-3xl font-bold tracking-tight text-white uppercase mb-2">
+                  <h3 className="font-display text-2xl sm:text-3xl lg:text-2xl xl:text-3xl font-bold tracking-tight text-white uppercase mb-2">
                     {album.title}
                   </h3>
                   {'creditName' in album && album.creditName && (
@@ -135,17 +135,17 @@ export function MediaRecapSection() {
                         href={album.creditUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 font-mono-tech text-xs font-bold uppercase tracking-wider text-google-blue hover:text-white underline decoration-google-blue/50 underline-offset-4 transition-colors"
+                        className="inline-flex items-center gap-1.5 font-mono-tech text-xs sm:text-sm font-bold uppercase tracking-wider text-google-blue hover:text-white underline decoration-google-blue/60 underline-offset-4 transition-colors"
                       >
                         <span>📸 {album.creditName}</span>
-                        <ExternalLink className="h-3 w-3 shrink-0" />
+                        <ExternalLink className="h-3.5 w-3.5 shrink-0" />
                       </a>
                     </div>
                   )}
                   <div
-                    className={`w-12 h-[1px] ${album.lineColor} mb-6 group-hover:w-24 transition-all duration-500`}
+                    className={`w-12 h-[1px] ${album.lineColor} mb-5 group-hover:w-24 transition-all duration-500`}
                   />
-                  <p className="font-sans text-sm md:text-base leading-relaxed text-white/70 group-hover:text-white/90 transition-colors mb-8">
+                  <p className="font-sans text-base leading-relaxed text-white/85 group-hover:text-white transition-colors mb-8">
                     {album.description}
                   </p>
                 </div>
@@ -156,15 +156,15 @@ export function MediaRecapSection() {
                       href={album.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`inline-flex w-full items-center justify-center gap-2 border px-5 py-3.5 font-mono-tech text-xs font-bold uppercase tracking-[0.18em] transition-all duration-300 quad-border-tr ${album.btnClass}`}
+                      className={`inline-flex w-full items-center justify-center gap-2.5 border px-5 py-4 text-center font-mono-tech text-xs font-bold uppercase tracking-[0.14em] leading-snug transition-all duration-300 quad-border-tr ${album.btnClass}`}
                     >
                       <span>{album.ctaLabel}</span>
-                      <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                      <ExternalLink className="h-4 w-4 shrink-0" />
                     </a>
                   ) : (
                     <span
                       aria-disabled="true"
-                      className="inline-flex w-full items-center justify-center gap-2 border border-white/15 bg-white/5 px-5 py-3.5 font-mono-tech text-xs font-bold uppercase tracking-[0.18em] text-white/40 cursor-not-allowed select-none"
+                      className="inline-flex w-full items-center justify-center gap-2 border border-white/20 bg-white/[0.06] px-5 py-4 text-center font-mono-tech text-xs font-bold uppercase tracking-[0.14em] leading-snug text-white/55 cursor-not-allowed select-none"
                     >
                       <span>{album.comingSoonLabel}</span>
                     </span>
@@ -182,7 +182,7 @@ export function MediaRecapSection() {
       {/* Videos Section */}
       <section
         id="videos"
-        className="mx-auto w-full max-w-[1440px] px-6 py-32 md:px-12 scroll-mt-24"
+        className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-24 lg:px-12 lg:py-32 scroll-mt-24"
       >
         <SectionHeader
           subheading={
@@ -193,15 +193,15 @@ export function MediaRecapSection() {
           headingLine2ClassName="text-google-red"
         />
 
-        <div className="group relative overflow-hidden bg-[#0a0a0a]/60 p-8 md:p-12 quad-border-tr neon-panel-red transition-all duration-300">
+        <div className="group relative overflow-hidden bg-[#0c0e14]/90 backdrop-blur-md p-6 sm:p-8 lg:p-12 quad-border-tr neon-panel-red transition-all duration-300">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             <div className="max-w-2xl space-y-4">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 font-mono-tech text-xs font-bold text-google-red bg-google-red/10 px-2.5 py-1 rounded border border-google-red/25">
+                <span className="inline-flex items-center gap-2 font-mono-tech text-xs font-bold text-google-red bg-google-red/15 px-3 py-1 rounded border border-google-red/35">
                   <Video className="h-3.5 w-3.5" />
                   <span>YOUTUBE // @GDGMONTREAL</span>
                 </span>
-                <span className="inline-flex items-center gap-2 font-mono-tech text-xs font-bold text-google-yellow bg-google-yellow/10 px-2.5 py-1 rounded border border-google-yellow/30">
+                <span className="inline-flex items-center gap-2 font-mono-tech text-xs font-bold text-google-yellow bg-google-yellow/15 px-3 py-1 rounded border border-google-yellow/35">
                   <span className="h-2 w-2 rounded-full bg-google-yellow animate-pulse" />
                   <span>
                     {isFr
@@ -217,7 +217,7 @@ export function MediaRecapSection() {
                   : 'GDG Montréal YouTube Channel'}
               </h3>
 
-              <p className="font-sans text-sm md:text-base leading-relaxed text-white/75">
+              <p className="font-sans text-base leading-relaxed text-white/85">
                 {isFr
                   ? "Les vidéos des conférences et sessions du DevFest MTL '26 seront bientôt disponibles dans l'onglet Vidéos de notre chaîne YouTube officielle GDG Montréal."
                   : "The DevFest MTL '26 talk and session videos will be available soon in the Videos tab on our official GDG Montréal YouTube channel."}
@@ -229,7 +229,7 @@ export function MediaRecapSection() {
                 href={YOUTUBE_CHANNEL_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 border border-google-red bg-google-red/10 hover:bg-google-red px-7 py-4 font-mono-tech text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-google-red hover:text-white transition-all duration-300 quad-border-tr hover:shadow-[0_0_25px_rgba(234,67,53,0.45)]"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-3 border border-google-red bg-google-red/15 hover:bg-google-red px-7 py-4 text-center font-mono-tech text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-google-red hover:text-white transition-all duration-300 quad-border-tr hover:shadow-[0_0_25px_rgba(234,67,53,0.45)]"
               >
                 <svg
                   viewBox="0 0 24 24"
