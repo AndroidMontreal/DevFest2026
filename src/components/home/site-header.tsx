@@ -5,7 +5,6 @@ import {
   type HeaderCopy,
   type HeaderNavItem,
 } from '@/components/common/site-header-shell';
-import { TicketsTriggerButton } from '@/components/common/tickets-modal';
 import { Link } from '@/i18n/navigation';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
@@ -62,11 +61,6 @@ export function SiteHeader({
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-          {header.ticketsButton && (
-            <TicketsTriggerButton className="inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono-tech text-[10px] sm:text-[11px] font-bold uppercase tracking-wider sm:tracking-widest text-google-yellow transition-all duration-300 quad-border-tr hover:shadow-[0_0_15px_rgba(251,188,4,0.3)]">
-              {header.ticketsButton}
-            </TicketsTriggerButton>
-          )}
           <LocaleSwitcher />
           <button
             type="button"
@@ -135,10 +129,12 @@ export function SiteHeader({
               <Link
                 key={item.href}
                 onClick={() => {
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                  window.dispatchEvent(
-                    new CustomEvent('devfest:reset-schedule-top'),
-                  );
+                  if (!item.href.includes('#')) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.dispatchEvent(
+                      new CustomEvent('devfest:reset-schedule-top'),
+                    );
+                  }
                 }}
                 className={`font-mono-tech text-[11px] 2xl:text-[12px] tracking-[0.14em] 2xl:tracking-[0.18em] whitespace-nowrap ${activeClass} ${colorClass} uppercase transition-colors`}
                 href={item.href}
@@ -150,11 +146,6 @@ export function SiteHeader({
         </nav>
 
         <div className="flex items-center gap-3 2xl:gap-5 shrink-0">
-          {header.ticketsButton && (
-            <TicketsTriggerButton className="inline-flex shrink-0 items-center whitespace-nowrap border border-google-yellow bg-google-yellow/10 hover:bg-google-yellow hover:text-black px-3.5 py-2 font-mono-tech text-[11px] font-bold uppercase tracking-widest text-google-yellow transition-all duration-300 quad-border-tr hover:shadow-[0_0_15px_rgba(251,188,4,0.3)]">
-              {header.ticketsButton}
-            </TicketsTriggerButton>
-          )}
           <LocaleSwitcher />
         </div>
       </div>

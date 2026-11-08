@@ -1,35 +1,35 @@
 {
   "hero": {
-    "phase": "8th Edition & 80s Theme",
+    "phase": "8th Edition · November 6th, 2026 · Thank You Montreal!",
     "title": "DEVFEST MTL 26",
     "subtitle": "By Google Developer Group Montreal",
-    "tagline": "Quebec's largest community-driven tech conference",
-    "description": "Brought to you by Google Developer Groups, DevFest Montreal is your opportunity to connect with the vibrant local tech ecosystem and learn from industry leaders.",
+    "tagline": "A huge THANK YOU to everyone who made this year's DevFest on November 6th, 2026 a success!",
+    "description": "This is why we do this — to give back. We are a non-profit organization, so a huge thank you to our organizers, staff, speakers, sponsors, and of course YOU, our attendees!",
     "tickets_btn": "Tickets",
     "agenda_btn": "Agendas",
-    "speakers_btn": "See Our Speakers",
-    "sponsor_btn": "Become a Partner"
+    "speakers_btn": "Speakers",
+    "sponsor_btn": "Partners"
   },
   "stats": {
-    "talks": {
-      "label": "Talks (45 mins)",
-      "value": "20+"
-    },
-    "workshops": {
-      "label": "Workshops (90 mins)",
-      "value": "4"
-    },
     "attendees": {
-      "label": "Attendees (Developers, AI Builders, Students, Professionals & Founders)",
-      "value": "300+"
+      "label": "Tickets Sold (Developers, AI Builders, Students, Professionals & Founders)",
+      "value": "367"
     },
     "speakers": {
-      "label": "Speakers (including Googlers and GDEs)",
-      "value": "30+"
+      "label": "Check-In Rate (Incredible turnout on event day)",
+      "value": "76%"
+    },
+    "talks": {
+      "label": "NPS Score (Attendee satisfaction & community impact)",
+      "value": "46+"
+    },
+    "workshops": {
+      "label": "Talks & Workshops (30+ Speakers, Googlers & GDEs)",
+      "value": "24+"
     }
   },
   "hud": {
-    "date": "November 6, 2026",
+    "date": "November 6th, 2026",
     "location": "Ax.c Hub, 800 Square-Victoria, Montréal"
   },
   "countdown": {
@@ -39,10 +39,10 @@
     "seconds": "Secs"
   },
   "ticker": {
-    "item1": "DEVFEST MONTREAL 2026 // NOVEMBER 6",
-    "item2": "CONNECTING 300+ DEVELOPERS & EXPERTS",
-    "item3": "20+ TALKS & 4 WORKSHOPS // 30+ SPEAKERS",
-    "item4": "MONTREAL TECH ECOSYSTEM // GDG"
+    "item1": "NOVEMBER 6TH, 2026 // THANK YOU MONTREAL",
+    "item2": "367 TICKETS SOLD // 76% CHECK-IN RATE",
+    "item3": "46+ NPS SCORE // NON-PROFIT COMMUNITY EVENT",
+    "item4": "THANK YOU ORGANIZERS, STAFF, SPONSORS & ATTENDEES"
   },
   "about": {
     "header": {

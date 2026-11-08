@@ -1,6 +1,5 @@
 'use client';
 
-import { Link } from '@/i18n/navigation'; // Import Link from next-intl
 import Image from 'next/image';
 
 type SponsorTier = {
@@ -16,15 +15,11 @@ type SponsorTier = {
 
 type SponsorsTiersProps = {
   tiers: SponsorTier[];
-  ctaLabel: string;
-  ctaLink: string; // Added ctaLink prop
+  ctaLabel?: string;
+  ctaLink?: string;
 };
 
-export function SponsorsTiers({
-  tiers,
-  ctaLabel,
-  ctaLink,
-}: SponsorsTiersProps) {
+export function SponsorsTiers({ tiers }: SponsorsTiersProps) {
   return (
     <div className="space-y-14">
       {tiers.map((tier) => (
@@ -70,17 +65,6 @@ export function SponsorsTiers({
           </div>
         </section>
       ))}
-
-      <div className="pt-2">
-        <Link
-          href={ctaLink} // Use ctaLink as href
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center border border-white/25 px-5 py-3 font-mono-tech text-xs uppercase tracking-[0.2em] text-white transition-colors hover:border-google-blue hover:text-google-blue"
-        >
-          {ctaLabel}
-        </Link>
-      </div>
     </div>
   );
 }
