@@ -11,6 +11,7 @@
     { "label": "Photos", "href": "/#photos" },
     { "label": "Videos", "href": "/#videos" },
     { "label": "About", "href": "/#about" },
+    { "label": "Community", "href": "/#community" },
     { "label": "Agendas", "href": "/schedule" },
     { "label": "Speakers", "href": "/speakers" },
     { "label": "Partners", "href": "/#sponsors" },

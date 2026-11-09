@@ -118,6 +118,12 @@ export function HeroContent({ hero, stats }: HeroContentProps) {
             {hero.agenda_btn}
           </Link>
           <a
+            href="#community"
+            className="inline-flex items-center border border-orange-500 bg-orange-500/15 hover:bg-orange-500/25 px-5 py-3.5 sm:px-6 sm:py-4 font-mono-tech text-xs uppercase tracking-[0.18em] text-orange-400 font-bold transition-all duration-300 hover:border-orange-400 hover:text-white hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(249,115,22,0.45)]"
+          >
+            {isFr ? 'Communauté' : 'Community'}
+          </a>
+          <a
             href="#sponsors"
             className="inline-flex items-center border border-white/30 bg-white/10 hover:bg-white/20 px-5 py-3.5 sm:px-6 sm:py-4 font-mono-tech text-xs uppercase tracking-[0.18em] text-white font-bold transition-all duration-300 hover:border-white/50 hover:text-white hover:scale-[1.02] active:scale-[0.98] quad-border-tr hover:shadow-[0_0_25px_rgba(255,255,255,0.2)]"
           >
