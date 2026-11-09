@@ -5,6 +5,7 @@ import { SectionHeader } from '../common/section-header';
 import GalleryGrid from '../gallery/gallery-grid';
 import { SponsorsTiers } from '../sponsors/sponsors-tiers';
 import { AboutSection } from './about-section';
+import { CommunityChaptersSection } from './community-chapters-section';
 import { HeroBottomHud } from './hero-bottom-hud';
 import { HeroContent } from './hero-content';
 import { HeroTicker } from './hero-ticker';
@@ -58,6 +59,12 @@ export function HomeLanding({ copy }: HomeLandingProps) {
 
       {/* About Section */}
       <AboutSection about={copy.about} />
+
+      {/* Laser Divider */}
+      <div className="laser-divider" />
+
+      {/* Participating Community Chapters Section */}
+      <CommunityChaptersSection />
 
       {/* Laser Divider */}
       <div className="laser-divider" />
