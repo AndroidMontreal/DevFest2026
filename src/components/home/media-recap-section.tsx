@@ -42,12 +42,12 @@ export function MediaRecapSection() {
     },
     {
       id: '02',
-      badge: isFr ? 'Album communautaire' : 'Community Shared Album',
-      title: isFr ? 'Album Google Photos' : 'Google Photo Album',
+      badge: isFr ? 'Photos partagées' : 'Shared Event Photos',
+      title: isFr ? 'Album Communautaire' : 'Community Album',
       description: isFr
         ? 'L’album partagé de la communauté DevFest Montréal 2026 — consultez les photos des participants et ajoutez les vôtres !'
         : 'The shared DevFest Montreal 2026 community album — browse attendee snapshots and add your own photos from the event!',
-      ctaLabel: isFr ? 'Ouvrir Google Photos' : 'Open Google Photo Album',
+      ctaLabel: isFr ? "Voir l'album communautaire" : 'Open Community Album',
       comingSoonLabel: isFr ? 'Lien bientôt disponible' : 'Link coming soon',
       href: PHOTO_ALBUM_LINKS.googlePhotos,
       icon: Images,
