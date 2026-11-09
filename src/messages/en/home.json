@@ -13,11 +13,11 @@
   "stats": {
     "attendees": {
       "label": "Tickets Sold (Developers, AI Builders, Students, Professionals & Founders)",
-      "value": "367"
+      "value": "368"
     },
     "speakers": {
-      "label": "Check-In Rate (Incredible turnout on event day)",
-      "value": "76%"
+      "label": "Check-In Rate (294/368 attendees checked in on event day)",
+      "value": "80%"
     },
     "talks": {
       "label": "NPS Score (Attendee satisfaction & community impact)",
@@ -40,7 +40,7 @@
   },
   "ticker": {
     "item1": "NOVEMBER 6TH, 2026 // THANK YOU MONTREAL",
-    "item2": "367 TICKETS SOLD // 76% CHECK-IN RATE",
+    "item2": "368 TICKETS SOLD // 80% CHECK-IN RATE (294/368)",
     "item3": "46+ NPS SCORE // NON-PROFIT COMMUNITY EVENT",
     "item4": "THANK YOU ORGANIZERS, VOLUNTEERS, SPEAKERS, SPONSORS & ATTENDEES"
   },
