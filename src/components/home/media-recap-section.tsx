@@ -5,7 +5,7 @@ import { useLocale } from 'next-intl';
 import { SectionHeader } from '../common/section-header';
 
 const PHOTO_ALBUM_LINKS = {
-  photographer: '',
+  photographer: 'https://photos.app.goo.gl/8E6geoeeZQ5Ca1SYA',
   googlePhotos: 'https://photos.app.goo.gl/tRv2wDUhY9LgQPr77',
   photoBooth: 'https://photos.app.goo.gl/Ymd6kUihwgoQaQkq5',
 };
