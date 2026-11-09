@@ -13,11 +13,11 @@
   "stats": {
     "attendees": {
       "label": "Billets vendus (Développeurs, Bâtisseurs IA, Étudiants, Professionnels & Fondateurs)",
-      "value": "367"
+      "value": "368"
     },
     "speakers": {
-      "label": "Taux de présence (Participation exceptionnelle le jour J)",
-      "value": "76%"
+      "label": "Taux de présence (294/368 participants présents le jour J)",
+      "value": "80%"
     },
     "talks": {
       "label": "Score NPS (Satisfaction des participants & impact communautaire)",
@@ -40,7 +40,7 @@
   },
   "ticker": {
     "item1": "6 NOVEMBRE 2026 // MERCI MONTRÉAL",
-    "item2": "367 BILLETS VENDUS // 76% TAUX DE PRÉSENCE",
+    "item2": "368 BILLETS VENDUS // 80% TAUX DE PRÉSENCE (294/368)",
     "item3": "SCORE NPS 46+ // ÉVÉNEMENT COMMUNAUTAIRE OBNL",
     "item4": "MERCI AUX ORGANISATEURS, BÉNÉVOLES, CONFÉRENCIERS, COMMANDITAIRES & PARTICIPANTS"
   },
