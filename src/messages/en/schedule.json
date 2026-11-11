@@ -434,18 +434,15 @@
             ]
           },
           {
-            "kind": "open",
-            "time": "15:00 – 15:45",
-            "title": "Open Talk Slot — TBC",
-            "subtitle": "Créneau de conférence ouvert — À confirmer",
-            "duration": "45 MIN"
-          },
-          {
-            "kind": "open",
-            "time": "16:00 – 16:45",
-            "title": "Open Talk Slot — TBC",
-            "subtitle": "Créneau de conférence ouvert — À confirmer",
-            "duration": "45 MIN"
+            "kind": "session",
+            "variant": "red",
+            "time": "15:00 – 16:30",
+            "title": "Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script",
+            "speakers": "CYPRIEN TANKEU (Miradie Conseils) · GDE",
+            "duration": "90 MIN",
+            "lang": "FR/EN",
+            "categories": ["AI & Agents", "AppDev"],
+            "level": "Beginner"
           }
         ]
       },
@@ -654,17 +651,6 @@
             "lang": "EN",
             "categories": ["Cloud & Infra", "AI & Agents"],
             "level": "Intermediate"
-          },
-          {
-            "kind": "session",
-            "variant": "red",
-            "time": "15:00 – 16:30",
-            "title": "Automatisez la gestion des admissions de vos événements avec Gemini et Google Apps Script",
-            "speakers": "CYPRIEN TANKEU (Miradie Conseils) · GDE",
-            "duration": "90 MIN",
-            "lang": "FR/EN",
-            "categories": ["AI & Agents", "AppDev"],
-            "level": "Beginner"
           }
         ]
       },
