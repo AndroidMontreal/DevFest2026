@@ -10,7 +10,8 @@ const PHOTO_ALBUM_LINKS = {
   photoBooth: 'https://photos.app.goo.gl/Ymd6kUihwgoQaQkq5',
 };
 
-const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@gdgmontreal/videos';
+const YOUTUBE_CHANNEL_URL =
+  'https://youtube.com/playlist?list=PLXCrBqYJblI4&si=9oj184UOSXx2JWk-';
 
 export function MediaRecapSection() {
   const locale = useLocale();
@@ -29,7 +30,6 @@ export function MediaRecapSection() {
       ctaLabel: isFr
         ? "Voir l'album du photographe"
         : 'Open Photographer Album',
-      comingSoonLabel: isFr ? 'Album bientôt disponible' : 'Album coming soon',
       href: PHOTO_ALBUM_LINKS.photographer,
       icon: Camera,
       accentText: 'text-google-blue',
@@ -48,7 +48,6 @@ export function MediaRecapSection() {
         ? 'L’album partagé de la communauté DevFest Montréal 2026 — consultez les photos des participants et ajoutez les vôtres !'
         : 'The shared DevFest Montreal 2026 community album — browse attendee snapshots and add your own photos from the event!',
       ctaLabel: isFr ? "Voir l'album communautaire" : 'Open Community Album',
-      comingSoonLabel: isFr ? 'Lien bientôt disponible' : 'Link coming soon',
       href: PHOTO_ALBUM_LINKS.googlePhotos,
       icon: Images,
       accentText: 'text-google-yellow',
@@ -70,7 +69,6 @@ export function MediaRecapSection() {
       ctaLabel: isFr
         ? 'Voir les photos des Photo Booths'
         : 'Open Photo Booths Album',
-      comingSoonLabel: isFr ? 'Lien bientôt disponible' : 'Link coming soon',
       href: PHOTO_ALBUM_LINKS.photoBooth,
       icon: Sparkles,
       accentText: 'text-google-green',
@@ -150,26 +148,15 @@ export function MediaRecapSection() {
                   </p>
                 </div>
 
-                <div>
-                  {album.href ? (
-                    <a
-                      href={album.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex w-full items-center justify-center gap-2.5 border px-5 py-4 text-center font-mono-tech text-xs font-bold uppercase tracking-[0.14em] leading-snug transition-all duration-300 quad-border-tr ${album.btnClass}`}
-                    >
-                      <span>{album.ctaLabel}</span>
-                      <ExternalLink className="h-4 w-4 shrink-0" />
-                    </a>
-                  ) : (
-                    <span
-                      aria-disabled="true"
-                      className="inline-flex w-full items-center justify-center gap-2 border border-white/20 bg-white/[0.06] px-5 py-4 text-center font-mono-tech text-xs font-bold uppercase tracking-[0.14em] leading-snug text-white/55 cursor-not-allowed select-none"
-                    >
-                      <span>{album.comingSoonLabel}</span>
-                    </span>
-                  )}
-                </div>
+                <a
+                  href={album.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex w-full items-center justify-center gap-2.5 border px-5 py-4 text-center font-mono-tech text-xs font-bold uppercase tracking-[0.14em] leading-snug transition-all duration-300 quad-border-tr ${album.btnClass}`}
+                >
+                  <span>{album.ctaLabel}</span>
+                  <ExternalLink className="h-4 w-4 shrink-0" />
+                </a>
               </div>
             );
           })}
@@ -201,12 +188,12 @@ export function MediaRecapSection() {
                   <Video className="h-3.5 w-3.5" />
                   <span>YOUTUBE // @GDGMONTREAL</span>
                 </span>
-                <span className="inline-flex items-center gap-2 font-mono-tech text-xs font-bold text-google-yellow bg-google-yellow/15 px-3 py-1 rounded border border-google-yellow/35">
-                  <span className="h-2 w-2 rounded-full bg-google-yellow animate-pulse" />
+                <span className="inline-flex items-center gap-2 font-mono-tech text-xs font-bold text-google-green bg-google-green/15 px-3 py-1 rounded border border-google-green/35">
+                  <span className="h-2 w-2 rounded-full bg-google-green animate-pulse" />
                   <span>
                     {isFr
-                      ? "BIENTÔT DISPONIBLE · DEVFEST MTL '26"
-                      : "COMING SOON · DEVFEST MTL '26"}
+                      ? "DISPONIBLE MAINTENANT · DEVFEST MTL '26"
+                      : "NOW AVAILABLE · DEVFEST MTL '26"}
                   </span>
                 </span>
               </div>
@@ -219,8 +206,8 @@ export function MediaRecapSection() {
 
               <p className="font-sans text-base leading-relaxed text-white/85">
                 {isFr
-                  ? "Les vidéos des conférences et sessions du DevFest MTL '26 seront bientôt disponibles dans l'onglet Vidéos de notre chaîne YouTube officielle GDG Montréal."
-                  : "The DevFest MTL '26 talk and session videos will be available soon in the Videos tab on our official GDG Montréal YouTube channel."}
+                  ? "Retrouvez la vidéo et la liste de lecture du DevFest MTL '26 dès maintenant sur notre chaîne YouTube officielle GDG Montréal."
+                  : "Watch the DevFest MTL '26 video and playlist now on our official GDG Montréal YouTube channel."}
               </p>
             </div>
 
